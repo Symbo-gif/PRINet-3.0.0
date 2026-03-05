@@ -49,8 +49,8 @@ from torch import Tensor
 # ── Triton import with graceful fallback ──────────────────────────
 _TRITON_AVAILABLE: bool = False
 try:
-    import triton  # type: ignore[import-untyped]
-    import triton.language as tl  # type: ignore[import-untyped]
+    import triton
+    import triton.language as tl
 
     _TRITON_AVAILABLE = True
 except ImportError:

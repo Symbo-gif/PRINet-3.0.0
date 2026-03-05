@@ -102,11 +102,12 @@ def _load_json(path: Path) -> dict[str, Any]:
         FileNotFoundError: If the JSON file does not exist.
     """
     with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
+        result: dict[str, Any] = json.load(f)
+        return result
 
 
 def _save_fig(
-    fig: plt.Figure,
+    fig: matplotlib.figure.Figure,
     name: str,
     output_dir: Path,
     formats: tuple[str, ...] = ("pdf", "png"),
@@ -224,10 +225,10 @@ def fig_chimera_heatmap(
         cmap="YlOrRd",
         vmin=0.3,
         vmax=0.75,
-        extent=[
+        extent=(
             min(k_values) - 5, max(k_values) + 5,
             min(alpha_values) - 0.02, max(alpha_values) + 0.02,
-        ],
+        ),
     )
 
     cbar = fig.colorbar(im, ax=ax, label="Bimodality Coefficient (BC)")
@@ -788,7 +789,7 @@ def fig_representation_geometry(
         labels_arr = np.array(m["labels_sample"])
         unique_labels = sorted(set(labels_arr.tolist()))
 
-        cmap = plt.cm.tab10
+        cmap = plt.get_cmap("tab10")
         for j, lbl in enumerate(unique_labels):
             mask = labels_arr == lbl
             ax.scatter(tsne[mask, 0], tsne[mask, 1], s=8, alpha=0.6,

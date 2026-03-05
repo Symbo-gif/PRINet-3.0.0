@@ -21,7 +21,7 @@ import shutil
 import subprocess
 import warnings
 from pathlib import Path
-from typing import Optional, Tuple
+from typing import Any, Optional, Tuple
 
 import torch
 from torch import Tensor
@@ -43,7 +43,7 @@ warnings.filterwarnings(
 # ── Attempt JIT compilation of CUDA C++ kernel ────────────────────
 
 _CUDA_KERNEL_AVAILABLE: Optional[bool] = None  # None = not yet attempted
-_fused_module: Optional[object] = None
+_fused_module: Any = None
 
 # CUDA C++ kernel source — fused Kuramoto + PAC + Stuart-Landau
 _CUDA_SOURCE = r"""
@@ -423,7 +423,7 @@ def _try_load_cuda_kernel() -> bool:
         # Only specify minimal C++ flags
         cpp_flags = ["/O2"] if os.name == "nt" else ["-O3"]
 
-        _fused_module = load_inline(
+        _fused_module = load_inline(  # type: ignore[no-untyped-call]
             name="prinet_fused_kernels",
             cpp_sources=[_CPP_SOURCE],
             cuda_sources=[_CUDA_SOURCE],
@@ -667,7 +667,7 @@ class MixedPrecisionTrainer:
         self.optimizer = optimizer
         self.device_type = device_type
         self.enabled = enabled and torch.cuda.is_available()
-        self.scaler = torch.amp.GradScaler(
+        self.scaler: Any = torch.amp.GradScaler(  # type: ignore[attr-defined]
             device=device_type, enabled=self.enabled
         )
         self._step_count = 0
@@ -690,7 +690,7 @@ class MixedPrecisionTrainer:
         """
         self.optimizer.zero_grad()
 
-        with torch.amp.autocast(
+        with torch.amp.autocast(  # type: ignore[attr-defined]
             device_type=self.device_type, enabled=self.enabled
         ):
             outputs = self.model(inputs)
@@ -701,21 +701,21 @@ class MixedPrecisionTrainer:
         self.scaler.update()
         self._step_count += 1
 
-        return loss.item()
+        return float(loss.item())
 
     @property
     def step_count(self) -> int:
         """Number of training steps completed."""
         return self._step_count
 
-    def state_dict(self) -> dict:
+    def state_dict(self) -> dict[str, Any]:
         """Return scaler state for checkpointing."""
         return {
             "scaler": self.scaler.state_dict(),
             "step_count": self._step_count,
         }
 
-    def load_state_dict(self, state: dict) -> None:
+    def load_state_dict(self, state: dict[str, Any]) -> None:
         """Restore from checkpoint."""
         self.scaler.load_state_dict(state["scaler"])
         self._step_count = state["step_count"]
@@ -1011,6 +1011,7 @@ class LargeScaleOscillatorSystem(torch.nn.Module):
         two_pi = 2.0 * math.pi
 
         # Phase advance
+        assert isinstance(self.neighbors, Tensor)
         coupling = sparse_knn_coupling_step(
             phase, amplitude, self.neighbors, self._coupling_strength
         )
@@ -1084,10 +1085,9 @@ class AsyncCPUGPUPipeline:
         self._step_count = 0
         self._gpu_idle_time_ms = 0.0
 
+        self._scaler: Any = None
         if mixed_precision:
-            self._scaler = torch.amp.GradScaler("cuda", enabled=True)
-        else:
-            self._scaler = None
+            self._scaler = torch.amp.GradScaler("cuda", enabled=True)  # type: ignore[attr-defined]
 
     def start(self) -> None:
         """Start the async pipeline (launches CPU daemon thread)."""
@@ -1127,7 +1127,7 @@ class AsyncCPUGPUPipeline:
         t0 = time.perf_counter()
 
         if self._mixed_precision and self._scaler is not None:
-            with torch.amp.autocast("cuda", enabled=True):
+            with torch.amp.autocast("cuda", enabled=True):  # type: ignore[attr-defined]
                 outputs = self._model(inputs)
                 loss = loss_fn(outputs, targets)
             self._scaler.scale(loss).backward()
@@ -1148,7 +1148,7 @@ class AsyncCPUGPUPipeline:
             ctrl = self._daemon.get_control()
             # Control signals can be applied to learning rate, etc.
 
-        return loss.item()
+        return float(loss.item())
 
     @property
     def step_count(self) -> int:
@@ -1197,7 +1197,7 @@ class OscillatorPruner:
         dynamics: torch.nn.Module,
         phase: Tensor,
         amplitude: Tensor,
-    ) -> dict:
+    ) -> dict[str, Any]:
         """Analyze oscillator activity levels.
 
         Runs the dynamics for ``n_eval_steps`` and records mean
@@ -1221,7 +1221,7 @@ class OscillatorPruner:
         amp_history = []
 
         for _ in range(self.n_eval_steps):
-            p, a = dynamics.step(p, a, dt=self.eval_dt)
+            p, a = dynamics.step(p, a, dt=self.eval_dt)  # type: ignore[operator]
             amp_history.append(a.mean(dim=0))  # mean over batch
 
         # Stack: (n_steps, N) → mean over time
@@ -1250,7 +1250,7 @@ class OscillatorPruner:
         n_delta: int,
         n_theta: int,
         n_gamma: int,
-    ) -> dict:
+    ) -> dict[str, Any]:
         """Compute per-band pruning indices.
 
         Args:

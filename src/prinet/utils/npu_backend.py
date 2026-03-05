@@ -39,7 +39,7 @@ from pathlib import Path
 from typing import Any, Literal
 
 try:
-    import onnxruntime as ort  # type: ignore[import-untyped]
+    import onnxruntime as ort
 
     _ORT_AVAILABLE: bool = True
 except ImportError:  # pragma: no cover

@@ -19,7 +19,7 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
-from typing import Optional, Tuple
+from typing import Any, Optional, Tuple
 
 import torch
 from torch.utils.data import DataLoader
@@ -67,7 +67,7 @@ def get_cifar10_loaders(
     augment_train: bool = True,
     download: bool = True,
     pin_memory: bool = True,
-) -> Tuple[DataLoader, DataLoader]:
+) -> Tuple[DataLoader[Any], DataLoader[Any]]:
     """Return (train_loader, test_loader) for CIFAR-10.
 
     Args:
@@ -138,7 +138,7 @@ def get_fashion_mnist_loaders(
     augment_train: bool = True,
     download: bool = True,
     pin_memory: bool = True,
-) -> Tuple[DataLoader, DataLoader]:
+) -> Tuple[DataLoader[Any], DataLoader[Any]]:
     """Return (train_loader, test_loader) for Fashion-MNIST.
 
     Fashion-MNIST images are 1-channel 28×28.  The loader resizes them
@@ -161,7 +161,7 @@ def get_fashion_mnist_loaders(
 
     root = _data_root(data_root)
 
-    train_tf_list: list = [T.Resize(32), T.Grayscale(num_output_channels=3)]
+    train_tf_list: list[Any] = [T.Resize(32), T.Grayscale(num_output_channels=3)]
     if augment_train:
         train_tf_list.append(T.RandomHorizontalFlip())
     train_tf_list += [T.ToTensor(), T.Normalize(CIFAR10_MEAN, CIFAR10_STD)]
@@ -208,7 +208,7 @@ def get_fashion_mnist_loaders(
 @torch.no_grad()
 def evaluate_accuracy(
     model: torch.nn.Module,
-    loader: DataLoader,
+    loader: DataLoader[Any],
     device: Optional[torch.device] = None,
 ) -> float:
     """Compute top-1 accuracy of *model* on *loader*.
