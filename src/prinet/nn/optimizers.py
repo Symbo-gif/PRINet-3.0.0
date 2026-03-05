@@ -76,13 +76,9 @@ class SynchronizedGradientDescent(Optimizer):
         if weight_decay < 0.0:
             raise ValueError(f"Invalid weight_decay value: {weight_decay}")
         if sync_penalty < 0.0:
-            raise ValueError(
-                f"Invalid sync_penalty value: {sync_penalty}"
-            )
+            raise ValueError(f"Invalid sync_penalty value: {sync_penalty}")
         if not 0.0 <= critical_order <= 1.0:
-            raise ValueError(
-                f"critical_order must be in [0, 1], got {critical_order}"
-            )
+            raise ValueError(f"critical_order must be in [0, 1], got {critical_order}")
 
         defaults: Dict[str, float] = dict(
             lr=lr,
@@ -108,9 +104,7 @@ class SynchronizedGradientDescent(Optimizer):
         """History of synchronization penalty values."""
         return self._penalty_history
 
-    def compute_sync_penalty(
-        self, order_parameter: float
-    ) -> Tuple[float, float]:
+    def compute_sync_penalty(self, order_parameter: float) -> Tuple[float, float]:
         """Compute the synchronization barrier penalty.
 
         Args:
@@ -160,9 +154,7 @@ class SynchronizedGradientDescent(Optimizer):
         grad_modulation = 1.0
 
         if order_parameter is not None:
-            penalty_value, grad_scale = self.compute_sync_penalty(
-                order_parameter
-            )
+            penalty_value, grad_scale = self.compute_sync_penalty(order_parameter)
             # Reduce learning rate when desynchronized (protective)
             if grad_scale > 0.0:
                 grad_modulation = max(0.1, 1.0 - grad_scale)
@@ -184,9 +176,7 @@ class SynchronizedGradientDescent(Optimizer):
                 if momentum != 0:
                     param_state = self.state[p]
                     if "momentum_buffer" not in param_state:
-                        buf = param_state["momentum_buffer"] = (
-                            torch.clone(d_p).detach()
-                        )
+                        buf = param_state["momentum_buffer"] = torch.clone(d_p).detach()
                     else:
                         buf = param_state["momentum_buffer"]
                         buf.mul_(momentum).add_(d_p, alpha=1 - dampening)
@@ -229,12 +219,9 @@ class RIPOptimizer(Optimizer):
             raise ValueError(f"Invalid learning rate: {lr}")
         if target_amplitude <= 0.0:
             raise ValueError(
-                f"target_amplitude must be positive, "
-                f"got {target_amplitude}"
+                f"target_amplitude must be positive, " f"got {target_amplitude}"
             )
-        defaults: Dict[str, float] = dict(
-            lr=lr, target_amplitude=target_amplitude
-        )
+        defaults: Dict[str, float] = dict(lr=lr, target_amplitude=target_amplitude)
         super().__init__(params, defaults)
 
     @torch.no_grad()
@@ -278,15 +265,9 @@ class RIPOptimizer(Optimizer):
                 ):
                     n = p.shape[0]
                     if phase.shape[-1] == n:
-                        ph = (
-                            phase.mean(dim=0)
-                            if phase.dim() > 1
-                            else phase
-                        )
+                        ph = phase.mean(dim=0) if phase.dim() > 1 else phase
                         amp = (
-                            amplitude.mean(dim=0)
-                            if amplitude.dim() > 1
-                            else amplitude
+                            amplitude.mean(dim=0) if amplitude.dim() > 1 else amplitude
                         )
 
                         # cos(φᵢ - φⱼ)
@@ -388,9 +369,7 @@ class SCALROptimizer(Optimizer):
         if alpha <= 0.0:
             raise ValueError(f"alpha must be positive, got {alpha}")
         if warmup_steps < 0:
-            raise ValueError(
-                f"warmup_steps must be non-negative, got {warmup_steps}"
-            )
+            raise ValueError(f"warmup_steps must be non-negative, got {warmup_steps}")
 
         defaults: Dict[str, float] = dict(
             lr=lr,
@@ -439,7 +418,7 @@ class SCALROptimizer(Optimizer):
             Scaling factor in [r_min, 1.0].
         """
         r = max(0.0, min(1.0, order_parameter))
-        return float(self._r_min + (1.0 - self._r_min) * (r ** self._alpha))
+        return float(self._r_min + (1.0 - self._r_min) * (r**self._alpha))
 
     def _detect_oscillation(self) -> bool:
         """Check if recent order-parameter history shows oscillation.
@@ -497,9 +476,7 @@ class SCALROptimizer(Optimizer):
 
         # Resolve per-group order parameters
         if isinstance(order_parameter, dict):
-            global_r = sum(order_parameter.values()) / max(
-                len(order_parameter), 1
-            )
+            global_r = sum(order_parameter.values()) / max(len(order_parameter), 1)
         elif order_parameter is not None:
             global_r = order_parameter
         else:
@@ -526,10 +503,7 @@ class SCALROptimizer(Optimizer):
                 group_r = global_r if order_parameter is not None else None
 
             # Compute effective LR scale
-            if (
-                group_r is not None
-                and self._step_count > self._warmup_steps
-            ):
+            if group_r is not None and self._step_count > self._warmup_steps:
                 lr_scale = self.compute_lr_scale(group_r)
             else:
                 lr_scale = 1.0
@@ -552,9 +526,7 @@ class SCALROptimizer(Optimizer):
                 if momentum != 0:
                     param_state = self.state[p]
                     if "momentum_buffer" not in param_state:
-                        buf = param_state["momentum_buffer"] = (
-                            torch.clone(d_p).detach()
-                        )
+                        buf = param_state["momentum_buffer"] = torch.clone(d_p).detach()
                     else:
                         buf = param_state["momentum_buffer"]
                         buf.mul_(momentum).add_(d_p, alpha=1.0)

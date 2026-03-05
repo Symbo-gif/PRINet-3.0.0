@@ -102,31 +102,49 @@ class TestTritonMeanFieldRK4:
         phase, amp, freq = _make_state(N)
 
         tp, ta, tf = triton_fused_mean_field_rk4_step(
-            phase, amp, freq, self.K, self.decay, self.gamma, self.dt,
+            phase,
+            amp,
+            freq,
+            self.K,
+            self.decay,
+            self.gamma,
+            self.dt,
         )
         pp, pa, pf = pytorch_mean_field_rk4_step(
-            phase, amp, freq, self.K, self.decay, self.gamma, self.dt,
+            phase,
+            amp,
+            freq,
+            self.K,
+            self.decay,
+            self.gamma,
+            self.dt,
         )
 
         # Phase: use circular distance (handles wrap)
-        assert _circ_dist(tp, pp).max() < 1e-5, (
-            f"Phase circular error too large: {_circ_dist(tp, pp).max():.2e}"
-        )
+        assert (
+            _circ_dist(tp, pp).max() < 1e-5
+        ), f"Phase circular error too large: {_circ_dist(tp, pp).max():.2e}"
         # Amplitude
-        assert (ta - pa).abs().max() < 1e-5, (
-            f"Amplitude error too large: {(ta - pa).abs().max():.2e}"
-        )
+        assert (
+            ta - pa
+        ).abs().max() < 1e-5, f"Amplitude error too large: {(ta - pa).abs().max():.2e}"
         # Frequency
-        assert (tf - pf).abs().max() < 1e-5, (
-            f"Frequency error too large: {(tf - pf).abs().max():.2e}"
-        )
+        assert (
+            tf - pf
+        ).abs().max() < 1e-5, f"Frequency error too large: {(tf - pf).abs().max():.2e}"
 
     def test_phase_wrapping(self) -> None:
         """Output phases are always in [0, 2\u03c0). Dual-path: Triton or PyTorch."""
         fn = _mf_rk4_fn()
         phase, amp, freq = _make_state(4096)
         tp, _, _ = fn(
-            phase, amp, freq, self.K, self.decay, self.gamma, self.dt,
+            phase,
+            amp,
+            freq,
+            self.K,
+            self.decay,
+            self.gamma,
+            self.dt,
         )
         assert tp.min() >= 0.0
         assert tp.max() < TWO_PI + 1e-6
@@ -137,7 +155,13 @@ class TestTritonMeanFieldRK4:
         phase, amp, freq = _make_state(4096)
         # Use negative-driving parameters to stress test clamping
         _, ta, _ = fn(
-            phase, amp, freq, K=0.0, decay=100.0, gamma=0.0, dt=1.0,
+            phase,
+            amp,
+            freq,
+            K=0.0,
+            decay=100.0,
+            gamma=0.0,
+            dt=1.0,
         )
         assert ta.min() >= 0.0
 
@@ -147,7 +171,13 @@ class TestTritonMeanFieldRK4:
         N = 1024
         phase, amp, freq = _make_state(N)
         tp, ta, tf = fn(
-            phase, amp, freq, K=0.0, decay=0.0, gamma=0.0, dt=self.dt,
+            phase,
+            amp,
+            freq,
+            K=0.0,
+            decay=0.0,
+            gamma=0.0,
+            dt=self.dt,
         )
         expected_phase = (phase + freq * self.dt) % TWO_PI
         assert _circ_dist(tp, expected_phase).max() < 1e-5
@@ -157,25 +187,49 @@ class TestTritonMeanFieldRK4:
         fn = _mf_rk4_fn()
         phase, amp, freq = _make_state(8192)
         r1 = fn(
-            phase, amp, freq, self.K, self.decay, self.gamma, self.dt,
+            phase,
+            amp,
+            freq,
+            self.K,
+            self.decay,
+            self.gamma,
+            self.dt,
         )
         r2 = fn(
-            phase, amp, freq, self.K, self.decay, self.gamma, self.dt,
+            phase,
+            amp,
+            freq,
+            self.K,
+            self.decay,
+            self.gamma,
+            self.dt,
         )
         for a, b in zip(r1, r2):
-            assert torch.allclose(a, b, atol=1e-6), (
-                f"Non-deterministic output: max diff {(a - b).abs().max():.2e}"
-            )
+            assert torch.allclose(
+                a, b, atol=1e-6
+            ), f"Non-deterministic output: max diff {(a - b).abs().max():.2e}"
 
     def test_large_N(self) -> None:
         """Smoke test at N=65536. Dual-path: Triton or PyTorch."""
         fn = _mf_rk4_fn()
         phase, amp, freq = _make_state(65536)
         tp, ta, tf = fn(
-            phase, amp, freq, self.K, self.decay, self.gamma, self.dt,
+            phase,
+            amp,
+            freq,
+            self.K,
+            self.decay,
+            self.gamma,
+            self.dt,
         )
         pp, pa, pf = pytorch_mean_field_rk4_step(
-            phase, amp, freq, self.K, self.decay, self.gamma, self.dt,
+            phase,
+            amp,
+            freq,
+            self.K,
+            self.decay,
+            self.gamma,
+            self.dt,
         )
         assert _circ_dist(tp, pp).max() < 1e-4
 
@@ -185,8 +239,13 @@ class TestTritonMeanFieldRK4:
         phase, amp, freq = _make_state(64)
         with pytest.raises(RuntimeError, match="CUDA"):
             triton_fused_mean_field_rk4_step(
-                phase.cpu(), amp.cpu(), freq.cpu(),
-                self.K, self.decay, self.gamma, self.dt,
+                phase.cpu(),
+                amp.cpu(),
+                freq.cpu(),
+                self.K,
+                self.decay,
+                self.gamma,
+                self.dt,
             )
 
 
@@ -211,21 +270,29 @@ class TestTritonSparseKNN:
         nbr = torch.randint(0, N, (N, k), device=DEVICE, generator=gen)
 
         td, tr, to_ = triton_sparse_knn_coupling(
-            phase, amp, freq, nbr, self.K, self.decay, self.gamma,
+            phase,
+            amp,
+            freq,
+            nbr,
+            self.K,
+            self.decay,
+            self.gamma,
         )
         pd, pr, po = pytorch_sparse_knn_coupling(
-            phase, amp, freq, nbr, self.K, self.decay, self.gamma,
+            phase,
+            amp,
+            freq,
+            nbr,
+            self.K,
+            self.decay,
+            self.gamma,
         )
 
-        assert (td - pd).abs().max() < 1e-5, (
-            f"dphi error: {(td - pd).abs().max():.2e}"
-        )
-        assert (tr - pr).abs().max() < 1e-5, (
-            f"dr error: {(tr - pr).abs().max():.2e}"
-        )
-        assert (to_ - po).abs().max() < 1e-5, (
-            f"domega error: {(to_ - po).abs().max():.2e}"
-        )
+        assert (td - pd).abs().max() < 1e-5, f"dphi error: {(td - pd).abs().max():.2e}"
+        assert (tr - pr).abs().max() < 1e-5, f"dr error: {(tr - pr).abs().max():.2e}"
+        assert (
+            to_ - po
+        ).abs().max() < 1e-5, f"domega error: {(to_ - po).abs().max():.2e}"
 
     def test_zero_coupling(self) -> None:
         """K=0 gives dphi=freq, dr=-decay*amp, domega=0. Dual-path."""
@@ -236,7 +303,13 @@ class TestTritonSparseKNN:
         nbr = torch.randint(0, N, (N, k), device=DEVICE, generator=gen)
 
         dphi, dr, dom = fn(
-            phase, amp, freq, nbr, K=0.0, decay=self.decay, gamma=self.gamma,
+            phase,
+            amp,
+            freq,
+            nbr,
+            K=0.0,
+            decay=self.decay,
+            gamma=self.gamma,
         )
         assert (dphi - freq).abs().max() < 1e-6
         assert (dr - (-self.decay * amp)).abs().max() < 1e-6
@@ -251,10 +324,22 @@ class TestTritonSparseKNN:
         nbr = torch.randint(0, N, (N, k), device=DEVICE, generator=gen)
 
         r1 = fn(
-            phase, amp, freq, nbr, self.K, self.decay, self.gamma,
+            phase,
+            amp,
+            freq,
+            nbr,
+            self.K,
+            self.decay,
+            self.gamma,
         )
         r2 = fn(
-            phase, amp, freq, nbr, self.K, self.decay, self.gamma,
+            phase,
+            amp,
+            freq,
+            nbr,
+            self.K,
+            self.decay,
+            self.gamma,
         )
         for a, b in zip(r1, r2):
             assert torch.equal(a, b), "Non-deterministic output detected"
@@ -266,8 +351,13 @@ class TestTritonSparseKNN:
         nbr = torch.randint(0, 64, (64, 4), device=DEVICE)
         with pytest.raises(RuntimeError, match="CUDA"):
             triton_sparse_knn_coupling(
-                phase.cpu(), amp.cpu(), freq.cpu(),
-                nbr.cpu(), self.K, self.decay, self.gamma,
+                phase.cpu(),
+                amp.cpu(),
+                freq.cpu(),
+                nbr.cpu(),
+                self.K,
+                self.decay,
+                self.gamma,
             )
 
 
@@ -288,7 +378,13 @@ class TestPyTorchFallback:
         """PyTorch fallback wraps phases to [0, 2π)."""
         phase, amp, freq = _make_state(1024)
         p, _, _ = pytorch_mean_field_rk4_step(
-            phase, amp, freq, self.K, self.decay, self.gamma, self.dt,
+            phase,
+            amp,
+            freq,
+            self.K,
+            self.decay,
+            self.gamma,
+            self.dt,
         )
         assert p.min() >= 0.0
         assert p.max() < TWO_PI + 1e-6
@@ -297,7 +393,13 @@ class TestPyTorchFallback:
         """PyTorch fallback clamps amplitude to ≥ 0."""
         phase, amp, freq = _make_state(1024)
         _, a, _ = pytorch_mean_field_rk4_step(
-            phase, amp, freq, K=0.0, decay=100.0, gamma=0.0, dt=1.0,
+            phase,
+            amp,
+            freq,
+            K=0.0,
+            decay=100.0,
+            gamma=0.0,
+            dt=1.0,
         )
         assert a.min() >= 0.0
 
@@ -309,7 +411,13 @@ class TestPyTorchFallback:
         nbr = torch.randint(0, N, (N, k), device=DEVICE, generator=gen)
 
         dphi, dr, dom = pytorch_sparse_knn_coupling(
-            phase, amp, freq, nbr, self.K, self.decay, self.gamma,
+            phase,
+            amp,
+            freq,
+            nbr,
+            self.K,
+            self.decay,
+            self.gamma,
         )
         # Outputs should be finite
         assert torch.isfinite(dphi).all()
@@ -426,9 +534,7 @@ class TestMultiRateRK4:
         phase, amp, freq = _make_state(128)
         K, decay, gamma, dt = 2.0, 0.1, 0.01, 0.01
 
-        p1, a1, f1 = pytorch_mean_field_rk4_step(
-            phase, amp, freq, K, decay, gamma, dt
-        )
+        p1, a1, f1 = pytorch_mean_field_rk4_step(phase, amp, freq, K, decay, gamma, dt)
         p2, a2, f2 = pytorch_multi_rate_rk4_step(
             phase, amp, freq, K, decay, gamma, dt, sub_steps=1
         )
@@ -459,7 +565,13 @@ class TestMultiRateRK4:
         """Multi-rate RK4 outputs should always be finite."""
         phase, amp, freq = _make_state(256)
         p, a, f = pytorch_multi_rate_rk4_step(
-            phase, amp, freq, K=2.0, decay=0.1, gamma=0.01, dt=0.01,
+            phase,
+            amp,
+            freq,
+            K=2.0,
+            decay=0.1,
+            gamma=0.01,
+            dt=0.01,
             sub_steps=5,
         )
         assert torch.isfinite(p).all()
@@ -470,7 +582,13 @@ class TestMultiRateRK4:
         """Amplitudes should remain non-negative after multi-rate step."""
         phase, amp, freq = _make_state(128)
         _, a, _ = pytorch_multi_rate_rk4_step(
-            phase, amp, freq, K=0.0, decay=100.0, gamma=0.0, dt=1.0,
+            phase,
+            amp,
+            freq,
+            K=0.0,
+            decay=100.0,
+            gamma=0.0,
+            dt=1.0,
             sub_steps=5,
         )
         assert a.min() >= 0.0
@@ -498,7 +616,13 @@ class TestRecoveredMeanFieldRK4:
         """PyTorch MF RK4 produces consistent results across sizes."""
         phase, amp, freq = _make_state(N)
         pp, pa, pf = pytorch_mean_field_rk4_step(
-            phase, amp, freq, self.K, self.decay, self.gamma, self.dt,
+            phase,
+            amp,
+            freq,
+            self.K,
+            self.decay,
+            self.gamma,
+            self.dt,
         )
         assert pp.shape == (N,)
         assert pa.shape == (N,)
@@ -511,7 +635,13 @@ class TestRecoveredMeanFieldRK4:
         """PyTorch MF RK4 wraps phases to [0, 2π)."""
         phase, amp, freq = _make_state(4096)
         pp, _, _ = pytorch_mean_field_rk4_step(
-            phase, amp, freq, self.K, self.decay, self.gamma, self.dt,
+            phase,
+            amp,
+            freq,
+            self.K,
+            self.decay,
+            self.gamma,
+            self.dt,
         )
         assert pp.min() >= 0.0
         assert pp.max() < TWO_PI + 1e-6
@@ -520,7 +650,13 @@ class TestRecoveredMeanFieldRK4:
         """PyTorch MF RK4 clamps amplitude ≥ 0 under extreme decay."""
         phase, amp, freq = _make_state(4096)
         _, pa, _ = pytorch_mean_field_rk4_step(
-            phase, amp, freq, K=0.0, decay=100.0, gamma=0.0, dt=1.0,
+            phase,
+            amp,
+            freq,
+            K=0.0,
+            decay=100.0,
+            gamma=0.0,
+            dt=1.0,
         )
         assert pa.min() >= 0.0
 
@@ -529,7 +665,13 @@ class TestRecoveredMeanFieldRK4:
         N = 1024
         phase, amp, freq = _make_state(N)
         pp, _, _ = pytorch_mean_field_rk4_step(
-            phase, amp, freq, K=0.0, decay=0.0, gamma=0.0, dt=self.dt,
+            phase,
+            amp,
+            freq,
+            K=0.0,
+            decay=0.0,
+            gamma=0.0,
+            dt=self.dt,
         )
         expected = (phase + freq * self.dt) % TWO_PI
         assert _circ_dist(pp, expected).max() < 1e-5
@@ -538,10 +680,22 @@ class TestRecoveredMeanFieldRK4:
         """Same inputs produce identical PyTorch MF RK4 outputs."""
         phase, amp, freq = _make_state(8192)
         r1 = pytorch_mean_field_rk4_step(
-            phase, amp, freq, self.K, self.decay, self.gamma, self.dt,
+            phase,
+            amp,
+            freq,
+            self.K,
+            self.decay,
+            self.gamma,
+            self.dt,
         )
         r2 = pytorch_mean_field_rk4_step(
-            phase, amp, freq, self.K, self.decay, self.gamma, self.dt,
+            phase,
+            amp,
+            freq,
+            self.K,
+            self.decay,
+            self.gamma,
+            self.dt,
         )
         for a, b in zip(r1, r2):
             assert torch.allclose(a, b, atol=1e-6)
@@ -550,7 +704,13 @@ class TestRecoveredMeanFieldRK4:
         """Smoke test at N=65536 for PyTorch fallback."""
         phase, amp, freq = _make_state(65536)
         pp, pa, pf = pytorch_mean_field_rk4_step(
-            phase, amp, freq, self.K, self.decay, self.gamma, self.dt,
+            phase,
+            amp,
+            freq,
+            self.K,
+            self.decay,
+            self.gamma,
+            self.dt,
         )
         assert torch.isfinite(pp).all()
         assert torch.isfinite(pa).all()
@@ -559,8 +719,13 @@ class TestRecoveredMeanFieldRK4:
         """PyTorch fallback should work on CPU (Triton version doesn't)."""
         phase, amp, freq = _make_state(64)
         pp, pa, pf = pytorch_mean_field_rk4_step(
-            phase.cpu(), amp.cpu(), freq.cpu(),
-            self.K, self.decay, self.gamma, self.dt,
+            phase.cpu(),
+            amp.cpu(),
+            freq.cpu(),
+            self.K,
+            self.decay,
+            self.gamma,
+            self.dt,
         )
         assert pp.device.type == "cpu"
         assert torch.isfinite(pp).all()
@@ -581,7 +746,13 @@ class TestRecoveredSparseKNN:
         nbr = torch.randint(0, N, (N, k), device=DEVICE, generator=gen)
 
         pd, pr, po = pytorch_sparse_knn_coupling(
-            phase, amp, freq, nbr, self.K, self.decay, self.gamma,
+            phase,
+            amp,
+            freq,
+            nbr,
+            self.K,
+            self.decay,
+            self.gamma,
         )
         assert pd.shape == (N,)
         assert pr.shape == (N,)
@@ -598,7 +769,13 @@ class TestRecoveredSparseKNN:
         nbr = torch.randint(0, N, (N, k), device=DEVICE, generator=gen)
 
         dphi, dr, dom = pytorch_sparse_knn_coupling(
-            phase, amp, freq, nbr, K=0.0, decay=self.decay, gamma=self.gamma,
+            phase,
+            amp,
+            freq,
+            nbr,
+            K=0.0,
+            decay=self.decay,
+            gamma=self.gamma,
         )
         assert (dphi - freq).abs().max() < 1e-6
         assert (dr - (-self.decay * amp)).abs().max() < 1e-6
@@ -612,10 +789,22 @@ class TestRecoveredSparseKNN:
         nbr = torch.randint(0, N, (N, k), device=DEVICE, generator=gen)
 
         r1 = pytorch_sparse_knn_coupling(
-            phase, amp, freq, nbr, self.K, self.decay, self.gamma,
+            phase,
+            amp,
+            freq,
+            nbr,
+            self.K,
+            self.decay,
+            self.gamma,
         )
         r2 = pytorch_sparse_knn_coupling(
-            phase, amp, freq, nbr, self.K, self.decay, self.gamma,
+            phase,
+            amp,
+            freq,
+            nbr,
+            self.K,
+            self.decay,
+            self.gamma,
         )
         for a, b in zip(r1, r2):
             assert torch.equal(a, b), "Non-deterministic output detected"
@@ -625,8 +814,13 @@ class TestRecoveredSparseKNN:
         phase, amp, freq = _make_state(64)
         nbr = torch.randint(0, 64, (64, 4), device=DEVICE)
         pd, pr, po = pytorch_sparse_knn_coupling(
-            phase.cpu(), amp.cpu(), freq.cpu(),
-            nbr.cpu(), self.K, self.decay, self.gamma,
+            phase.cpu(),
+            amp.cpu(),
+            freq.cpu(),
+            nbr.cpu(),
+            self.K,
+            self.decay,
+            self.gamma,
         )
         assert pd.device.type == "cpu"
 

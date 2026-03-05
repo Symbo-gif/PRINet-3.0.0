@@ -51,7 +51,6 @@ from prinet.utils.temporal_training import (
     train_multi_seed,
 )
 
-
 # =========================================================================
 # Fixtures
 # =========================================================================
@@ -61,8 +60,12 @@ from prinet.utils.temporal_training import (
 def phase_tracker() -> PhaseTracker:
     torch.manual_seed(42)
     return PhaseTracker(
-        detection_dim=4, n_delta=2, n_theta=4, n_gamma=8,
-        n_discrete_steps=3, match_threshold=0.1,
+        detection_dim=4,
+        n_delta=2,
+        n_theta=4,
+        n_gamma=8,
+        n_discrete_steps=3,
+        match_threshold=0.1,
     )
 
 
@@ -70,29 +73,43 @@ def phase_tracker() -> PhaseTracker:
 def slot_tracker() -> TemporalSlotAttentionMOT:
     torch.manual_seed(42)
     return TemporalSlotAttentionMOT(
-        detection_dim=4, num_slots=6, slot_dim=32,
-        num_iterations=2, match_threshold=0.1,
+        detection_dim=4,
+        num_slots=6,
+        slot_dim=32,
+        num_iterations=2,
+        match_threshold=0.1,
     )
 
 
 @pytest.fixture()
 def sample_sequence() -> SequenceData:
     return generate_temporal_clevr_n(
-        n_objects=3, n_frames=10, det_dim=4, seed=42,
+        n_objects=3,
+        n_frames=10,
+        det_dim=4,
+        seed=42,
     )
 
 
 @pytest.fixture()
 def short_dataset() -> list[SequenceData]:
     return generate_dataset(
-        n_sequences=5, n_objects=3, n_frames=8, det_dim=4, base_seed=42,
+        n_sequences=5,
+        n_objects=3,
+        n_frames=8,
+        det_dim=4,
+        base_seed=42,
     )
 
 
 @pytest.fixture()
 def val_dataset() -> list[SequenceData]:
     return generate_dataset(
-        n_sequences=3, n_objects=3, n_frames=8, det_dim=4, base_seed=9999,
+        n_sequences=3,
+        n_objects=3,
+        n_frames=8,
+        det_dim=4,
+        base_seed=9999,
     )
 
 
@@ -554,7 +571,9 @@ class TestSlotAttentionNoGRU:
 
     def test_track_sequence_runs(self) -> None:
         torch.manual_seed(42)
-        m = SlotAttentionNoGRU(detection_dim=4, num_slots=4, slot_dim=32, match_threshold=0.1)
+        m = SlotAttentionNoGRU(
+            detection_dim=4, num_slots=4, slot_dim=32, match_threshold=0.1
+        )
         frames = [torch.randn(3, 4) for _ in range(5)]
         result = m.track_sequence(frames)
         assert "identity_preservation" in result
@@ -582,7 +601,9 @@ class TestSlotAttentionFrozen:
 
     def test_track_sequence_runs(self) -> None:
         torch.manual_seed(42)
-        m = SlotAttentionFrozen(detection_dim=4, num_slots=4, slot_dim=32, match_threshold=0.1)
+        m = SlotAttentionFrozen(
+            detection_dim=4, num_slots=4, slot_dim=32, match_threshold=0.1
+        )
         frames = [torch.randn(3, 4) for _ in range(5)]
         result = m.track_sequence(frames)
         assert "identity_preservation" in result
@@ -591,10 +612,17 @@ class TestSlotAttentionFrozen:
 class TestCreateAblationTracker:
     """Tests for create_ablation_tracker factory."""
 
-    @pytest.mark.parametrize("variant", [
-        "pt_full", "pt_frozen", "pt_static",
-        "sa_full", "sa_no_gru", "sa_frozen",
-    ])
+    @pytest.mark.parametrize(
+        "variant",
+        [
+            "pt_full",
+            "pt_frozen",
+            "pt_static",
+            "sa_full",
+            "sa_no_gru",
+            "sa_frozen",
+        ],
+    )
     def test_all_variants_constructable(self, variant: str) -> None:
         torch.manual_seed(42)
         m = create_ablation_tracker(variant, detection_dim=4)
@@ -640,13 +668,17 @@ class TestTemporalTrainer:
         assert "tfr" in metrics
 
     def test_full_training_pt(
-        self, phase_tracker: PhaseTracker,
+        self,
+        phase_tracker: PhaseTracker,
         short_dataset: list[SequenceData],
         val_dataset: list[SequenceData],
     ) -> None:
         trainer = TemporalTrainer(
-            phase_tracker, lr=1e-3, max_epochs=3,
-            patience=2, warmup_epochs=1,
+            phase_tracker,
+            lr=1e-3,
+            max_epochs=3,
+            patience=2,
+            warmup_epochs=1,
         )
         result = trainer.train(short_dataset, val_dataset)
         assert isinstance(result, TrainingResult)
@@ -655,25 +687,32 @@ class TestTemporalTrainer:
         assert len(result.train_losses) > 0
 
     def test_full_training_sa(
-        self, slot_tracker: TemporalSlotAttentionMOT,
+        self,
+        slot_tracker: TemporalSlotAttentionMOT,
         short_dataset: list[SequenceData],
         val_dataset: list[SequenceData],
     ) -> None:
         trainer = TemporalTrainer(
-            slot_tracker, lr=1e-3, max_epochs=3,
-            patience=2, warmup_epochs=1,
+            slot_tracker,
+            lr=1e-3,
+            max_epochs=3,
+            patience=2,
+            warmup_epochs=1,
         )
         result = trainer.train(short_dataset, val_dataset)
         assert isinstance(result, TrainingResult)
         assert result.total_epochs >= 1
 
     def test_snapshots_captured(
-        self, phase_tracker: PhaseTracker,
+        self,
+        phase_tracker: PhaseTracker,
         short_dataset: list[SequenceData],
         val_dataset: list[SequenceData],
     ) -> None:
         trainer = TemporalTrainer(
-            phase_tracker, lr=1e-3, max_epochs=3,
+            phase_tracker,
+            lr=1e-3,
+            max_epochs=3,
             snapshot_epochs=(0, 1, 2),
         )
         result = trainer.train(short_dataset, val_dataset)
@@ -704,8 +743,12 @@ class TestIntegration:
     def test_pt_train_and_evaluate(self) -> None:
         torch.manual_seed(42)
         pt = PhaseTracker(
-            detection_dim=4, n_delta=2, n_theta=4, n_gamma=8,
-            n_discrete_steps=2, match_threshold=0.1,
+            detection_dim=4,
+            n_delta=2,
+            n_theta=4,
+            n_gamma=8,
+            n_discrete_steps=2,
+            match_threshold=0.1,
         )
         train_data = generate_dataset(3, n_objects=3, n_frames=6, base_seed=42)
         val_data = generate_dataset(2, n_objects=3, n_frames=6, base_seed=999)
@@ -717,7 +760,8 @@ class TestIntegration:
         frames = [f.detach() for f in val_data[0].frames]
         tracking = pt.track_sequence(frames)
         metrics = compute_full_temporal_metrics(
-            tracking["identity_matches"], val_data[0].n_objects,
+            tracking["identity_matches"],
+            val_data[0].n_objects,
             positions=val_data[0].positions,
         )
         assert isinstance(metrics, TemporalMetrics)
@@ -725,8 +769,11 @@ class TestIntegration:
     def test_sa_train_and_evaluate(self) -> None:
         torch.manual_seed(42)
         sa = TemporalSlotAttentionMOT(
-            detection_dim=4, num_slots=4, slot_dim=32,
-            num_iterations=2, match_threshold=0.1,
+            detection_dim=4,
+            num_slots=4,
+            slot_dim=32,
+            num_iterations=2,
+            match_threshold=0.1,
         )
         train_data = generate_dataset(3, n_objects=3, n_frames=6, base_seed=42)
         val_data = generate_dataset(2, n_objects=3, n_frames=6, base_seed=999)
@@ -738,11 +785,16 @@ class TestIntegration:
         """All ablation variants produce valid tracking output."""
         torch.manual_seed(42)
         frames = [torch.randn(3, 4) for _ in range(5)]
-        for variant in ["pt_full", "pt_frozen", "pt_static",
-                        "sa_full", "sa_no_gru", "sa_frozen"]:
+        for variant in [
+            "pt_full",
+            "pt_frozen",
+            "pt_static",
+            "sa_full",
+            "sa_no_gru",
+            "sa_frozen",
+        ]:
             torch.manual_seed(42)
-            m = create_ablation_tracker(variant, detection_dim=4,
-                                       match_threshold=0.1)
+            m = create_ablation_tracker(variant, detection_dim=4, match_threshold=0.1)
             result = m.track_sequence(frames)
             assert "identity_preservation" in result
 
@@ -783,5 +835,6 @@ class TestVersion:
 
     def test_version(self) -> None:
         import prinet
+
         parts = prinet.__version__.split(".")
         assert len(parts) == 3 and all(p.isdigit() for p in parts)

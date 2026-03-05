@@ -203,9 +203,7 @@ class HybridPRINet(nn.Module):
         # The last layer is called with return_phase=True to obtain
         # real oscillatory phases for the phase-to-rate stage.
         h = x
-        for lobm_layer, norm in zip(
-            self.lobm_layers[:-1], self.lobm_norms[:-1]
-        ):
+        for lobm_layer, norm in zip(self.lobm_layers[:-1], self.lobm_norms[:-1]):
             h = lobm_layer(h)
             h = norm(h)
 
@@ -614,39 +612,33 @@ class InterleavedHybridPRINet(nn.Module):
         h = self.input_proj(x).view(B, self.n_tokens, self.d_model)
 
         # Initialize oscillatory phase state
-        phase_init_raw = self.phase_init(x).view(
-            B, self.n_tokens, n_heads
-        )
+        phase_init_raw = self.phase_init(x).view(B, self.n_tokens, n_heads)
         phase_state = phase_init_raw % (2.0 * math.pi)
 
         # Initialize amplitude for dynamics (unit)
-        amp_state = torch.ones(
-            B, self.n_osc_total, device=x.device, dtype=x.dtype
-        )
+        amp_state = torch.ones(B, self.n_osc_total, device=x.device, dtype=x.dtype)
         # Phase for dynamics (mean across heads for each oscillator)
         dyn_phase = phase_state[:, : self.n_osc_total, :].mean(dim=-1)
 
         for i in range(self.n_layers):
             # --- Oscillatory phase update ---
             dyn_phase, amp_state = self.dynamics.integrate(
-                dyn_phase, amp_state,
-                n_steps=self._n_discrete_steps, dt=0.01,
+                dyn_phase,
+                amp_state,
+                n_steps=self._n_discrete_steps,
+                dt=0.01,
             )
 
             # Convert dynamics phase → per-token per-head phase
             # dyn_phase: (B, n_osc_total)
             if self.n_tokens == self.n_osc_total:
-                token_phase = dyn_phase.unsqueeze(-1).expand(
-                    B, self.n_tokens, n_heads
-                )
+                token_phase = dyn_phase.unsqueeze(-1).expand(B, self.n_tokens, n_heads)
             else:
                 # Interpolate: take first n_tokens from padded/repeated
-                repeated = dyn_phase.repeat(
-                    1, (self.n_tokens // self.n_osc_total) + 1
-                )[:, : self.n_tokens]  # (B, n_tokens)
-                token_phase = repeated.unsqueeze(-1).expand(
-                    B, self.n_tokens, n_heads
-                )
+                repeated = dyn_phase.repeat(1, (self.n_tokens // self.n_osc_total) + 1)[
+                    :, : self.n_tokens
+                ]  # (B, n_tokens)
+                token_phase = repeated.unsqueeze(-1).expand(B, self.n_tokens, n_heads)
 
             # --- OscillatoryAttention + residual ---
             h_norm = self.norm1_layers[i](h)
@@ -830,31 +822,31 @@ class TemporalHybridPRINet(nn.Module):
             h = model.input_proj(x_t).view(B, model.n_tokens, model.d_model)
 
             # Initialize phase from input
-            phase_init_raw = model.phase_init(x_t).view(
-                B, model.n_tokens, n_heads
-            )
+            phase_init_raw = model.phase_init(x_t).view(B, model.n_tokens, n_heads)
             phase_state = phase_init_raw % (2.0 * math.pi)
 
             # Initialize dynamics phase and amplitude
             dyn_phase = phase_state[:, :n_osc, :].mean(dim=-1)  # (B, n_osc)
-            amp_state = torch.ones(
-                B, n_osc, device=x.device, dtype=x.dtype
-            )
+            amp_state = torch.ones(B, n_osc, device=x.device, dtype=x.dtype)
 
             # Temporal propagation: blend with previous frame
             if prev_dyn_phase is not None:
                 from prinet.core.propagation import _wrap_phase
 
                 dyn_phase, amp_state = self.propagator.propagate(
-                    prev_dyn_phase, prev_dyn_amp,  # type: ignore[arg-type]
-                    dyn_phase, amp_state,
+                    prev_dyn_phase,
+                    prev_dyn_amp,  # type: ignore[arg-type]
+                    dyn_phase,
+                    amp_state,
                 )
 
             # Run interleaved layers
             for i in range(model.n_layers):
                 dyn_phase, amp_state = model.dynamics.integrate(
-                    dyn_phase, amp_state,
-                    n_steps=model._n_discrete_steps, dt=0.01,
+                    dyn_phase,
+                    amp_state,
+                    n_steps=model._n_discrete_steps,
+                    dt=0.01,
                 )
 
                 if model.n_tokens == n_osc:
@@ -862,9 +854,9 @@ class TemporalHybridPRINet(nn.Module):
                         B, model.n_tokens, n_heads
                     )
                 else:
-                    repeated = dyn_phase.repeat(
-                        1, (model.n_tokens // n_osc) + 1
-                    )[:, :model.n_tokens]
+                    repeated = dyn_phase.repeat(1, (model.n_tokens // n_osc) + 1)[
+                        :, : model.n_tokens
+                    ]
                     token_phase = repeated.unsqueeze(-1).expand(
                         B, model.n_tokens, n_heads
                     )
@@ -1082,23 +1074,21 @@ class HybridPRINetV2(nn.Module):
         phase_state = phase_init_raw % (2.0 * math.pi)
 
         # Initialize amplitude and dynamics phase
-        amp_state = torch.ones(
-            B, self.n_osc_total, device=x.device, dtype=x.dtype
-        )
+        amp_state = torch.ones(B, self.n_osc_total, device=x.device, dtype=x.dtype)
         # n_tokens == n_osc_total in v2, so direct mapping
         dyn_phase = phase_state.mean(dim=-1)  # (B, n_tokens)
 
         for i in range(self.n_layers):
             # Discrete multi-rate dynamics update
             dyn_phase, amp_state = self.dynamics.integrate(
-                dyn_phase, amp_state,
-                n_steps=self._n_discrete_steps, dt=0.01,
+                dyn_phase,
+                amp_state,
+                n_steps=self._n_discrete_steps,
+                dt=0.01,
             )
 
             # Direct phase mapping (no padding interpolation needed)
-            token_phase = dyn_phase.unsqueeze(-1).expand(
-                B, n_tokens, n_heads
-            )
+            token_phase = dyn_phase.unsqueeze(-1).expand(B, n_tokens, n_heads)
 
             # OscillatoryAttention + residual
             h_norm = self.norm1_layers[i](h)
@@ -1125,6 +1115,7 @@ class HybridPRINetV2(nn.Module):
         """Check whether Triton is importable (required for max-autotune)."""
         try:
             import triton  # noqa: F401
+
             return True
         except ImportError:
             return False
@@ -1313,9 +1304,9 @@ class HybridPRINetV2CLEVRN(nn.Module):
         else:
             scene_agg = scene
         scene_enc = self.scene_proj(scene_agg)  # (B, d_model)
-        query_enc = self.query_proj(query)       # (B, d_model)
+        query_enc = self.query_proj(query)  # (B, d_model)
         combined = torch.cat([scene_enc, query_enc], dim=-1)  # (B, 2*d_model)
-        merged = self.merge(combined)            # (B, n_osc)
+        merged = self.merge(combined)  # (B, n_osc)
         return self.v2(merged)
 
 
@@ -1387,9 +1378,7 @@ class PhaseTracker(nn.Module):
             n_gamma=n_gamma,
         )
 
-    def encode(
-        self, detections: Tensor
-    ) -> tuple[Tensor, Tensor]:
+    def encode(self, detections: Tensor) -> tuple[Tensor, Tensor]:
         """Encode detections into phase and amplitude embeddings.
 
         Args:
@@ -1404,9 +1393,7 @@ class PhaseTracker(nn.Module):
         amp = self.det_to_amp(detections)
         return phase, amp
 
-    def evolve(
-        self, phase: Tensor, amplitude: Tensor
-    ) -> tuple[Tensor, Tensor]:
+    def evolve(self, phase: Tensor, amplitude: Tensor) -> tuple[Tensor, Tensor]:
         """Evolve phase state through discrete dynamics.
 
         Args:
@@ -1417,13 +1404,13 @@ class PhaseTracker(nn.Module):
             Evolved ``(phase, amplitude)``.
         """
         return self.dynamics.integrate(
-            phase, amplitude,
-            n_steps=self._n_discrete_steps, dt=0.01,
+            phase,
+            amplitude,
+            n_steps=self._n_discrete_steps,
+            dt=0.01,
         )
 
-    def phase_similarity(
-        self, phase_a: Tensor, phase_b: Tensor
-    ) -> Tensor:
+    def phase_similarity(self, phase_a: Tensor, phase_b: Tensor) -> Tensor:
         """Compute phase similarity matrix between two sets of phases.
 
         Uses cosine similarity of complex phase embeddings
@@ -1450,17 +1437,15 @@ class PhaseTracker(nn.Module):
 
         # L2-normalised cosine similarity (since |exp(ix)| = 1,
         # L2 norm = sqrt(n_osc) for every row)
-        z_a_norm = z_a / (
-            z_a.abs().pow(2).sum(dim=-1, keepdim=True).sqrt() + _EPS
-        )
-        z_b_norm = z_b / (
-            z_b.abs().pow(2).sum(dim=-1, keepdim=True).sqrt() + _EPS
-        )
+        z_a_norm = z_a / (z_a.abs().pow(2).sum(dim=-1, keepdim=True).sqrt() + _EPS)
+        z_b_norm = z_b / (z_b.abs().pow(2).sum(dim=-1, keepdim=True).sqrt() + _EPS)
 
         # Real part of complex inner product = phase similarity
-        sim = (z_a_norm.unsqueeze(1) * z_b_norm.conj().unsqueeze(0)).sum(
-            dim=-1
-        ).real.float()
+        sim = (
+            (z_a_norm.unsqueeze(1) * z_b_norm.conj().unsqueeze(0))
+            .sum(dim=-1)
+            .real.float()
+        )
         return sim
 
     def forward(
@@ -1497,10 +1482,10 @@ class PhaseTracker(nn.Module):
         N_t = detections_t.shape[0]
 
         # Greedy matching via argmax on similarity
-        matches = torch.full((N_t,), -1, dtype=torch.long,
-                             device=detections_t.device)
-        used = torch.zeros(detections_t1.shape[0], dtype=torch.bool,
-                           device=detections_t.device)
+        matches = torch.full((N_t,), -1, dtype=torch.long, device=detections_t.device)
+        used = torch.zeros(
+            detections_t1.shape[0], dtype=torch.bool, device=detections_t.device
+        )
 
         # Sort by max similarity (match most confident first)
         max_sims, max_idxs = sim.max(dim=1)
@@ -1582,16 +1567,20 @@ class PhaseTracker(nn.Module):
                 N_prev = evolved_phase.shape[0]
                 N_curr = phase_t.shape[0]
                 N_match = min(N_prev, N_curr)
-                matches = torch.full((N_prev,), -1, dtype=torch.long,
-                                     device=dets.device)
-                used = torch.zeros(N_curr, dtype=torch.bool,
-                                   device=dets.device)
+                matches = torch.full(
+                    (N_prev,), -1, dtype=torch.long, device=dets.device
+                )
+                used = torch.zeros(N_curr, dtype=torch.bool, device=dets.device)
                 max_sims, max_idxs = sim.max(dim=1)
                 order = max_sims.argsort(descending=True)
 
                 for idx in order:
                     best_j = max_idxs[idx].item()
-                    if best_j < N_curr and not used[best_j] and max_sims[idx] > self.match_threshold:
+                    if (
+                        best_j < N_curr
+                        and not used[best_j]
+                        and max_sims[idx] > self.match_threshold
+                    ):
                         matches[idx] = best_j
                         used[best_j] = True
 
@@ -1610,7 +1599,10 @@ class PhaseTracker(nn.Module):
                     diff = matched_curr - matched_prev
                     rho = float(
                         torch.exp(1j * diff.to(torch.complex64))
-                        .mean(dim=-1).abs().mean().item()
+                        .mean(dim=-1)
+                        .abs()
+                        .mean()
+                        .item()
                     )
                 else:
                     rho = 0.0

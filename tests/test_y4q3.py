@@ -47,6 +47,7 @@ class TestCUDAJIT:
             fused_discrete_step_cuda,
             pytorch_fused_discrete_step_full,
         )
+
         # These should be importable regardless of CUDA
         assert callable(cuda_fused_kernel_available)
         assert callable(fused_discrete_step_cuda)
@@ -72,9 +73,25 @@ class TestCUDAJIT:
         W_pac_tg_b = torch.zeros(ng)
 
         new_phase, new_amp = pytorch_fused_discrete_step_full(
-            phase, amp, fd, ft, fg, Wd, Wt, Wg,
-            W_pac_dt_w, W_pac_dt_b, W_pac_tg_w, W_pac_tg_b,
-            1.0, 1.0, 1.0, 0.01, nd, nt, ng,
+            phase,
+            amp,
+            fd,
+            ft,
+            fg,
+            Wd,
+            Wt,
+            Wg,
+            W_pac_dt_w,
+            W_pac_dt_b,
+            W_pac_tg_w,
+            W_pac_tg_b,
+            1.0,
+            1.0,
+            1.0,
+            0.01,
+            nd,
+            nt,
+            ng,
         )
         assert new_phase.shape == phase.shape
         assert new_amp.shape == amp.shape
@@ -85,9 +102,10 @@ class TestCUDAJIT:
     )
     def test_cuda_jit_compiles(self):
         from prinet.utils.fused_kernels import cuda_fused_kernel_available
-        assert cuda_fused_kernel_available(), (
-            "CUDA JIT kernel failed to compile -- check MSVC setup"
-        )
+
+        assert (
+            cuda_fused_kernel_available()
+        ), "CUDA JIT kernel failed to compile -- check MSVC setup"
 
     @pytest.mark.skipif(
         not torch.cuda.is_available(),
@@ -99,6 +117,7 @@ class TestCUDAJIT:
             fused_discrete_step_cuda,
             pytorch_fused_discrete_step_full,
         )
+
         if not cuda_fused_kernel_available():
             pytest.skip("CUDA JIT not compiled")
 
@@ -118,19 +137,37 @@ class TestCUDAJIT:
         W_pac_tg_w = (torch.randn(ng, 2 * nt) * 0.1).cuda()
         W_pac_tg_b = torch.zeros(ng).cuda()
 
-        args = (phase, amp, fd, ft, fg, Wd, Wt, Wg,
-                W_pac_dt_w, W_pac_dt_b, W_pac_tg_w, W_pac_tg_b,
-                1.0, 1.0, 1.0, 0.01, nd, nt, ng)
+        args = (
+            phase,
+            amp,
+            fd,
+            ft,
+            fg,
+            Wd,
+            Wt,
+            Wg,
+            W_pac_dt_w,
+            W_pac_dt_b,
+            W_pac_tg_w,
+            W_pac_tg_b,
+            1.0,
+            1.0,
+            1.0,
+            0.01,
+            nd,
+            nt,
+            ng,
+        )
 
         p_pt, a_pt = pytorch_fused_discrete_step_full(*args)
         p_cu, a_cu = fused_discrete_step_cuda(*args)
 
-        assert torch.allclose(p_pt, p_cu, atol=1e-3), (
-            f"Phase max diff: {(p_pt - p_cu).abs().max():.2e}"
-        )
-        assert torch.allclose(a_pt, a_cu, atol=1e-3), (
-            f"Amp max diff: {(a_pt - a_cu).abs().max():.2e}"
-        )
+        assert torch.allclose(
+            p_pt, p_cu, atol=1e-3
+        ), f"Phase max diff: {(p_pt - p_cu).abs().max():.2e}"
+        assert torch.allclose(
+            a_pt, a_cu, atol=1e-3
+        ), f"Amp max diff: {(a_pt - a_cu).abs().max():.2e}"
 
 
 # =========================================================================
@@ -145,7 +182,12 @@ class TestSkipCount:
         """Count must be <= 20 (target 10; allow up to 20 on Windows w/o Triton)."""
         # Exclude this file to avoid recursive pytest invocation
         cmd = [
-            sys.executable, "-m", "pytest", "tests/", "-q", "--tb=no",
+            sys.executable,
+            "-m",
+            "pytest",
+            "tests/",
+            "-q",
+            "--tb=no",
             "--ignore=tests/test_y4q3.py",
         ]
         proc = subprocess.run(
@@ -161,15 +203,18 @@ class TestSkipCount:
             part = part.strip()
             if "skipped" in part:
                 skipped = int(part.split()[0])
-        assert skipped <= 20, (
-            f"Too many test skips: {skipped} (target <= 20)"
-        )
+        assert skipped <= 20, f"Too many test skips: {skipped} (target <= 20)"
 
     def test_no_failures(self, project_root):
         """Zero test failures required for release."""
         # Exclude this file to avoid recursive pytest invocation
         cmd = [
-            sys.executable, "-m", "pytest", "tests/", "-q", "--tb=no",
+            sys.executable,
+            "-m",
+            "pytest",
+            "tests/",
+            "-q",
+            "--tb=no",
             "--ignore=tests/test_y4q3.py",
         ]
         proc = subprocess.run(
@@ -227,8 +272,14 @@ class TestSphinxDocs:
         docs_dir = os.path.join(project_root, "docs")
         build_dir = os.path.join(docs_dir, "_build_test")
         cmd = [
-            sys.executable, "-m", "sphinx",
-            "-b", "html", docs_dir, build_dir, "-q",
+            sys.executable,
+            "-m",
+            "sphinx",
+            "-b",
+            "html",
+            docs_dir,
+            build_dir,
+            "-q",
         ]
         proc = subprocess.run(
             cmd,
@@ -237,9 +288,7 @@ class TestSphinxDocs:
             cwd=project_root,
             timeout=300,
         )
-        assert proc.returncode == 0, (
-            f"Sphinx build failed:\n{proc.stderr[-500:]}"
-        )
+        assert proc.returncode == 0, f"Sphinx build failed:\n{proc.stderr[-500:]}"
         # Count HTML files
         html_count = 0
         for dirpath, _, filenames in os.walk(build_dir):
@@ -286,9 +335,7 @@ class TestNotebooks:
         with open(path) as f:
             data = json.load(f)
         code_cells = [c for c in data["cells"] if c["cell_type"] == "code"]
-        assert len(code_cells) >= 3, (
-            f"Expected >= 3 code cells, got {len(code_cells)}"
-        )
+        assert len(code_cells) >= 3, f"Expected >= 3 code cells, got {len(code_cells)}"
 
     @pytest.mark.parametrize("name", EXPECTED)
     def test_notebook_has_markdown_cells(self, project_root, name):
@@ -296,9 +343,7 @@ class TestNotebooks:
         with open(path) as f:
             data = json.load(f)
         md_cells = [c for c in data["cells"] if c["cell_type"] == "markdown"]
-        assert len(md_cells) >= 2, (
-            f"Expected >= 2 markdown cells, got {len(md_cells)}"
-        )
+        assert len(md_cells) >= 2, f"Expected >= 2 markdown cells, got {len(md_cells)}"
 
 
 # =========================================================================
@@ -323,29 +368,29 @@ class TestVersionAPI:
 
     def test_public_api_surface(self):
         n_symbols = len(prinet.__all__)
-        assert n_symbols >= 120, (
-            f"Expected >= 120 public symbols, got {n_symbols}"
-        )
+        assert n_symbols >= 120, f"Expected >= 120 public symbols, got {n_symbols}"
 
     def test_pyproject_version_matches(self, project_root):
         import tomllib
+
         pyproject = os.path.join(project_root, "pyproject.toml")
         with open(pyproject, "rb") as f:
             data = tomllib.load(f)
         pv = data["project"]["version"]
-        assert pv == prinet.__version__, (
-            f"pyproject.toml ({pv}) != __init__.py ({prinet.__version__})"
-        )
+        assert (
+            pv == prinet.__version__
+        ), f"pyproject.toml ({pv}) != __init__.py ({prinet.__version__})"
 
     def test_pyproject_production_stable(self, project_root):
         import tomllib
+
         pyproject = os.path.join(project_root, "pyproject.toml")
         with open(pyproject, "rb") as f:
             data = tomllib.load(f)
         classifiers = data["project"].get("classifiers", [])
-        assert any("Production/Stable" in c for c in classifiers), (
-            "Classifier 'Development Status :: 5 - Production/Stable' not found"
-        )
+        assert any(
+            "Production/Stable" in c for c in classifiers
+        ), "Classifier 'Development Status :: 5 - Production/Stable' not found"
 
 
 # =========================================================================
@@ -363,7 +408,8 @@ class TestReproducibility:
     def test_reproduce_imports(self, project_root):
         """reproduce.py should be importable without errors."""
         cmd = [
-            sys.executable, "-c",
+            sys.executable,
+            "-c",
             "import importlib.util; "
             "spec = importlib.util.spec_from_file_location('reproduce', "
             f"r'{os.path.join(project_root, 'reproduce.py')}'); "
@@ -390,9 +436,7 @@ class TestLaTeXPaper:
         with open(path, encoding="utf-8") as f:
             content = f.read()
         for section in ["Introduction", "Background", "Architecture", "Experiments"]:
-            assert section.lower() in content.lower(), (
-                f"Missing section: {section}"
-            )
+            assert section.lower() in content.lower(), f"Missing section: {section}"
 
     def test_paper_has_bibliography(self, project_root):
         path = os.path.join(project_root, "paper", "main.tex")
@@ -416,9 +460,9 @@ class TestBenchmarkArtefacts:
     def test_has_benchmark_results(self, project_root):
         results_dir = os.path.join(project_root, "benchmarks", "results")
         json_files = [f for f in os.listdir(results_dir) if f.endswith(".json")]
-        assert len(json_files) >= 10, (
-            f"Expected >= 10 benchmark JSON files, got {len(json_files)}"
-        )
+        assert (
+            len(json_files) >= 10
+        ), f"Expected >= 10 benchmark JSON files, got {len(json_files)}"
 
     def test_benchmark_jsons_valid(self, project_root):
         results_dir = os.path.join(project_root, "benchmarks", "results")
@@ -426,6 +470,6 @@ class TestBenchmarkArtefacts:
         for fname in json_files:
             with open(os.path.join(results_dir, fname)) as f:
                 data = json.load(f)
-            assert isinstance(data, (dict, list)), (
-                f"{fname}: expected dict or list, got {type(data).__name__}"
-            )
+            assert isinstance(
+                data, (dict, list)
+            ), f"{fname}: expected dict or list, got {type(data).__name__}"

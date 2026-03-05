@@ -149,9 +149,9 @@ class TestHybridPRINet:
         # Loss should decrease (or at least not explode)
         assert math.isfinite(final_loss), f"Final loss is not finite: {final_loss}"
         # With 10 epochs, expect some improvement
-        assert final_loss < initial_loss * 1.5, (
-            f"Loss did not improve: {initial_loss:.4f} → {final_loss:.4f}"
-        )
+        assert (
+            final_loss < initial_loss * 1.5
+        ), f"Loss did not improve: {initial_loss:.4f} → {final_loss:.4f}"
 
     def test_scalr_alternating_training(self, hybrid_model: HybridPRINet) -> None:
         """AlternatingOptimizer drives HybridPRINet training."""
@@ -176,9 +176,9 @@ class TestHybridPRINet:
         # Should not diverge
         assert all(math.isfinite(l) for l in losses), f"Non-finite loss: {losses}"
         # Final loss should be reasonably bounded
-        assert losses[-1] < losses[0] * 2.0, (
-            f"Alternating training diverged: {losses[0]:.4f} → {losses[-1]:.4f}"
-        )
+        assert (
+            losses[-1] < losses[0] * 2.0
+        ), f"Alternating training diverged: {losses[0]:.4f} → {losses[-1]:.4f}"
 
     def test_vs_pure_oscillatory(self) -> None:
         """HybridPRINet output differs from pure oscillatory model."""
@@ -187,9 +187,16 @@ class TestHybridPRINet:
         torch.manual_seed(SEED)
         pure_osc = PRINetModel(n_resonances=22, n_dims=64, n_concepts=5)
         hybrid = HybridPRINet(
-            n_input=64, n_classes=5, n_delta=2, n_theta=4, n_gamma=16,
-            n_lobm_layers=1, lobm_steps=3,
-            grim_d_model=32, grim_n_heads=2, grim_n_layers=1,
+            n_input=64,
+            n_classes=5,
+            n_delta=2,
+            n_theta=4,
+            n_gamma=16,
+            n_lobm_layers=1,
+            lobm_steps=3,
+            grim_d_model=32,
+            grim_n_heads=2,
+            grim_n_layers=1,
         )
 
         x = torch.randn(4, 64)
@@ -199,9 +206,9 @@ class TestHybridPRINet:
         # Both should have valid shapes and be different due to architecture
         assert out_osc.shape == out_hybrid.shape == (4, 5)
         # Architectures differ → outputs almost certainly differ
-        assert not torch.allclose(out_osc, out_hybrid, atol=1e-3), (
-            "Hybrid and pure oscillatory produced identical output"
-        )
+        assert not torch.allclose(
+            out_osc, out_hybrid, atol=1e-3
+        ), "Hybrid and pure oscillatory produced identical output"
 
     def test_vs_pure_rate_coded(self) -> None:
         """HybridPRINet output differs from pure rate-coded MLP."""
@@ -213,9 +220,16 @@ class TestHybridPRINet:
             nn.LogSoftmax(dim=-1),
         )
         hybrid = HybridPRINet(
-            n_input=64, n_classes=5, n_delta=2, n_theta=4, n_gamma=16,
-            n_lobm_layers=1, lobm_steps=3,
-            grim_d_model=32, grim_n_heads=2, grim_n_layers=1,
+            n_input=64,
+            n_classes=5,
+            n_delta=2,
+            n_theta=4,
+            n_gamma=16,
+            n_lobm_layers=1,
+            lobm_steps=3,
+            grim_d_model=32,
+            grim_n_heads=2,
+            grim_n_layers=1,
         )
 
         x = torch.randn(4, 64)
@@ -223,9 +237,9 @@ class TestHybridPRINet:
         out_hybrid = hybrid(x)
 
         assert out_rate.shape == out_hybrid.shape == (4, 5)
-        assert not torch.allclose(out_rate, out_hybrid, atol=1e-3), (
-            "Hybrid and pure rate-coded produced identical output"
-        )
+        assert not torch.allclose(
+            out_rate, out_hybrid, atol=1e-3
+        ), "Hybrid and pure rate-coded produced identical output"
 
 
 # ======================================================================
@@ -361,7 +375,8 @@ class TestStateCollector:
         """on_epoch_end submits state to daemon."""
         hook = StateCollector(mock_daemon)
         hook.on_epoch_end(
-            epoch=1, loss=0.5,
+            epoch=1,
+            loss=0.5,
             r_per_band=[0.8, 0.7, 0.6],
             lr_current=1e-3,
         )

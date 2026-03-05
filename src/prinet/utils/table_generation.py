@@ -23,7 +23,9 @@ from pathlib import Path
 from typing import Any, Optional
 
 # ---- Default paths ----
-DEFAULT_RESULTS_DIR = Path(__file__).parent.parent.parent.parent / "benchmarks" / "results"
+DEFAULT_RESULTS_DIR = (
+    Path(__file__).parent.parent.parent.parent / "benchmarks" / "results"
+)
 DEFAULT_OUTPUT_DIR = Path(__file__).parent.parent.parent.parent / "paper" / "tables"
 
 
@@ -100,11 +102,13 @@ def table_ablation_variants(
         flops = f"{v['total_flops']:,}"
         lines.append(f"{name} & {acc:.1f} & {params} & {flops} \\\\")
 
-    lines.extend([
-        r"\bottomrule",
-        r"\end{tabular}",
-        r"\end{table}",
-    ])
+    lines.extend(
+        [
+            r"\bottomrule",
+            r"\end{tabular}",
+            r"\end{table}",
+        ]
+    )
 
     return _save_table("\n".join(lines), "tab_ablation", output_dir)
 
@@ -148,11 +152,13 @@ def table_parameter_efficiency(
         latency = f"{m['wall_time_ms']:.2f}"
         lines.append(f"{name} & {params} & {ip} & {ip_per} & {latency} \\\\")
 
-    lines.extend([
-        r"\bottomrule",
-        r"\end{tabular}",
-        r"\end{table}",
-    ])
+    lines.extend(
+        [
+            r"\bottomrule",
+            r"\end{tabular}",
+            r"\end{table}",
+        ]
+    )
 
     return _save_table("\n".join(lines), "tab_param_efficiency", output_dir)
 
@@ -212,15 +218,17 @@ def table_chimera_gold_standard(
         for i, v in enumerate(raw):
             lines.append(f"Sequence {i + 1} BC & {v:.4f} \\\\")
 
-        lines.extend([
-            r"\midrule",
-            f"Mean BC & {bc_mean:.4f} \\\\",
-            f"Std & {bc_std:.4f} \\\\",
-            f"95\\% CI & [{ci_lo:.4f}, {ci_hi:.4f}] \\\\",
-            r"\bottomrule",
-            r"\end{tabular}",
-            r"\end{table}",
-        ])
+        lines.extend(
+            [
+                r"\midrule",
+                f"Mean BC & {bc_mean:.4f} \\\\",
+                f"Std & {bc_std:.4f} \\\\",
+                f"95\\% CI & [{ci_lo:.4f}, {ci_hi:.4f}] \\\\",
+                r"\bottomrule",
+                r"\end{tabular}",
+                r"\end{table}",
+            ]
+        )
     else:
         seeds = data["seeds"]
         agg = data.get("aggregate", {})
@@ -249,15 +257,16 @@ def table_chimera_gold_standard(
             chi_mean = agg.get("chi_mean", 0)
             lines.append(r"\midrule")
             lines.append(
-                f"Mean & {bc_mean:.4f} & {si_mean:.4f} & "
-                f"{chi_mean:.4f} & --- \\\\"
+                f"Mean & {bc_mean:.4f} & {si_mean:.4f} & " f"{chi_mean:.4f} & --- \\\\"
             )
 
-        lines.extend([
-            r"\bottomrule",
-            r"\end{tabular}",
-            r"\end{table}",
-        ])
+        lines.extend(
+            [
+                r"\bottomrule",
+                r"\end{tabular}",
+                r"\end{table}",
+            ]
+        )
 
     return _save_table("\n".join(lines), "tab_chimera", output_dir)
 
@@ -353,19 +362,19 @@ def table_statistical_summary(
         )
     if holm_data:
         n_sig = holm_data.get("n_significant_after_correction", "---")
-        lines.append(
-            f"Holm--Bonferroni sig. & \\multicolumn{{2}}{{c}}{{{n_sig}}} \\\\"
-        )
+        lines.append(f"Holm--Bonferroni sig. & \\multicolumn{{2}}{{c}}{{{n_sig}}} \\\\")
 
-    outcome_escaped = data['outcome'].replace('_', r'\_')
+    outcome_escaped = data["outcome"].replace("_", r"\_")
     lines.append(
         f"Outcome & \\multicolumn{{2}}{{c}}{{\\texttt{{{outcome_escaped}}}}} \\\\"
     )
-    lines.extend([
-        r"\bottomrule",
-        r"\end{tabular}",
-        r"\end{table}",
-    ])
+    lines.extend(
+        [
+            r"\bottomrule",
+            r"\end{tabular}",
+            r"\end{table}",
+        ]
+    )
 
     return _save_table("\n".join(lines), "tab_statistical", output_dir)
 
@@ -408,11 +417,13 @@ def table_occlusion_sweep(
         sa_m = s["sa_stats"]["mean"]
         lines.append(f"{rate} & {pt_m:.4f} & {pt_ci} & {sa_m:.4f} \\\\")
 
-    lines.extend([
-        r"\bottomrule",
-        r"\end{tabular}",
-        r"\end{table}",
-    ])
+    lines.extend(
+        [
+            r"\bottomrule",
+            r"\end{tabular}",
+            r"\end{table}",
+        ]
+    )
 
     return _save_table("\n".join(lines), "tab_occlusion", output_dir)
 
@@ -458,7 +469,9 @@ def table_oscillosim_scaling(
         row = [f"{n:,}"]
         for mode in ["mean_field", "sparse_knn", "csr"]:
             results = modes.get(mode, [])
-            match = [r for r in results if r["n_oscillators"] == n and r["status"] == "OK"]
+            match = [
+                r for r in results if r["n_oscillators"] == n and r["status"] == "OK"
+            ]
             if match:
                 tp = match[0]["throughput_osc_step_per_s"]
                 if tp >= 1e9:
@@ -473,11 +486,13 @@ def table_oscillosim_scaling(
                 row.append("---")
         lines.append(" & ".join(row) + " \\\\")
 
-    lines.extend([
-        r"\bottomrule",
-        r"\end{tabular}",
-        r"\end{table}",
-    ])
+    lines.extend(
+        [
+            r"\bottomrule",
+            r"\end{tabular}",
+            r"\end{table}",
+        ]
+    )
 
     return _save_table("\n".join(lines), "tab_oscillosim", output_dir)
 
@@ -540,17 +555,17 @@ def table_efficiency_profile(
             f"& SA & {sa_flops:,} & {sa.get('latency_ms', {}).get('mean', 0):.2f} "
             f"& {sa.get('peak_memory_mb', 0):.1f} \\\\"
         )
-        lines.append(
-            f"& \\textit{{Ratio}} & \\textit{{{ratio:.1f}$\\times$}} & & \\\\"
-        )
+        lines.append(f"& \\textit{{Ratio}} & \\textit{{{ratio:.1f}$\\times$}} & & \\\\")
         if n != max(by_n.keys()):
             lines.append(r"\midrule")
 
-    lines.extend([
-        r"\bottomrule",
-        r"\end{tabular}",
-        r"\end{table}",
-    ])
+    lines.extend(
+        [
+            r"\bottomrule",
+            r"\end{tabular}",
+            r"\end{table}",
+        ]
+    )
 
     return _save_table("\n".join(lines), "tab_efficiency", output_dir)
 
@@ -610,22 +625,24 @@ def table_binding_breakdown(
     sa_bind = coupling["SA_attention_params"]
     ratio = sa_bind / pt_bind if pt_bind else 0
 
-    lines.extend([
-        r"\midrule",
-        f"\\textbf{{Binding Params$^\\dagger$}} & \\textbf{{{pt_bind:,}}} & \\textbf{{{sa_bind:,}}} \\\\",
-        f"\\textbf{{Total}} & \\textbf{{{breakdown['PhaseTracker']['total']:,}}} "
-        f"& \\textbf{{{breakdown['SlotAttention']['total']:,}}} \\\\",
-        f"Ratio (SA/PT) & \\multicolumn{{2}}{{c}}{{{breakdown['ratio']:.1f}$\\times$}} \\\\",
-        r"\bottomrule",
-        r"\end{tabular}",
-        r"\vspace{0.3em}",
-        r"",
-        r"{\footnotesize $^\dagger$Core mechanism only: coupling/frequency/PAC weights (PT), "
-        r"QKV projections (SA). The $143\times$ ratio in "
-        r"Proposition~\ref{prop:efficiency} compares PT's 379 binding params "
-        r"against SA's full Slot Attention module (54{,}336).}",
-        r"\end{table}",
-    ])
+    lines.extend(
+        [
+            r"\midrule",
+            f"\\textbf{{Binding Params$^\\dagger$}} & \\textbf{{{pt_bind:,}}} & \\textbf{{{sa_bind:,}}} \\\\",
+            f"\\textbf{{Total}} & \\textbf{{{breakdown['PhaseTracker']['total']:,}}} "
+            f"& \\textbf{{{breakdown['SlotAttention']['total']:,}}} \\\\",
+            f"Ratio (SA/PT) & \\multicolumn{{2}}{{c}}{{{breakdown['ratio']:.1f}$\\times$}} \\\\",
+            r"\bottomrule",
+            r"\end{tabular}",
+            r"\vspace{0.3em}",
+            r"",
+            r"{\footnotesize $^\dagger$Core mechanism only: coupling/frequency/PAC weights (PT), "
+            r"QKV projections (SA). The $143\times$ ratio in "
+            r"Proposition~\ref{prop:efficiency} compares PT's 379 binding params "
+            r"against SA's full Slot Attention module (54{,}336).}",
+            r"\end{table}",
+        ]
+    )
 
     return _save_table("\n".join(lines), "tab_binding_params", output_dir)
 
@@ -671,11 +688,13 @@ def table_stress_conditions(
         winner = "SA" if sa_ip >= pt_ip else "PT"
         lines.append(f"{name} & {pt_ip:.4f} & {sa_ip:.4f} & {winner} \\\\")
 
-    lines.extend([
-        r"\bottomrule",
-        r"\end{tabular}",
-        r"\end{table}",
-    ])
+    lines.extend(
+        [
+            r"\bottomrule",
+            r"\end{tabular}",
+            r"\end{table}",
+        ]
+    )
 
     return _save_table("\n".join(lines), "tab_stress", output_dir)
 
@@ -703,8 +722,11 @@ def table_supercritical_regime(
     agg = data["aggregated"]
 
     bands = ["delta", "theta", "gamma"]
-    band_labels = [r"$\delta$ (1--4\,Hz)", r"$\theta$ (4--8\,Hz)",
-                   r"$\gamma$ (25--100\,Hz)"]
+    band_labels = [
+        r"$\delta$ (1--4\,Hz)",
+        r"$\theta$ (4--8\,Hz)",
+        r"$\gamma$ (25--100\,Hz)",
+    ]
 
     lines = [
         r"\begin{table}[t]",
@@ -727,11 +749,13 @@ def table_supercritical_regime(
             f"{lbl} & {kc_t:.4f} & {kc_e:.4f} & {ratio:.0f}$\\times$ & {lam:.4f} \\\\"
         )
 
-    lines.extend([
-        r"\bottomrule",
-        r"\end{tabular}",
-        r"\end{table}",
-    ])
+    lines.extend(
+        [
+            r"\bottomrule",
+            r"\end{tabular}",
+            r"\end{table}",
+        ]
+    )
 
     return _save_table("\n".join(lines), "tab_supercritical", output_dir)
 

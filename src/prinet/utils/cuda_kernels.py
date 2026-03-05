@@ -217,9 +217,7 @@ class BatchedRK45Solver:
             frequency=vec[2 * n : 3 * n].reshape(shape),
         )
 
-    def _compute_rhs(
-        self, model: OscillatorModel, state: OscillatorState
-    ) -> Tensor:
+    def _compute_rhs(self, model: OscillatorModel, state: OscillatorState) -> Tensor:
         """Compute the right-hand side of the ODE system.
 
         When ``compiled=True`` and a CUDA device is available, the
@@ -233,9 +231,7 @@ class BatchedRK45Solver:
             Flattened derivative vector.
         """
         dphi, dr, domega = model.compute_derivatives(state)
-        return torch.cat(
-            [dphi.flatten(), dr.flatten(), domega.flatten()]
-        )
+        return torch.cat([dphi.flatten(), dr.flatten(), domega.flatten()])
 
     def _get_rhs_fn(
         self, model: OscillatorModel
@@ -255,9 +251,7 @@ class BatchedRK45Solver:
         if self._compiled:
             if self._compiled_rhs is None:
                 try:
-                    self._compiled_rhs = torch.compile(
-                        rhs, mode="reduce-overhead"
-                    )
+                    self._compiled_rhs = torch.compile(rhs, mode="reduce-overhead")
                 except Exception:
                     # Fallback if torch.compile unavailable (no compiler)
                     self._compiled_rhs = rhs
@@ -333,9 +327,7 @@ class BatchedRK45Solver:
 
         n_steps = 0
         n_evals = 0
-        trajectory: Optional[List[OscillatorState]] = (
-            [] if record_trajectory else None
-        )
+        trajectory: Optional[List[OscillatorState]] = [] if record_trajectory else None
 
         while t.item() < t_end - 1e-12:
             # Clamp dt to remaining interval
@@ -364,9 +356,7 @@ class BatchedRK45Solver:
 
             # --- Error estimate (fused, no temporaries) ---
             error = torch.abs(y5 - y4)
-            scale = atol_t + rtol_t * torch.maximum(
-                torch.abs(y), torch.abs(y5)
-            )
+            scale = atol_t + rtol_t * torch.maximum(torch.abs(y), torch.abs(y5))
             error_ratio = (error / scale).max().item()
 
             if error_ratio <= 1.0:
@@ -383,9 +373,7 @@ class BatchedRK45Solver:
                 if error_ratio > 1e-12:
                     factor = self._safety * (1.0 / error_ratio) ** 0.2
                     factor = min(factor, self._max_increase)
-                    dt = torch.clamp(
-                        dt * factor, min=min_dt_t, max=max_dt_t
-                    )
+                    dt = torch.clamp(dt * factor, min=min_dt_t, max=max_dt_t)
                 else:
                     dt = torch.clamp(
                         dt * self._max_increase,
@@ -394,12 +382,8 @@ class BatchedRK45Solver:
                     )
             else:
                 # Reject step and decrease dt
-                factor = max(
-                    0.2, self._safety * (1.0 / error_ratio) ** 0.25
-                )
-                dt = torch.clamp(
-                    dt * factor, min=min_dt_t, max=max_dt_t
-                )
+                factor = max(0.2, self._safety * (1.0 / error_ratio) ** 0.25)
+                dt = torch.clamp(dt * factor, min=min_dt_t, max=max_dt_t)
 
             if n_steps >= max_steps:
                 raise SolverError(
@@ -438,9 +422,7 @@ class FixedStepRK4Solver:
         >>> result = solver.solve(model, state, n_steps=1000)
     """
 
-    def __init__(
-        self, dt: float = 0.01, compiled: bool = False
-    ) -> None:
+    def __init__(self, dt: float = 0.01, compiled: bool = False) -> None:
         if dt <= 0:
             raise ValueError(f"dt must be positive, got {dt}")
         self._dt = dt
@@ -522,9 +504,7 @@ def sparse_coupling_matrix(
         >>> print(f"Non-zero fraction: {(C != 0).float().mean():.4f}")
     """
     if not 0.0 <= sparsity < 1.0:
-        raise ValueError(
-            f"sparsity must be in [0, 1), got {sparsity}"
-        )
+        raise ValueError(f"sparsity must be in [0, 1), got {sparsity}")
     if seed is not None:
         gen = torch.Generator(device=device or torch.device("cpu"))
         gen.manual_seed(seed)
@@ -595,9 +575,7 @@ def gradient_checkpoint_integration(
         current_mb = torch.cuda.memory_allocated() / (1024 * 1024)
         available_mb = max(memory_budget_mb - current_mb, 1.0)
         budget_ratio = available_mb / memory_budget_mb
-        checkpoint_every = max(
-            1, int(math.sqrt(n_steps * budget_ratio))
-        )
+        checkpoint_every = max(1, int(math.sqrt(n_steps * budget_ratio)))
 
     def _segment_fn(
         phase: Tensor,
@@ -640,9 +618,7 @@ def gradient_checkpoint_integration(
                 seg_steps,
             )
 
-        current = OscillatorState(
-            phase=phase, amplitude=amplitude, frequency=frequency
-        )
+        current = OscillatorState(phase=phase, amplitude=amplitude, frequency=frequency)
         remaining -= seg_steps
 
         # --- Dynamic budget enforcement (Q2) ---

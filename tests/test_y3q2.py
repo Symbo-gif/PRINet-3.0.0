@@ -49,9 +49,7 @@ _DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 _skip_motmetrics = pytest.mark.skipif(
     not _HAS_MOTMETRICS, reason="motmetrics not installed"
 )
-_skip_scipy = pytest.mark.skipif(
-    not _HAS_SCIPY, reason="scipy not installed"
-)
+_skip_scipy = pytest.mark.skipif(not _HAS_SCIPY, reason="scipy not installed")
 _skip_hypothesis = pytest.mark.skipif(
     not _HAS_HYPOTHESIS, reason="hypothesis not installed"
 )
@@ -85,7 +83,10 @@ class TestN4AdaptiveAllocation:
         from prinet.nn.adaptive_allocation import AdaptiveOscillatorAllocator
 
         alloc = AdaptiveOscillatorAllocator(
-            min_total=12, max_total=64, strategy="learned", complexity_dim=4,
+            min_total=12,
+            max_total=64,
+            strategy="learned",
+            complexity_dim=4,
         )
         assert alloc.strategy == "learned"
         assert alloc._mlp is not None
@@ -188,7 +189,10 @@ class TestN4AdaptiveAllocation:
         from prinet.nn.adaptive_allocation import AdaptiveOscillatorAllocator
 
         alloc = AdaptiveOscillatorAllocator(
-            min_total=12, max_total=64, strategy="learned", complexity_dim=4,
+            min_total=12,
+            max_total=64,
+            strategy="learned",
+            complexity_dim=4,
         )
         features = torch.randn(4)
         budget = alloc.allocate(complexity=0.5, features=features)
@@ -335,11 +339,12 @@ class TestN2CrowdedMOT:
         from prinet.nn.mot_evaluation import generate_crowded_mot_sequence
 
         seq = generate_crowded_mot_sequence(
-            n_objects=50, n_frames=30, distractor_rate=0.1, seed=42,
+            n_objects=50,
+            n_frames=30,
+            distractor_rate=0.1,
+            seed=42,
         )
-        distractor_count = sum(
-            1 for frame in seq for det in frame if det.obj_id == -1
-        )
+        distractor_count = sum(1 for frame in seq for det in frame if det.obj_id == -1)
         assert distractor_count > 0, "No distractors generated"
 
     def test_crowded_has_occlusions(self) -> None:
@@ -347,12 +352,13 @@ class TestN2CrowdedMOT:
         from prinet.nn.mot_evaluation import generate_crowded_mot_sequence
 
         seq = generate_crowded_mot_sequence(
-            n_objects=50, n_frames=30, occlusion_rate=0.2, seed=42,
+            n_objects=50,
+            n_frames=30,
+            occlusion_rate=0.2,
+            seed=42,
         )
         # At least some frames should have fewer than 50 real detections
-        real_counts = [
-            sum(1 for d in frame if d.obj_id >= 0) for frame in seq
-        ]
+        real_counts = [sum(1 for d in frame if d.obj_id >= 0) for frame in seq]
         assert min(real_counts) < 50, "No occlusions detected"
 
     @_skip_motmetrics
@@ -369,7 +375,10 @@ class TestN2CrowdedMOT:
         tracker.eval()
         seq = generate_crowded_mot_sequence(n_objects=50, n_frames=10)
         result = evaluate_tracking(
-            seq, tracker, detection_dim=4, sequence_name="crowded",
+            seq,
+            tracker,
+            detection_dim=4,
+            sequence_name="crowded",
         )
         assert result.n_objects == 50
         assert result.n_frames == 10
@@ -409,9 +418,9 @@ class TestN3TemporalReasoning:
         for t in range(5, 8):
             ids_in_frame = {d.obj_id for d in seq[t]}
             for occluded_id in [0, 1, 2]:
-                assert occluded_id not in ids_in_frame, (
-                    f"Object {occluded_id} visible at frame {t} during occlusion"
-                )
+                assert (
+                    occluded_id not in ids_in_frame
+                ), f"Object {occluded_id} visible at frame {t} during occlusion"
 
     def test_temporal_distractor_injection(self) -> None:
         """Distractors appear at specified frames."""
@@ -455,13 +464,19 @@ class TestN3TemporalReasoning:
         phase_tracker = PhaseTracker(detection_dim=4, match_threshold=0.0)
         phase_tracker.eval()
         result_phase = evaluate_tracking(
-            seq, phase_tracker, detection_dim=4, sequence_name="phase",
+            seq,
+            phase_tracker,
+            detection_dim=4,
+            sequence_name="phase",
         )
 
         attn_tracker = AttentionTracker(detection_dim=4, match_threshold=0.0)
         attn_tracker.eval()
         result_attn = evaluate_tracking(
-            seq, attn_tracker, detection_dim=4, sequence_name="attn",
+            seq,
+            attn_tracker,
+            detection_dim=4,
+            sequence_name="attn",
         )
 
         # Both should produce valid results (not assertion on who wins —
@@ -493,7 +508,10 @@ class TestN5SubconsciousAB:
         seq = generate_linear_mot_sequence(n_objects=3, n_frames=5)
 
         results = run_subconscious_ab_test(
-            tracker, seq, n_trials=3, detection_dim=4,
+            tracker,
+            seq,
+            n_trials=3,
+            detection_dim=4,
         )
         assert "with_daemon" in results
         assert "without_daemon" in results
@@ -516,7 +534,10 @@ class TestN5SubconsciousAB:
         seq = generate_linear_mot_sequence(n_objects=3, n_frames=5)
 
         results = run_subconscious_ab_test(
-            tracker, seq, n_trials=5, detection_dim=4,
+            tracker,
+            seq,
+            n_trials=5,
+            detection_dim=4,
         )
 
         t_stat, p_value = ttest_ind(
@@ -543,7 +564,10 @@ class TestQ2Integration:
         from prinet.nn.adaptive_allocation import DynamicPhaseTracker
 
         tracker = DynamicPhaseTracker(
-            detection_dim=4, min_total=12, max_total=64, max_objects=50,
+            detection_dim=4,
+            min_total=12,
+            max_total=64,
+            max_objects=50,
         )
         # Small scene
         dets_small_t = torch.randn(3, 4)
@@ -571,7 +595,9 @@ class TestQ2Integration:
         )
 
         tracker = DynamicPhaseTracker(
-            detection_dim=4, min_total=12, max_total=28,
+            detection_dim=4,
+            min_total=12,
+            max_total=28,
         )
         seq = generate_linear_mot_sequence(n_objects=5, n_frames=8)
         result = evaluate_tracking(seq, tracker, detection_dim=4)
@@ -651,7 +677,9 @@ class TestQ2HypothesisProperties:
         from prinet.nn.mot_evaluation import generate_linear_mot_sequence
 
         seq = generate_linear_mot_sequence(
-            n_objects=n_objects, n_frames=n_frames, miss_rate=0.0,
+            n_objects=n_objects,
+            n_frames=n_frames,
+            miss_rate=0.0,
         )
         assert len(seq) == n_frames
         # With miss_rate=0, every frame has all objects

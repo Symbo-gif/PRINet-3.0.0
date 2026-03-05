@@ -16,6 +16,7 @@ from torch import Tensor
 from .oscillator_state import OscillatorState, _wrap_phase
 from .oscillator_models import OscillatorModel
 
+
 class ExponentialIntegrator:
     """Exponential integrator for stiff oscillator dynamics.
 
@@ -68,9 +69,7 @@ class ExponentialIntegrator:
         if dim < 1:
             raise ValueError(f"dim must be positive, got {dim}")
         if krylov_rank < 2:
-            raise ValueError(
-                f"krylov_rank must be >= 2, got {krylov_rank}"
-            )
+            raise ValueError(f"krylov_rank must be >= 2, got {krylov_rank}")
         self._dim = dim
         self._krylov_rank = min(krylov_rank, dim)
         self._max_direct_dim = max_direct_dim
@@ -111,14 +110,22 @@ class ExponentialIntegrator:
             eigvals = torch.linalg.eigvals(A)
             magnitudes = eigvals.abs()
             mag_max = magnitudes.max()
-            mag_min = magnitudes[magnitudes > 1e-10].min() if (magnitudes > 1e-10).any() else mag_max
+            mag_min = (
+                magnitudes[magnitudes > 1e-10].min()
+                if (magnitudes > 1e-10).any()
+                else mag_max
+            )
             cond = (mag_max / mag_min).item() if mag_min > 0 else 1.0
         except Exception:
             cond = 1.0
 
         # Scale Krylov dim based on condition number
-        adaptive_dim = int(cond / max(self._stiff_cond_threshold, 1e-8)) + self._krylov_rank
-        return min(max(adaptive_dim, self._krylov_rank), min(self._max_krylov_stiff, self._dim))
+        adaptive_dim = (
+            int(cond / max(self._stiff_cond_threshold, 1e-8)) + self._krylov_rank
+        )
+        return min(
+            max(adaptive_dim, self._krylov_rank), min(self._max_krylov_stiff, self._dim)
+        )
 
     @property
     def use_krylov(self) -> bool:
@@ -306,17 +313,13 @@ class ExponentialIntegrator:
         eigenvalues, V = torch.linalg.eig(hHm)
         lam = eigenvalues
         exp_lam = torch.exp(lam)
-        safe_lam = torch.where(
-            lam.abs() < 1e-12, torch.ones_like(lam), lam
-        )
+        safe_lam = torch.where(lam.abs() < 1e-12, torch.ones_like(lam), lam)
         phi1_lam = torch.where(
             lam.abs() < 1e-12,
             torch.ones_like(lam),
             (exp_lam - 1.0) / safe_lam,
         )
-        phi1_Hm = (V @ torch.diag(phi1_lam) @ torch.linalg.inv(V)).real.to(
-            dtype
-        )
+        phi1_Hm = (V @ torch.diag(phi1_lam) @ torch.linalg.inv(V)).real.to(dtype)
 
         e1 = torch.zeros(actual_m, device=device, dtype=dtype)
         e1[0] = 1.0
@@ -340,9 +343,7 @@ class ExponentialIntegrator:
         )
 
     @staticmethod
-    def _vector_to_state(
-        vec: Tensor, reference: OscillatorState
-    ) -> OscillatorState:
+    def _vector_to_state(vec: Tensor, reference: OscillatorState) -> OscillatorState:
         """Unflatten a vector back to an ``OscillatorState``."""
         shape = reference.phase.shape
         n = reference.phase.numel()
@@ -483,9 +484,7 @@ class ExponentialIntegrator:
         Returns:
             Tuple of ``(final_state, trajectory)``.
         """
-        trajectory: Optional[list[OscillatorState]] = (
-            [] if record_trajectory else None
-        )
+        trajectory: Optional[list[OscillatorState]] = [] if record_trajectory else None
         current = state
 
         cached_J: Optional[Tensor] = None
@@ -498,9 +497,7 @@ class ExponentialIntegrator:
 
             y = self._state_to_vector(current)
             dphi, dr, domega = model.compute_derivatives(current)
-            f_y = torch.cat(
-                [dphi.flatten(), dr.flatten(), domega.flatten()]
-            )
+            f_y = torch.cat([dphi.flatten(), dr.flatten(), domega.flatten()])
             g_y = f_y - cached_J @ y
 
             if self._stiff_mode:
@@ -534,8 +531,6 @@ class ExponentialIntegrator:
 # =========================================================================
 
 
-
-
 class MultiRateIntegrator:
     """Multi-rate ODE integrator for hierarchical oscillator systems.
 
@@ -564,9 +559,7 @@ class MultiRateIntegrator:
         method: str = "rk4",
     ) -> None:
         if sub_steps < 1:
-            raise ValueError(
-                f"sub_steps must be >= 1, got {sub_steps}"
-            )
+            raise ValueError(f"sub_steps must be >= 1, got {sub_steps}")
         self._sub_steps = sub_steps
         self._method = method
 
@@ -625,14 +618,10 @@ class MultiRateIntegrator:
         Returns:
             Tuple ``(final_state, trajectory)``.
         """
-        trajectory: Optional[list[OscillatorState]] = (
-            [] if record_trajectory else None
-        )
+        trajectory: Optional[list[OscillatorState]] = [] if record_trajectory else None
         current = state
         for _ in range(n_steps):
             current = self.step(model, current, dt=dt)
             if trajectory is not None:
                 trajectory.append(current.clone())
         return current, trajectory
-
-

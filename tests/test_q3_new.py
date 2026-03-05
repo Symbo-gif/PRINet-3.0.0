@@ -112,7 +112,9 @@ class TestDGLayer:
         loss = out.sum()
         loss.backward()
         # Check gradients flow to layer parameters
-        has_grad = any(p.grad is not None for p in layer.parameters() if p.requires_grad)
+        has_grad = any(
+            p.grad is not None for p in layer.parameters() if p.requires_grad
+        )
         assert has_grad
 
 

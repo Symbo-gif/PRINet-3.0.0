@@ -36,7 +36,6 @@ from prinet._deprecation import (
     verify_api_surface,
 )
 
-
 # ============================================================================
 # Workstream J: Engineering Quality
 # ============================================================================
@@ -174,7 +173,9 @@ class TestDocumentation:
 
     def test_api_reference_exists(self) -> None:
         """API Reference document exists."""
-        ref = Path(__file__).parents[1] / "Docs" / "API_Reference_Coupling_Topologies.md"
+        ref = (
+            Path(__file__).parents[1] / "Docs" / "API_Reference_Coupling_Topologies.md"
+        )
         assert ref.exists()
 
 
@@ -203,9 +204,14 @@ class TestRegressionSuite:
         from prinet.nn.hybrid import HybridPRINetV2
 
         model = HybridPRINetV2(
-            n_input=14, n_classes=2,
-            d_model=64, n_heads=4, n_layers=2,
-            n_delta=2, n_theta=4, n_gamma=8,
+            n_input=14,
+            n_classes=2,
+            d_model=64,
+            n_heads=4,
+            n_layers=2,
+            n_delta=2,
+            n_theta=4,
+            n_gamma=8,
         )
         x = torch.randn(4, 14)  # Already projected to n_osc dimensions
         out = model(x)
@@ -297,7 +303,8 @@ class TestPhaseDiagrams:
                     freq = torch.normal(mean=1.0, std=delta, size=(N,))
 
                 osc = KuramotoOscillator(
-                    n_oscillators=N, coupling_strength=K,
+                    n_oscillators=N,
+                    coupling_strength=K,
                     coupling_mode="full",
                 )
                 state = OscillatorState.create_random(N, seed=42)
@@ -319,7 +326,8 @@ class TestPhaseDiagrams:
 
         N = 20
         osc = KuramotoOscillator(
-            n_oscillators=N, coupling_strength=5.0,
+            n_oscillators=N,
+            coupling_strength=5.0,
             coupling_mode="full",
         )
         # Create state with IDENTICAL frequencies — zero detuning
@@ -337,9 +345,9 @@ class TestPhaseDiagrams:
 
         r_final = kuramoto_order_parameter(state.phase).item()
         # With identical freqs and coupling, r should increase
-        assert r_final > r0 or r_final > 0.3, (
-            f"Expected sync improvement: r0={r0:.3f}, r_final={r_final:.3f}"
-        )
+        assert (
+            r_final > r0 or r_final > 0.3
+        ), f"Expected sync improvement: r0={r0:.3f}, r_final={r_final:.3f}"
 
     def test_low_coupling_desynchronized(self) -> None:
         """Low K, high delta should yield low synchronization."""
@@ -350,7 +358,8 @@ class TestPhaseDiagrams:
         freq = torch.normal(mean=1.0, std=3.0, size=(N,))
 
         osc = KuramotoOscillator(
-            n_oscillators=N, coupling_strength=0.1,
+            n_oscillators=N,
+            coupling_strength=0.1,
             coupling_mode="mean_field",
         )
         state = OscillatorState.create_random(N, seed=42)
@@ -372,7 +381,8 @@ class TestPhaseDiagrams:
 
         for N in [10, 50, 100]:
             osc = KuramotoOscillator(
-                n_oscillators=N, coupling_strength=2.0,
+                n_oscillators=N,
+                coupling_strength=2.0,
                 coupling_mode="mean_field",
             )
             state = OscillatorState.create_random(N, seed=42)
@@ -385,13 +395,19 @@ class TestPhaseDiagrams:
 class TestTopLevelExports:
     """All Q4 additions accessible."""
 
-    @pytest.mark.parametrize("symbol", [
-        "FROZEN_PUBLIC_API", "verify_api_surface",
-        "deprecated", "deprecated_parameter",
-    ])
+    @pytest.mark.parametrize(
+        "symbol",
+        [
+            "FROZEN_PUBLIC_API",
+            "verify_api_surface",
+            "deprecated",
+            "deprecated_parameter",
+        ],
+    )
     def test_deprecation_module_importable(self, symbol: str) -> None:
         """Deprecation utilities are importable."""
         from prinet import _deprecation
+
         assert hasattr(_deprecation, symbol)
 
     def test_version_string(self) -> None:

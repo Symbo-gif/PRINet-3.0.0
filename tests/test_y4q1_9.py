@@ -57,12 +57,17 @@ RESULTS_DIR = Path(__file__).resolve().parent.parent / "benchmarks" / "results"
 # Fixtures
 # =========================================================================
 
+
 @pytest.fixture()
 def pt_model() -> PhaseTracker:
     torch.manual_seed(SEED)
     return PhaseTracker(
-        detection_dim=DET_DIM, n_delta=2, n_theta=4, n_gamma=8,
-        n_discrete_steps=3, match_threshold=0.1,
+        detection_dim=DET_DIM,
+        n_delta=2,
+        n_theta=4,
+        n_gamma=8,
+        n_discrete_steps=3,
+        match_threshold=0.1,
     )
 
 
@@ -70,8 +75,11 @@ def pt_model() -> PhaseTracker:
 def sa_model() -> TemporalSlotAttentionMOT:
     torch.manual_seed(SEED)
     return TemporalSlotAttentionMOT(
-        detection_dim=DET_DIM, num_slots=6, slot_dim=32,
-        num_iterations=2, match_threshold=0.1,
+        detection_dim=DET_DIM,
+        num_slots=6,
+        slot_dim=32,
+        num_iterations=2,
+        match_threshold=0.1,
     )
 
 
@@ -84,7 +92,10 @@ def pt_large_model() -> PhaseTrackerLarge:
 @pytest.fixture()
 def sample_dataset() -> list[SequenceData]:
     return generate_dataset(
-        n_sequences=3, n_objects=3, n_frames=8, det_dim=DET_DIM,
+        n_sequences=3,
+        n_objects=3,
+        n_frames=8,
+        det_dim=DET_DIM,
         base_seed=SEED,
     )
 
@@ -92,7 +103,10 @@ def sample_dataset() -> list[SequenceData]:
 @pytest.fixture()
 def long_dataset() -> list[SequenceData]:
     return generate_dataset(
-        n_sequences=2, n_objects=3, n_frames=30, det_dim=DET_DIM,
+        n_sequences=2,
+        n_objects=3,
+        n_frames=30,
+        det_dim=DET_DIM,
         base_seed=SEED,
     )
 
@@ -107,11 +121,13 @@ def sample_dets() -> tuple[torch.Tensor, torch.Tensor]:
 # A. Statistical Utilities (supports G1)
 # =========================================================================
 
+
 class TestBootstrapCI:
     """Tests for _bootstrap_ci utility."""
 
     def test_ci_contains_mean(self) -> None:
         import importlib
+
         bench = importlib.import_module("y4q1_9_benchmarks")
         values = [0.8, 0.85, 0.9, 0.82, 0.88, 0.91, 0.87]
         ci = bench._bootstrap_ci(values)
@@ -120,6 +136,7 @@ class TestBootstrapCI:
 
     def test_single_value(self) -> None:
         import importlib
+
         bench = importlib.import_module("y4q1_9_benchmarks")
         ci = bench._bootstrap_ci([0.5])
         assert ci["mean"] == pytest.approx(0.5)
@@ -127,6 +144,7 @@ class TestBootstrapCI:
 
     def test_identical_values(self) -> None:
         import importlib
+
         bench = importlib.import_module("y4q1_9_benchmarks")
         ci = bench._bootstrap_ci([0.9, 0.9, 0.9, 0.9, 0.9])
         assert ci["ci_low"] == pytest.approx(0.9)
@@ -138,6 +156,7 @@ class TestWelchT:
 
     def test_identical_distributions(self) -> None:
         import importlib
+
         bench = importlib.import_module("y4q1_9_benchmarks")
         a = [0.5, 0.5, 0.5, 0.5]
         b = [0.5, 0.5, 0.5, 0.5]
@@ -147,6 +166,7 @@ class TestWelchT:
 
     def test_different_distributions(self) -> None:
         import importlib
+
         bench = importlib.import_module("y4q1_9_benchmarks")
         a = [0.9, 0.91, 0.92, 0.93, 0.94]
         b = [0.1, 0.11, 0.12, 0.13, 0.14]
@@ -161,11 +181,13 @@ class TestWelchT:
 # B. Embedding Analysis (supports G2)
 # =========================================================================
 
+
 class TestEmbeddingAnalysis:
     """Tests for embedding discriminability and effective rank computations."""
 
-    def test_pt_encode_produces_phases(self, pt_model: PhaseTracker,
-                                       sample_dets: tuple) -> None:
+    def test_pt_encode_produces_phases(
+        self, pt_model: PhaseTracker, sample_dets: tuple
+    ) -> None:
         dets, _ = sample_dets
         phase, amp = pt_model.encode(dets)
         n_osc = 2 + 4 + 8  # n_delta + n_theta + n_gamma
@@ -214,14 +236,18 @@ class TestEmbeddingAnalysis:
 # C. Object Scaling (supports G3)
 # =========================================================================
 
+
 class TestObjectScaling:
     """Tests for scaling object counts in datasets and models."""
 
     @pytest.mark.parametrize("n_objects", [4, 8, 12])
     def test_generate_dataset_varying_objects(self, n_objects: int) -> None:
         data = generate_dataset(
-            n_sequences=2, n_objects=n_objects, n_frames=8,
-            det_dim=DET_DIM, base_seed=SEED,
+            n_sequences=2,
+            n_objects=n_objects,
+            n_frames=8,
+            det_dim=DET_DIM,
+            base_seed=SEED,
         )
         assert len(data) == 2
         for seq in data:
@@ -242,8 +268,11 @@ class TestObjectScaling:
         """SA with enough slots should handle high object counts."""
         torch.manual_seed(SEED)
         sa = TemporalSlotAttentionMOT(
-            detection_dim=DET_DIM, num_slots=14,
-            slot_dim=32, num_iterations=2, match_threshold=0.1,
+            detection_dim=DET_DIM,
+            num_slots=14,
+            slot_dim=32,
+            num_iterations=2,
+            match_threshold=0.1,
         )
         frames = [torch.randn(12, DET_DIM) for _ in range(5)]
         res = sa.track_sequence(frames)
@@ -253,6 +282,7 @@ class TestObjectScaling:
 # =========================================================================
 # D. Chimera Metrics in Tracking (supports G4)
 # =========================================================================
+
 
 class TestChimeraInTracking:
     """Tests for extracting chimera-like metrics from tracking results."""
@@ -318,14 +348,19 @@ class TestChimeraInTracking:
 # E. Fine Occlusion (supports G5)
 # =========================================================================
 
+
 class TestFineOcclusion:
     """Tests for fine-grained occlusion dataset generation."""
 
     @pytest.mark.parametrize("occ_rate", [0.0, 0.05, 0.10, 0.15, 0.80])
     def test_dataset_generation_with_occlusion(self, occ_rate: float) -> None:
         data = generate_dataset(
-            n_sequences=2, n_objects=3, n_frames=8,
-            det_dim=DET_DIM, occlusion_rate=occ_rate, base_seed=SEED,
+            n_sequences=2,
+            n_objects=3,
+            n_frames=8,
+            det_dim=DET_DIM,
+            occlusion_rate=occ_rate,
+            base_seed=SEED,
         )
         assert len(data) == 2
         for seq in data:
@@ -335,25 +370,30 @@ class TestFineOcclusion:
         """On average, higher occlusion should yield fewer detections."""
         rng = np.random.default_rng(SEED)
         low_data = generate_dataset(
-            n_sequences=10, n_objects=4, n_frames=20,
-            det_dim=DET_DIM, occlusion_rate=0.0, base_seed=100,
+            n_sequences=10,
+            n_objects=4,
+            n_frames=20,
+            det_dim=DET_DIM,
+            occlusion_rate=0.0,
+            base_seed=100,
         )
         high_data = generate_dataset(
-            n_sequences=10, n_objects=4, n_frames=20,
-            det_dim=DET_DIM, occlusion_rate=0.8, base_seed=200,
+            n_sequences=10,
+            n_objects=4,
+            n_frames=20,
+            det_dim=DET_DIM,
+            occlusion_rate=0.8,
+            base_seed=200,
         )
-        low_dets = sum(
-            f.shape[0] for seq in low_data for f in seq.frames
-        )
-        high_dets = sum(
-            f.shape[0] for seq in high_data for f in seq.frames
-        )
+        low_dets = sum(f.shape[0] for seq in low_data for f in seq.frames)
+        high_dets = sum(f.shape[0] for seq in high_data for f in seq.frames)
         assert high_dets <= low_dets
 
 
 # =========================================================================
 # F. pt_static Stress (supports G6)
 # =========================================================================
+
 
 class TestStaticStress:
     """Tests for pt_static ablation variant under stress conditions."""
@@ -365,9 +405,13 @@ class TestStaticStress:
     def test_pt_static_track_sequence(self) -> None:
         torch.manual_seed(SEED)
         m = create_ablation_tracker(
-            "pt_static", detection_dim=DET_DIM,
-            n_delta=2, n_theta=4, n_gamma=8,
-            n_discrete_steps=3, match_threshold=0.1,
+            "pt_static",
+            detection_dim=DET_DIM,
+            n_delta=2,
+            n_theta=4,
+            n_gamma=8,
+            n_discrete_steps=3,
+            match_threshold=0.1,
         )
         frames = [torch.randn(3, DET_DIM) for _ in range(10)]
         res = m.track_sequence(frames)
@@ -378,14 +422,22 @@ class TestStaticStress:
         """Both pt_full and pt_static should complete on stress conditions."""
         torch.manual_seed(SEED)
         pt_full = PhaseTracker(
-            detection_dim=DET_DIM, n_delta=2, n_theta=4, n_gamma=8,
-            n_discrete_steps=3, match_threshold=0.1,
+            detection_dim=DET_DIM,
+            n_delta=2,
+            n_theta=4,
+            n_gamma=8,
+            n_discrete_steps=3,
+            match_threshold=0.1,
         )
         torch.manual_seed(SEED)
         pt_static = create_ablation_tracker(
-            "pt_static", detection_dim=DET_DIM,
-            n_delta=2, n_theta=4, n_gamma=8,
-            n_discrete_steps=3, match_threshold=0.1,
+            "pt_static",
+            detection_dim=DET_DIM,
+            n_delta=2,
+            n_theta=4,
+            n_gamma=8,
+            n_discrete_steps=3,
+            match_threshold=0.1,
         )
         # Stress: 8 objects, 15 frames
         frames = [torch.randn(8, DET_DIM) for _ in range(15)]
@@ -398,6 +450,7 @@ class TestStaticStress:
 # =========================================================================
 # G. Trained Coherence (supports G7)
 # =========================================================================
+
 
 class TestTrainedCoherence:
     """Tests for coherence measurements on trained models."""
@@ -412,7 +465,7 @@ class TestTrainedCoherence:
 
     def test_coherence_decay_rate_decreasing(self) -> None:
         """Monotonically decreasing series should have positive decay rate."""
-        series = [1.0 * (0.95 ** t) for t in range(20)]
+        series = [1.0 * (0.95**t) for t in range(20)]
         cdr = coherence_decay_rate(series)
         assert cdr["decay_rate"] > 0
         assert cdr["half_life"] > 0
@@ -440,6 +493,7 @@ class TestTrainedCoherence:
 # =========================================================================
 # H. PAC Significance (supports G8)
 # =========================================================================
+
 
 class TestPACSignificance:
     """Tests for phase-amplitude coupling significance testing."""
@@ -481,6 +535,7 @@ class TestPACSignificance:
     def test_fisher_combined_p_value(self) -> None:
         """Fisher's method on independent p-values."""
         from scipy import stats
+
         p_values = [0.01, 0.03, 0.05]
         chi2_stat = -2 * sum(math.log(p) for p in p_values)
         combined_p = float(stats.chi2.sf(chi2_stat, df=2 * len(p_values)))
@@ -491,11 +546,13 @@ class TestPACSignificance:
 # I. Integration -- Benchmark Functions Import
 # =========================================================================
 
+
 class TestBenchmarkImports:
     """Verify all benchmark functions are importable and listed."""
 
     def test_all_benchmarks_list(self) -> None:
         import importlib
+
         bench = importlib.import_module("y4q1_9_benchmarks")
         names = [n for n, _ in bench.ALL_BENCHMARKS]
         expected = [
@@ -516,6 +573,7 @@ class TestBenchmarkImports:
 
     def test_preregistration_runs(self) -> None:
         import importlib
+
         bench = importlib.import_module("y4q1_9_benchmarks")
         result = bench.bench_preregistration()
         assert "sha256" in result
@@ -524,11 +582,13 @@ class TestBenchmarkImports:
 
     def test_seeds_7_count(self) -> None:
         import importlib
+
         bench = importlib.import_module("y4q1_9_benchmarks")
         assert len(bench.SEEDS_7) == 7
 
     def test_seeds_3_subset(self) -> None:
         import importlib
+
         bench = importlib.import_module("y4q1_9_benchmarks")
         for s in bench.SEEDS_3:
             assert s in bench.SEEDS_7
@@ -538,13 +598,13 @@ class TestBenchmarkImports:
 # J. Training Pipeline (supports G1, G2, G3, G6)
 # =========================================================================
 
+
 class TestTrainingPipeline:
     """Tests for _train_model utility."""
 
-    def test_train_model_returns_model_and_info(
-        self, pt_model: PhaseTracker
-    ) -> None:
+    def test_train_model_returns_model_and_info(self, pt_model: PhaseTracker) -> None:
         import importlib
+
         bench = importlib.import_module("y4q1_9_benchmarks")
         # Override training config for fast test
         original_seqs = bench.TRAIN_SEQS
@@ -571,6 +631,7 @@ class TestTrainingPipeline:
         self, pt_model: PhaseTracker, sample_dataset: list
     ) -> None:
         import importlib
+
         bench = importlib.import_module("y4q1_9_benchmarks")
         ips = bench._eval_ip(pt_model, sample_dataset, device="cpu")
         assert isinstance(ips, list)
@@ -583,6 +644,7 @@ class TestTrainingPipeline:
 # =========================================================================
 # K. JSON Artefact Validation
 # =========================================================================
+
 
 class TestJSONArtefacts:
     """Validate structure of existing Q1.9 JSON artefacts (if present)."""

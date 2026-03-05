@@ -65,14 +65,20 @@ class TestYear4Report:
     def test_report_has_quarterly_summary(self, docs_dir: str) -> None:
         path = os.path.join(docs_dir, "Year_4_Comprehensive_Report.md")
         content = Path(path).read_text(encoding="utf-8")
-        assert "Q1" in content and "Q2" in content and "Q3" in content and "Q4" in content
+        assert (
+            "Q1" in content and "Q2" in content and "Q3" in content and "Q4" in content
+        )
 
     def test_report_covers_benchmark_results(self, docs_dir: str) -> None:
         path = os.path.join(docs_dir, "Year_4_Comprehensive_Report.md")
         content = Path(path).read_text(encoding="utf-8")
         # Must reference key Q1 results
         assert "chimera" in content.lower()
-        assert "Outcome B" in content or "outcome B" in content or "no temporal advantage" in content.lower()
+        assert (
+            "Outcome B" in content
+            or "outcome B" in content
+            or "no temporal advantage" in content.lower()
+        )
 
     def test_report_has_metrics(self, docs_dir: str) -> None:
         path = os.path.join(docs_dir, "Year_4_Comprehensive_Report.md")
@@ -115,7 +121,11 @@ class TestProjectRetrospective:
     def test_retrospective_has_extension_guidance(self, docs_dir: str) -> None:
         path = os.path.join(docs_dir, "Project_Retrospective.md")
         content = Path(path).read_text(encoding="utf-8")
-        assert "Forking" in content or "Extending" in content or "extension" in content.lower()
+        assert (
+            "Forking" in content
+            or "Extending" in content
+            or "extension" in content.lower()
+        )
 
 
 # =========================================================================
@@ -133,7 +143,14 @@ class TestCitationCFF:
     def test_citation_has_required_fields(self, project_root: str) -> None:
         path = os.path.join(project_root, "CITATION.cff")
         content = Path(path).read_text(encoding="utf-8")
-        required_fields = ["cff-version", "message", "title", "authors", "version", "license"]
+        required_fields = [
+            "cff-version",
+            "message",
+            "title",
+            "authors",
+            "version",
+            "license",
+        ]
         for field in required_fields:
             assert field in content, f"CITATION.cff missing required field: {field}"
 
@@ -183,7 +200,9 @@ class TestSHA256Manifest:
     def test_can_generate_manifest(self, results_dir: str) -> None:
         """All JSON artefacts can be hashed without error."""
         json_files = sorted(Path(results_dir).glob("*.json"))
-        assert len(json_files) >= 50, f"Expected >=50 JSON artefacts, found {len(json_files)}"
+        assert (
+            len(json_files) >= 50
+        ), f"Expected >=50 JSON artefacts, found {len(json_files)}"
         manifest: Dict[str, str] = {}
         for f in json_files:
             data = f.read_bytes()
@@ -210,9 +229,9 @@ class TestSHA256Manifest:
             if "benchmark_name" in data or "name" in data or "benchmark" in data:
                 named_count += 1
         # Allow some without name (summary files) but most should have it
-        assert named_count >= len(json_files) * 0.5, (
-            f"Only {named_count}/{len(json_files)} artefacts have benchmark name"
-        )
+        assert (
+            named_count >= len(json_files) * 0.5
+        ), f"Only {named_count}/{len(json_files)} artefacts have benchmark name"
 
     def test_manifest_deterministic(self, results_dir: str) -> None:
         """SHA-256 of any artefact is deterministic across runs."""
@@ -248,9 +267,9 @@ class TestVersionConsistency:
 
     def test_api_symbol_count(self) -> None:
         """API surface meets target (>= 120 symbols)."""
-        assert len(prinet.__all__) >= 120, (
-            f"Expected >= 120 API symbols, got {len(prinet.__all__)}"
-        )
+        assert (
+            len(prinet.__all__) >= 120
+        ), f"Expected >= 120 API symbols, got {len(prinet.__all__)}"
 
     def test_api_symbols_importable(self) -> None:
         """All symbols in __all__ are actually importable."""
@@ -267,28 +286,27 @@ class TestArtefactCounts:
     def test_json_artefact_count(self, results_dir: str) -> None:
         """At least 100 JSON benchmark artefacts exist."""
         json_files = list(Path(results_dir).glob("*.json"))
-        assert len(json_files) >= 100, (
-            f"Expected >= 100 JSON artefacts, got {len(json_files)}"
-        )
+        assert (
+            len(json_files) >= 100
+        ), f"Expected >= 100 JSON artefacts, got {len(json_files)}"
 
     def test_test_file_count(self, project_root: str) -> None:
         """At least 25 test files exist."""
         test_dir = os.path.join(project_root, "tests")
         test_files = list(Path(test_dir).glob("test_*.py"))
-        assert len(test_files) >= 25, (
-            f"Expected >= 25 test files, got {len(test_files)}"
-        )
+        assert (
+            len(test_files) >= 25
+        ), f"Expected >= 25 test files, got {len(test_files)}"
 
     def test_benchmark_file_count(self, project_root: str) -> None:
         """At least 10 benchmark scripts exist."""
         bench_dir = os.path.join(project_root, "benchmarks")
         bench_files = [
-            f for f in Path(bench_dir).glob("*.py")
-            if not f.name.startswith("_")
+            f for f in Path(bench_dir).glob("*.py") if not f.name.startswith("_")
         ]
-        assert len(bench_files) >= 10, (
-            f"Expected >= 10 benchmark files, got {len(bench_files)}"
-        )
+        assert (
+            len(bench_files) >= 10
+        ), f"Expected >= 10 benchmark files, got {len(bench_files)}"
 
     def test_notebook_count(self, project_root: str) -> None:
         """At least 3 Jupyter notebooks exist."""
@@ -296,9 +314,7 @@ class TestArtefactCounts:
         if not os.path.isdir(nb_dir):
             pytest.skip("notebooks/ directory not found")
         nb_files = list(Path(nb_dir).glob("*.ipynb"))
-        assert len(nb_files) >= 3, (
-            f"Expected >= 3 notebooks, got {len(nb_files)}"
-        )
+        assert len(nb_files) >= 3, f"Expected >= 3 notebooks, got {len(nb_files)}"
 
 
 class TestDocumentationCompleteness:
@@ -325,7 +341,9 @@ class TestDocumentationCompleteness:
         assert found, "No CHANGELOG.md found"
 
     def test_year4_plan_exists(self, project_root: str) -> None:
-        path = os.path.join(project_root, "Docs", "Planning_Documentation", "Year-4-Plan.md")
+        path = os.path.join(
+            project_root, "Docs", "Planning_Documentation", "Year-4-Plan.md"
+        )
         assert os.path.isfile(path)
 
     def test_arxiv_outline_exists(self, project_root: str) -> None:
@@ -372,7 +390,9 @@ class TestQ1BenchmarkIntegrity:
         ]
         for name in expected:
             path = os.path.join(results_dir, name)
-            assert os.path.isfile(path), f"Q1.7 temporal advantage artefact missing: {name}"
+            assert os.path.isfile(
+                path
+            ), f"Q1.7 temporal advantage artefact missing: {name}"
 
     def test_q1_reviewer_gap_artefacts(self, results_dir: str) -> None:
         """Reviewer gap analysis artefacts from Q1.9."""
@@ -409,6 +429,6 @@ class TestQ1BenchmarkIntegrity:
             "outcome" in str(k).lower() or "conclusion" in str(k).lower()
             for k in data.keys()
         )
-        assert has_outcome or "p_value" in str(data) or "cohens_d" in str(data), (
-            "Statistical summary should contain outcome/conclusion/p_value"
-        )
+        assert (
+            has_outcome or "p_value" in str(data) or "cohens_d" in str(data)
+        ), "Statistical summary should contain outcome/conclusion/p_value"

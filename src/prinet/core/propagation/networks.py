@@ -24,6 +24,7 @@ from .oscillator_models import KuramotoOscillator, OscillatorModel
 from .integrators import MultiRateIntegrator, ExponentialIntegrator
 from .coupling import PhaseAmplitudeCoupling
 
+
 class ThetaGammaNetwork:
     """Two-frequency (Theta-Gamma) hierarchical oscillator network.
 
@@ -154,16 +155,12 @@ class ThetaGammaNetwork:
         # Apply PAC: Theta phase modulates Gamma amplitude
         gamma_state = OscillatorState(
             phase=gamma_state.phase,
-            amplitude=self._pac.modulate(
-                new_theta.phase, gamma_state.amplitude
-            ),
+            amplitude=self._pac.modulate(new_theta.phase, gamma_state.amplitude),
             frequency=gamma_state.frequency,
         )
 
         # Step Gamma band (fast, multi-rate sub-stepping)
-        new_gamma = self._gamma_integrator.step(
-            self._gamma_model, gamma_state, dt=dt
-        )
+        new_gamma = self._gamma_integrator.step(self._gamma_model, gamma_state, dt=dt)
 
         return new_theta, new_gamma
 
@@ -188,16 +185,14 @@ class ThetaGammaNetwork:
         Returns:
             ``(final_states, trajectory)``.
         """
-        trajectory: Optional[
-            list[Tuple[OscillatorState, OscillatorState]]
-        ] = [] if record_trajectory else None
+        trajectory: Optional[list[Tuple[OscillatorState, OscillatorState]]] = (
+            [] if record_trajectory else None
+        )
         current = state
         for _ in range(n_steps):
             current = self.step(current, dt=dt)
             if trajectory is not None:
-                trajectory.append(
-                    (current[0].clone(), current[1].clone())
-                )
+                trajectory.append((current[0].clone(), current[1].clone()))
         return current, trajectory
 
     def order_parameters(
@@ -297,12 +292,8 @@ class DeltaThetaGammaNetwork:
             dtype=dtype,
         )
 
-        self._pac_dt = PhaseAmplitudeCoupling(
-            modulation_depth=pac_depth_dt
-        )
-        self._pac_tg = PhaseAmplitudeCoupling(
-            modulation_depth=pac_depth_tg
-        )
+        self._pac_dt = PhaseAmplitudeCoupling(modulation_depth=pac_depth_dt)
+        self._pac_tg = PhaseAmplitudeCoupling(modulation_depth=pac_depth_tg)
 
         # Multi-rate: Theta takes ~3 sub-steps per Delta step,
         # Gamma takes ~20 sub-steps per Delta step
@@ -391,30 +382,22 @@ class DeltaThetaGammaNetwork:
         # PAC₁: Delta phase → modulates Theta amplitude
         theta_state = OscillatorState(
             phase=theta_state.phase,
-            amplitude=self._pac_dt.modulate(
-                new_delta.phase, theta_state.amplitude
-            ),
+            amplitude=self._pac_dt.modulate(new_delta.phase, theta_state.amplitude),
             frequency=theta_state.frequency,
         )
 
         # Step Theta band (multi-rate)
-        new_theta = self._theta_integrator.step(
-            self._theta_model, theta_state, dt=dt
-        )
+        new_theta = self._theta_integrator.step(self._theta_model, theta_state, dt=dt)
 
         # PAC₂: Theta phase → modulates Gamma amplitude
         gamma_state = OscillatorState(
             phase=gamma_state.phase,
-            amplitude=self._pac_tg.modulate(
-                new_theta.phase, gamma_state.amplitude
-            ),
+            amplitude=self._pac_tg.modulate(new_theta.phase, gamma_state.amplitude),
             frequency=gamma_state.frequency,
         )
 
         # Step Gamma band (fastest, multi-rate)
-        new_gamma = self._gamma_integrator.step(
-            self._gamma_model, gamma_state, dt=dt
-        )
+        new_gamma = self._gamma_integrator.step(self._gamma_model, gamma_state, dt=dt)
 
         return new_delta, new_theta, new_gamma
 
@@ -426,9 +409,7 @@ class DeltaThetaGammaNetwork:
         record_trajectory: bool = False,
     ) -> Tuple[
         Tuple[OscillatorState, OscillatorState, OscillatorState],
-        Optional[
-            list[Tuple[OscillatorState, OscillatorState, OscillatorState]]
-        ],
+        Optional[list[Tuple[OscillatorState, OscillatorState, OscillatorState]]],
     ]:
         """Integrate all three bands for multiple outer steps.
 
@@ -442,10 +423,8 @@ class DeltaThetaGammaNetwork:
             ``(final_states, trajectory)``.
         """
         trajectory: Optional[
-            list[
-                Tuple[OscillatorState, OscillatorState, OscillatorState]
-            ]
-        ] = [] if record_trajectory else None
+            list[Tuple[OscillatorState, OscillatorState, OscillatorState]]
+        ] = ([] if record_trajectory else None)
         current = state
         for _ in range(n_steps):
             current = self.step(current, dt=dt)
@@ -546,15 +525,9 @@ class DiscreteDeltaThetaGamma(nn.Module):
         self._n_total = n_delta + n_theta + n_gamma
 
         # Per-band natural frequencies (learnable around center)
-        self.delta_freq = nn.Parameter(
-            torch.full((n_delta,), delta_freq)
-        )
-        self.theta_freq = nn.Parameter(
-            torch.full((n_theta,), theta_freq)
-        )
-        self.gamma_freq = nn.Parameter(
-            torch.full((n_gamma,), gamma_freq)
-        )
+        self.delta_freq = nn.Parameter(torch.full((n_delta,), delta_freq))
+        self.theta_freq = nn.Parameter(torch.full((n_theta,), theta_freq))
+        self.gamma_freq = nn.Parameter(torch.full((n_gamma,), gamma_freq))
 
         # Intra-band coupling: small learned matrix per band
         # Initialized near Kuramoto all-to-all with K/N scaling
@@ -604,9 +577,7 @@ class DiscreteDeltaThetaGamma(nn.Module):
         """Total number of oscillators across all bands."""
         return self._n_total
 
-    def _phase_coupling(
-        self, phase: Tensor, W: Tensor
-    ) -> Tensor:
+    def _phase_coupling(self, phase: Tensor, W: Tensor) -> Tensor:
         """Compute Kuramoto-like coupling correction.
 
         Args:
@@ -624,9 +595,7 @@ class DiscreteDeltaThetaGamma(nn.Module):
         coupling = (W.unsqueeze(0) * sin_diff).sum(dim=-1)  # (B, N)
         return coupling
 
-    def _amplitude_update(
-        self, amp: Tensor, mu: Tensor, dt: float
-    ) -> Tensor:
+    def _amplitude_update(self, amp: Tensor, mu: Tensor, dt: float) -> Tensor:
         """Stuart-Landau amplitude dynamics.
 
         Args:
@@ -678,15 +647,18 @@ class DiscreteDeltaThetaGamma(nn.Module):
         # --- Phase advance with intra-band coupling ---
         two_pi = 2.0 * math.pi
         new_p_d = _wrap_phase(
-            p_d + two_pi * self.delta_freq * dt
+            p_d
+            + two_pi * self.delta_freq * dt
             + dt * self._phase_coupling(p_d, self.W_delta)
         )
         new_p_t = _wrap_phase(
-            p_t + two_pi * self.theta_freq * dt
+            p_t
+            + two_pi * self.theta_freq * dt
             + dt * self._phase_coupling(p_t, self.W_theta)
         )
         new_p_g = _wrap_phase(
-            p_g + two_pi * self.gamma_freq * dt
+            p_g
+            + two_pi * self.gamma_freq * dt
             + dt * self._phase_coupling(p_g, self.W_gamma)
         )
 
@@ -762,12 +734,8 @@ class DiscreteDeltaThetaGamma(nn.Module):
         nd, nt = self._n_delta, self._n_theta
         # Average over batch
         r_d = kuramoto_order_parameter(phase[:, :nd].mean(dim=0))
-        r_t = kuramoto_order_parameter(
-            phase[:, nd : nd + nt].mean(dim=0)
-        )
-        r_g = kuramoto_order_parameter(
-            phase[:, nd + nt :].mean(dim=0)
-        )
+        r_t = kuramoto_order_parameter(phase[:, nd : nd + nt].mean(dim=0))
+        r_g = kuramoto_order_parameter(phase[:, nd + nt :].mean(dim=0))
         return r_d, r_t, r_g
 
     def pac_index(
@@ -808,14 +776,12 @@ class DiscreteDeltaThetaGamma(nn.Module):
         # Using cos correlation as proxy
         cos_d = torch.cos(mean_p_d)  # (B, 1)
         pac_dt_val = (
-            (a_t * cos_d).mean(dim=-1) / (mean_a_t.squeeze(-1) + 1e-8)
-        ).abs().mean()
+            ((a_t * cos_d).mean(dim=-1) / (mean_a_t.squeeze(-1) + 1e-8)).abs().mean()
+        )
 
         cos_t = torch.cos(mean_p_t)  # (B, 1)
         pac_tg_val = (
-            (a_g * cos_t).mean(dim=-1) / (mean_a_g.squeeze(-1) + 1e-8)
-        ).abs().mean()
+            ((a_g * cos_t).mean(dim=-1) / (mean_a_g.squeeze(-1) + 1e-8)).abs().mean()
+        )
 
         return pac_dt_val, pac_tg_val
-
-

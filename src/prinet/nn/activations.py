@@ -94,9 +94,7 @@ class HolomorphicActivation(nn.Module):
         >>> assert y.dtype == torch.complex64
     """
 
-    def __init__(
-        self, scale: float = 1.0, holomorphic: bool = False
-    ) -> None:
+    def __init__(self, scale: float = 1.0, holomorphic: bool = False) -> None:
         super().__init__()
         self._scale = scale
         self._holomorphic = holomorphic
@@ -113,9 +111,7 @@ class HolomorphicActivation(nn.Module):
         if self._holomorphic and z.is_complex():
             return self._scale * torch.tanh(z)
         elif z.is_complex():
-            return self._scale * torch.complex(
-                torch.tanh(z.real), torch.tanh(z.imag)
-            )
+            return self._scale * torch.complex(torch.tanh(z.real), torch.tanh(z.imag))
         else:
             return self._scale * torch.tanh(z)
 

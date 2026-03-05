@@ -37,13 +37,29 @@ FMNIST_MEAN = (0.2860,)
 FMNIST_STD = (0.3530,)
 
 CIFAR10_CLASSES = [
-    "airplane", "automobile", "bird", "cat", "deer",
-    "dog", "frog", "horse", "ship", "truck",
+    "airplane",
+    "automobile",
+    "bird",
+    "cat",
+    "deer",
+    "dog",
+    "frog",
+    "horse",
+    "ship",
+    "truck",
 ]
 
 FMNIST_CLASSES = [
-    "T-shirt/top", "Trouser", "Pullover", "Dress", "Coat",
-    "Sandal", "Shirt", "Sneaker", "Bag", "Ankle boot",
+    "T-shirt/top",
+    "Trouser",
+    "Pullover",
+    "Dress",
+    "Coat",
+    "Sandal",
+    "Shirt",
+    "Sneaker",
+    "Bag",
+    "Ankle boot",
 ]
 
 
@@ -95,10 +111,12 @@ def get_cifar10_loaders(
     train_tf_list += [T.ToTensor(), T.Normalize(CIFAR10_MEAN, CIFAR10_STD)]
     train_tf = T.Compose(train_tf_list)
 
-    test_tf = T.Compose([
-        T.ToTensor(),
-        T.Normalize(CIFAR10_MEAN, CIFAR10_STD),
-    ])
+    test_tf = T.Compose(
+        [
+            T.ToTensor(),
+            T.Normalize(CIFAR10_MEAN, CIFAR10_STD),
+        ]
+    )
 
     train_ds = torchvision.datasets.CIFAR10(
         root=str(root), train=True, transform=train_tf, download=download
@@ -167,12 +185,14 @@ def get_fashion_mnist_loaders(
     train_tf_list += [T.ToTensor(), T.Normalize(CIFAR10_MEAN, CIFAR10_STD)]
     train_tf = T.Compose(train_tf_list)
 
-    test_tf = T.Compose([
-        T.Resize(32),
-        T.Grayscale(num_output_channels=3),
-        T.ToTensor(),
-        T.Normalize(CIFAR10_MEAN, CIFAR10_STD),
-    ])
+    test_tf = T.Compose(
+        [
+            T.Resize(32),
+            T.Grayscale(num_output_channels=3),
+            T.ToTensor(),
+            T.Normalize(CIFAR10_MEAN, CIFAR10_STD),
+        ]
+    )
 
     train_ds = torchvision.datasets.FashionMNIST(
         root=str(root), train=True, transform=train_tf, download=download

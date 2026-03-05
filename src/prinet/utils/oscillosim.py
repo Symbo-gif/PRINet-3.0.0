@@ -203,9 +203,7 @@ class OscilloSim:
             # Build random neighbor indices
             neighbors = torch.zeros(N, k, dtype=torch.long)
             for i in range(N):
-                candidates = torch.cat(
-                    [torch.arange(0, i), torch.arange(i + 1, N)]
-                )
+                candidates = torch.cat([torch.arange(0, i), torch.arange(i + 1, N)])
                 perm = torch.randperm(len(candidates), generator=gen)[:k]
                 neighbors[i] = candidates[perm]
             self._neighbors = neighbors.to(self.device)
@@ -224,8 +222,11 @@ class OscilloSim:
             if k % 2 != 0:
                 k = max(k - 1, 2)
             self._neighbors = small_world_topology(
-                N, k, p_rewire=self.p_rewire,
-                device=str(self.device), seed=self.seed,
+                N,
+                k,
+                p_rewire=self.p_rewire,
+                device=str(self.device),
+                seed=self.seed,
             )
 
         elif self._coupling_mode == "csr":
@@ -236,16 +237,13 @@ class OscilloSim:
             values = []
             running = 0
             for i in range(N):
-                candidates = torch.cat(
-                    [torch.arange(0, i), torch.arange(i + 1, N)]
-                )
+                candidates = torch.cat([torch.arange(0, i), torch.arange(i + 1, N)])
                 perm = torch.randperm(len(candidates), generator=gen)[:nnz_per_row]
                 cols = candidates[perm].sort().values
                 col_indices.append(cols)
-                vals = (
-                    torch.randn(len(cols), generator=gen, dtype=self.dtype) * 0.1
-                    + self.coupling_strength / max(nnz_per_row, 1)
-                )
+                vals = torch.randn(
+                    len(cols), generator=gen, dtype=self.dtype
+                ) * 0.1 + self.coupling_strength / max(nnz_per_row, 1)
                 values.append(vals)
                 running += len(cols)
                 crow_indices.append(running)
@@ -272,12 +270,11 @@ class OscilloSim:
         psi = Z.angle().to(self.dtype)
 
         # Phase update: dφ/dt = ω + K·R·sin(ψ - φ - α)
-        dphi = self.frequencies * dt + self.coupling_strength * R * torch.sin(
-            psi - phase - self.phase_lag
-        ) * dt
-        new_phase = (phase + 2 * math.pi * self.frequencies * dt + dphi) % (
-            2 * math.pi
+        dphi = (
+            self.frequencies * dt
+            + self.coupling_strength * R * torch.sin(psi - phase - self.phase_lag) * dt
         )
+        new_phase = (phase + 2 * math.pi * self.frequencies * dt + dphi) % (2 * math.pi)
 
         # Stuart-Landau amplitude
         da = dt * amplitude * (self.mu - amplitude * amplitude)
@@ -307,9 +304,7 @@ class OscilloSim:
             nbr_phase = phase[:, self._neighbors.reshape(-1)].reshape(
                 phase.shape[0], self.n_oscillators, k
             )
-            diff = torch.sin(
-                nbr_phase - phase.unsqueeze(-1) - self.phase_lag
-            )
+            diff = torch.sin(nbr_phase - phase.unsqueeze(-1) - self.phase_lag)
 
         # Apply per-edge coupling weights if available
         if self._coupling_weights is not None:
@@ -358,9 +353,7 @@ class OscilloSim:
         k3 = self._phase_derivative_sparse(phase + 0.5 * dt * k2)
         k4 = self._phase_derivative_sparse(phase + dt * k3)
 
-        new_phase = (phase + (dt / 6.0) * (k1 + 2 * k2 + 2 * k3 + k4)) % (
-            2 * math.pi
-        )
+        new_phase = (phase + (dt / 6.0) * (k1 + 2 * k2 + 2 * k3 + k4)) % (2 * math.pi)
 
         # Stuart-Landau amplitude (Euler is fine for amplitude)
         da = dt * amplitude * (self.mu - amplitude * amplitude)
@@ -389,9 +382,9 @@ class OscilloSim:
                     - torch.sparse.mm(self._coupling_csr, cos_phase.T).T * sin_phase
                 )
 
-        new_phase = (
-            phase + 2 * math.pi * self.frequencies * dt + coupling * dt
-        ) % (2 * math.pi)
+        new_phase = (phase + 2 * math.pi * self.frequencies * dt + coupling * dt) % (
+            2 * math.pi
+        )
 
         da = dt * amplitude * (self.mu - amplitude * amplitude)
         new_amp = torch.clamp(amplitude + da, min=1e-6, max=10.0)
@@ -607,10 +600,12 @@ def ring_topology(
 
     half = k // 2
     idx = torch.arange(N, device=device).unsqueeze(1)  # (N, 1)
-    offsets = torch.cat([
-        torch.arange(-half, 0, device=device),
-        torch.arange(1, half + 1, device=device),
-    ])  # (k,)
+    offsets = torch.cat(
+        [
+            torch.arange(-half, 0, device=device),
+            torch.arange(1, half + 1, device=device),
+        ]
+    )  # (k,)
     nbr = (idx + offsets) % N  # (N, k)
     return nbr.to(torch.int64)
 
@@ -662,9 +657,7 @@ def small_world_topology(
     gen = torch.Generator(device="cpu").manual_seed(seed)
     mask = torch.rand(N, k, generator=gen) < p_rewire
     mask = mask.to(device)
-    random_targets = torch.randint(
-        0, N, (N, k), generator=gen, device="cpu"
-    ).to(device)
+    random_targets = torch.randint(0, N, (N, k), generator=gen, device="cpu").to(device)
     nbr = torch.where(mask, random_targets, nbr)
 
     # Fix self-loops: replace any self-referencing neighbor
@@ -880,9 +873,7 @@ def strength_of_incoherence(
         return torch.tensor(0.0)
 
     # Finite difference on the ring
-    z = torch.remainder(
-        phase - torch.roll(phase, -1), 2 * math.pi
-    )
+    z = torch.remainder(phase - torch.roll(phase, -1), 2 * math.pi)
     # Centre to [-π, π]
     z = z - math.pi
 
@@ -1195,7 +1186,7 @@ def community_topology(
                 inter_nbrs.append(other_indices[0] if other_indices else 0)
 
             nbrs = intra_nbrs[:k_intra] + inter_nbrs[:k_inter]
-            nbr_idx[i_global, :len(nbrs)] = torch.tensor(nbrs, dtype=torch.long)
+            nbr_idx[i_global, : len(nbrs)] = torch.tensor(nbrs, dtype=torch.long)
 
     return nbr_idx, communities
 
@@ -1263,10 +1254,14 @@ def evolutionary_coupling_update(
         fitness = (coupling_weights * cos_diff).sum(dim=1)  # (N,)
     elif payoff_type == "prisoners_dilemma":
         # Defection bonus for low coupling
-        fitness = (coupling_weights * cos_diff).sum(dim=1) - 0.5 * coupling_weights.sum(dim=1)
+        fitness = (coupling_weights * cos_diff).sum(dim=1) - 0.5 * coupling_weights.sum(
+            dim=1
+        )
     elif payoff_type == "hawk_dove":
         # Mixed strategy payoff
-        fitness = (coupling_weights * cos_diff).sum(dim=1) - 0.3 * coupling_weights.pow(2).sum(dim=1)
+        fitness = (coupling_weights * cos_diff).sum(dim=1) - 0.3 * coupling_weights.pow(
+            2
+        ).sum(dim=1)
     else:
         fitness = (coupling_weights * cos_diff).sum(dim=1)
 
@@ -1276,7 +1271,9 @@ def evolutionary_coupling_update(
     nbr_fitness = fitness_norm[nbr_idx.clamp(0, N - 1)]  # (N, k)
 
     # Weighted evolution
-    new_weights = coupling_weights + 0.1 * coupling_weights * (nbr_fitness - fitness_norm.unsqueeze(1))
+    new_weights = coupling_weights + 0.1 * coupling_weights * (
+        nbr_fitness - fitness_norm.unsqueeze(1)
+    )
 
     # Mutation
     noise = torch.randn_like(new_weights) * mutation_rate

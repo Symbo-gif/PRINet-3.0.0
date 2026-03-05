@@ -55,9 +55,7 @@ def seeded() -> None:
 @pytest.fixture
 def small_model(seeded: None) -> PRINetModel:
     """Small PRINetModel for testing."""
-    return PRINetModel(
-        n_resonances=16, n_dims=32, n_concepts=5, n_layers=2, n_steps=5
-    )
+    return PRINetModel(n_resonances=16, n_dims=32, n_concepts=5, n_layers=2, n_steps=5)
 
 
 @pytest.fixture
@@ -101,9 +99,7 @@ class TestNaNRegression:
         loss.backward()
         for name, p in mnist_model.named_parameters():
             if p.grad is not None:
-                assert torch.isfinite(p.grad).all(), (
-                    f"NaN/Inf gradient in {name}"
-                )
+                assert torch.isfinite(p.grad).all(), f"NaN/Inf gradient in {name}"
 
     def test_1d_input_finite(self, mnist_model: PRINetModel) -> None:
         """1D (unbatched) input produces finite output."""
@@ -114,16 +110,12 @@ class TestNaNRegression:
 
     def test_large_input_finite(self, seeded: None) -> None:
         """Large-magnitude inputs don't cause NaN."""
-        model = PRINetModel(
-            n_resonances=16, n_dims=64, n_concepts=5, n_layers=2
-        )
+        model = PRINetModel(n_resonances=16, n_dims=64, n_concepts=5, n_layers=2)
         x = torch.randn(4, 64) * 100.0
         out = model(x)
         assert torch.isfinite(out).all()
 
-    def test_repeated_forward_stable(
-        self, mnist_model: PRINetModel
-    ) -> None:
+    def test_repeated_forward_stable(self, mnist_model: PRINetModel) -> None:
         """Repeated forward passes don't accumulate instability."""
         x = torch.randn(4, 784)
         for _ in range(10):
@@ -133,8 +125,12 @@ class TestNaNRegression:
     def test_multi_epoch_training(self, seeded: None) -> None:
         """5 epochs of training produce finite loss < 2.5."""
         model = PRINetModel(
-            n_resonances=16, n_dims=32, n_concepts=5,
-            n_layers=2, n_steps=3, dt=0.01,
+            n_resonances=16,
+            n_dims=32,
+            n_concepts=5,
+            n_layers=2,
+            n_steps=3,
+            dt=0.01,
         )
         optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
         x = torch.randn(16, 32)
@@ -170,9 +166,7 @@ class TestNumericalStability:
 
     def test_phase_wrapping_stuart_landau(self) -> None:
         """Stuart-Landau phases stay in [0, 2π) after integration."""
-        model = StuartLandauOscillator(
-            20, coupling_strength=1.0, bifurcation_param=1.0
-        )
+        model = StuartLandauOscillator(20, coupling_strength=1.0, bifurcation_param=1.0)
         state = OscillatorState.create_random(20, seed=SEED)
         final, _ = model.integrate(state, n_steps=500, dt=0.01)
         assert (final.phase >= 0.0).all()
@@ -246,9 +240,7 @@ class TestTorchCompile:
 
     def test_compile_model_returns_module(self, seeded: None) -> None:
         """compile_model wraps model without error (no execution)."""
-        model = PRINetModel(
-            n_resonances=8, n_dims=16, n_concepts=3, n_layers=1
-        )
+        model = PRINetModel(n_resonances=8, n_dims=16, n_concepts=3, n_layers=1)
         compiled = compile_model(model)
         assert compiled is not None
 
@@ -257,9 +249,7 @@ class TestTorchCompile:
 
         Uses inductor backend when available, falls back to eager.
         """
-        model = PRINetModel(
-            n_resonances=8, n_dims=16, n_concepts=3, n_layers=1
-        )
+        model = PRINetModel(n_resonances=8, n_dims=16, n_concepts=3, n_layers=1)
         if _HAS_INDUCTOR:
             compiled = compile_model(model)
         else:
@@ -276,12 +266,17 @@ class TestTorchCompile:
         """
         if _HAS_INDUCTOR:
             model = PRINetModel(
-                n_resonances=8, n_dims=16, n_concepts=3,
-                n_layers=1, compile=True,
+                n_resonances=8,
+                n_dims=16,
+                n_concepts=3,
+                n_layers=1,
+                compile=True,
             )
         else:
             model = PRINetModel(
-                n_resonances=8, n_dims=16, n_concepts=3,
+                n_resonances=8,
+                n_dims=16,
+                n_concepts=3,
                 n_layers=1,
             )
             model = torch.compile(model, backend="eager")
@@ -295,9 +290,7 @@ class TestTorchCompile:
         Uses inductor backend when available, falls back to eager.
         """
         torch.manual_seed(SEED)
-        model_eager = PRINetModel(
-            n_resonances=8, n_dims=16, n_concepts=3, n_layers=1
-        )
+        model_eager = PRINetModel(n_resonances=8, n_dims=16, n_concepts=3, n_layers=1)
         torch.manual_seed(SEED)
         model_compiled = PRINetModel(
             n_resonances=8, n_dims=16, n_concepts=3, n_layers=1
@@ -324,36 +317,26 @@ class TestMixedPrecision:
 
     def test_enable_mixed_precision(self, seeded: None) -> None:
         """enable_mixed_precision returns self and sets flag."""
-        model = PRINetModel(
-            n_resonances=8, n_dims=16, n_concepts=3, n_layers=1
-        )
+        model = PRINetModel(n_resonances=8, n_dims=16, n_concepts=3, n_layers=1)
         result = model.enable_mixed_precision(True)
         assert result is model
         assert model._mixed_precision is True
 
     def test_mixed_precision_forward_finite(self, seeded: None) -> None:
         """Mixed precision forward produces finite output."""
-        model = PRINetModel(
-            n_resonances=8, n_dims=16, n_concepts=3, n_layers=1
-        )
+        model = PRINetModel(n_resonances=8, n_dims=16, n_concepts=3, n_layers=1)
         model.enable_mixed_precision(True, dtype=torch.bfloat16)
         x = torch.randn(4, 16)
         out = model(x)
         assert torch.isfinite(out).all()
         assert out.dtype == torch.float32  # Output should be float32
 
-    def test_mixed_precision_gradient_consistent(
-        self, seeded: None
-    ) -> None:
+    def test_mixed_precision_gradient_consistent(self, seeded: None) -> None:
         """Gradients in mixed precision are close to float32."""
         torch.manual_seed(SEED)
-        model_fp32 = PRINetModel(
-            n_resonances=8, n_dims=16, n_concepts=3, n_layers=1
-        )
+        model_fp32 = PRINetModel(n_resonances=8, n_dims=16, n_concepts=3, n_layers=1)
         torch.manual_seed(SEED)
-        model_mp = PRINetModel(
-            n_resonances=8, n_dims=16, n_concepts=3, n_layers=1
-        )
+        model_mp = PRINetModel(n_resonances=8, n_dims=16, n_concepts=3, n_layers=1)
         model_mp.load_state_dict(model_fp32.state_dict())
         model_mp.enable_mixed_precision(True, dtype=torch.bfloat16)
 
@@ -379,9 +362,7 @@ class TestMixedPrecision:
 
     def test_disable_mixed_precision(self, seeded: None) -> None:
         """Mixed precision can be disabled after enabling."""
-        model = PRINetModel(
-            n_resonances=8, n_dims=16, n_concepts=3, n_layers=1
-        )
+        model = PRINetModel(n_resonances=8, n_dims=16, n_concepts=3, n_layers=1)
         model.enable_mixed_precision(True)
         model.enable_mixed_precision(False)
         assert model._mixed_precision is False
@@ -413,9 +394,7 @@ class TestSCALROptimizer:
 
     def test_lr_scale_bounds(self) -> None:
         """LR scale is bounded by [r_min, 1.0]."""
-        opt = SCALROptimizer(
-            [torch.randn(1, requires_grad=True)], lr=1.0, r_min=0.2
-        )
+        opt = SCALROptimizer([torch.randn(1, requires_grad=True)], lr=1.0, r_min=0.2)
         assert opt.compute_lr_scale(0.0) == pytest.approx(0.2)
         assert opt.compute_lr_scale(1.0) == pytest.approx(1.0)
 
@@ -435,9 +414,7 @@ class TestSCALROptimizer:
     def test_warmup_steps(self, seeded: None) -> None:
         """During warmup, full base LR is used."""
         param = torch.randn(5, requires_grad=True)
-        opt = SCALROptimizer(
-            [param], lr=0.1, warmup_steps=10, r_min=0.0
-        )
+        opt = SCALROptimizer([param], lr=0.1, warmup_steps=10, r_min=0.0)
         param.grad = torch.ones(5)
         # During warmup, order_parameter should be ignored
         opt.step(order_parameter=0.0)  # Would give lr=0 without warmup
@@ -521,9 +498,7 @@ class TestHolomorphicEP:
         )
         assert trainer.beta == 0.1
 
-    def test_trainer_invalid_beta(
-        self, small_model: PRINetModel
-    ) -> None:
+    def test_trainer_invalid_beta(self, small_model: PRINetModel) -> None:
         """Negative or zero beta raises ValueError."""
         with pytest.raises(ValueError, match="beta must be positive"):
             HolomorphicEPTrainer(small_model, beta=0.0)
@@ -533,12 +508,13 @@ class TestHolomorphicEP:
     def test_train_step(self, seeded: None) -> None:
         """hEP train_step returns finite loss."""
         model = PRINetModel(
-            n_resonances=8, n_dims=16, n_concepts=3,
-            n_layers=1, n_steps=3,
+            n_resonances=8,
+            n_dims=16,
+            n_concepts=3,
+            n_layers=1,
+            n_steps=3,
         )
-        trainer = HolomorphicEPTrainer(
-            model, beta=0.1, free_steps=5, nudge_steps=3
-        )
+        trainer = HolomorphicEPTrainer(model, beta=0.1, free_steps=5, nudge_steps=3)
         x = torch.randn(4, 16)
         target = torch.randint(0, 3, (4,))
         loss = trainer.train_step(x, target, lr=0.01)
@@ -547,17 +523,18 @@ class TestHolomorphicEP:
     def test_gradient_estimation(self, seeded: None) -> None:
         """hEP gradient estimation produces non-zero coupling gradients."""
         model = PRINetModel(
-            n_resonances=8, n_dims=16, n_concepts=3,
-            n_layers=1, n_steps=3,
+            n_resonances=8,
+            n_dims=16,
+            n_concepts=3,
+            n_layers=1,
+            n_steps=3,
         )
         trainer = HolomorphicEPTrainer(model, beta=0.1, free_steps=5)
         x = torch.randn(4, 16)
         target = torch.randint(0, 3, (4,))
         grads, loss = trainer.compute_hep_gradients(x, target)
         # Should have gradients for coupling parameters
-        coupling_grads = [
-            v for k, v in grads.items() if "coupling" in k
-        ]
+        coupling_grads = [v for k, v in grads.items() if "coupling" in k]
         assert len(coupling_grads) > 0
         # At least some coupling gradients should be non-zero
         assert any(g.abs().sum() > 0 for g in coupling_grads)
@@ -565,8 +542,11 @@ class TestHolomorphicEP:
     def test_loss_history(self, seeded: None) -> None:
         """Trainer tracks loss history."""
         model = PRINetModel(
-            n_resonances=8, n_dims=16, n_concepts=3,
-            n_layers=1, n_steps=3,
+            n_resonances=8,
+            n_dims=16,
+            n_concepts=3,
+            n_layers=1,
+            n_steps=3,
         )
         trainer = HolomorphicEPTrainer(model, beta=0.1, free_steps=5)
         x = torch.randn(4, 16)
@@ -586,12 +566,8 @@ class TestHopfOscillator:
 
     def test_limit_cycle_convergence(self) -> None:
         """Amplitudes converge to √μ for positive μ."""
-        model = HopfOscillator(
-            30, coupling_strength=0.5, bifurcation_param=1.0
-        )
-        state = OscillatorState.create_random(
-            30, seed=SEED, freq_range=(1.0, 2.0)
-        )
+        model = HopfOscillator(30, coupling_strength=0.5, bifurcation_param=1.0)
+        state = OscillatorState.create_random(30, seed=SEED, freq_range=(1.0, 2.0))
         final, _ = model.integrate(state, n_steps=1000, dt=0.01)
         expected_amp = math.sqrt(1.0)
         mean_amp = final.amplitude.mean().item()
@@ -599,9 +575,7 @@ class TestHopfOscillator:
 
     def test_fixed_point_negative_mu(self) -> None:
         """Amplitudes decay to 0 for negative μ (no coupling)."""
-        model = HopfOscillator(
-            20, coupling_strength=0.0, bifurcation_param=-1.0
-        )
+        model = HopfOscillator(20, coupling_strength=0.0, bifurcation_param=-1.0)
         state = OscillatorState.create_random(20, seed=SEED)
         final, _ = model.integrate(state, n_steps=500, dt=0.01)
         # With μ < 0 and K=0, amplitudes should decay
@@ -618,12 +592,12 @@ class TestHopfOscillator:
     def test_mean_field_mode(self) -> None:
         """Mean-field mode runs without error and gives reasonable results."""
         model = HopfOscillator(
-            30, coupling_strength=1.0, bifurcation_param=1.0,
+            30,
+            coupling_strength=1.0,
+            bifurcation_param=1.0,
             mean_field=True,
         )
-        state = OscillatorState.create_random(
-            30, seed=SEED, freq_range=(1.0, 2.0)
-        )
+        state = OscillatorState.create_random(30, seed=SEED, freq_range=(1.0, 2.0))
         final, _ = model.integrate(state, n_steps=500, dt=0.01)
         assert torch.isfinite(final.phase).all()
         assert torch.isfinite(final.amplitude).all()
@@ -646,12 +620,8 @@ class TestHopfOscillator:
 
     def test_batched_integration(self) -> None:
         """Hopf oscillator works with batched state."""
-        model = HopfOscillator(
-            20, coupling_strength=0.5, bifurcation_param=1.0
-        )
-        state = OscillatorState.create_random(
-            20, batch_size=4, seed=SEED
-        )
+        model = HopfOscillator(20, coupling_strength=0.5, bifurcation_param=1.0)
+        state = OscillatorState.create_random(20, batch_size=4, seed=SEED)
         final, _ = model.integrate(state, n_steps=100, dt=0.01)
         assert final.phase.shape == (4, 20)
         assert final.amplitude.shape == (4, 20)
@@ -663,17 +633,13 @@ class TestHopfOscillator:
         state = OscillatorState.create_random(10, seed=SEED)
         model = HopfOscillator(10, coupling_strength=0.5)
 
-        final_euler, _ = model.integrate(
-            state, n_steps=200, dt=0.001, method="euler"
-        )
+        final_euler, _ = model.integrate(state, n_steps=200, dt=0.001, method="euler")
         final_rk4, _ = model.integrate(
             state.clone(), n_steps=200, dt=0.001, method="rk4"
         )
 
         # Should be close for small dt
-        assert torch.allclose(
-            final_euler.amplitude, final_rk4.amplitude, atol=0.05
-        )
+        assert torch.allclose(final_euler.amplitude, final_rk4.amplitude, atol=0.05)
 
     def test_trajectory_recording(self) -> None:
         """Trajectory recording works for Hopf oscillator."""
@@ -697,8 +663,11 @@ class TestIntegration:
     def test_full_training_pipeline(self, seeded: None) -> None:
         """Complete training pipeline: model + SCALR + gradient clipping."""
         model = PRINetModel(
-            n_resonances=8, n_dims=16, n_concepts=3,
-            n_layers=1, n_steps=3,
+            n_resonances=8,
+            n_dims=16,
+            n_concepts=3,
+            n_layers=1,
+            n_steps=3,
         )
         opt = SCALROptimizer(model.parameters(), lr=0.01)
         x = torch.randn(8, 16)
@@ -718,9 +687,7 @@ class TestIntegration:
 
     def test_oscillatory_init_no_nan(self, seeded: None) -> None:
         """oscillatory_weight_init doesn't introduce NaN."""
-        model = PRINetModel(
-            n_resonances=16, n_dims=32, n_concepts=5, n_layers=2
-        )
+        model = PRINetModel(n_resonances=16, n_dims=32, n_concepts=5, n_layers=2)
         oscillatory_weight_init(model)
         x = torch.randn(4, 32)
         out = model(x)
@@ -770,7 +737,9 @@ class TestSparseKNNCoupling:
     def test_kuramoto_sparse_k_default(self, seeded: None) -> None:
         """Default sparse_k = ceil(log2(N))."""
         for N in [32, 128, 1024]:
-            osc = KuramotoOscillator(N, coupling_strength=1.0, coupling_mode="sparse_knn")
+            osc = KuramotoOscillator(
+                N, coupling_strength=1.0, coupling_mode="sparse_knn"
+            )
             assert osc.sparse_k == math.ceil(math.log2(N))
 
     def test_kuramoto_sparse_k_custom(self, seeded: None) -> None:
@@ -811,7 +780,9 @@ class TestSparseKNNCoupling:
         N = 128
         state = OscillatorState.create_random(N, seed=SEED)
         osc_full = KuramotoOscillator(N, coupling_strength=2.0, coupling_mode="full")
-        osc_sparse = KuramotoOscillator(N, coupling_strength=2.0, coupling_mode="sparse_knn")
+        osc_sparse = KuramotoOscillator(
+            N, coupling_strength=2.0, coupling_mode="sparse_knn"
+        )
         dphi_full, _, _ = osc_full.compute_derivatives(state)
         dphi_sparse, _, _ = osc_sparse.compute_derivatives(state)
         # They should not be identical (different coupling graphs)
@@ -834,12 +805,16 @@ class TestSparseKNNCoupling:
 
     def test_hopf_sparse_creates_ok(self, seeded: None) -> None:
         """HopfOscillator with coupling_mode='sparse_knn' creates."""
-        osc = HopfOscillator(64, bifurcation_param=1.0, coupling_strength=2.0, coupling_mode="sparse_knn")
+        osc = HopfOscillator(
+            64, bifurcation_param=1.0, coupling_strength=2.0, coupling_mode="sparse_knn"
+        )
         assert osc.coupling_mode == "sparse_knn"
 
     def test_hopf_sparse_finite_output(self, seeded: None) -> None:
         """Hopf sparse k-NN produces finite derivatives."""
-        osc = HopfOscillator(64, bifurcation_param=1.0, coupling_strength=2.0, coupling_mode="sparse_knn")
+        osc = HopfOscillator(
+            64, bifurcation_param=1.0, coupling_strength=2.0, coupling_mode="sparse_knn"
+        )
         state = OscillatorState.create_random(64, seed=SEED)
         dphi, dr, domega = osc.compute_derivatives(state)
         assert torch.isfinite(dphi).all()
@@ -847,7 +822,12 @@ class TestSparseKNNCoupling:
 
     def test_hopf_sparse_integration(self, seeded: None) -> None:
         """Hopf sparse k-NN integration produces valid trajectory."""
-        osc = HopfOscillator(128, bifurcation_param=1.0, coupling_strength=2.0, coupling_mode="sparse_knn")
+        osc = HopfOscillator(
+            128,
+            bifurcation_param=1.0,
+            coupling_strength=2.0,
+            coupling_mode="sparse_knn",
+        )
         state = OscillatorState.create_random(128, seed=SEED)
         final, _ = osc.integrate(state, n_steps=50, dt=0.01)
         assert torch.isfinite(final.phase).all()
@@ -855,7 +835,12 @@ class TestSparseKNNCoupling:
 
     def test_hopf_sparse_order_param(self, seeded: None) -> None:
         """Hopf sparse produces valid order parameter."""
-        osc = HopfOscillator(256, bifurcation_param=1.0, coupling_strength=3.0, coupling_mode="sparse_knn")
+        osc = HopfOscillator(
+            256,
+            bifurcation_param=1.0,
+            coupling_strength=3.0,
+            coupling_mode="sparse_knn",
+        )
         state = OscillatorState.create_random(256, seed=SEED)
         final, _ = osc.integrate(state, n_steps=100, dt=0.01)
         r = kuramoto_order_parameter(final.phase)
@@ -876,9 +861,7 @@ class TestSparseKNNCoupling:
         dphi, _, _ = osc.compute_derivatives(state)
         assert torch.isfinite(dphi).all()
 
-    @pytest.mark.skipif(
-        not torch.cuda.is_available(), reason="CUDA not available"
-    )
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA not available")
     def test_sparse_on_gpu(self) -> None:
         """Sparse k-NN works on CUDA device."""
         dev = torch.device("cuda")
@@ -890,9 +873,7 @@ class TestSparseKNNCoupling:
         assert dphi.device.type == "cuda"
         assert torch.isfinite(dphi).all()
 
-    @pytest.mark.skipif(
-        not torch.cuda.is_available(), reason="CUDA not available"
-    )
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA not available")
     def test_sparse_vram_subquadratic(self) -> None:
         """Sparse k-NN uses << O(N²) memory vs full at N=4096."""
         import gc
@@ -905,7 +886,9 @@ class TestSparseKNNCoupling:
         torch.cuda.empty_cache()
         torch.cuda.reset_peak_memory_stats()
         base = torch.cuda.memory_allocated()
-        osc_full = KuramotoOscillator(N, coupling_strength=2.0, device=dev, coupling_mode="full")
+        osc_full = KuramotoOscillator(
+            N, coupling_strength=2.0, device=dev, coupling_mode="full"
+        )
         state = OscillatorState.create_random(N, device=dev, seed=SEED)
         osc_full.compute_derivatives(state)
         torch.cuda.synchronize()
@@ -917,7 +900,9 @@ class TestSparseKNNCoupling:
         # Measure sparse VRAM
         torch.cuda.reset_peak_memory_stats()
         base = torch.cuda.memory_allocated()
-        osc_sparse = KuramotoOscillator(N, coupling_strength=2.0, device=dev, coupling_mode="sparse_knn")
+        osc_sparse = KuramotoOscillator(
+            N, coupling_strength=2.0, device=dev, coupling_mode="sparse_knn"
+        )
         osc_sparse.compute_derivatives(state)
         torch.cuda.synchronize()
         vram_sparse = torch.cuda.max_memory_allocated() - base

@@ -140,12 +140,14 @@ def generate_linear_mot_sequence(
             pos = positions[obj_id] + noise_std * torch.randn(2, generator=rng)
             feat = torch.cat([pos, appearances[obj_id]]).tolist()
             bbox = [pos[0].item(), pos[1].item(), 0.05, 0.1]
-            frame_dets.append(Detection(
-                frame_id=t,
-                obj_id=obj_id,
-                bbox=bbox,
-                features=feat,
-            ))
+            frame_dets.append(
+                Detection(
+                    frame_id=t,
+                    obj_id=obj_id,
+                    bbox=bbox,
+                    features=feat,
+                )
+            )
 
         frames.append(frame_dets)
         # Update positions
@@ -197,8 +199,10 @@ def generate_crowded_mot_sequence(
         for t in range(n_frames):
             if torch.rand(1, generator=rng).item() < occlusion_rate:
                 # Occlude for 1–3 frames
-                dur = min(1 + int(torch.rand(1, generator=rng).item() * 3), n_frames - t)
-                occluded[obj_id, t:t + dur] = True
+                dur = min(
+                    1 + int(torch.rand(1, generator=rng).item() * 3), n_frames - t
+                )
+                occluded[obj_id, t : t + dur] = True
 
     frames: list[list[Detection]] = []
     distractor_id = n_objects  # Start distractor IDs after real objects
@@ -216,12 +220,14 @@ def generate_crowded_mot_sequence(
             pos = positions[obj_id] + noise_std * torch.randn(2, generator=rng)
             feat = torch.cat([pos, appearances[obj_id]]).tolist()
             bbox = [pos[0].item(), pos[1].item(), 0.05, 0.1]
-            frame_dets.append(Detection(
-                frame_id=t,
-                obj_id=obj_id,
-                bbox=bbox,
-                features=feat,
-            ))
+            frame_dets.append(
+                Detection(
+                    frame_id=t,
+                    obj_id=obj_id,
+                    bbox=bbox,
+                    features=feat,
+                )
+            )
 
         # Inject distractors
         n_distractors = 0
@@ -229,17 +235,21 @@ def generate_crowded_mot_sequence(
             if torch.rand(1, generator=rng).item() < distractor_rate:
                 n_distractors += 1
                 dpos = torch.rand(2, generator=rng)
-                dfeat = torch.cat([
-                    dpos,
-                    torch.randn(max(0, detection_dim - 2), generator=rng),
-                ]).tolist()
+                dfeat = torch.cat(
+                    [
+                        dpos,
+                        torch.randn(max(0, detection_dim - 2), generator=rng),
+                    ]
+                ).tolist()
                 bbox = [dpos[0].item(), dpos[1].item(), 0.05, 0.1]
-                frame_dets.append(Detection(
-                    frame_id=t,
-                    obj_id=-1,  # Distractor — no GT identity
-                    bbox=bbox,
-                    features=dfeat,
-                ))
+                frame_dets.append(
+                    Detection(
+                        frame_id=t,
+                        obj_id=-1,  # Distractor — no GT identity
+                        bbox=bbox,
+                        features=dfeat,
+                    )
+                )
                 distractor_id += 1
 
         frames.append(frame_dets)
@@ -320,31 +330,36 @@ def generate_temporal_reasoning_sequence(
             pos = positions[obj_id] + noise_std * torch.randn(2, generator=rng)
             feat = torch.cat([pos, appearances[obj_id]]).tolist()
             bbox = [pos[0].item(), pos[1].item(), 0.05, 0.1]
-            frame_dets.append(Detection(
-                frame_id=t,
-                obj_id=obj_id,
-                bbox=bbox,
-                features=feat,
-            ))
+            frame_dets.append(
+                Detection(
+                    frame_id=t,
+                    obj_id=obj_id,
+                    bbox=bbox,
+                    features=feat,
+                )
+            )
 
         # Inject distractors
         for _ in range(distractor_schedule.get(t, 0)):
             dpos = torch.rand(2, generator=rng)
             # Make distractor look similar to a random real object
             similar_obj = int(torch.randint(n_objects, (1,), generator=rng).item())
-            dfeat = torch.cat([
-                dpos,
-                appearances[similar_obj] + 0.1 * torch.randn(
-                    max(0, detection_dim - 2), generator=rng
-                ),
-            ]).tolist()
+            dfeat = torch.cat(
+                [
+                    dpos,
+                    appearances[similar_obj]
+                    + 0.1 * torch.randn(max(0, detection_dim - 2), generator=rng),
+                ]
+            ).tolist()
             bbox = [dpos[0].item(), dpos[1].item(), 0.05, 0.1]
-            frame_dets.append(Detection(
-                frame_id=t,
-                obj_id=-1,
-                bbox=bbox,
-                features=dfeat,
-            ))
+            frame_dets.append(
+                Detection(
+                    frame_id=t,
+                    obj_id=-1,
+                    bbox=bbox,
+                    features=dfeat,
+                )
+            )
 
         frames.append(frame_dets)
         positions = positions + velocities
@@ -394,8 +409,7 @@ def load_mot17_sequence(
                 continue
             frame_id = int(parts[0]) - 1  # Convert to 0-based
             obj_id = int(parts[1])
-            bbox = [float(parts[2]), float(parts[3]),
-                    float(parts[4]), float(parts[5])]
+            bbox = [float(parts[2]), float(parts[3]), float(parts[4]), float(parts[5])]
             # MOT17 GT has consider flag at index 6 and class at 7
             if len(parts) > 6:
                 consider = int(float(parts[6]))
@@ -500,9 +514,13 @@ def evaluate_tracking(
             hyp_id_list = [tid for tid, gid in zip(frame_track_ids, gt_ids) if gid >= 0]
 
             if gt_id_list and hyp_id_list:
-                dists = [[0.0 if g == active_tracks.get(h, -999) else 1.0
-                          for h in hyp_id_list]
-                         for g in gt_id_list]
+                dists = [
+                    [
+                        0.0 if g == active_tracks.get(h, -999) else 1.0
+                        for h in hyp_id_list
+                    ]
+                    for g in gt_id_list
+                ]
                 acc.update(gt_id_list, hyp_id_list, dists)
             else:
                 acc.update([], [], [])
@@ -566,8 +584,12 @@ def evaluate_tracking(
     summary = mh.compute(
         acc,
         metrics=[
-            "mota", "motp", "idf1", "num_switches",
-            "num_false_positives", "num_misses",
+            "mota",
+            "motp",
+            "idf1",
+            "num_switches",
+            "num_false_positives",
+            "num_misses",
         ],
         name=sequence_name,
     )
@@ -666,10 +688,14 @@ class AttentionTracker(nn.Module):
 
         N_t = detections_t.shape[0]
         matches = torch.full(
-            (N_t,), -1, dtype=torch.long, device=detections_t.device,
+            (N_t,),
+            -1,
+            dtype=torch.long,
+            device=detections_t.device,
         )
         used = torch.zeros(
-            detections_t1.shape[0], dtype=torch.bool,
+            detections_t1.shape[0],
+            dtype=torch.bool,
             device=detections_t.device,
         )
 
@@ -731,17 +757,22 @@ def run_subconscious_ab_test(
                     noisy_feats = [f + n for f, n in zip(det.features, noise)]
                 else:
                     noisy_feats = det.features
-                noisy_frame.append(Detection(
-                    frame_id=det.frame_id,
-                    obj_id=det.obj_id,
-                    bbox=det.bbox,
-                    features=noisy_feats,
-                ))
+                noisy_frame.append(
+                    Detection(
+                        frame_id=det.frame_id,
+                        obj_id=det.obj_id,
+                        bbox=det.bbox,
+                        features=noisy_feats,
+                    )
+                )
             noisy_seq.append(noisy_frame)
 
         # Evaluate without daemon (baseline)
         result_no = evaluate_tracking(
-            noisy_seq, tracker, detection_dim, device,
+            noisy_seq,
+            tracker,
+            detection_dim,
+            device,
             f"ab_no_daemon_trial{trial}",
         )
         results_without.append(result_no.mota)
@@ -749,7 +780,10 @@ def run_subconscious_ab_test(
         # Evaluate with daemon (simulated benefit: slightly lower threshold)
         # In production, this would use the actual SubconsciousDaemon
         result_with = evaluate_tracking(
-            noisy_seq, tracker, detection_dim, device,
+            noisy_seq,
+            tracker,
+            detection_dim,
+            device,
             f"ab_with_daemon_trial{trial}",
         )
         results_with.append(result_with.mota)

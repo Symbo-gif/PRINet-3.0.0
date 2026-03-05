@@ -44,24 +44,28 @@ class TestConfigureNeuripsStyle:
     def test_sets_dpi(self) -> None:
         import matplotlib.pyplot as plt
         from prinet.utils.figure_generation import configure_neurips_style
+
         configure_neurips_style()
         assert plt.rcParams["figure.dpi"] == 300
 
     def test_sets_savefig_dpi(self) -> None:
         import matplotlib.pyplot as plt
         from prinet.utils.figure_generation import configure_neurips_style
+
         configure_neurips_style()
         assert plt.rcParams["savefig.dpi"] == 300
 
     def test_sets_font_size(self) -> None:
         import matplotlib.pyplot as plt
         from prinet.utils.figure_generation import configure_neurips_style
+
         configure_neurips_style()
         assert plt.rcParams["font.size"] == 9
 
     def test_sets_serif_font(self) -> None:
         import matplotlib.pyplot as plt
         from prinet.utils.figure_generation import configure_neurips_style
+
         configure_neurips_style()
         family = plt.rcParams["font.family"]
         # matplotlib may return a list or string depending on version
@@ -73,18 +77,21 @@ class TestConfigureNeuripsStyle:
     def test_sets_axes_title_size(self) -> None:
         import matplotlib.pyplot as plt
         from prinet.utils.figure_generation import configure_neurips_style
+
         configure_neurips_style()
         assert plt.rcParams["axes.titlesize"] == 10
 
     def test_sets_axes_label_size(self) -> None:
         import matplotlib.pyplot as plt
         from prinet.utils.figure_generation import configure_neurips_style
+
         configure_neurips_style()
         assert plt.rcParams["axes.labelsize"] == 9
 
     def test_idempotent(self) -> None:
         import matplotlib.pyplot as plt
         from prinet.utils.figure_generation import configure_neurips_style
+
         configure_neurips_style()
         dpi1 = plt.rcParams["figure.dpi"]
         configure_neurips_style()
@@ -97,34 +104,41 @@ class TestColorPalette:
 
     def test_pt_color_defined(self) -> None:
         from prinet.utils.figure_generation import COLORS
+
         assert "pt" in COLORS
 
     def test_sa_color_defined(self) -> None:
         from prinet.utils.figure_generation import COLORS
+
         assert "sa" in COLORS
 
     def test_pt_large_color_defined(self) -> None:
         from prinet.utils.figure_generation import COLORS
+
         assert "pt_large" in COLORS
 
     def test_chimera_color_defined(self) -> None:
         from prinet.utils.figure_generation import COLORS
+
         assert "chimera" in COLORS
 
     def test_colors_are_hex(self) -> None:
         from prinet.utils.figure_generation import COLORS
+
         for key, val in COLORS.items():
             assert val.startswith("#"), f"Color {key} is not hex: {val}"
             assert len(val) == 7, f"Color {key} wrong length: {val}"
 
     def test_ablation_colors_complete(self) -> None:
         from prinet.utils.figure_generation import COLORS
+
         required = ["full", "attention_only", "oscillator_only", "shared_phase"]
         for key in required:
             assert key in COLORS, f"Missing ablation color: {key}"
 
     def test_coupling_colors_complete(self) -> None:
         from prinet.utils.figure_generation import COLORS
+
         required = ["mean_field", "sparse_knn", "csr"]
         for key in required:
             assert key in COLORS, f"Missing coupling color: {key}"
@@ -145,6 +159,7 @@ class TestFigureGenerators:
         if not self._has_required_data("benchmark_y4q1_ablation_variants.json"):
             pytest.skip("Missing benchmark_y4q1_ablation_variants.json")
         from prinet.utils.figure_generation import fig_clevr_n_capacity
+
         paths = fig_clevr_n_capacity(results_dir=RESULTS_DIR, output_dir=tmpdir)
         assert len(paths) >= 2  # PDF + PNG
         for p in paths:
@@ -155,6 +170,7 @@ class TestFigureGenerators:
         if not self._has_required_data("benchmark_y4q1_3_k_alpha_sensitivity.json"):
             pytest.skip("Missing benchmark_y4q1_3_k_alpha_sensitivity.json")
         from prinet.utils.figure_generation import fig_chimera_heatmap
+
         paths = fig_chimera_heatmap(results_dir=RESULTS_DIR, output_dir=tmpdir)
         assert len(paths) >= 2
         for p in paths:
@@ -165,7 +181,10 @@ class TestFigureGenerators:
         if not self._has_required_data("y4q1_9_fine_occlusion.json"):
             pytest.skip("Missing y4q1_9_fine_occlusion.json")
         from prinet.utils.figure_generation import fig_mot_identity_preservation
-        paths = fig_mot_identity_preservation(results_dir=RESULTS_DIR, output_dir=tmpdir)
+
+        paths = fig_mot_identity_preservation(
+            results_dir=RESULTS_DIR, output_dir=tmpdir
+        )
         assert len(paths) >= 2
         for p in paths:
             assert p.exists()
@@ -174,6 +193,7 @@ class TestFigureGenerators:
         if not self._has_required_data("y3q4_p4_oscillosim_scaling.json"):
             pytest.skip("Missing y3q4_p4_oscillosim_scaling.json")
         from prinet.utils.figure_generation import fig_oscillosim_scaling
+
         paths = fig_oscillosim_scaling(results_dir=RESULTS_DIR, output_dir=tmpdir)
         assert len(paths) >= 2
         for p in paths:
@@ -183,6 +203,7 @@ class TestFigureGenerators:
         if not self._has_required_data("benchmark_y4q1_ablation_variants.json"):
             pytest.skip("Missing benchmark_y4q1_ablation_variants.json")
         from prinet.utils.figure_generation import fig_ablation_results
+
         paths = fig_ablation_results(results_dir=RESULTS_DIR, output_dir=tmpdir)
         assert len(paths) >= 2
         for p in paths:
@@ -192,16 +213,19 @@ class TestFigureGenerators:
         if not self._has_required_data("y4q1_8_parameter_efficiency_frontier.json"):
             pytest.skip("Missing y4q1_8_parameter_efficiency_frontier.json")
         from prinet.utils.figure_generation import fig_parameter_efficiency
+
         paths = fig_parameter_efficiency(results_dir=RESULTS_DIR, output_dir=tmpdir)
         assert len(paths) >= 2
         for p in paths:
             assert p.exists()
 
     def test_fig_training_curves(self, tmpdir: Path) -> None:
-        if not self._has_required_data("y4q1_7_training_curves_pt.json",
-                                       "y4q1_7_training_curves_sa.json"):
+        if not self._has_required_data(
+            "y4q1_7_training_curves_pt.json", "y4q1_7_training_curves_sa.json"
+        ):
             pytest.skip("Missing training curves JSON")
         from prinet.utils.figure_generation import fig_training_curves
+
         paths = fig_training_curves(results_dir=RESULTS_DIR, output_dir=tmpdir)
         assert len(paths) >= 2
         for p in paths:
@@ -211,6 +235,7 @@ class TestFigureGenerators:
         if not self._has_required_data("benchmark_y4q1_3_gold_standard_chimera.json"):
             pytest.skip("Missing benchmark_y4q1_3_gold_standard_chimera.json")
         from prinet.utils.figure_generation import fig_gold_standard_chimera
+
         paths = fig_gold_standard_chimera(results_dir=RESULTS_DIR, output_dir=tmpdir)
         assert len(paths) >= 2
         for p in paths:
@@ -220,6 +245,7 @@ class TestFigureGenerators:
         if not self._has_required_data("y4q1_7_statistical_summary.json"):
             pytest.skip("Missing y4q1_7_statistical_summary.json")
         from prinet.utils.figure_generation import fig_statistical_summary
+
         paths = fig_statistical_summary(results_dir=RESULTS_DIR, output_dir=tmpdir)
         assert len(paths) >= 2
         for p in paths:
@@ -231,40 +257,35 @@ class TestGenerateAllFigures:
 
     def test_returns_dict(self, tmp_path: Path) -> None:
         from prinet.utils.figure_generation import generate_all_figures
-        result = generate_all_figures(
-            results_dir=RESULTS_DIR, output_dir=tmp_path
-        )
+
+        result = generate_all_figures(results_dir=RESULTS_DIR, output_dir=tmp_path)
         assert isinstance(result, dict)
 
     def test_has_expected_keys(self, tmp_path: Path) -> None:
         from prinet.utils.figure_generation import generate_all_figures
-        result = generate_all_figures(
-            results_dir=RESULTS_DIR, output_dir=tmp_path
-        )
+
+        result = generate_all_figures(results_dir=RESULTS_DIR, output_dir=tmp_path)
         # Should have at least some figure keys
         assert len(result) >= 5
 
     def test_does_not_raise(self, tmp_path: Path) -> None:
         from prinet.utils.figure_generation import generate_all_figures
+
         # Should gracefully handle missing data
-        generate_all_figures(
-            results_dir=RESULTS_DIR, output_dir=tmp_path
-        )
+        generate_all_figures(results_dir=RESULTS_DIR, output_dir=tmp_path)
 
     def test_output_files_created(self, tmp_path: Path) -> None:
         from prinet.utils.figure_generation import generate_all_figures
-        result = generate_all_figures(
-            results_dir=RESULTS_DIR, output_dir=tmp_path
-        )
+
+        result = generate_all_figures(results_dir=RESULTS_DIR, output_dir=tmp_path)
         # At least some figures should have been generated
         generated = {k: v for k, v in result.items() if v}
         assert len(generated) > 0
 
     def test_pdf_and_png_produced(self, tmp_path: Path) -> None:
         from prinet.utils.figure_generation import generate_all_figures
-        result = generate_all_figures(
-            results_dir=RESULTS_DIR, output_dir=tmp_path
-        )
+
+        result = generate_all_figures(results_dir=RESULTS_DIR, output_dir=tmp_path)
         for name, paths in result.items():
             if paths:
                 extensions = {p.suffix for p in paths}
@@ -282,6 +303,7 @@ class TestTableHelpers:
 
     def test_load_json_valid_file(self) -> None:
         from prinet.utils.table_generation import _load_json
+
         # Find any JSON file in results
         json_files = list(RESULTS_DIR.glob("*.json"))
         if not json_files:
@@ -291,11 +313,13 @@ class TestTableHelpers:
 
     def test_load_json_missing_file(self) -> None:
         from prinet.utils.table_generation import _load_json
+
         with pytest.raises(FileNotFoundError):
             _load_json(Path("nonexistent_file_12345.json"))
 
     def test_save_table(self, tmp_path: Path) -> None:
         from prinet.utils.table_generation import _save_table
+
         content = r"\begin{table} test \end{table}"
         path = _save_table(content, "test_table", tmp_path)
         assert path.exists()
@@ -325,6 +349,7 @@ class TestTableGenerators:
         if not self._has_required_data("benchmark_y4q1_ablation_variants.json"):
             pytest.skip("Missing benchmark_y4q1_ablation_variants.json")
         from prinet.utils.table_generation import table_ablation_variants
+
         path = table_ablation_variants(results_dir=RESULTS_DIR, output_dir=tmpdir)
         assert path.exists()
         self._validate_latex(path)
@@ -333,6 +358,7 @@ class TestTableGenerators:
         if not self._has_required_data("y4q1_8_parameter_efficiency_frontier.json"):
             pytest.skip("Missing y4q1_8_parameter_efficiency_frontier.json")
         from prinet.utils.table_generation import table_parameter_efficiency
+
         path = table_parameter_efficiency(results_dir=RESULTS_DIR, output_dir=tmpdir)
         assert path.exists()
         self._validate_latex(path)
@@ -341,6 +367,7 @@ class TestTableGenerators:
         if not self._has_required_data("benchmark_y4q1_3_gold_standard_chimera.json"):
             pytest.skip("Missing benchmark_y4q1_3_gold_standard_chimera.json")
         from prinet.utils.table_generation import table_chimera_gold_standard
+
         path = table_chimera_gold_standard(results_dir=RESULTS_DIR, output_dir=tmpdir)
         assert path.exists()
         self._validate_latex(path)
@@ -349,6 +376,7 @@ class TestTableGenerators:
         if not self._has_required_data("y4q1_7_statistical_summary.json"):
             pytest.skip("Missing y4q1_7_statistical_summary.json")
         from prinet.utils.table_generation import table_statistical_summary
+
         path = table_statistical_summary(results_dir=RESULTS_DIR, output_dir=tmpdir)
         assert path.exists()
         self._validate_latex(path)
@@ -357,6 +385,7 @@ class TestTableGenerators:
         if not self._has_required_data("y4q1_9_fine_occlusion.json"):
             pytest.skip("Missing y4q1_9_fine_occlusion.json")
         from prinet.utils.table_generation import table_occlusion_sweep
+
         path = table_occlusion_sweep(results_dir=RESULTS_DIR, output_dir=tmpdir)
         assert path.exists()
         self._validate_latex(path)
@@ -365,6 +394,7 @@ class TestTableGenerators:
         if not self._has_required_data("y3q4_p4_oscillosim_scaling.json"):
             pytest.skip("Missing y3q4_p4_oscillosim_scaling.json")
         from prinet.utils.table_generation import table_oscillosim_scaling
+
         path = table_oscillosim_scaling(results_dir=RESULTS_DIR, output_dir=tmpdir)
         assert path.exists()
         self._validate_latex(path)
@@ -375,22 +405,19 @@ class TestGenerateAllTables:
 
     def test_returns_dict(self, tmp_path: Path) -> None:
         from prinet.utils.table_generation import generate_all_tables
-        result = generate_all_tables(
-            results_dir=RESULTS_DIR, output_dir=tmp_path
-        )
+
+        result = generate_all_tables(results_dir=RESULTS_DIR, output_dir=tmp_path)
         assert isinstance(result, dict)
 
     def test_does_not_raise(self, tmp_path: Path) -> None:
         from prinet.utils.table_generation import generate_all_tables
-        generate_all_tables(
-            results_dir=RESULTS_DIR, output_dir=tmp_path
-        )
+
+        generate_all_tables(results_dir=RESULTS_DIR, output_dir=tmp_path)
 
     def test_generated_files_are_tex(self, tmp_path: Path) -> None:
         from prinet.utils.table_generation import generate_all_tables
-        result = generate_all_tables(
-            results_dir=RESULTS_DIR, output_dir=tmp_path
-        )
+
+        result = generate_all_tables(results_dir=RESULTS_DIR, output_dir=tmp_path)
         for name, path in result.items():
             assert path.suffix == ".tex", f"{name} is not .tex"
 
@@ -418,6 +445,7 @@ class TestReproduceScript:
         try:
             # Import the validation function
             import importlib.util
+
             spec = importlib.util.spec_from_file_location(
                 "reproduce", str(PROJECT_ROOT / "reproduce.py")
             )
@@ -437,6 +465,7 @@ class TestReproduceScript:
         sys.path.insert(0, str(PROJECT_ROOT))
         try:
             import importlib.util
+
             spec = importlib.util.spec_from_file_location(
                 "reproduce", str(PROJECT_ROOT / "reproduce.py")
             )
@@ -471,29 +500,35 @@ class TestStyleConsistency:
 
     def test_tol_bright_pt_is_blue(self) -> None:
         from prinet.utils.figure_generation import COLORS
+
         assert COLORS["pt"] == "#4477AA"
 
     def test_tol_bright_sa_is_red(self) -> None:
         from prinet.utils.figure_generation import COLORS
+
         assert COLORS["sa"] == "#EE6677"
 
     def test_tol_bright_pt_large_is_green(self) -> None:
         from prinet.utils.figure_generation import COLORS
+
         assert COLORS["pt_large"] == "#228833"
 
     def test_default_results_dir(self) -> None:
         from prinet.utils.figure_generation import DEFAULT_RESULTS_DIR
+
         # Should resolve to benchmarks/results
         assert "benchmarks" in str(DEFAULT_RESULTS_DIR)
         assert "results" in str(DEFAULT_RESULTS_DIR)
 
     def test_default_output_dir(self) -> None:
         from prinet.utils.figure_generation import DEFAULT_OUTPUT_DIR
+
         assert "paper" in str(DEFAULT_OUTPUT_DIR)
         assert "figures" in str(DEFAULT_OUTPUT_DIR)
 
     def test_table_default_output_dir(self) -> None:
         from prinet.utils.table_generation import DEFAULT_OUTPUT_DIR
+
         assert "paper" in str(DEFAULT_OUTPUT_DIR)
         assert "tables" in str(DEFAULT_OUTPUT_DIR)
 
@@ -550,9 +585,9 @@ class TestArtefactCompleteness:
     def test_minimum_json_count(self) -> None:
         """Project should have at least 100 JSON artefacts."""
         json_files = list(RESULTS_DIR.glob("*.json"))
-        assert len(json_files) >= 100, (
-            f"Expected >= 100 JSON artefacts, found {len(json_files)}"
-        )
+        assert (
+            len(json_files) >= 100
+        ), f"Expected >= 100 JSON artefacts, found {len(json_files)}"
 
     def test_json_files_are_valid(self) -> None:
         """All JSON files should be parseable."""
@@ -575,15 +610,18 @@ class TestModuleImports:
 
     def test_import_figure_generation(self) -> None:
         from prinet.utils import figure_generation
+
         assert hasattr(figure_generation, "generate_all_figures")
         assert hasattr(figure_generation, "configure_neurips_style")
 
     def test_import_table_generation(self) -> None:
         from prinet.utils import table_generation
+
         assert hasattr(table_generation, "generate_all_tables")
 
     def test_figure_generation_has_all_generators(self) -> None:
         from prinet.utils import figure_generation
+
         expected = [
             "fig_clevr_n_capacity",
             "fig_chimera_heatmap",
@@ -600,6 +638,7 @@ class TestModuleImports:
 
     def test_table_generation_has_all_generators(self) -> None:
         from prinet.utils import table_generation
+
         expected = [
             "table_ablation_variants",
             "table_parameter_efficiency",
@@ -625,9 +664,8 @@ class TestEdgeCases:
         empty = tmp_path / "empty_results"
         empty.mkdir()
         from prinet.utils.figure_generation import generate_all_figures
-        result = generate_all_figures(
-            results_dir=empty, output_dir=tmp_path / "out"
-        )
+
+        result = generate_all_figures(results_dir=empty, output_dir=tmp_path / "out")
         # All entries should be empty lists (no data)
         assert isinstance(result, dict)
 
@@ -636,9 +674,8 @@ class TestEdgeCases:
         empty = tmp_path / "empty_results"
         empty.mkdir()
         from prinet.utils.table_generation import generate_all_tables
-        result = generate_all_tables(
-            results_dir=empty, output_dir=tmp_path / "out"
-        )
+
+        result = generate_all_tables(results_dir=empty, output_dir=tmp_path / "out")
         assert isinstance(result, dict)
 
     def test_figure_output_dir_created(self, tmp_path: Path) -> None:
@@ -646,6 +683,7 @@ class TestEdgeCases:
         out = tmp_path / "nonexistent" / "deep" / "dir"
         assert not out.exists()
         from prinet.utils.figure_generation import generate_all_figures
+
         generate_all_figures(results_dir=RESULTS_DIR, output_dir=out)
         # Directory should exist now (even if no figures generated)
         # The function may or may not create it depending on data availability
@@ -654,4 +692,5 @@ class TestEdgeCases:
         """Output directory should be created if it does not exist."""
         out = tmp_path / "nonexistent" / "deep" / "dir"
         from prinet.utils.table_generation import generate_all_tables
+
         generate_all_tables(results_dir=RESULTS_DIR, output_dir=out)

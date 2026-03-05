@@ -15,6 +15,7 @@ from torch import Tensor
 
 from .oscillator_state import OscillatorState, OscillatorSyncError, _wrap_phase
 
+
 class FeedforwardInhibition:
     """Feedforward Inhibition (FFI) for phase-to-rate conversion.
 
@@ -52,9 +53,7 @@ class FeedforwardInhibition:
         delay_fraction: float = 0.1,
     ) -> None:
         if delay_steps < 0:
-            raise ValueError(
-                f"delay_steps must be non-negative, got {delay_steps}"
-            )
+            raise ValueError(f"delay_steps must be non-negative, got {delay_steps}")
         if tau <= 0:
             raise ValueError(f"tau must be positive, got {tau}")
         self._delay_steps = delay_steps
@@ -96,9 +95,7 @@ class FeedforwardInhibition:
         # When delayed phase aligns with original → max transmission
         alignment = torch.cos(delayed_phase - phase)
         # Map [-1, 1] → [0, 1] for gating strength
-        gate_strength = torch.exp(
-            (alignment - 1.0) / max(self._tau, 1e-8)
-        )
+        gate_strength = torch.exp((alignment - 1.0) / max(self._tau, 1e-8))
 
         return rate * gate_strength
 
@@ -143,9 +140,7 @@ class FeedbackInhibition:
         if k is not None and k < 1:
             raise ValueError(f"k must be >= 1, got {k}")
         if not 0.0 < sparsity <= 1.0:
-            raise ValueError(
-                f"sparsity must be in (0, 1], got {sparsity}"
-            )
+            raise ValueError(f"sparsity must be in (0, 1], got {sparsity}")
         self._k = k
         self._sparsity = sparsity
         self._delay_steps = delay_steps
@@ -290,14 +285,9 @@ class DentateGyrusConverter:
         phase_step = phase.clone()
         for _ in range(n_integration_steps - 1):
             # Advance phase by one notional step
-            phase_step = _wrap_phase(
-                phase_step + 0.1 * 2.0 * math.pi
-            )
+            phase_step = _wrap_phase(phase_step + 0.1 * 2.0 * math.pi)
             new_gated = self._ffi.gate(phase_step, amplitude)
-            integrated = (
-                self._alpha * integrated
-                + (1.0 - self._alpha) * new_gated
-            )
+            integrated = self._alpha * integrated + (1.0 - self._alpha) * new_gated
 
         # Step 3: FBI competition — slow inhibition enforces WTA sparsity
         sparse_rate = self._fbi.compete(integrated)
@@ -305,5 +295,3 @@ class DentateGyrusConverter:
         if was_1d:
             return sparse_rate.squeeze(0)
         return sparse_rate
-
-

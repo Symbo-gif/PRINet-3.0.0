@@ -14,6 +14,7 @@ from torch import Tensor
 
 from .oscillator_state import OscillatorState
 
+
 class PhaseAmplitudeCoupling:
     """Phase-Amplitude Coupling (PAC) between oscillator bands.
 
@@ -56,9 +57,7 @@ class PhaseAmplitudeCoupling:
     @modulation_depth.setter
     def modulation_depth(self, value: float) -> None:
         if not 0.0 <= value <= 1.0:
-            raise ValueError(
-                f"modulation_depth must be in [0, 1], got {value}"
-            )
+            raise ValueError(f"modulation_depth must be in [0, 1], got {value}")
         self._m = value
 
     def modulate(
@@ -88,5 +87,3 @@ class PhaseAmplitudeCoupling:
         # Broadcast modulation across fast oscillators
         modulated = fast_amplitude * modulation
         return torch.clamp(modulated, min=self._amp_min, max=self._amp_max)
-
-

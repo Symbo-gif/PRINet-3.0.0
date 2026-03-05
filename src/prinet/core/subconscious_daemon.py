@@ -133,9 +133,9 @@ class SubconsciousDaemon(threading.Thread):
         # Dead-letter queue for failed inference records
         self._dead_letter_queue: deque[dict[str, Any]] = deque(maxlen=dlq_maxlen)
         self._max_errors_before_escalation: int = max_errors_before_escalation
-        self._error_escalation_callback: Optional[
-            Callable[[dict[str, Any]], None]
-        ] = error_escalation_callback
+        self._error_escalation_callback: Optional[Callable[[dict[str, Any]], None]] = (
+            error_escalation_callback
+        )
 
         # Lazily created in run() so Session lives on the daemon thread
         self._session: object | None = None  # ort.InferenceSession
@@ -275,7 +275,9 @@ class SubconsciousDaemon(threading.Thread):
             try:
                 self._session.run(None, {self._input_name: _WARMUP_SENTINEL})  # type: ignore[union-attr]
             except Exception:
-                logger.debug("Warm-up inference raised (may be expected).", exc_info=True)
+                logger.debug(
+                    "Warm-up inference raised (may be expected).", exc_info=True
+                )
 
     def _run_inference(self, state: SubconsciousState) -> None:
         """Run a single inference pass and update the control buffer."""

@@ -127,9 +127,25 @@ class TestFusedDiscreteStep:
         W_tg_b = torch.zeros(ng, device=DEVICE)
 
         new_p, new_a = pytorch_fused_discrete_step_full(
-            phase, amp, fd, ft, fg, Wd, Wt, Wg,
-            W_dt_w, W_dt_b, W_tg_w, W_tg_b,
-            1.0, 1.0, 1.0, 0.01, nd, nt, ng,
+            phase,
+            amp,
+            fd,
+            ft,
+            fg,
+            Wd,
+            Wt,
+            Wg,
+            W_dt_w,
+            W_dt_b,
+            W_tg_w,
+            W_tg_b,
+            1.0,
+            1.0,
+            1.0,
+            0.01,
+            nd,
+            nt,
+            ng,
         )
 
         assert new_p.shape == (B, N)
@@ -162,9 +178,25 @@ class TestFusedDiscreteStep:
         W_tg_b = torch.zeros(ng, device=DEVICE)
 
         _, new_a = pytorch_fused_discrete_step_full(
-            phase, amp, fd, ft, fg, Wd, Wt, Wg,
-            W_dt_w, W_dt_b, W_tg_w, W_tg_b,
-            1.0, 1.0, 1.0, 0.01, nd, nt, ng,
+            phase,
+            amp,
+            fd,
+            ft,
+            fg,
+            Wd,
+            Wt,
+            Wg,
+            W_dt_w,
+            W_dt_b,
+            W_tg_w,
+            W_tg_b,
+            1.0,
+            1.0,
+            1.0,
+            0.01,
+            nd,
+            nt,
+            ng,
         )
         assert (new_a >= 1e-6).all()
         assert (new_a <= 10.0).all()
@@ -191,9 +223,25 @@ class TestFusedDiscreteStep:
         W_tg_b = torch.zeros(ng, device=DEVICE)
 
         args = (
-            phase, amp, fd, ft, fg, Wd, Wt, Wg,
-            W_dt_w, W_dt_b, W_tg_w, W_tg_b,
-            1.0, 1.0, 1.0, 0.01, nd, nt, ng,
+            phase,
+            amp,
+            fd,
+            ft,
+            fg,
+            Wd,
+            Wt,
+            Wg,
+            W_dt_w,
+            W_dt_b,
+            W_tg_w,
+            W_tg_b,
+            1.0,
+            1.0,
+            1.0,
+            0.01,
+            nd,
+            nt,
+            ng,
         )
         p1, a1 = pytorch_fused_discrete_step_full(*args)
         p2, a2 = pytorch_fused_discrete_step_full(*args)
@@ -223,7 +271,9 @@ class TestMixedPrecision:
 
         model = HybridPRINetV2(n_input=64, n_classes=5).to(DEVICE)
         opt = torch.optim.Adam(model.parameters(), lr=1e-3)
-        trainer = MixedPrecisionTrainer(model, opt, device_type="cuda" if _CUDA else "cpu")
+        trainer = MixedPrecisionTrainer(
+            model, opt, device_type="cuda" if _CUDA else "cpu"
+        )
         assert trainer.step_count == 0
 
     @pytest.mark.skipif(not _CUDA, reason="CUDA required for AMP")
@@ -433,9 +483,9 @@ class TestLargeScaleOscillators:
         from prinet.utils.fused_kernels import LargeScaleOscillatorSystem
 
         _seed()
-        sys = LargeScaleOscillatorSystem(
-            n_oscillators=200, k_neighbors=8, seed=42
-        ).to(DEVICE)
+        sys = LargeScaleOscillatorSystem(n_oscillators=200, k_neighbors=8, seed=42).to(
+            DEVICE
+        )
         phase = torch.rand(4, 200, device=DEVICE) * TWO_PI
         amp = torch.ones(4, 200, device=DEVICE)
 
@@ -450,9 +500,9 @@ class TestLargeScaleOscillators:
         from prinet.utils.fused_kernels import LargeScaleOscillatorSystem
 
         _seed()
-        sys = LargeScaleOscillatorSystem(
-            n_oscillators=100, k_neighbors=6, seed=42
-        ).to(DEVICE)
+        sys = LargeScaleOscillatorSystem(n_oscillators=100, k_neighbors=6, seed=42).to(
+            DEVICE
+        )
         phase = torch.rand(2, 100, device=DEVICE) * TWO_PI
         amp = torch.ones(2, 100, device=DEVICE)
 
@@ -468,9 +518,9 @@ class TestLargeScaleOscillators:
         from prinet.utils.fused_kernels import LargeScaleOscillatorSystem
 
         _seed()
-        sys = LargeScaleOscillatorSystem(
-            n_oscillators=500, k_neighbors=10, seed=42
-        ).to(DEVICE)
+        sys = LargeScaleOscillatorSystem(n_oscillators=500, k_neighbors=10, seed=42).to(
+            DEVICE
+        )
         phase = torch.rand(2, 500, device=DEVICE) * TWO_PI
         amp = torch.ones(2, 500, device=DEVICE)
 
@@ -559,9 +609,9 @@ class TestOscillatorPruning:
         _seed()
         nd, nt, ng = 4, 8, 16
         N = nd + nt + ng
-        dynamics = DiscreteDeltaThetaGamma(
-            n_delta=nd, n_theta=nt, n_gamma=ng
-        ).to(DEVICE)
+        dynamics = DiscreteDeltaThetaGamma(n_delta=nd, n_theta=nt, n_gamma=ng).to(
+            DEVICE
+        )
 
         phase = torch.rand(4, N, device=DEVICE) * TWO_PI
         amp = torch.ones(4, N, device=DEVICE)
@@ -586,9 +636,9 @@ class TestOscillatorPruning:
         _seed()
         nd, nt, ng = 4, 8, 16
         N = nd + nt + ng
-        dynamics = DiscreteDeltaThetaGamma(
-            n_delta=nd, n_theta=nt, n_gamma=ng
-        ).to(DEVICE)
+        dynamics = DiscreteDeltaThetaGamma(n_delta=nd, n_theta=nt, n_gamma=ng).to(
+            DEVICE
+        )
 
         phase = torch.rand(4, N, device=DEVICE) * TWO_PI
         amp = torch.ones(4, N, device=DEVICE)
@@ -610,9 +660,9 @@ class TestOscillatorPruning:
         _seed()
         nd, nt, ng = 4, 8, 16
         N = nd + nt + ng
-        dynamics = DiscreteDeltaThetaGamma(
-            n_delta=nd, n_theta=nt, n_gamma=ng
-        ).to(DEVICE)
+        dynamics = DiscreteDeltaThetaGamma(n_delta=nd, n_theta=nt, n_gamma=ng).to(
+            DEVICE
+        )
 
         phase = torch.rand(4, N, device=DEVICE) * TWO_PI
         amp = torch.ones(4, N, device=DEVICE)

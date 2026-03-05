@@ -27,6 +27,7 @@ from .oscillator_state import (
     _build_phase_knn_index,
 )
 
+
 class OscillatorModel(ABC):
     """Abstract base class for oscillator dynamics models.
 
@@ -50,9 +51,7 @@ class OscillatorModel(ABC):
         dtype: torch.dtype = torch.float32,
     ) -> None:
         if n_oscillators < 1:
-            raise ValueError(
-                f"n_oscillators must be positive, got {n_oscillators}."
-            )
+            raise ValueError(f"n_oscillators must be positive, got {n_oscillators}.")
         self._n = n_oscillators
         self._K = coupling_strength
         self._device = device or torch.device("cpu")
@@ -107,9 +106,7 @@ class OscillatorModel(ABC):
                 f"Expected coupling matrix shape ({self._n}, {self._n}), "
                 f"got {tuple(matrix.shape)}."
             )
-        self._coupling_matrix = matrix.to(
-            device=self._device, dtype=self._dtype
-        )
+        self._coupling_matrix = matrix.to(device=self._device, dtype=self._dtype)
 
     @abstractmethod
     def compute_derivatives(
@@ -150,13 +147,10 @@ class OscillatorModel(ABC):
             return self._step_rk4(state, dt)
         else:
             raise ValueError(
-                f"Unknown integration method '{method}'. "
-                f"Use 'euler' or 'rk4'."
+                f"Unknown integration method '{method}'. " f"Use 'euler' or 'rk4'."
             )
 
-    def _step_euler(
-        self, state: OscillatorState, dt: float
-    ) -> OscillatorState:
+    def _step_euler(self, state: OscillatorState, dt: float) -> OscillatorState:
         """Forward Euler integration step.
 
         Args:
@@ -173,9 +167,7 @@ class OscillatorModel(ABC):
             frequency=state.frequency + dt * domega,
         )
 
-    def _step_rk4(
-        self, state: OscillatorState, dt: float
-    ) -> OscillatorState:
+    def _step_rk4(self, state: OscillatorState, dt: float) -> OscillatorState:
         """4th-order Runge-Kutta integration step.
 
         Args:
@@ -195,9 +187,7 @@ class OscillatorModel(ABC):
         ) -> OscillatorState:
             return OscillatorState(
                 phase=s.phase + scale * dphi,
-                amplitude=torch.clamp(
-                    s.amplitude + scale * dr, min=0.0
-                ),
+                amplitude=torch.clamp(s.amplitude + scale * dr, min=0.0),
                 frequency=s.frequency + scale * domega,
             )
 
@@ -213,23 +203,17 @@ class OscillatorModel(ABC):
         k4_phi, k4_r, k4_omega = self.compute_derivatives(s4)
 
         phase = _wrap_phase(
-            state.phase
-            + (dt / 6.0)
-            * (k1_phi + 2.0 * k2_phi + 2.0 * k3_phi + k4_phi)
+            state.phase + (dt / 6.0) * (k1_phi + 2.0 * k2_phi + 2.0 * k3_phi + k4_phi)
         )
         amplitude = torch.clamp(
-            state.amplitude
-            + (dt / 6.0)
-            * (k1_r + 2.0 * k2_r + 2.0 * k3_r + k4_r),
+            state.amplitude + (dt / 6.0) * (k1_r + 2.0 * k2_r + 2.0 * k3_r + k4_r),
             min=0.0,
         )
         frequency = state.frequency + (dt / 6.0) * (
             k1_omega + 2.0 * k2_omega + 2.0 * k3_omega + k4_omega
         )
 
-        return OscillatorState(
-            phase=phase, amplitude=amplitude, frequency=frequency
-        )
+        return OscillatorState(phase=phase, amplitude=amplitude, frequency=frequency)
 
     def integrate(
         self,
@@ -304,7 +288,9 @@ class KuramotoOscillator(OscillatorModel):
         self._decay = decay_rate
         self._gamma = freq_adaptation_rate
         self._mean_field = mean_field
-        self._coupling_mode = coupling_mode  # "auto", "full", "mean_field", "sparse_knn"
+        self._coupling_mode = (
+            coupling_mode  # "auto", "full", "mean_field", "sparse_knn"
+        )
         self._sparse_k = sparse_k  # k nearest neighbours; None → ceil(log2(N))
 
     @property
@@ -388,9 +374,13 @@ class KuramotoOscillator(OscillatorModel):
         )
 
         # dωᵢ/dt = γ · K · R · sin(ψ − φᵢ) / N
-        domega = self._gamma * K * R.unsqueeze(-1) * torch.sin(
-            psi.unsqueeze(-1) - phase
-        ) / self._n
+        domega = (
+            self._gamma
+            * K
+            * R.unsqueeze(-1)
+            * torch.sin(psi.unsqueeze(-1) - phase)
+            / self._n
+        )
 
         return dphi, dr, domega
 
@@ -426,9 +416,7 @@ class KuramotoOscillator(OscillatorModel):
         dr = -self._decay * amp + weighted_cos.sum(dim=-1)
 
         # Frequency derivative: dωᵢ/dt = γ · Σⱼ ... / N
-        domega = (
-            self._gamma * weighted_sin.sum(dim=-1) / self._n
-        )
+        domega = self._gamma * weighted_sin.sum(dim=-1) / self._n
 
         return dphi, dr, domega
 
@@ -459,9 +447,9 @@ class KuramotoOscillator(OscillatorModel):
         - ``_clamp_finite`` on every output derivative to catch NaN/Inf.
         - Factored ``_build_phase_knn_index`` for reusability.
         """
-        phase = state.phase            # (..., N)
-        amp = state.amplitude          # (..., N)
-        freq = state.frequency         # (..., N)
+        phase = state.phase  # (..., N)
+        amp = state.amplitude  # (..., N)
+        freq = state.frequency  # (..., N)
 
         N = phase.shape[-1]
 
@@ -484,12 +472,8 @@ class KuramotoOscillator(OscillatorModel):
         flat_freq = freq.reshape(-1, N)
 
         # Gather neighbour phases and amplitudes
-        nbr_phase = flat_phase.gather(
-            1, nbr_idx.reshape(B, -1)
-        ).reshape(B, N, k)
-        nbr_amp = flat_amp.gather(
-            1, nbr_idx.reshape(B, -1)
-        ).reshape(B, N, k)
+        nbr_phase = flat_phase.gather(1, nbr_idx.reshape(B, -1)).reshape(B, N, k)
+        nbr_amp = flat_amp.gather(1, nbr_idx.reshape(B, -1)).reshape(B, N, k)
 
         # Wrapped phase differences: (φⱼ − φᵢ) ∈ (-π, π]
         phase_i = flat_phase.unsqueeze(-1)  # (B, N, 1)
@@ -588,9 +572,7 @@ class StuartLandauOscillator(OscillatorModel):
         freq = state.frequency  # (..., N)
 
         # Convert to complex representation: z = r * exp(iφ)
-        z = amp * torch.exp(1j * phase.to(torch.float64)).to(
-            torch.complex64
-        )
+        z = amp * torch.exp(1j * phase.to(torch.float64)).to(torch.complex64)
 
         # Coupling term: K/N Σⱼ (zⱼ - zᵢ)
         coupling = self.coupling_matrix  # (N, N)
@@ -608,9 +590,7 @@ class StuartLandauOscillator(OscillatorModel):
         # Extract amplitude and phase derivatives from complex dz/dt
         # dz/dt = (dr/dt + i r dφ/dt) exp(iφ)
         # So: dr/dt = Re(dz/dt * exp(-iφ)), r*dφ/dt = Im(dz/dt * exp(-iφ))
-        dz_rotated = dz * torch.exp(
-            -1j * phase.to(torch.float64)
-        ).to(torch.complex64)
+        dz_rotated = dz * torch.exp(-1j * phase.to(torch.float64)).to(torch.complex64)
 
         dr = dz_rotated.real.to(self._dtype)
         dphi_raw = dz_rotated.imag.to(self._dtype)
@@ -757,14 +737,14 @@ class HopfOscillator(OscillatorModel):
 
         # Phase derivative: dφ/dt = ω + K·R·sin(ψ-φ)/r
         safe_amp = torch.clamp(amp, min=1e-8)
-        dphi = freq + K * R.unsqueeze(-1) * torch.sin(
-            psi.unsqueeze(-1) - phase
-        ) / safe_amp
+        dphi = (
+            freq + K * R.unsqueeze(-1) * torch.sin(psi.unsqueeze(-1) - phase) / safe_amp
+        )
 
         # Amplitude derivative: dr/dt = μr - r³ + K·R·cos(ψ-φ)
         dr = (
             self._mu * amp
-            - amp ** 3
+            - amp**3
             + K * R.unsqueeze(-1) * torch.cos(psi.unsqueeze(-1) - phase)
         )
 
@@ -808,7 +788,7 @@ class HopfOscillator(OscillatorModel):
         dphi = freq + sin_sum / safe_amp
 
         # Amplitude: drᵢ/dt = μrᵢ - rᵢ³ + Σⱼ Kᵢⱼ cos(φⱼ-φᵢ) rⱼ
-        dr = self._mu * amp - amp ** 3 + cos_sum
+        dr = self._mu * amp - amp**3 + cos_sum
 
         # Frequency: dωᵢ/dt = γ · Σⱼ Kᵢⱼ sin(φⱼ-φᵢ) rⱼ / N
         domega = self._gamma * sin_sum / self._n
@@ -845,7 +825,7 @@ class HopfOscillator(OscillatorModel):
         # --- Edge-case guard: N=1 → no coupling ---
         if N <= 1:
             zeros = torch.zeros_like(phase)
-            dr = self._mu * amp - amp ** 3
+            dr = self._mu * amp - amp**3
             return freq.clone(), dr, zeros
 
         k = self.sparse_k
@@ -859,12 +839,8 @@ class HopfOscillator(OscillatorModel):
         # Sort-based k-NN on the phase circle (factored helper)
         nbr_idx = _build_phase_knn_index(flat_phase, k)  # (B, N, k)
 
-        nbr_phase = flat_phase.gather(
-            1, nbr_idx.reshape(B, -1)
-        ).reshape(B, N, k)
-        nbr_amp = flat_amp.gather(
-            1, nbr_idx.reshape(B, -1)
-        ).reshape(B, N, k)
+        nbr_phase = flat_phase.gather(1, nbr_idx.reshape(B, -1)).reshape(B, N, k)
+        nbr_amp = flat_amp.gather(1, nbr_idx.reshape(B, -1)).reshape(B, N, k)
 
         # Wrapped phase differences: (φⱼ − φᵢ) ∈ (-π, π]
         phase_i = flat_phase.unsqueeze(-1)
@@ -887,7 +863,7 @@ class HopfOscillator(OscillatorModel):
         dphi = flat_freq + sin_sum / safe_amp
 
         # Amplitude: drᵢ/dt = μrᵢ − rᵢ³ + Σ_nbr cos(Δφ)·rⱼ
-        dr = self._mu * flat_amp - flat_amp ** 3 + cos_sum
+        dr = self._mu * flat_amp - flat_amp**3 + cos_sum
 
         # Frequency adaptation
         domega = self._gamma * sin_sum / k
@@ -898,5 +874,3 @@ class HopfOscillator(OscillatorModel):
         domega = _clamp_finite(domega.reshape(freq.shape))
 
         return dphi, dr, domega
-
-

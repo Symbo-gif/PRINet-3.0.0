@@ -92,7 +92,7 @@ from prinet.nn import (
     # Y2 Q2: Temporal & active control
     TemporalHybridPRINet,
     ActiveControlTrainer,
-    retrain_controller,    # Y2 Q3: Architecture v2, MOT, telemetry
+    retrain_controller,  # Y2 Q3: Architecture v2, MOT, telemetry
     HybridPRINetV2,
     HybridPRINetV2CLEVRN,
     PhaseTracker,

@@ -296,9 +296,7 @@ if _TRITON_AVAILABLE:
 
         for j in range(k):
             # Gather neighbour index: nbr_idx[i, j]
-            idx = tl.load(
-                nbr_idx_ptr + offsets * k + j, mask=mask, other=0
-            )
+            idx = tl.load(nbr_idx_ptr + offsets * k + j, mask=mask, other=0)
             # Gather neighbour phase and amplitude
             phase_j = tl.load(phase_ptr + idx, mask=mask, other=0.0)
             amp_j = tl.load(amp_ptr + idx, mask=mask, other=0.0)
@@ -374,8 +372,12 @@ def _compute_mf_derivatives_triton(
     # Pass 1: Reduction
     grid_red = (triton.cdiv(N, _REDUCE_BLOCK),)
     _reduce_order_param_kernel[grid_red](
-        phase, amp, z_real, z_imag,
-        N=N, BLOCK_SIZE=_REDUCE_BLOCK,
+        phase,
+        amp,
+        z_real,
+        z_imag,
+        N=N,
+        BLOCK_SIZE=_REDUCE_BLOCK,
     )
 
     # Pass 2: Derivatives
@@ -385,11 +387,20 @@ def _compute_mf_derivatives_triton(
 
     grid_deriv = (triton.cdiv(N, _DERIV_BLOCK),)
     _mf_derivatives_kernel[grid_deriv](
-        phase, amp, freq,
-        z_real, z_imag,
-        K=K, decay=decay, gamma=gamma, N_float=float(N),
-        dphi_ptr=dphi, dr_ptr=dr, domega_ptr=domega,
-        N=N, BLOCK_SIZE=_DERIV_BLOCK,
+        phase,
+        amp,
+        freq,
+        z_real,
+        z_imag,
+        K=K,
+        decay=decay,
+        gamma=gamma,
+        N_float=float(N),
+        dphi_ptr=dphi,
+        dr_ptr=dr,
+        domega_ptr=domega,
+        N=N,
+        BLOCK_SIZE=_DERIV_BLOCK,
     )
 
     return dphi, dr, domega
@@ -463,7 +474,13 @@ def triton_fused_mean_field_rk4_step(
 
     # ── Stage 1: k1 = f(state) ────────────────────────────────────
     k1_phi, k1_r, k1_om = _compute_mf_derivatives_triton(
-        phase, amplitude, frequency, K, decay, gamma, N,
+        phase,
+        amplitude,
+        frequency,
+        K,
+        decay,
+        gamma,
+        N,
     )
 
     # ── Stage 2: k2 = f(state + 0.5 * dt * k1) ──────────────────
@@ -472,7 +489,13 @@ def triton_fused_mean_field_rk4_step(
     s2_freq = frequency + 0.5 * dt * k1_om
 
     k2_phi, k2_r, k2_om = _compute_mf_derivatives_triton(
-        s2_phase, s2_amp, s2_freq, K, decay, gamma, N,
+        s2_phase,
+        s2_amp,
+        s2_freq,
+        K,
+        decay,
+        gamma,
+        N,
     )
 
     # ── Stage 3: k3 = f(state + 0.5 * dt * k2) ──────────────────
@@ -481,7 +504,13 @@ def triton_fused_mean_field_rk4_step(
     s3_freq = frequency + 0.5 * dt * k2_om
 
     k3_phi, k3_r, k3_om = _compute_mf_derivatives_triton(
-        s3_phase, s3_amp, s3_freq, K, decay, gamma, N,
+        s3_phase,
+        s3_amp,
+        s3_freq,
+        K,
+        decay,
+        gamma,
+        N,
     )
 
     # ── Stage 4: k4 = f(state + dt * k3) ─────────────────────────
@@ -490,7 +519,13 @@ def triton_fused_mean_field_rk4_step(
     s4_freq = frequency + dt * k3_om
 
     k4_phi, k4_r, k4_om = _compute_mf_derivatives_triton(
-        s4_phase, s4_amp, s4_freq, K, decay, gamma, N,
+        s4_phase,
+        s4_amp,
+        s4_freq,
+        K,
+        decay,
+        gamma,
+        N,
     )
 
     # ── Final weighted sum ────────────────────────────────────────
@@ -500,12 +535,24 @@ def triton_fused_mean_field_rk4_step(
 
     grid_sum = (triton.cdiv(N, _SUM_BLOCK),)
     _rk4_weighted_sum_kernel[grid_sum](
-        phase, amplitude, frequency,
-        k1_phi, k1_r, k1_om,
-        k2_phi, k2_r, k2_om,
-        k3_phi, k3_r, k3_om,
-        k4_phi, k4_r, k4_om,
-        out_phase, out_amp, out_freq,
+        phase,
+        amplitude,
+        frequency,
+        k1_phi,
+        k1_r,
+        k1_om,
+        k2_phi,
+        k2_r,
+        k2_om,
+        k3_phi,
+        k3_r,
+        k3_om,
+        k4_phi,
+        k4_r,
+        k4_om,
+        out_phase,
+        out_amp,
+        out_freq,
         dt_over_6=dt / 6.0,
         TWO_PI=_TWO_PI,
         N=N,
@@ -589,11 +636,19 @@ def triton_sparse_knn_coupling(
 
     grid = (triton.cdiv(N, _SPMV_BLOCK),)
     _sparse_knn_coupling_kernel[grid](
-        phase, amplitude, frequency,
+        phase,
+        amplitude,
+        frequency,
         nbr_idx,
-        K_eff=K_eff, decay=decay, gamma=gamma, k=k,
-        dphi_ptr=dphi, dr_ptr=dr, domega_ptr=domega,
-        N=N, BLOCK_SIZE=_SPMV_BLOCK,
+        K_eff=K_eff,
+        decay=decay,
+        gamma=gamma,
+        k=k,
+        dphi_ptr=dphi,
+        dr_ptr=dr,
+        domega_ptr=domega,
+        N=N,
+        BLOCK_SIZE=_SPMV_BLOCK,
     )
 
     return dphi, dr, domega
@@ -634,7 +689,9 @@ def pytorch_mean_field_rk4_step(
     N_float = float(phase.shape[-1])
 
     def _mf_derivs(
-        ph: Tensor, am: Tensor, fr: Tensor,
+        ph: Tensor,
+        am: Tensor,
+        fr: Tensor,
     ) -> Tuple[Tensor, Tensor, Tensor]:
         z = (am * torch.exp(1j * ph.to(torch.complex64))).mean(dim=-1)
         R = z.abs().float()
@@ -647,8 +704,12 @@ def pytorch_mean_field_rk4_step(
         return dphi, dr, dom
 
     def _advance(
-        ph: Tensor, am: Tensor, fr: Tensor,
-        d_ph: Tensor, d_am: Tensor, d_fr: Tensor,
+        ph: Tensor,
+        am: Tensor,
+        fr: Tensor,
+        d_ph: Tensor,
+        d_am: Tensor,
+        d_fr: Tensor,
         scale: float,
     ) -> Tuple[Tensor, Tensor, Tensor]:
         return (
@@ -666,16 +727,12 @@ def pytorch_mean_field_rk4_step(
     k4 = _mf_derivs(*s4)
 
     dt6 = dt / 6.0
-    new_phase = (
-        phase + dt6 * (k1[0] + 2.0 * k2[0] + 2.0 * k3[0] + k4[0])
-    ) % _TWO_PI
+    new_phase = (phase + dt6 * (k1[0] + 2.0 * k2[0] + 2.0 * k3[0] + k4[0])) % _TWO_PI
     new_amp = torch.clamp(
         amplitude + dt6 * (k1[1] + 2.0 * k2[1] + 2.0 * k3[1] + k4[1]),
         min=0.0,
     )
-    new_freq = (
-        frequency + dt6 * (k1[2] + 2.0 * k2[2] + 2.0 * k3[2] + k4[2])
-    )
+    new_freq = frequency + dt6 * (k1[2] + 2.0 * k2[2] + 2.0 * k3[2] + k4[2])
     return new_phase, new_amp, new_freq
 
 
@@ -881,9 +938,7 @@ def triton_hierarchical_order_param(
 
     N_total = phase.shape[0]
     N_bands = len(band_sizes)
-    band_sizes_t = torch.tensor(
-        band_sizes, device=phase.device, dtype=torch.int32
-    )
+    band_sizes_t = torch.tensor(band_sizes, device=phase.device, dtype=torch.int32)
     out_r = torch.empty(N_bands, device=phase.device, dtype=phase.dtype)
 
     BLOCK_SIZE = 256
@@ -1009,9 +1064,7 @@ def _pytorch_single_rk4_step(
         Updated ``(phase, amplitude, frequency)``.
     """
 
-    def _derivs(
-        ph: Tensor, amp: Tensor, freq: Tensor
-    ) -> Tuple[Tensor, Tensor, Tensor]:
+    def _derivs(ph: Tensor, amp: Tensor, freq: Tensor) -> Tuple[Tensor, Tensor, Tensor]:
         N = ph.shape[0]
         if mean_field:
             z = (amp * torch.exp(1j * ph.to(torch.complex64))).mean()
@@ -1049,16 +1102,12 @@ def _pytorch_single_rk4_step(
         frequency + dt * k3_f,
     )
 
-    new_phase = (
-        phase + (dt / 6.0) * (k1_p + 2 * k2_p + 2 * k3_p + k4_p)
-    ) % _TWO_PI
+    new_phase = (phase + (dt / 6.0) * (k1_p + 2 * k2_p + 2 * k3_p + k4_p)) % _TWO_PI
     new_amp = torch.clamp(
         amplitude + (dt / 6.0) * (k1_a + 2 * k2_a + 2 * k3_a + k4_a),
         min=0.0,
     )
-    new_freq = frequency + (dt / 6.0) * (
-        k1_f + 2 * k2_f + 2 * k3_f + k4_f
-    )
+    new_freq = frequency + (dt / 6.0) * (k1_f + 2 * k2_f + 2 * k3_f + k4_f)
 
     return new_phase, new_amp, new_freq
 
@@ -1107,9 +1156,7 @@ def pytorch_multi_rate_derivatives(
     N = phase.shape[0]
 
     # Map band labels to physical frequencies
-    freq_map = torch.tensor(
-        band_frequencies, device=phase.device, dtype=phase.dtype
-    )
+    freq_map = torch.tensor(band_frequencies, device=phase.device, dtype=phase.dtype)
     omega = freq_map[freq_band.long()]  # (N,)
 
     # Mean-field order parameter (global)
@@ -1190,9 +1237,7 @@ def pytorch_fused_sub_step_rk4(
         R = z.abs().float()
         psi = z.angle().float()
 
-        def _derivs(
-            p: Tensor, a: Tensor, f: Tensor
-        ) -> Tuple[Tensor, Tensor, Tensor]:
+        def _derivs(p: Tensor, a: Tensor, f: Tensor) -> Tuple[Tensor, Tensor, Tensor]:
             sin_d = torch.sin(psi - p)
             cos_d = torch.cos(psi - p)
             dp = f + K * R * sin_d
@@ -1224,9 +1269,7 @@ def pytorch_fused_sub_step_rk4(
 
         # Apply only to active oscillators
         ph = torch.where(active_mask, (ph + update_p) % _TWO_PI, ph)
-        amp = torch.where(
-            active_mask, torch.clamp(amp + update_a, min=0.0), amp
-        )
+        amp = torch.where(active_mask, torch.clamp(amp + update_a, min=0.0), amp)
         freq = torch.where(active_mask, freq + update_f, freq)
 
     return ph, amp, freq
@@ -1267,9 +1310,7 @@ def pytorch_cross_band_coupling(
     # PAC modulation: A' = A * (1 + m * cos(phi_slow - phi_fast))
     phase_diff = parent_phase - fast_phase
     modulation = 1.0 + modulation_depth * torch.cos(phase_diff)
-    modulated_amp = torch.clamp(
-        fast_amplitude * modulation, min=epsilon, max=10.0
-    )
+    modulated_amp = torch.clamp(fast_amplitude * modulation, min=epsilon, max=10.0)
 
     return modulated_amp, fast_phase
 
@@ -1341,18 +1382,9 @@ if _TRITON_AVAILABLE:
         local_theta_off = offsets - N_delta
         local_gamma_off = offsets - N_delta - N_theta
 
-        freq_d = tl.load(
-            freq_delta_ptr + local_delta_off,
-            mask=is_delta, other=0.0
-        )
-        freq_t = tl.load(
-            freq_theta_ptr + local_theta_off,
-            mask=is_theta, other=0.0
-        )
-        freq_g = tl.load(
-            freq_gamma_ptr + local_gamma_off,
-            mask=is_gamma, other=0.0
-        )
+        freq_d = tl.load(freq_delta_ptr + local_delta_off, mask=is_delta, other=0.0)
+        freq_t = tl.load(freq_theta_ptr + local_theta_off, mask=is_theta, other=0.0)
+        freq_g = tl.load(freq_gamma_ptr + local_gamma_off, mask=is_gamma, other=0.0)
         freq = tl.where(is_delta, freq_d, tl.where(is_theta, freq_t, freq_g))
 
         # Phase advance: phi += 2*pi*freq*dt
@@ -1362,10 +1394,7 @@ if _TRITON_AVAILABLE:
         new_phase = new_phase % TWO_PI
 
         # Stuart-Landau amplitude update: da = dt * amp * (mu - amp^2)
-        mu = tl.where(
-            is_delta, mu_delta,
-            tl.where(is_theta, mu_theta, mu_gamma)
-        )
+        mu = tl.where(is_delta, mu_delta, tl.where(is_theta, mu_theta, mu_gamma))
         da = dt * amp * (mu - amp * amp)
         new_amp = amp + da
         new_amp = tl.where(new_amp < AMP_MIN, AMP_MIN, new_amp)
@@ -1424,11 +1453,20 @@ def triton_fused_discrete_step(
     """
     if not triton_available() or not phase.is_cuda:
         return pytorch_fused_discrete_step(
-            phase, amplitude,
-            freq_delta, freq_theta, freq_gamma,
-            W_delta, W_theta, W_gamma,
-            mu_delta, mu_theta, mu_gamma,
-            n_delta, n_theta, n_gamma,
+            phase,
+            amplitude,
+            freq_delta,
+            freq_theta,
+            freq_gamma,
+            W_delta,
+            W_theta,
+            W_gamma,
+            mu_delta,
+            mu_theta,
+            mu_gamma,
+            n_delta,
+            n_theta,
+            n_gamma,
             dt,
         )
 
@@ -1446,7 +1484,8 @@ def triton_fused_discrete_step(
 
     for b in range(B):
         _fused_discrete_step_kernel[grid](
-            phase, amplitude,
+            phase,
+            amplitude,
             freq_delta.contiguous().float(),
             freq_theta.contiguous().float(),
             freq_gamma.contiguous().float(),
@@ -1525,11 +1564,11 @@ def pytorch_fused_discrete_step(
 
     # Split by band
     p_d = phase[:, :nd]
-    p_t = phase[:, nd:nd + nt]
-    p_g = phase[:, nd + nt:]
+    p_t = phase[:, nd : nd + nt]
+    p_g = phase[:, nd + nt :]
     a_d = amplitude[:, :nd]
-    a_t = amplitude[:, nd:nd + nt]
-    a_g = amplitude[:, nd + nt:]
+    a_t = amplitude[:, nd : nd + nt]
+    a_g = amplitude[:, nd + nt :]
 
     # Phase advance with intra-band coupling
     def _coupling(ph: Tensor, W: Tensor) -> Tensor:
@@ -1537,12 +1576,9 @@ def pytorch_fused_discrete_step(
         sin_diff = torch.sin(diff)
         return (W.unsqueeze(0) * sin_diff).sum(dim=-1)
 
-    new_p_d = (p_d + _TWO_PI * freq_delta * dt
-               + dt * _coupling(p_d, W_delta)) % _TWO_PI
-    new_p_t = (p_t + _TWO_PI * freq_theta * dt
-               + dt * _coupling(p_t, W_theta)) % _TWO_PI
-    new_p_g = (p_g + _TWO_PI * freq_gamma * dt
-               + dt * _coupling(p_g, W_gamma)) % _TWO_PI
+    new_p_d = (p_d + _TWO_PI * freq_delta * dt + dt * _coupling(p_d, W_delta)) % _TWO_PI
+    new_p_t = (p_t + _TWO_PI * freq_theta * dt + dt * _coupling(p_t, W_theta)) % _TWO_PI
+    new_p_g = (p_g + _TWO_PI * freq_gamma * dt + dt * _coupling(p_g, W_gamma)) % _TWO_PI
 
     # Stuart-Landau amplitude dynamics
     def _amp_update(amp: Tensor, mu: float) -> Tensor:

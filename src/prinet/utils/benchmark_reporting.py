@@ -17,7 +17,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-
 # ---- Report Generation -------------------------------------------------
 
 
@@ -135,12 +134,8 @@ def generate_leaderboard(
         # Sort by accuracy descending (or loss ascending)
         rows.sort(key=lambda r: -r.get("value", 0.0))
 
-        sections.append(
-            "| Rank | Model | Benchmark | Metric | Value |"
-        )
-        sections.append(
-            "|------|-------|-----------|--------|-------|"
-        )
+        sections.append("| Rank | Model | Benchmark | Metric | Value |")
+        sections.append("|------|-------|-----------|--------|-------|")
         for i, row in enumerate(rows, 1):
             sections.append(
                 f"| {i} | {row['model']} | {row['benchmark']} "
@@ -305,9 +300,7 @@ def _format_detail(data: dict[str, Any]) -> str:
                             f"| test_acc | {r['test_acc']:.4f} |"
                         )
             elif isinstance(model_results, (int, float)):
-                lines.append(
-                    f"| {model_name} | value | {model_results} |"
-                )
+                lines.append(f"| {model_name} | value | {model_results} |")
 
     lines.append("")
     return "\n".join(lines)

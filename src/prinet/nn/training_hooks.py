@@ -94,10 +94,8 @@ class StateCollector:
             for p in model.parameters():
                 if p.grad is not None:
                     total_norm += p.grad.data.norm(2).item() ** 2
-            grad_norm = total_norm ** 0.5
-            self._grad_norm_ema = (
-                alpha * grad_norm + (1 - alpha) * self._grad_norm_ema
-            )
+            grad_norm = total_norm**0.5
+            self._grad_norm_ema = alpha * grad_norm + (1 - alpha) * self._grad_norm_ema
 
         self._step_count += 1
 
@@ -386,9 +384,7 @@ class TelemetryLogger:
                 "suggested_K_max": getattr(control, "suggested_K_max", 10.0),
                 "regime_mf_weight": getattr(control, "regime_mf_weight", 0.5),
                 "regime_sk_weight": getattr(control, "regime_sk_weight", 0.3),
-                "regime_full_weight": getattr(
-                    control, "regime_full_weight", 0.2
-                ),
+                "regime_full_weight": getattr(control, "regime_full_weight", 0.2),
                 "coupling_mode_suggestion": getattr(
                     control, "coupling_mode_suggestion", 0.0
                 ),
@@ -548,11 +544,13 @@ class ActiveControlTrainer:
         if self._active and control is not None:
             # Apply policies with damping
             lr_mult = apply_lr_adjustment(
-                control, self._optimizer,
+                control,
+                self._optimizer,
                 max_adjustment=self._max_adj,
             )
             k_range = apply_k_range_narrowing(
-                control, self._model,
+                control,
+                self._model,
                 max_adjustment=self._max_adj,
             )
             regime = apply_regime_bias(control)
@@ -563,4 +561,3 @@ class ActiveControlTrainer:
 
         self._last_policy = policy
         return policy
-

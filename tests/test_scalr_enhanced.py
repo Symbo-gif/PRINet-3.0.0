@@ -138,13 +138,9 @@ class TestOscillationAwareDecay:
     def test_decay_factor_parameter(self) -> None:
         """Decay factor should scale the lr reduction."""
         model = _make_simple_model()
-        opt1 = SCALROptimizer(
-            model.parameters(), lr=0.01, oscillation_decay=0.5
-        )
+        opt1 = SCALROptimizer(model.parameters(), lr=0.01, oscillation_decay=0.5)
         model2 = _make_simple_model()
-        opt2 = SCALROptimizer(
-            model2.parameters(), lr=0.01, oscillation_decay=0.9
-        )
+        opt2 = SCALROptimizer(model2.parameters(), lr=0.01, oscillation_decay=0.9)
 
         # Inject same oscillating history/decay
         opt1._lr_decay_factor = 1.0
@@ -197,9 +193,7 @@ class TestPerFrequencyLR:
         loss.backward()
 
         # This should not raise
-        opt.step(
-            order_parameter={"delta": 0.99, "theta": 0.5, "gamma": 0.1}
-        )
+        opt.step(order_parameter={"delta": 0.99, "theta": 0.5, "gamma": 0.1})
 
     def test_gradient_step_updates(self) -> None:
         """All parameter groups should be updated after step."""
@@ -231,9 +225,7 @@ class TestPerFrequencyLR:
             x = torch.randn(4, 16)
             loss = model(x).sum()
             loss.backward()
-            opt.step(
-                order_parameter={"delta": 0.8, "theta": 0.6, "gamma": 0.4}
-            )
+            opt.step(order_parameter={"delta": 0.8, "theta": 0.6, "gamma": 0.4})
             opt.zero_grad()
 
 

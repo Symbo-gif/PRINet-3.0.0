@@ -40,11 +40,11 @@ matplotlib.use("Agg")
 
 # ---- Color-blind-safe palette (Tol bright) ----
 COLORS = {
-    "pt": "#4477AA",       # Blue - PhaseTracker
-    "sa": "#EE6677",       # Red - SlotAttention
-    "pt_large": "#228833", # Green - PT-Large
+    "pt": "#4477AA",  # Blue - PhaseTracker
+    "sa": "#EE6677",  # Red - SlotAttention
+    "pt_large": "#228833",  # Green - PT-Large
     "chimera": "#CCBB44",  # Yellow - chimera region
-    "coherent": "#66CCEE", # Cyan - coherent region
+    "coherent": "#66CCEE",  # Cyan - coherent region
     "full": "#4477AA",
     "attention_only": "#EE6677",
     "oscillator_only": "#228833",
@@ -56,7 +56,9 @@ COLORS = {
 }
 
 # ---- Default paths ----
-DEFAULT_RESULTS_DIR = Path(__file__).parent.parent.parent.parent / "benchmarks" / "results"
+DEFAULT_RESULTS_DIR = (
+    Path(__file__).parent.parent.parent.parent / "benchmarks" / "results"
+)
 DEFAULT_OUTPUT_DIR = Path(__file__).parent.parent.parent.parent / "paper" / "figures"
 
 
@@ -67,26 +69,28 @@ def configure_neurips_style() -> None:
     LaTeX template. Uses serif (Computer Modern) fonts for consistency
     with LaTeX-rendered text.
     """
-    plt.rcParams.update({
-        "figure.dpi": 300,
-        "savefig.dpi": 300,
-        "savefig.bbox": "tight",
-        "savefig.pad_inches": 0.02,
-        "font.size": 9,
-        "font.family": "serif",
-        "axes.titlesize": 10,
-        "axes.labelsize": 9,
-        "xtick.labelsize": 8,
-        "ytick.labelsize": 8,
-        "legend.fontsize": 8,
-        "legend.framealpha": 0.8,
-        "axes.grid": True,
-        "grid.alpha": 0.3,
-        "grid.linewidth": 0.5,
-        "axes.linewidth": 0.8,
-        "lines.linewidth": 1.5,
-        "lines.markersize": 5,
-    })
+    plt.rcParams.update(
+        {
+            "figure.dpi": 300,
+            "savefig.dpi": 300,
+            "savefig.bbox": "tight",
+            "savefig.pad_inches": 0.02,
+            "font.size": 9,
+            "font.family": "serif",
+            "axes.titlesize": 10,
+            "axes.labelsize": 9,
+            "xtick.labelsize": 8,
+            "ytick.labelsize": 8,
+            "legend.fontsize": 8,
+            "legend.framealpha": 0.8,
+            "axes.grid": True,
+            "grid.alpha": 0.3,
+            "grid.linewidth": 0.5,
+            "axes.linewidth": 0.8,
+            "lines.linewidth": 1.5,
+            "lines.markersize": 5,
+        }
+    )
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -164,8 +168,14 @@ def fig_clevr_n_capacity(
     accuracies = [v["test_accuracy"] * 100 for v in variants]
     colors_list = [COLORS.get(n, "#999999") for n in names]
 
-    bars = ax.bar(names, accuracies, color=colors_list, edgecolor="black",
-                  linewidth=0.5, width=0.6)
+    bars = ax.bar(
+        names,
+        accuracies,
+        color=colors_list,
+        edgecolor="black",
+        linewidth=0.5,
+        width=0.6,
+    )
 
     ax.set_ylabel("Test Accuracy (%)")
     ax.set_title("CLEVR-N Ablation: Variant Accuracy")
@@ -173,8 +183,14 @@ def fig_clevr_n_capacity(
 
     # Add value labels on bars
     for bar, acc in zip(bars, accuracies):
-        ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.5,
-                f"{acc:.1f}%", ha="center", va="bottom", fontsize=7)
+        ax.text(
+            bar.get_x() + bar.get_width() / 2,
+            bar.get_height() + 0.5,
+            f"{acc:.1f}%",
+            ha="center",
+            va="bottom",
+            fontsize=7,
+        )
 
     ax.set_xticks(range(len(names)))
     ax.set_xticklabels(names, rotation=15, ha="right")
@@ -226,8 +242,10 @@ def fig_chimera_heatmap(
         vmin=0.3,
         vmax=0.75,
         extent=(
-            min(k_values) - 5, max(k_values) + 5,
-            min(alpha_values) - 0.02, max(alpha_values) + 0.02,
+            min(k_values) - 5,
+            max(k_values) + 5,
+            min(alpha_values) - 0.02,
+            max(alpha_values) + 0.02,
         ),
     )
 
@@ -238,8 +256,13 @@ def fig_chimera_heatmap(
 
     # Mark chimera threshold
     ax.contour(
-        k_values, alpha_values, bc_matrix,
-        levels=[0.555], colors=["white"], linewidths=1.5, linestyles="--",
+        k_values,
+        alpha_values,
+        bc_matrix,
+        levels=[0.555],
+        colors=["white"],
+        linewidths=1.5,
+        linestyles="--",
     )
 
     fig.tight_layout()
@@ -279,11 +302,26 @@ def fig_mot_identity_preservation(
 
     fig, ax = plt.subplots(figsize=(3.3, 2.5))
 
-    ax.errorbar(rates, pt_means, yerr=[pt_err_lo, pt_err_hi],
-                color=COLORS["pt"], marker="o", label="PhaseTracker",
-                capsize=3, linewidth=1.5, markersize=4)
-    ax.plot(rates, sa_means, color=COLORS["sa"], marker="s",
-            label="Slot Attention", linewidth=1.5, markersize=4)
+    ax.errorbar(
+        rates,
+        pt_means,
+        yerr=[pt_err_lo, pt_err_hi],
+        color=COLORS["pt"],
+        marker="o",
+        label="PhaseTracker",
+        capsize=3,
+        linewidth=1.5,
+        markersize=4,
+    )
+    ax.plot(
+        rates,
+        sa_means,
+        color=COLORS["sa"],
+        marker="s",
+        label="Slot Attention",
+        linewidth=1.5,
+        markersize=4,
+    )
 
     ax.set_xlabel("Occlusion Rate (%)")
     ax.set_ylabel("Identity Preservation (IP)")
@@ -332,8 +370,15 @@ def fig_oscillosim_scaling(
         tps = [r["throughput_osc_step_per_s"] for r in results if r["status"] == "OK"]
 
         if ns and tps:
-            ax.loglog(ns, tps, marker=marker, color=color, label=label,
-                      linewidth=1.5, markersize=5)
+            ax.loglog(
+                ns,
+                tps,
+                marker=marker,
+                color=color,
+                label=label,
+                linewidth=1.5,
+                markersize=5,
+            )
 
     ax.set_xlabel("Number of Oscillators N")
     ax.set_ylabel("Throughput (osc*step/s)")
@@ -381,8 +426,14 @@ def fig_ablation_results(
     ax1.set_xticklabels(names, rotation=15, ha="right", fontsize=7)
 
     for bar, acc in zip(bars1, accs):
-        ax1.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.3,
-                 f"{acc:.1f}", ha="center", va="bottom", fontsize=6)
+        ax1.text(
+            bar.get_x() + bar.get_width() / 2,
+            bar.get_height() + 0.3,
+            f"{acc:.1f}",
+            ha="center",
+            va="bottom",
+            fontsize=6,
+        )
 
     # FLOPs subplot
     bars2 = ax2.bar(names, flops, color=colors_list, edgecolor="black", linewidth=0.5)
@@ -428,14 +479,23 @@ def fig_parameter_efficiency(
     for m in models:
         name = m["model"]
         color = model_colors.get(name, "#999999")
-        ax.scatter(m["total_params"], m["mean_ip"], color=color,
-                   s=80, zorder=5, edgecolors="black", linewidth=0.5,
-                   label=f"{name} ({m['total_params']:,} params)")
+        ax.scatter(
+            m["total_params"],
+            m["mean_ip"],
+            color=color,
+            s=80,
+            zorder=5,
+            edgecolors="black",
+            linewidth=0.5,
+            label=f"{name} ({m['total_params']:,} params)",
+        )
         ax.annotate(
             f"IP/param: {m['ip_per_param']:.4f}",
             (m["total_params"], m["mean_ip"]),
-            textcoords="offset points", xytext=(5, -12),
-            fontsize=6, color=color,
+            textcoords="offset points",
+            xytext=(5, -12),
+            fontsize=6,
+            color=color,
         )
 
     ax.set_xscale("log")
@@ -479,18 +539,40 @@ def fig_training_curves(
     # PT training curves (first seed)
     pt_seed = pt_data["per_seed"][0]
     epochs_pt = list(range(1, len(pt_seed["train_losses"]) + 1))
-    ax1.plot(epochs_pt, pt_seed["train_losses"], color=COLORS["pt"],
-             label="Train", linewidth=1.2)
-    ax1.plot(epochs_pt, pt_seed["val_losses"], color=COLORS["pt"],
-             linestyle="--", label="Val", linewidth=1.2)
+    ax1.plot(
+        epochs_pt,
+        pt_seed["train_losses"],
+        color=COLORS["pt"],
+        label="Train",
+        linewidth=1.2,
+    )
+    ax1.plot(
+        epochs_pt,
+        pt_seed["val_losses"],
+        color=COLORS["pt"],
+        linestyle="--",
+        label="Val",
+        linewidth=1.2,
+    )
 
     # SA training curves (first seed)
     sa_seed = sa_data["per_seed"][0]
     epochs_sa = list(range(1, len(sa_seed["train_losses"]) + 1))
-    ax1.plot(epochs_sa, sa_seed["train_losses"], color=COLORS["sa"],
-             label="SA Train", linewidth=1.2)
-    ax1.plot(epochs_sa, sa_seed["val_losses"], color=COLORS["sa"],
-             linestyle="--", label="SA Val", linewidth=1.2)
+    ax1.plot(
+        epochs_sa,
+        sa_seed["train_losses"],
+        color=COLORS["sa"],
+        label="SA Train",
+        linewidth=1.2,
+    )
+    ax1.plot(
+        epochs_sa,
+        sa_seed["val_losses"],
+        color=COLORS["sa"],
+        linestyle="--",
+        label="SA Val",
+        linewidth=1.2,
+    )
 
     ax1.set_xlabel("Epoch")
     ax1.set_ylabel("Loss")
@@ -507,8 +589,14 @@ def fig_training_curves(
     ax2.set_ylim(0.99, 1.005)
 
     for bar, ip in zip(bars, ips):
-        ax2.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.0003,
-                 f"{ip:.4f}", ha="center", va="bottom", fontsize=7)
+        ax2.text(
+            bar.get_x() + bar.get_width() / 2,
+            bar.get_height() + 0.0003,
+            f"{ip:.4f}",
+            ha="center",
+            va="bottom",
+            fontsize=7,
+        )
 
     fig.tight_layout()
     return _save_fig(fig, "fig9_training_curves", output_dir)
@@ -545,12 +633,20 @@ def fig_gold_standard_chimera(
 
     for i, seed_data in enumerate(seeds):
         values = [seed_data[m] for m in metrics]
-        ax.bar(x + i * width, values, width, label=f"Seed {seed_data['seed']}",
-               edgecolor="black", linewidth=0.3, alpha=0.8)
+        ax.bar(
+            x + i * width,
+            values,
+            width,
+            label=f"Seed {seed_data['seed']}",
+            edgecolor="black",
+            linewidth=0.3,
+            alpha=0.8,
+        )
 
     # Chimera threshold line
-    ax.axhline(y=0.555, color="red", linestyle="--", linewidth=0.8,
-               label="BC threshold")
+    ax.axhline(
+        y=0.555, color="red", linestyle="--", linewidth=0.8, label="BC threshold"
+    )
 
     ax.set_xticks(x + width)
     ax.set_xticklabels(metric_labels, fontsize=7)
@@ -609,8 +705,15 @@ def fig_statistical_summary(
     err_hi = [hi - v for v, hi in zip(values, ci_high)]
     colors_list = [COLORS["pt"], COLORS["sa"], "#999999"]
 
-    ax.barh(y_pos, values, xerr=[err_lo, err_hi], color=colors_list,
-            edgecolor="black", linewidth=0.5, capsize=3)
+    ax.barh(
+        y_pos,
+        values,
+        xerr=[err_lo, err_hi],
+        color=colors_list,
+        edgecolor="black",
+        linewidth=0.5,
+        capsize=3,
+    )
     ax.set_yticks(y_pos)
     ax.set_yticklabels(labels)
     ax.set_xlabel("Value")
@@ -622,10 +725,12 @@ def fig_statistical_summary(
     outcome = data.get("conclusion", "unknown")
     ax.annotate(
         f"Outcome: {outcome}",
-        xy=(0.5, 0.02), xycoords="axes fraction",
-        fontsize=7, ha="center", style="italic",
-        bbox=dict(boxstyle="round,pad=0.3", facecolor="lightyellow",
-                  edgecolor="gray"),
+        xy=(0.5, 0.02),
+        xycoords="axes fraction",
+        fontsize=7,
+        ha="center",
+        style="italic",
+        bbox=dict(boxstyle="round,pad=0.3", facecolor="lightyellow", edgecolor="gray"),
     )
 
     fig.tight_layout()
@@ -669,10 +774,24 @@ def fig_flops_scaling(
     fig, ax = plt.subplots(figsize=(3.3, 2.4))
     x = np.arange(len(n_vals))
     w = 0.35
-    ax.bar(x - w / 2, pt_flops, w, label="PhaseTracker", color=COLORS["pt"],
-           edgecolor="black", linewidth=0.5)
-    ax.bar(x + w / 2, sa_flops, w, label="SlotAttention", color=COLORS["sa"],
-           edgecolor="black", linewidth=0.5)
+    ax.bar(
+        x - w / 2,
+        pt_flops,
+        w,
+        label="PhaseTracker",
+        color=COLORS["pt"],
+        edgecolor="black",
+        linewidth=0.5,
+    )
+    ax.bar(
+        x + w / 2,
+        sa_flops,
+        w,
+        label="SlotAttention",
+        color=COLORS["sa"],
+        edgecolor="black",
+        linewidth=0.5,
+    )
 
     ax.set_xlabel("Number of Objects (N)")
     ax.set_ylabel("FLOPs (×10³)")
@@ -688,8 +807,11 @@ def fig_flops_scaling(
         ax.annotate(
             f"{ratio:.0f}×",
             xy=(i + w / 2, sa_f),
-            xytext=(0, 4), textcoords="offset points",
-            fontsize=7, ha="center", va="bottom",
+            xytext=(0, 4),
+            textcoords="offset points",
+            fontsize=7,
+            ha="center",
+            va="bottom",
         )
 
     fig.tight_layout()
@@ -731,8 +853,14 @@ def fig_supercritical_regime(
 
     fig, ax1 = plt.subplots(figsize=(3.3, 2.4))
     x = np.arange(len(bands))
-    bars = ax1.bar(x, ratios, 0.6, color=[COLORS["pt"], COLORS["coherent"],
-                   COLORS["chimera"]], edgecolor="black", linewidth=0.5)
+    bars = ax1.bar(
+        x,
+        ratios,
+        0.6,
+        color=[COLORS["pt"], COLORS["coherent"], COLORS["chimera"]],
+        edgecolor="black",
+        linewidth=0.5,
+    )
     ax1.set_ylabel(r"$K_{\mathrm{eff}} / K_c$ Ratio")
     ax1.set_xticks(x)
     ax1.set_xticklabels(band_labels, fontsize=7)
@@ -741,8 +869,15 @@ def fig_supercritical_regime(
 
     # Overlay convergence rates on secondary axis
     ax2 = ax1.twinx()
-    ax2.plot(x, conv_rates, "D-", color="#AA3377", markersize=5, linewidth=1.2,
-             label=r"$\lambda$ (convergence)")
+    ax2.plot(
+        x,
+        conv_rates,
+        "D-",
+        color="#AA3377",
+        markersize=5,
+        linewidth=1.2,
+        label=r"$\lambda$ (convergence)",
+    )
     ax2.set_ylabel(r"Convergence Rate $\lambda$", color="#AA3377")
     ax2.tick_params(axis="y", labelcolor="#AA3377")
 
@@ -792,8 +927,14 @@ def fig_representation_geometry(
         cmap = plt.get_cmap("tab10")
         for j, lbl in enumerate(unique_labels):
             mask = labels_arr == lbl
-            ax.scatter(tsne[mask, 0], tsne[mask, 1], s=8, alpha=0.6,
-                       color=cmap(j % 10), label=f"Obj {lbl}" if j < 5 else None)
+            ax.scatter(
+                tsne[mask, 0],
+                tsne[mask, 1],
+                s=8,
+                alpha=0.6,
+                color=cmap(j % 10),
+                label=f"Obj {lbl}" if j < 5 else None,
+            )
 
         knn = m["metrics"]["knn_purity"]
         idim = m["metrics"]["intrinsic_dim_90pct"]
@@ -845,8 +986,16 @@ def fig_gradient_flow(
         short = [l.split("/")[-1] if "/" in l else l for l in layers]
 
         y_pos = np.arange(len(layers))
-        ax.barh(y_pos, means, xerr=stds, color=COLORS[color_key],
-                edgecolor="black", linewidth=0.5, capsize=2, alpha=0.85)
+        ax.barh(
+            y_pos,
+            means,
+            xerr=stds,
+            color=COLORS[color_key],
+            edgecolor="black",
+            linewidth=0.5,
+            capsize=2,
+            alpha=0.85,
+        )
         ax.set_yticks(y_pos)
         ax.set_yticklabels(short, fontsize=6)
         ax.set_xlabel("Mean Gradient Norm")
@@ -891,17 +1040,26 @@ def fig_noise_velocity(
     pt_ci_hi = [s["pt_stats"]["ci_high"] for s in noise_data["sweep"]]
 
     ax1.fill_between(sigmas, pt_ci_lo, pt_ci_hi, alpha=0.15, color=COLORS["pt"])
-    ax1.plot(sigmas, pt_ip, "o-", color=COLORS["pt"], markersize=3,
-             label="PhaseTracker")
-    ax1.plot(sigmas, sa_ip, "s-", color=COLORS["sa"], markersize=3,
-             label="SlotAttention")
+    ax1.plot(
+        sigmas, pt_ip, "o-", color=COLORS["pt"], markersize=3, label="PhaseTracker"
+    )
+    ax1.plot(
+        sigmas, sa_ip, "s-", color=COLORS["sa"], markersize=3, label="SlotAttention"
+    )
 
     # Add exponential fit
     exp_fit = noise_data["exponential_fit"]["phase_tracker"]
     sigma_fine = np.linspace(0, max(sigmas), 100)
     ip_fit = exp_fit["IP_0"] * np.exp(-sigma_fine / exp_fit["sigma_c"])
-    ax1.plot(sigma_fine, ip_fit, "--", color=COLORS["pt"], alpha=0.5,
-             linewidth=1, label=f"Fit (R²={exp_fit['R_squared']:.3f})")
+    ax1.plot(
+        sigma_fine,
+        ip_fit,
+        "--",
+        color=COLORS["pt"],
+        alpha=0.5,
+        linewidth=1,
+        label=f"Fit (R²={exp_fit['R_squared']:.3f})",
+    )
 
     ax1.set_xlabel(r"Noise $\sigma$")
     ax1.set_ylabel("Identity Preservation")
@@ -917,10 +1075,12 @@ def fig_noise_velocity(
     pt_vel_hi = [s["pt_stats"]["ci_high"] for s in vel_data["sweep"]]
 
     ax2.fill_between(speeds, pt_vel_lo, pt_vel_hi, alpha=0.15, color=COLORS["pt"])
-    ax2.plot(speeds, pt_vel, "o-", color=COLORS["pt"], markersize=4,
-             label="PhaseTracker")
-    ax2.plot(speeds, sa_vel, "s-", color=COLORS["sa"], markersize=4,
-             label="SlotAttention")
+    ax2.plot(
+        speeds, pt_vel, "o-", color=COLORS["pt"], markersize=4, label="PhaseTracker"
+    )
+    ax2.plot(
+        speeds, sa_vel, "s-", color=COLORS["sa"], markersize=4, label="SlotAttention"
+    )
     ax2.set_xlabel("Speed Multiplier (×)")
     ax2.set_ylabel("Identity Preservation")
     ax2.set_title("Velocity Stress")

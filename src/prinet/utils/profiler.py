@@ -31,7 +31,6 @@ import torch
 import torch.nn as nn
 from torch import Tensor
 
-
 # ---------------------------------------------------------------------------
 # ProfileReport
 # ---------------------------------------------------------------------------
@@ -172,7 +171,9 @@ class PRINetProfiler:
             key_avgs,
             key=lambda e: (
                 getattr(e, "self_cpu_time_total", 0)
-                + getattr(e, "self_cuda_time_total", getattr(e, "self_device_time_total", 0))
+                + getattr(
+                    e, "self_cuda_time_total", getattr(e, "self_device_time_total", 0)
+                )
             ),
             reverse=True,
         )[:top_n]
@@ -185,8 +186,7 @@ class PRINetProfiler:
         for evt in sorted_avgs:
             cpu_ms = getattr(evt, "self_cpu_time_total", 0) / 1000.0
             cuda_raw = getattr(
-                evt, "self_cuda_time_total",
-                getattr(evt, "self_device_time_total", 0)
+                evt, "self_cuda_time_total", getattr(evt, "self_device_time_total", 0)
             )
             cuda_ms = (cuda_raw or 0) / 1000.0
             top_ops.append((evt.key, cpu_ms, cuda_ms))
@@ -207,10 +207,7 @@ class PRINetProfiler:
             "total_wall_ms": total_wall_ms,
             "n_steps": n_steps,
             "avg_step_ms": total_wall_ms / max(n_steps, 1),
-            "top_ops": [
-                {"op": op, "cpu_ms": c, "cuda_ms": g}
-                for op, c, g in top_ops
-            ],
+            "top_ops": [{"op": op, "cpu_ms": c, "cuda_ms": g} for op, c, g in top_ops],
         }
 
         return ProfileReport(
@@ -276,7 +273,9 @@ def profile_training_loop(
     model = model.to(device)
     model.train()
 
-    active = min(n_steps, len(dataloader) if hasattr(dataloader, "__len__") else n_steps)
+    active = min(
+        n_steps, len(dataloader) if hasattr(dataloader, "__len__") else n_steps
+    )
     profiler = PRINetProfiler(
         out_dir=out_dir,
         warmup_steps=warmup_steps,

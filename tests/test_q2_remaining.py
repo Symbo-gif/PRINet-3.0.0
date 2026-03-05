@@ -156,7 +156,10 @@ class TestExponentialIntegrator:
         state = OscillatorState.create_random(N, seed=SEED)
         ei = ExponentialIntegrator(dim=3 * N)
         final, _ = ei.integrate(
-            model, state, n_steps=10, dt=0.01,
+            model,
+            state,
+            n_steps=10,
+            dt=0.01,
             recompute_jacobian_every=5,
         )
         assert torch.isfinite(final.phase).all()
@@ -198,12 +201,11 @@ class TestExponentialIntegrator:
         """ExponentialIntegrator works on CUDA."""
         N = 10
         model = KuramotoOscillator(
-            N, coupling_strength=1.0,
+            N,
+            coupling_strength=1.0,
             device=torch.device("cuda"),
         )
-        state = OscillatorState.create_random(
-            N, seed=SEED, device=torch.device("cuda")
-        )
+        state = OscillatorState.create_random(N, seed=SEED, device=torch.device("cuda"))
         ei = ExponentialIntegrator(dim=3 * N)
         new_state = ei.step(model, state, dt=0.01)
         assert new_state.phase.device.type == "cuda"
@@ -320,9 +322,7 @@ class TestHEPExactGradient:
         """hEP should produce non-zero gradients for concept_proj weights."""
         torch.manual_seed(SEED)
         model = PRINetModel(n_resonances=16, n_dims=32, n_concepts=5)
-        trainer = HolomorphicEPTrainer(
-            model, beta=0.1, free_steps=10, nudge_steps=5
-        )
+        trainer = HolomorphicEPTrainer(model, beta=0.1, free_steps=10, nudge_steps=5)
         x = torch.randn(4, 32)
         targets = torch.randint(0, 5, (4,))
         grads, loss = trainer.compute_hep_gradients(x, targets)
@@ -330,17 +330,13 @@ class TestHEPExactGradient:
         # Check that concept_proj gradient is non-zero
         for name, grad in grads.items():
             if "concept_proj" in name:
-                assert grad.abs().sum() > 0, (
-                    f"Gradient for {name} should be non-zero"
-                )
+                assert grad.abs().sum() > 0, f"Gradient for {name} should be non-zero"
 
     def test_hep_gradient_coupling_nonzero(self, seeded: None) -> None:
         """hEP coupling gradients should be non-zero."""
         torch.manual_seed(SEED)
         model = PRINetModel(n_resonances=16, n_dims=32, n_concepts=5)
-        trainer = HolomorphicEPTrainer(
-            model, beta=0.1, free_steps=10, nudge_steps=5
-        )
+        trainer = HolomorphicEPTrainer(model, beta=0.1, free_steps=10, nudge_steps=5)
         x = torch.randn(4, 32)
         targets = torch.randint(0, 5, (4,))
         grads, _ = trainer.compute_hep_gradients(x, targets)
@@ -353,9 +349,7 @@ class TestHEPExactGradient:
         """hEP train_step should return finite loss."""
         torch.manual_seed(SEED)
         model = PRINetModel(n_resonances=16, n_dims=32, n_concepts=5)
-        trainer = HolomorphicEPTrainer(
-            model, beta=0.1, free_steps=10, nudge_steps=5
-        )
+        trainer = HolomorphicEPTrainer(model, beta=0.1, free_steps=10, nudge_steps=5)
         x = torch.randn(4, 32)
         targets = torch.randint(0, 5, (4,))
         loss = trainer.train_step(x, targets, lr=0.001)
@@ -365,9 +359,7 @@ class TestHEPExactGradient:
         """All model parameters should have gradient entries."""
         torch.manual_seed(SEED)
         model = PRINetModel(n_resonances=16, n_dims=32, n_concepts=5)
-        trainer = HolomorphicEPTrainer(
-            model, beta=0.1, free_steps=10, nudge_steps=5
-        )
+        trainer = HolomorphicEPTrainer(model, beta=0.1, free_steps=10, nudge_steps=5)
         x = torch.randn(4, 32)
         targets = torch.randint(0, 5, (4,))
         grads, _ = trainer.compute_hep_gradients(x, targets)
@@ -410,13 +402,9 @@ class TestSolverCompile:
         model = KuramotoOscillator(N, coupling_strength=1.0)
         state = OscillatorState.create_random(N, seed=SEED)
         if _HAS_INDUCTOR:
-            solver = BatchedRK45Solver(
-                atol=1e-4, rtol=1e-3, compiled=True
-            )
+            solver = BatchedRK45Solver(atol=1e-4, rtol=1e-3, compiled=True)
         else:
-            solver = BatchedRK45Solver(
-                atol=1e-4, rtol=1e-3, compiled=False
-            )
+            solver = BatchedRK45Solver(atol=1e-4, rtol=1e-3, compiled=False)
         result = solver.solve(model, state, t_span=(0.0, 0.1), max_steps=200)
         assert torch.isfinite(result.final_state.phase).all()
         assert result.n_steps_taken > 0
@@ -459,8 +447,11 @@ class TestSolverOptimizations:
         state = OscillatorState.create_random(N, seed=SEED)
         solver = BatchedRK45Solver(atol=1e-4, rtol=1e-2)
         result = solver.solve(
-            model, state, t_span=(0.0, 0.1),
-            max_steps=100, record_trajectory=True,
+            model,
+            state,
+            t_span=(0.0, 0.1),
+            max_steps=100,
+            record_trajectory=True,
         )
         assert result.trajectory is not None
         assert len(result.trajectory) == result.n_steps_taken
@@ -535,7 +526,10 @@ class TestGradientCheckpointing:
         model = KuramotoOscillator(N, coupling_strength=1.0)
         state = OscillatorState.create_random(N, seed=SEED)
         final = gradient_checkpoint_integration(
-            model, state, n_steps=10, dt=0.01,
+            model,
+            state,
+            n_steps=10,
+            dt=0.01,
             memory_budget_mb=4096.0,
         )
         assert torch.isfinite(final.phase).all()
@@ -546,15 +540,14 @@ class TestGradientCheckpointing:
         torch.manual_seed(SEED)
         N = 1000
         device = torch.device("cuda")
-        model = KuramotoOscillator(
-            N, coupling_strength=1.0, device=device
-        )
-        state = OscillatorState.create_random(
-            N, seed=SEED, device=device
-        )
+        model = KuramotoOscillator(N, coupling_strength=1.0, device=device)
+        state = OscillatorState.create_random(N, seed=SEED, device=device)
         # Use a generous budget — should complete fine
         final = gradient_checkpoint_integration(
-            model, state, n_steps=20, dt=0.01,
+            model,
+            state,
+            n_steps=20,
+            dt=0.01,
             memory_budget_mb=2048.0,
         )
         assert final.phase.device.type == "cuda"
@@ -572,22 +565,21 @@ class TestGradientCheckpointing:
         device = torch.device("cuda")
         torch.cuda.reset_peak_memory_stats(device)
 
-        model = KuramotoOscillator(
-            N, coupling_strength=1.0, device=device
-        )
-        state = OscillatorState.create_random(
-            N, seed=SEED, device=device
-        )
+        model = KuramotoOscillator(N, coupling_strength=1.0, device=device)
+        state = OscillatorState.create_random(N, seed=SEED, device=device)
 
         budget_mb = 2048.0
         final = gradient_checkpoint_integration(
-            model, state, n_steps=20, dt=0.01,
+            model,
+            state,
+            n_steps=20,
+            dt=0.01,
             memory_budget_mb=budget_mb,
         )
         peak_mb = torch.cuda.max_memory_allocated(device) / (1024 * 1024)
-        assert peak_mb < budget_mb * 1.5, (
-            f"Peak VRAM {peak_mb:.0f} MB exceeded 1.5x budget {budget_mb} MB"
-        )
+        assert (
+            peak_mb < budget_mb * 1.5
+        ), f"Peak VRAM {peak_mb:.0f} MB exceeded 1.5x budget {budget_mb} MB"
         assert torch.isfinite(final.phase).all()
 
 
@@ -658,9 +650,7 @@ class TestCapacityXORn:
         torch.manual_seed(SEED)
         n_bits = 4
         x, y = self._make_xor_data(n_bits, 50)
-        model = PRINetModel(
-            n_resonances=16, n_dims=n_bits, n_concepts=2
-        )
+        model = PRINetModel(n_resonances=16, n_dims=n_bits, n_concepts=2)
         logits = model(x)
         assert logits.shape == (50, 2)
         assert torch.isfinite(logits).all()
@@ -723,14 +713,10 @@ class TestCapacityRandomDichotomies:
         x = torch.randn(n_patterns, input_dim)
         y = torch.randint(0, 2, (n_patterns,), dtype=torch.float)
 
-        model = PRINetModel(
-            n_resonances=16, n_dims=input_dim, n_concepts=2
-        )
+        model = PRINetModel(n_resonances=16, n_dims=input_dim, n_concepts=2)
         # Just verify forward pass works and loss is finite
         logits = model(x)
-        loss = torch.nn.functional.cross_entropy(
-            logits, y.long()
-        )
+        loss = torch.nn.functional.cross_entropy(logits, y.long())
         assert torch.isfinite(loss)
 
 
@@ -763,9 +749,7 @@ class TestFashionMNIST:
         torch.manual_seed(SEED)
         x, y = self._get_fashion_mnist_subset(n_train=100)
 
-        model = PRINetModel(
-            n_resonances=32, n_dims=784, n_concepts=10
-        )
+        model = PRINetModel(n_resonances=32, n_dims=784, n_concepts=10)
         opt = torch.optim.Adam(model.parameters(), lr=0.01)
 
         losses = []
@@ -778,9 +762,9 @@ class TestFashionMNIST:
             losses.append(loss.item())
 
         # Loss should decrease (or at least not explode)
-        assert losses[-1] < losses[0] * 1.5, (
-            f"Loss did not decrease: {losses[0]:.3f} → {losses[-1]:.3f}"
-        )
+        assert (
+            losses[-1] < losses[0] * 1.5
+        ), f"Loss did not decrease: {losses[0]:.3f} → {losses[-1]:.3f}"
         assert all(math.isfinite(l) for l in losses), "NaN loss detected"
 
     def test_hep_training_finite_loss(self, seeded: None) -> None:
@@ -788,21 +772,17 @@ class TestFashionMNIST:
         torch.manual_seed(SEED)
         x, y = self._get_fashion_mnist_subset(n_train=32)
 
-        model = PRINetModel(
-            n_resonances=16, n_dims=784, n_concepts=10
-        )
-        trainer = HolomorphicEPTrainer(
-            model, beta=0.1, free_steps=10, nudge_steps=5
-        )
+        model = PRINetModel(n_resonances=16, n_dims=784, n_concepts=10)
+        trainer = HolomorphicEPTrainer(model, beta=0.1, free_steps=10, nudge_steps=5)
 
         losses = []
         for _ in range(3):
             loss = trainer.train_step(x, y, lr=0.001)
             losses.append(loss)
 
-        assert all(math.isfinite(l) for l in losses), (
-            f"hEP produced NaN/Inf losses: {losses}"
-        )
+        assert all(
+            math.isfinite(l) for l in losses
+        ), f"hEP produced NaN/Inf losses: {losses}"
 
     def test_hep_vs_bptt_comparable_loss(self, seeded: None) -> None:
         """hEP and BPTT should produce loss values in similar range."""
@@ -810,17 +790,13 @@ class TestFashionMNIST:
         x, y = self._get_fashion_mnist_subset(n_train=50)
 
         # BPTT reference
-        model_bptt = PRINetModel(
-            n_resonances=16, n_dims=784, n_concepts=10
-        )
+        model_bptt = PRINetModel(n_resonances=16, n_dims=784, n_concepts=10)
         logits = model_bptt(x)
         bptt_loss = torch.nn.functional.cross_entropy(logits, y).item()
 
         # hEP
         torch.manual_seed(SEED)
-        model_hep = PRINetModel(
-            n_resonances=16, n_dims=784, n_concepts=10
-        )
+        model_hep = PRINetModel(n_resonances=16, n_dims=784, n_concepts=10)
         trainer = HolomorphicEPTrainer(
             model_hep, beta=0.1, free_steps=10, nudge_steps=5
         )

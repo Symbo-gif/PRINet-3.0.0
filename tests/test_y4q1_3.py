@@ -32,7 +32,6 @@ from prinet.utils.y4q1_tools import (
     half_sync_half_random_ic,
 )
 
-
 # =====================================================================
 # Fixtures
 # =====================================================================
@@ -177,9 +176,9 @@ class TestRK4Integrator:
         err_euler = abs(r_euler - r_ref)
         err_rk4 = abs(r_rk4 - r_ref)
         # RK4 should be at least as good (usually much better)
-        assert err_rk4 <= err_euler + 0.05, (
-            f"RK4 error ({err_rk4:.4f}) > Euler error ({err_euler:.4f})"
-        )
+        assert (
+            err_rk4 <= err_euler + 0.05
+        ), f"RK4 error ({err_rk4:.4f}) > Euler error ({err_euler:.4f})"
 
     def test_rk4_phase_stays_bounded(self) -> None:
         """Phase values stay in [0, 2π) after RK4 integration."""
@@ -400,9 +399,7 @@ class TestChimeraIndex:
         chi = chimera_index(random_phase, ring_nbr, threshold=0.9)
         assert chi > 0.0
 
-    def test_bounded(
-        self, random_phase: torch.Tensor, ring_nbr: torch.Tensor
-    ) -> None:
+    def test_bounded(self, random_phase: torch.Tensor, ring_nbr: torch.Tensor) -> None:
         """χ should be in [0, 1]."""
         chi = chimera_index(random_phase, ring_nbr)
         assert 0.0 <= chi <= 1.0
@@ -443,18 +440,14 @@ class TestStrengthOfIncoherenceTemporal:
         """Discarding transient frames works correctly."""
         T, N = 20, 64
         traj = torch.zeros(T, N)
-        si = strength_of_incoherence_temporal(
-            traj, window_size=5, discard_transient=15
-        )
+        si = strength_of_incoherence_temporal(traj, window_size=5, discard_transient=15)
         assert si < 0.1
 
     def test_empty_after_discard(self) -> None:
         """Discarding all frames returns 0."""
         T, N = 5, 64
         traj = torch.rand(T, N) * 2 * math.pi
-        si = strength_of_incoherence_temporal(
-            traj, window_size=3, discard_transient=T
-        )
+        si = strength_of_incoherence_temporal(traj, window_size=3, discard_transient=T)
         assert si == 0.0
 
 
@@ -560,12 +553,8 @@ class TestWeightedCoupling:
             seed=SEED,
         )
 
-        r_uniform = sim_uniform.run(
-            n_steps=100, dt=0.01, initial_phase=init.clone()
-        )
-        r_cosine = sim_cosine.run(
-            n_steps=100, dt=0.01, initial_phase=init.clone()
-        )
+        r_uniform = sim_uniform.run(n_steps=100, dt=0.01, initial_phase=init.clone())
+        r_cosine = sim_cosine.run(n_steps=100, dt=0.01, initial_phase=init.clone())
 
         # Final order parameters should differ
         assert r_uniform.order_parameter[-1] != pytest.approx(

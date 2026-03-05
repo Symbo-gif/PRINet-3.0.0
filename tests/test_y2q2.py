@@ -88,7 +88,9 @@ class TestCLEVRNScaling:
                 scene_dim=scene_dim, query_dim=query_dim
             ),
             "Interleaved": lambda scene_dim, query_dim: InterleavedCLEVRN(
-                scene_dim=scene_dim, query_dim=query_dim, n_items=4,
+                scene_dim=scene_dim,
+                query_dim=query_dim,
+                n_items=4,
             ),
         }
 
@@ -96,8 +98,13 @@ class TestCLEVRNScaling:
 
         for name, factory in models.items():
             results = run_clevr_n_sweep(
-                factory, name, n_items_list=[2],
-                n_train=50, n_test=20, n_epochs=1, seed=SEED,
+                factory,
+                name,
+                n_items_list=[2],
+                n_train=50,
+                n_test=20,
+                n_epochs=1,
+                seed=SEED,
             )
             assert len(results) == 1
             assert results[0].model_name == name
@@ -167,9 +174,9 @@ class TestTemporalCLEVR:
 
         # High carry_strength → phase close to previous
         corr = inter_frame_phase_correlation(new_phase, prev_phase)
-        assert corr.mean() > 0.5, (
-            f"Expected high correlation with carry_strength=0.9, got {corr.mean():.3f}"
-        )
+        assert (
+            corr.mean() > 0.5
+        ), f"Expected high correlation with carry_strength=0.9, got {corr.mean():.3f}"
 
     def test_phase_propagation_zero_carry(self) -> None:
         """With carry_strength=0, phase equals input phase."""
@@ -188,6 +195,7 @@ class TestTemporalCLEVR:
 
         # With zero carry, output should match input (after wrapping)
         from prinet.core.propagation import _wrap_phase
+
         expected_phase = _wrap_phase(input_phase)
         assert torch.allclose(new_phase, expected_phase, atol=1e-5)
         assert torch.allclose(new_amp, input_amp, atol=1e-5)
@@ -256,9 +264,15 @@ class TestTemporalCLEVR:
 
         torch.manual_seed(SEED)
         model = TemporalHybridPRINet(
-            n_input=128, n_classes=2, n_tokens=28,
-            d_model=32, n_heads=4, n_layers=1,
-            n_delta=4, n_theta=8, n_gamma=16,
+            n_input=128,
+            n_classes=2,
+            n_tokens=28,
+            d_model=32,
+            n_heads=4,
+            n_layers=1,
+            n_delta=4,
+            n_theta=8,
+            n_gamma=16,
         )
 
         x = torch.randn(4, 128)  # Single frame
@@ -272,9 +286,15 @@ class TestTemporalCLEVR:
 
         torch.manual_seed(SEED)
         model = TemporalHybridPRINet(
-            n_input=128, n_classes=2, n_tokens=28,
-            d_model=32, n_heads=4, n_layers=1,
-            n_delta=4, n_theta=8, n_gamma=16,
+            n_input=128,
+            n_classes=2,
+            n_tokens=28,
+            d_model=32,
+            n_heads=4,
+            n_layers=1,
+            n_delta=4,
+            n_theta=8,
+            n_gamma=16,
         )
 
         x = torch.randn(4, 3, 128)
@@ -288,9 +308,15 @@ class TestTemporalCLEVR:
 
         torch.manual_seed(SEED)
         model = TemporalHybridPRINet(
-            n_input=64, n_classes=2, n_tokens=28,
-            d_model=32, n_heads=4, n_layers=1,
-            n_delta=4, n_theta=8, n_gamma=16,
+            n_input=64,
+            n_classes=2,
+            n_tokens=28,
+            d_model=32,
+            n_heads=4,
+            n_layers=1,
+            n_delta=4,
+            n_theta=8,
+            n_gamma=16,
         )
 
         x = torch.randn(2, 3, 64)
@@ -302,7 +328,9 @@ class TestTemporalCLEVR:
 
         # Check that at least some parameters have gradients
         has_grad = sum(
-            1 for p in model.parameters() if p.grad is not None and p.grad.abs().sum() > 0
+            1
+            for p in model.parameters()
+            if p.grad is not None and p.grad.abs().sum() > 0
         )
         total = sum(1 for p in model.parameters())
         assert has_grad > 0, "No parameters received gradients"
@@ -365,9 +393,7 @@ class TestInterFrameCorrelation:
         from prinet.core.measurement import inter_frame_phase_correlation
 
         with pytest.raises(ValueError, match="empty"):
-            inter_frame_phase_correlation(
-                torch.tensor([]), torch.tensor([])
-            )
+            inter_frame_phase_correlation(torch.tensor([]), torch.tensor([]))
 
 
 # =========================================================================
@@ -410,8 +436,10 @@ class TestActiveControl:
         optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
 
         trainer = ActiveControlTrainer(
-            model=model, optimizer=optimizer,
-            daemon=None, active=True,
+            model=model,
+            optimizer=optimizer,
+            daemon=None,
+            active=True,
         )
 
         assert trainer.active is True
@@ -424,12 +452,15 @@ class TestActiveControl:
         model = nn.Linear(10, 2)
         optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
         trainer = ActiveControlTrainer(
-            model=model, optimizer=optimizer,
-            daemon=None, active=True,
+            model=model,
+            optimizer=optimizer,
+            daemon=None,
+            active=True,
         )
 
         policy = trainer.on_epoch_end(
-            epoch=1, loss=0.5,
+            epoch=1,
+            loss=0.5,
             r_per_band=[0.8, 0.6, 0.4],
         )
 
@@ -448,8 +479,10 @@ class TestActiveControl:
         initial_lr = optimizer.param_groups[0]["lr"]
 
         trainer = ActiveControlTrainer(
-            model=model, optimizer=optimizer,
-            daemon=None, active=False,
+            model=model,
+            optimizer=optimizer,
+            daemon=None,
+            active=False,
         )
 
         policy = trainer.on_epoch_end(epoch=1, loss=0.5)
@@ -470,8 +503,11 @@ class TestActiveControl:
         model = DiscreteDTGCLEVRN(scene_dim=D_PHASE, query_dim=D_FEAT * 2)
         optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
         trainer = ActiveControlTrainer(
-            model=model, optimizer=optimizer,
-            daemon=None, active=True, max_adjustment=0.05,
+            model=model,
+            optimizer=optimizer,
+            daemon=None,
+            active=True,
+            max_adjustment=0.05,
         )
 
         scenes, queries, labels = make_clevr_n(4, 100, seed=SEED)
@@ -535,22 +571,24 @@ class TestControllerRetraining:
 
         records = []
         for i in range(50):
-            records.append({
-                "epoch": i,
-                "loss": 1.0 / (i + 1),
-                "r_per_band": [0.5 + i * 0.01, 0.4, 0.3],
-                "r_global": 0.4,
-                "control": {
-                    "suggested_K_min": 0.5,
-                    "suggested_K_max": 5.0,
-                    "lr_multiplier": 1.0,
-                    "regime_mf_weight": 0.5,
-                    "regime_sk_weight": 0.3,
-                    "regime_full_weight": 0.2,
-                    "alert_level": 0.0,
-                    "coupling_mode_suggestion": 0.0,
-                },
-            })
+            records.append(
+                {
+                    "epoch": i,
+                    "loss": 1.0 / (i + 1),
+                    "r_per_band": [0.5 + i * 0.01, 0.4, 0.3],
+                    "r_global": 0.4,
+                    "control": {
+                        "suggested_K_min": 0.5,
+                        "suggested_K_max": 5.0,
+                        "lr_multiplier": 1.0,
+                        "regime_mf_weight": 0.5,
+                        "regime_sk_weight": 0.3,
+                        "regime_full_weight": 0.2,
+                        "alert_level": 0.0,
+                        "coupling_mode_suggestion": 0.0,
+                    },
+                }
+            )
 
         with tempfile.TemporaryDirectory() as tmpdir:
             onnx_path = Path(tmpdir) / "controller.onnx"
@@ -634,6 +672,7 @@ class TestTopLevelExports:
             TemporalPhasePropagator,
             inter_frame_phase_correlation,
         )
+
         assert TemporalPhasePropagator is not None
         assert callable(inter_frame_phase_correlation)
 
@@ -644,6 +683,7 @@ class TestTopLevelExports:
             ActiveControlTrainer,
             retrain_controller,
         )
+
         assert TemporalHybridPRINet is not None
         assert ActiveControlTrainer is not None
         assert callable(retrain_controller)
@@ -657,6 +697,7 @@ class TestTopLevelExports:
             ActiveControlTrainer,
             retrain_controller,
         )
+
         assert TemporalPhasePropagator is not None
         assert callable(inter_frame_phase_correlation)
         assert TemporalHybridPRINet is not None

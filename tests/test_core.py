@@ -271,9 +271,7 @@ class TestOscillatorState:
         """Synchronized state has zero phase and uniform frequency."""
         state = OscillatorState.create_synchronized(100, base_frequency=2.0)
         assert torch.allclose(state.phase, torch.zeros(100))
-        assert torch.allclose(
-            state.frequency, torch.full((100,), 2.0)
-        )
+        assert torch.allclose(state.frequency, torch.full((100,), 2.0))
         assert torch.allclose(state.amplitude, torch.ones(100))
 
     def test_clone_independence(self) -> None:
@@ -296,9 +294,7 @@ class TestOscillatorState:
 
     def test_frequency_range(self) -> None:
         """Random frequencies are in specified range."""
-        state = OscillatorState.create_random(
-            100, freq_range=(1.0, 5.0), seed=SEED
-        )
+        state = OscillatorState.create_random(100, freq_range=(1.0, 5.0), seed=SEED)
         assert state.frequency.min() >= 1.0 - 0.01
         assert state.frequency.max() <= 5.0 + 0.01
 
@@ -362,9 +358,7 @@ class TestKuramotoOscillator:
         synchronized_state: OscillatorState,
     ) -> None:
         """A synchronized initial state maintains high order parameter."""
-        final, _ = kuramoto_model.integrate(
-            synchronized_state, n_steps=100, dt=0.01
-        )
+        final, _ = kuramoto_model.integrate(synchronized_state, n_steps=100, dt=0.01)
         r = kuramoto_order_parameter(final.phase)
         assert r > 0.5, f"Expected r > 0.5 for sync start, got {r:.4f}"
 
@@ -376,15 +370,11 @@ class TestKuramotoOscillator:
         synchronization rather than coincidental alignment.
         """
         torch.manual_seed(SEED)
-        state = OscillatorState.create_random(
-            30, seed=SEED, freq_range=(1.0, 2.0)
-        )
+        state = OscillatorState.create_random(30, seed=SEED, freq_range=(1.0, 2.0))
         model_weak = KuramotoOscillator(30, coupling_strength=0.1)
         model_strong = KuramotoOscillator(30, coupling_strength=2.0)
         final_weak, _ = model_weak.integrate(state, n_steps=500, dt=0.01)
-        final_strong, _ = model_strong.integrate(
-            state.clone(), n_steps=500, dt=0.01
-        )
+        final_strong, _ = model_strong.integrate(state.clone(), n_steps=500, dt=0.01)
         r_weak = kuramoto_order_parameter(final_weak.phase)
         r_strong = kuramoto_order_parameter(final_strong.phase)
         assert r_strong > r_weak - 0.1  # Strong should be more sync'd
@@ -433,9 +423,7 @@ class TestKuramotoOscillator:
         self, kuramoto_model: KuramotoOscillator, random_state: OscillatorState
     ) -> None:
         """Amplitudes remain non-negative after integration."""
-        final, _ = kuramoto_model.integrate(
-            random_state, n_steps=100, dt=0.01
-        )
+        final, _ = kuramoto_model.integrate(random_state, n_steps=100, dt=0.01)
         assert (final.amplitude >= 0).all()
 
 
@@ -448,9 +436,7 @@ class TestStuartLandauOscillator:
         random_state: OscillatorState,
     ) -> None:
         """Derivatives have correct shape."""
-        dphi, dr, domega = stuart_landau_model.compute_derivatives(
-            random_state
-        )
+        dphi, dr, domega = stuart_landau_model.compute_derivatives(random_state)
         assert dphi.shape == (50,)
         assert dr.shape == (50,)
         assert domega.shape == (50,)
@@ -476,15 +462,11 @@ class TestStuartLandauOscillator:
         final, _ = model.integrate(state, n_steps=500, dt=0.01)
         # Amplitudes should approach sqrt(μ) = 2.0
         mean_amp = final.amplitude.mean().item()
-        assert abs(mean_amp - 2.0) < 0.5, (
-            f"Expected amplitude near 2.0, got {mean_amp}"
-        )
+        assert abs(mean_amp - 2.0) < 0.5, f"Expected amplitude near 2.0, got {mean_amp}"
 
     def test_bifurcation_param_property(self) -> None:
         """Bifurcation parameter property is correct."""
-        model = StuartLandauOscillator(
-            n_oscillators=10, bifurcation_param=3.5
-        )
+        model = StuartLandauOscillator(n_oscillators=10, bifurcation_param=3.5)
         assert model.bifurcation_param == 3.5
 
     def test_frequency_constant(
@@ -494,12 +476,8 @@ class TestStuartLandauOscillator:
     ) -> None:
         """Stuart-Landau frequency does not change (no adaptation)."""
         initial_freq = random_state.frequency.clone()
-        final, _ = stuart_landau_model.integrate(
-            random_state, n_steps=50, dt=0.005
-        )
-        assert torch.allclose(
-            final.frequency, initial_freq, atol=1e-5
-        )
+        final, _ = stuart_landau_model.integrate(random_state, n_steps=50, dt=0.005)
+        assert torch.allclose(final.frequency, initial_freq, atol=1e-5)
 
 
 # ===========================================================================
@@ -780,7 +758,8 @@ class TestKuramotoSparseKNNHardened:
     def test_derivatives_finite(self) -> None:
         """All sparse derivatives are finite for random state."""
         model = KuramotoOscillator(
-            n_oscillators=200, coupling_strength=2.0,
+            n_oscillators=200,
+            coupling_strength=2.0,
             coupling_mode="sparse_knn",
         )
         state = OscillatorState.create_random(200, seed=SEED)
@@ -792,7 +771,8 @@ class TestKuramotoSparseKNNHardened:
     def test_derivatives_shape(self) -> None:
         """Sparse derivatives have correct shape."""
         model = KuramotoOscillator(
-            n_oscillators=50, coupling_mode="sparse_knn",
+            n_oscillators=50,
+            coupling_mode="sparse_knn",
         )
         state = OscillatorState.create_random(50, seed=SEED)
         dphi, dr, domega = model.compute_derivatives(state)
@@ -803,7 +783,8 @@ class TestKuramotoSparseKNNHardened:
     def test_n_equals_1_no_crash(self) -> None:
         """N=1 edge case returns coupling-free dynamics."""
         model = KuramotoOscillator(
-            n_oscillators=1, coupling_mode="sparse_knn",
+            n_oscillators=1,
+            coupling_mode="sparse_knn",
         )
         state = OscillatorState.create_random(1, seed=SEED)
         dphi, dr, domega = model.compute_derivatives(state)
@@ -815,7 +796,9 @@ class TestKuramotoSparseKNNHardened:
     def test_n_equals_2(self) -> None:
         """N=2 with k=1 couples each oscillator to the other."""
         model = KuramotoOscillator(
-            n_oscillators=2, coupling_mode="sparse_knn", sparse_k=1,
+            n_oscillators=2,
+            coupling_mode="sparse_knn",
+            sparse_k=1,
         )
         state = OscillatorState.create_random(2, seed=SEED)
         dphi, dr, domega = model.compute_derivatives(state)
@@ -825,7 +808,8 @@ class TestKuramotoSparseKNNHardened:
     def test_batched(self) -> None:
         """Batched input produces correct shape."""
         model = KuramotoOscillator(
-            n_oscillators=30, coupling_mode="sparse_knn",
+            n_oscillators=30,
+            coupling_mode="sparse_knn",
         )
         state = OscillatorState.create_random(30, batch_size=4, seed=SEED)
         dphi, dr, domega = model.compute_derivatives(state)
@@ -837,7 +821,8 @@ class TestKuramotoSparseKNNHardened:
     def test_integration_stays_finite(self) -> None:
         """100-step integration with sparse coupling stays finite."""
         model = KuramotoOscillator(
-            n_oscillators=100, coupling_strength=2.0,
+            n_oscillators=100,
+            coupling_strength=2.0,
             coupling_mode="sparse_knn",
         )
         state = OscillatorState.create_random(100, seed=SEED)
@@ -849,7 +834,8 @@ class TestKuramotoSparseKNNHardened:
     def test_gradient_flows_through_sparse(self) -> None:
         """Gradient flows through the sparse k-NN path."""
         model = KuramotoOscillator(
-            n_oscillators=30, coupling_mode="sparse_knn",
+            n_oscillators=30,
+            coupling_mode="sparse_knn",
         )
         phase_leaf = torch.rand(30, requires_grad=True)
         phase = phase_leaf * 2 * math.pi
@@ -871,12 +857,15 @@ class TestKuramotoSparseKNNHardened:
         state = OscillatorState.create_random(N, seed=SEED)
 
         model_full = KuramotoOscillator(
-            n_oscillators=N, coupling_strength=2.0,
+            n_oscillators=N,
+            coupling_strength=2.0,
             coupling_mode="full",
         )
         model_sparse = KuramotoOscillator(
-            n_oscillators=N, coupling_strength=2.0,
-            coupling_mode="sparse_knn", sparse_k=N - 1,
+            n_oscillators=N,
+            coupling_strength=2.0,
+            coupling_mode="sparse_knn",
+            sparse_k=N - 1,
         )
         dphi_f, dr_f, _ = model_full.compute_derivatives(state)
         dphi_s, dr_s, _ = model_sparse.compute_derivatives(state)
@@ -891,7 +880,8 @@ class TestKuramotoSparseKNNHardened:
     def test_large_n_no_nan(self) -> None:
         """N=4096 sparse k-NN does not produce NaN."""
         model = KuramotoOscillator(
-            n_oscillators=4096, coupling_mode="sparse_knn",
+            n_oscillators=4096,
+            coupling_mode="sparse_knn",
         )
         state = OscillatorState.create_random(4096, seed=SEED)
         dphi, dr, domega = model.compute_derivatives(state)
@@ -902,14 +892,17 @@ class TestKuramotoSparseKNNHardened:
     def test_custom_sparse_k(self) -> None:
         """Custom sparse_k parameter is respected."""
         model = KuramotoOscillator(
-            n_oscillators=100, coupling_mode="sparse_knn", sparse_k=10,
+            n_oscillators=100,
+            coupling_mode="sparse_knn",
+            sparse_k=10,
         )
         assert model.sparse_k == 10
 
     def test_default_sparse_k_is_log2_n(self) -> None:
         """Default k = ceil(log₂ N)."""
         model = KuramotoOscillator(
-            n_oscillators=1024, coupling_mode="sparse_knn",
+            n_oscillators=1024,
+            coupling_mode="sparse_knn",
         )
         assert model.sparse_k == math.ceil(math.log2(1024))
 
@@ -920,8 +913,10 @@ class TestHopfSparseKNNHardened:
     def test_derivatives_finite(self) -> None:
         """Hopf sparse derivatives are finite."""
         model = HopfOscillator(
-            n_oscillators=100, coupling_strength=1.0,
-            bifurcation_param=1.0, coupling_mode="sparse_knn",
+            n_oscillators=100,
+            coupling_strength=1.0,
+            bifurcation_param=1.0,
+            coupling_mode="sparse_knn",
         )
         state = OscillatorState.create_random(100, seed=SEED)
         dphi, dr, domega = model.compute_derivatives(state)
@@ -932,20 +927,22 @@ class TestHopfSparseKNNHardened:
     def test_n_equals_1(self) -> None:
         """N=1 edge case: pure Hopf dynamics, no coupling."""
         model = HopfOscillator(
-            n_oscillators=1, coupling_mode="sparse_knn",
+            n_oscillators=1,
+            coupling_mode="sparse_knn",
             bifurcation_param=4.0,
         )
         state = OscillatorState.create_random(1, seed=SEED)
         dphi, dr, domega = model.compute_derivatives(state)
         assert torch.isfinite(dphi).all()
         # dr = μr − r³ (no coupling)
-        expected_dr = 4.0 * state.amplitude - state.amplitude ** 3
+        expected_dr = 4.0 * state.amplitude - state.amplitude**3
         assert torch.allclose(dr, expected_dr, atol=1e-5)
 
     def test_near_zero_amplitude_safe(self) -> None:
         """Amplitudes near zero don't cause NaN from 1/r division."""
         model = HopfOscillator(
-            n_oscillators=20, coupling_mode="sparse_knn",
+            n_oscillators=20,
+            coupling_mode="sparse_knn",
         )
         state = OscillatorState(
             phase=torch.rand(20) * 2 * math.pi,
@@ -960,8 +957,10 @@ class TestHopfSparseKNNHardened:
     def test_integration_converges(self) -> None:
         """Hopf sparse integration converges to limit cycle."""
         model = HopfOscillator(
-            n_oscillators=50, coupling_strength=1.0,
-            bifurcation_param=1.0, coupling_mode="sparse_knn",
+            n_oscillators=50,
+            coupling_strength=1.0,
+            bifurcation_param=1.0,
+            coupling_mode="sparse_knn",
         )
         state = OscillatorState.create_random(50, seed=SEED)
         final, _ = model.integrate(state, n_steps=200, dt=0.01)
@@ -973,7 +972,8 @@ class TestHopfSparseKNNHardened:
     def test_gradient_flows(self) -> None:
         """Gradient flows through Hopf sparse path."""
         model = HopfOscillator(
-            n_oscillators=20, coupling_mode="sparse_knn",
+            n_oscillators=20,
+            coupling_mode="sparse_knn",
         )
         phase = torch.rand(20, requires_grad=True)
         amp = torch.ones(20, requires_grad=True)
@@ -990,7 +990,8 @@ class TestHopfSparseKNNHardened:
     def test_batched(self) -> None:
         """Batched Hopf sparse produces correct shapes."""
         model = HopfOscillator(
-            n_oscillators=30, coupling_mode="sparse_knn",
+            n_oscillators=30,
+            coupling_mode="sparse_knn",
         )
         state = OscillatorState.create_random(30, batch_size=3, seed=SEED)
         dphi, dr, domega = model.compute_derivatives(state)
@@ -1080,9 +1081,7 @@ class TestSparseMeanPhaseCoherence:
             torch.manual_seed(seed)
             phases = torch.rand(50) * 2 * math.pi
             nbr = build_phase_knn(phases, k=10)
-            sparse_vals.append(
-                sparse_mean_phase_coherence(phases, nbr).item()
-            )
+            sparse_vals.append(sparse_mean_phase_coherence(phases, nbr).item())
             dense_vals.append(mean_phase_coherence(phases).item())
         # Pearson correlation should be positive
         s = torch.tensor(sparse_vals)

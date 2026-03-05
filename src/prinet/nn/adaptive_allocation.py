@@ -85,9 +85,7 @@ def estimate_complexity(
         spatial_score = min(spread / 0.3, 1.0)
 
     total = spatial_weight + count_weight
-    complexity = (
-        spatial_weight * spatial_score + count_weight * count_score
-    ) / total
+    complexity = (spatial_weight * spatial_score + count_weight * count_score) / total
     return torch.tensor(complexity, device=detections.device, dtype=torch.float32)
 
 
@@ -274,10 +272,7 @@ class AdaptiveOscillatorAllocator(nn.Module):
         Returns:
             List of :class:`OscillatorBudget` from complexity 0 to 1.
         """
-        return [
-            self.allocate(i / max(steps - 1, 1))
-            for i in range(steps)
-        ]
+        return [self.allocate(i / max(steps - 1, 1)) for i in range(steps)]
 
 
 class DynamicPhaseTracker(nn.Module):
@@ -347,10 +342,14 @@ class DynamicPhaseTracker(nn.Module):
                 match_threshold=self.match_threshold,
             )
             # Move to same device as allocator
-            device = next(
-                (p.device for p in self.allocator.parameters()),
-                torch.device("cpu"),
-            ) if list(self.allocator.parameters()) else torch.device("cpu")
+            device = (
+                next(
+                    (p.device for p in self.allocator.parameters()),
+                    torch.device("cpu"),
+                )
+                if list(self.allocator.parameters())
+                else torch.device("cpu")
+            )
             tracker = tracker.to(device)
             self._tracker_cache[key] = tracker
         return self._tracker_cache[key]
@@ -374,7 +373,8 @@ class DynamicPhaseTracker(nn.Module):
         """
         # Estimate complexity from current frame detections
         complexity = estimate_complexity(
-            detections_t, max_objects=self.max_objects,
+            detections_t,
+            max_objects=self.max_objects,
         )
         budget = self.allocator.allocate(complexity)
 
