@@ -13,8 +13,8 @@ import torch
 import torch.linalg as LA
 from torch import Tensor
 
-from .oscillator_state import OscillatorState, _wrap_phase
 from .oscillator_models import OscillatorModel
+from .oscillator_state import OscillatorState, _wrap_phase
 
 
 class ExponentialIntegrator:

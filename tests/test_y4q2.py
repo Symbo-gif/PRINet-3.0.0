@@ -43,6 +43,7 @@ class TestConfigureNeuripsStyle:
 
     def test_sets_dpi(self) -> None:
         import matplotlib.pyplot as plt
+
         from prinet.utils.figure_generation import configure_neurips_style
 
         configure_neurips_style()
@@ -50,6 +51,7 @@ class TestConfigureNeuripsStyle:
 
     def test_sets_savefig_dpi(self) -> None:
         import matplotlib.pyplot as plt
+
         from prinet.utils.figure_generation import configure_neurips_style
 
         configure_neurips_style()
@@ -57,6 +59,7 @@ class TestConfigureNeuripsStyle:
 
     def test_sets_font_size(self) -> None:
         import matplotlib.pyplot as plt
+
         from prinet.utils.figure_generation import configure_neurips_style
 
         configure_neurips_style()
@@ -64,6 +67,7 @@ class TestConfigureNeuripsStyle:
 
     def test_sets_serif_font(self) -> None:
         import matplotlib.pyplot as plt
+
         from prinet.utils.figure_generation import configure_neurips_style
 
         configure_neurips_style()
@@ -76,6 +80,7 @@ class TestConfigureNeuripsStyle:
 
     def test_sets_axes_title_size(self) -> None:
         import matplotlib.pyplot as plt
+
         from prinet.utils.figure_generation import configure_neurips_style
 
         configure_neurips_style()
@@ -83,6 +88,7 @@ class TestConfigureNeuripsStyle:
 
     def test_sets_axes_label_size(self) -> None:
         import matplotlib.pyplot as plt
+
         from prinet.utils.figure_generation import configure_neurips_style
 
         configure_neurips_style()
@@ -90,6 +96,7 @@ class TestConfigureNeuripsStyle:
 
     def test_idempotent(self) -> None:
         import matplotlib.pyplot as plt
+
         from prinet.utils.figure_generation import configure_neurips_style
 
         configure_neurips_style()

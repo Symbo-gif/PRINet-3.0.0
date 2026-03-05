@@ -32,44 +32,44 @@ sweep_utils
     :func:`sweep_coupling_params`.
 """
 
-from .oscillator_state import (
-    OscillatorState,
-    OscillatorSyncError,
-    _TWO_PI,
-    _SPARSE_EPS,
-    _DERIV_CLAMP,
-    _wrap_phase,
-    _safe_phase_diff,
-    _clamp_finite,
-    _build_phase_knn_index,
-)
-from .oscillator_models import (
-    OscillatorModel,
-    KuramotoOscillator,
-    StuartLandauOscillator,
-    HopfOscillator,
+from .coupling import PhaseAmplitudeCoupling
+from .inhibition import (
+    DentateGyrusConverter,
+    FeedbackInhibition,
+    FeedforwardInhibition,
 )
 from .integrators import (
     ExponentialIntegrator,
     MultiRateIntegrator,
 )
-from .coupling import PhaseAmplitudeCoupling
 from .networks import (
-    ThetaGammaNetwork,
     DeltaThetaGammaNetwork,
     DiscreteDeltaThetaGamma,
+    ThetaGammaNetwork,
 )
-from .temporal import TemporalPhasePropagator
-from .inhibition import (
-    FeedforwardInhibition,
-    FeedbackInhibition,
-    DentateGyrusConverter,
+from .oscillator_models import (
+    HopfOscillator,
+    KuramotoOscillator,
+    OscillatorModel,
+    StuartLandauOscillator,
+)
+from .oscillator_state import (
+    _DERIV_CLAMP,
+    _SPARSE_EPS,
+    _TWO_PI,
+    OscillatorState,
+    OscillatorSyncError,
+    _build_phase_knn_index,
+    _clamp_finite,
+    _safe_phase_diff,
+    _wrap_phase,
 )
 from .sweep_utils import (
     detect_oscillation,
     phase_to_rate,
     sweep_coupling_params,
 )
+from .temporal import TemporalPhasePropagator
 
 __all__ = [
     # oscillator_state

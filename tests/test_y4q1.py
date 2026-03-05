@@ -14,6 +14,7 @@ import math
 import pytest
 import torch
 
+from prinet.nn.slot_attention import TemporalSlotAttentionMOT
 from prinet.utils.oscillosim import (
     OscilloSim,
     bimodality_index,
@@ -28,7 +29,6 @@ from prinet.utils.y4q1_tools import (
     create_ablation_model,
     measure_wall_time,
 )
-from prinet.nn.slot_attention import TemporalSlotAttentionMOT
 
 # =====================================================================
 # T.1: Ring / Small-World Topology

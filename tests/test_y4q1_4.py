@@ -16,7 +16,7 @@ import math
 
 import pytest
 import torch
-from hypothesis import given, settings, HealthCheck
+from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
 
 from prinet.nn.hybrid import PhaseTracker
@@ -613,8 +613,10 @@ class TestVersionConsistency:
         assert len(parts) == 3 and all(p.isdigit() for p in parts)
 
     def test_pyproject_version(self) -> None:
-        import prinet, tomllib
+        import tomllib
         from pathlib import Path
+
+        import prinet
 
         pp = Path(__file__).resolve().parent.parent / "pyproject.toml"
         data = tomllib.loads(pp.read_text())

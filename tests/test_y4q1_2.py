@@ -22,9 +22,10 @@ from typing import Callable
 
 import pytest
 import torch
-from hypothesis import given, settings, HealthCheck
+from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
 
+from prinet.nn.slot_attention import TemporalSlotAttentionMOT
 from prinet.utils.oscillosim import (
     OscilloSim,
     bimodality_index,
@@ -45,7 +46,6 @@ from prinet.utils.y4q1_tools import (
     spatial_correlation,
     welch_t_test,
 )
-from prinet.nn.slot_attention import TemporalSlotAttentionMOT
 
 # =====================================================================
 # Section 1: Edge-Case Tests for Topology Functions

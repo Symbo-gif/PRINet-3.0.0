@@ -31,8 +31,8 @@ from pathlib import Path
 from typing import Any, Optional
 
 import matplotlib
-import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+import matplotlib.pyplot as plt
 import numpy as np
 
 # Use non-interactive backend for headless figure generation

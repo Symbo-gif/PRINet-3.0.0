@@ -14,10 +14,10 @@ import pytest
 import torch
 
 from benchmarks.clevr_n import (
-    CLEVRNDataset,
-    CLEVRNResult,
     D_FEAT,
     D_PHASE,
+    CLEVRNDataset,
+    CLEVRNResult,
     HopfieldCLEVRNBaseline,
     LSTMCLEVRNBaseline,
     TransformerCLEVRN,

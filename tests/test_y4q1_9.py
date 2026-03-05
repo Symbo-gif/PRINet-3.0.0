@@ -32,20 +32,20 @@ if _BENCH_DIR not in sys.path:
 from prinet.nn.ablation_variants import create_ablation_tracker
 from prinet.nn.hybrid import PhaseTracker
 from prinet.nn.slot_attention import TemporalSlotAttentionMOT
+from prinet.utils.oscillosim import bimodality_index
 from prinet.utils.temporal_training import (
     SequenceData,
+    count_parameters,
     generate_dataset,
     generate_temporal_clevr_n,
-    count_parameters,
 )
 from prinet.utils.y4q1_tools import (
     PhaseTrackerLarge,
-    phase_slip_rate,
+    binding_persistence,
     coherence_decay_rate,
     cross_frequency_coupling,
-    binding_persistence,
+    phase_slip_rate,
 )
-from prinet.utils.oscillosim import bimodality_index
 
 SEED = 42
 DEVICE = "cpu"

@@ -16,37 +16,12 @@ from prinet.utils.benchmark_reporting import (
     generate_leaderboard,
     generate_scalr_metrics_report,
 )
-from prinet.utils.npu_backend import (
-    BackendType,
-    backend_info,
-    create_session,
-    detect_best_backend,
-    directml_available,
-    npu_available,
-)
 from prinet.utils.cuda_kernels import (
     BatchedRK45Solver,
     FixedStepRK4Solver,
     SolverResult,
     gradient_checkpoint_integration,
     sparse_coupling_matrix,
-)
-from prinet.utils.triton_kernels import (
-    pytorch_cross_band_coupling,
-    pytorch_fused_discrete_step,
-    pytorch_fused_sub_step_rk4,
-    pytorch_hierarchical_order_param,
-    pytorch_mean_field_rk4_step,
-    pytorch_multi_rate_derivatives,
-    pytorch_multi_rate_rk4_step,
-    pytorch_pac_modulation,
-    pytorch_sparse_knn_coupling,
-    triton_available,
-    triton_fused_discrete_step,
-    triton_fused_mean_field_rk4_step,
-    triton_hierarchical_order_param,
-    triton_pac_modulation,
-    triton_sparse_knn_coupling,
 )
 from prinet.utils.fused_kernels import (
     AsyncCPUGPUPipeline,
@@ -61,6 +36,14 @@ from prinet.utils.fused_kernels import (
     sparse_coupling_matrix_csr,
     sparse_knn_coupling_step,
 )
+from prinet.utils.npu_backend import (
+    BackendType,
+    backend_info,
+    create_session,
+    detect_best_backend,
+    directml_available,
+    npu_available,
+)
 from prinet.utils.oscillosim import (
     OscilloSim,
     SimulationResult,
@@ -69,31 +52,6 @@ from prinet.utils.oscillosim import (
     quick_simulate,
     ring_topology,
     small_world_topology,
-)
-from prinet.utils.y4q1_tools import (
-    AblationConfig,
-    AblationHybridPRINetV2,
-    ExtendedTrainingResult,
-    binding_persistence,
-    coherence_decay_rate,
-    compute_p_value,
-    count_flops,
-    create_ablation_model,
-    cross_frequency_coupling,
-    cumulative_phase_slip_curve,
-    instantaneous_frequency_spread,
-    measure_wall_time,
-    memory_growth_profile,
-    order_parameter_series,
-    phase_locking_value,
-    phase_slip_rate,
-    rebinding_speed,
-    session_length_statistical_comparison,
-    temporal_advantage_report,
-    throughput_series,
-    train_clevr_n_extended,
-    train_clevr_n_single_seed,
-    windowed_order_parameter_variance,
 )
 from prinet.utils.temporal_metrics import (
     TemporalMetrics,
@@ -119,6 +77,48 @@ from prinet.utils.temporal_training import (
     hungarian_similarity_loss,
     temporal_smoothness_loss,
     train_multi_seed,
+)
+from prinet.utils.triton_kernels import (
+    pytorch_cross_band_coupling,
+    pytorch_fused_discrete_step,
+    pytorch_fused_sub_step_rk4,
+    pytorch_hierarchical_order_param,
+    pytorch_mean_field_rk4_step,
+    pytorch_multi_rate_derivatives,
+    pytorch_multi_rate_rk4_step,
+    pytorch_pac_modulation,
+    pytorch_sparse_knn_coupling,
+    triton_available,
+    triton_fused_discrete_step,
+    triton_fused_mean_field_rk4_step,
+    triton_hierarchical_order_param,
+    triton_pac_modulation,
+    triton_sparse_knn_coupling,
+)
+from prinet.utils.y4q1_tools import (
+    AblationConfig,
+    AblationHybridPRINetV2,
+    ExtendedTrainingResult,
+    binding_persistence,
+    coherence_decay_rate,
+    compute_p_value,
+    count_flops,
+    create_ablation_model,
+    cross_frequency_coupling,
+    cumulative_phase_slip_curve,
+    instantaneous_frequency_spread,
+    measure_wall_time,
+    memory_growth_profile,
+    order_parameter_series,
+    phase_locking_value,
+    phase_slip_rate,
+    rebinding_speed,
+    session_length_statistical_comparison,
+    temporal_advantage_report,
+    throughput_series,
+    train_clevr_n_extended,
+    train_clevr_n_single_seed,
+    windowed_order_parameter_variance,
 )
 
 __all__ = [

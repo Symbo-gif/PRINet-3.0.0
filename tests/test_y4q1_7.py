@@ -16,15 +16,15 @@ import math
 import pytest
 import torch
 
-from prinet.nn.hybrid import PhaseTracker
-from prinet.nn.slot_attention import TemporalSlotAttentionMOT
 from prinet.nn.ablation_variants import (
     PhaseTrackerFrozen,
     PhaseTrackerStatic,
-    SlotAttentionNoGRU,
     SlotAttentionFrozen,
+    SlotAttentionNoGRU,
     create_ablation_tracker,
 )
+from prinet.nn.hybrid import PhaseTracker
+from prinet.nn.slot_attention import TemporalSlotAttentionMOT
 from prinet.utils.temporal_metrics import (
     TemporalMetrics,
     binding_robustness_score,

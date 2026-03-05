@@ -12,9 +12,9 @@ from typing import Optional, Tuple
 import torch
 from torch import Tensor
 
-from .oscillator_state import OscillatorState, _wrap_phase
-from .oscillator_models import KuramotoOscillator, OscillatorModel
 from .networks import DeltaThetaGammaNetwork
+from .oscillator_models import KuramotoOscillator, OscillatorModel
+from .oscillator_state import OscillatorState, _wrap_phase
 
 
 def detect_oscillation(
