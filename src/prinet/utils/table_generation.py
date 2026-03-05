@@ -40,7 +40,8 @@ def _load_json(path: Path) -> dict[str, Any]:
         FileNotFoundError: If the JSON file does not exist.
     """
     with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
+        result: dict[str, Any] = json.load(f)
+        return result
 
 
 def _save_table(content: str, name: str, output_dir: Path) -> Path:
@@ -518,7 +519,7 @@ def table_efficiency_profile(
     ]
 
     # Group by n_objects
-    by_n: dict[int, dict[str, dict]] = {}
+    by_n: dict[int, dict[str, dict[str, Any]]] = {}
     for p in profiles:
         n = p["n_objects"]
         by_n.setdefault(n, {})[p["model"]] = p

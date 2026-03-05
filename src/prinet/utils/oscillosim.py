@@ -502,14 +502,14 @@ class OscilloSim:
         """Return the active coupling mode."""
         return self._coupling_mode
 
-    def state_summary(self) -> dict:
+    def state_summary(self) -> dict[str, object]:
         """Return a summary dict of the simulator configuration.
 
         Returns:
             Dict with n_oscillators, coupling_mode, coupling_strength,
             device, and mode-specific info.
         """
-        info: dict = {
+        info: dict[str, object] = {
             "n_oscillators": self.n_oscillators,
             "coupling_mode": self._coupling_mode,
             "coupling_strength": self.coupling_strength,
@@ -1186,7 +1186,7 @@ def community_topology(
             if other_indices and k_inter > 0:
                 perm = torch.randperm(len(other_indices), generator=gen)
                 for p in range(min(k_inter, len(other_indices))):
-                    inter_nbrs.append(other_indices[perm[p].item()])
+                    inter_nbrs.append(other_indices[int(perm[p].item())])
 
             # Pad if needed
             while len(intra_nbrs) < k_intra:

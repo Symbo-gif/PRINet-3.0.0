@@ -13,7 +13,7 @@ References:
 from __future__ import annotations
 
 import math
-from typing import Optional
+from typing import Any, Optional
 
 import torch
 import torch.nn as nn
@@ -57,7 +57,7 @@ def fgsm_attack(
     target = torch.arange(N, device=sim.device)
     # Maximize loss = minimize negative loss
     loss = torch.nn.functional.cross_entropy(sim_block / 0.1, target)
-    loss.backward()
+    loss.backward()  # type: ignore[no-untyped-call]
 
     if dets_t_adv.grad is None:
         return dets_t.clone()
@@ -121,7 +121,7 @@ def pgd_attack(
         sim_block = sim[:N, :N]
         target = torch.arange(N, device=sim.device)
         loss = torch.nn.functional.cross_entropy(sim_block / 0.1, target)
-        loss.backward()
+        loss.backward()  # type: ignore[no-untyped-call]
 
         if dets_adv.grad is None:
             break
@@ -137,12 +137,12 @@ def pgd_attack(
 
 def adversarial_evaluate(
     model: nn.Module,
-    dataset: list,
+    dataset: list[Any],
     epsilon: float,
     attack_fn: str = "fgsm",
     pgd_steps: int = 20,
     seed: int = 42,
-) -> dict:
+) -> dict[str, Any]:
     """Evaluate model IP under adversarial attack.
 
     Args:
@@ -166,7 +166,7 @@ def adversarial_evaluate(
 
         # Clean evaluation
         with torch.no_grad():
-            result = model.track_sequence(frames)
+            result = model.track_sequence(frames)  # type: ignore[operator]
             clean_ips.append(result["identity_preservation"])
 
         # Adversarial evaluation: perturb each frame
@@ -189,7 +189,7 @@ def adversarial_evaluate(
             adv_frames.append(adv_f)
 
         with torch.no_grad():
-            adv_result = model.track_sequence(adv_frames)
+            adv_result = model.track_sequence(adv_frames)  # type: ignore[operator]
             adv_ips.append(adv_result["identity_preservation"])
 
     import numpy as np
@@ -208,12 +208,12 @@ def adversarial_evaluate(
 def adversarial_comparison(
     pt_model: nn.Module,
     sa_model: nn.Module,
-    dataset: list,
+    dataset: list[Any],
     epsilons: list[float],
     attack_types: list[str],
     pgd_steps: int = 20,
     seed: int = 42,
-) -> dict:
+) -> dict[str, Any]:
     """Side-by-side adversarial robustness comparison.
 
     Args:
@@ -228,7 +228,7 @@ def adversarial_comparison(
     Returns:
         Dict with per-epsilon, per-attack results for both models.
     """
-    results = {}
+    results: dict[str, Any] = {}
     for attack in attack_types:
         results[attack] = {}
         for eps in epsilons:
