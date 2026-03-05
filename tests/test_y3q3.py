@@ -538,8 +538,8 @@ class TestAsyncPipeline:
 
     def test_pipeline_creation(self) -> None:
         """AsyncCPUGPUPipeline can be instantiated."""
-        from prinet.utils.fused_kernels import AsyncCPUGPUPipeline
         from prinet.nn.hybrid import HybridPRINetV2
+        from prinet.utils.fused_kernels import AsyncCPUGPUPipeline
 
         _seed()
         model = HybridPRINetV2(n_input=64, n_classes=5).to(DEVICE)
@@ -562,8 +562,8 @@ class TestAsyncPipeline:
 
     def test_pipeline_train_step(self) -> None:
         """Pipeline.train_step completes one iteration."""
-        from prinet.utils.fused_kernels import AsyncCPUGPUPipeline
         from prinet.nn.hybrid import HybridPRINetV2
+        from prinet.utils.fused_kernels import AsyncCPUGPUPipeline
 
         _seed()
         model = HybridPRINetV2(n_input=64, n_classes=5).to(DEVICE)

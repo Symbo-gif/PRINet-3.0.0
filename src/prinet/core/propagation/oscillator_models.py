@@ -16,15 +16,15 @@ import torch.linalg as LA
 from torch import Tensor
 
 from .oscillator_state import (
+    _DERIV_CLAMP,
+    _SPARSE_EPS,
+    _TWO_PI,
     OscillatorState,
     OscillatorSyncError,
-    _TWO_PI,
-    _SPARSE_EPS,
-    _DERIV_CLAMP,
-    _wrap_phase,
-    _safe_phase_diff,
-    _clamp_finite,
     _build_phase_knn_index,
+    _clamp_finite,
+    _safe_phase_diff,
+    _wrap_phase,
 )
 
 

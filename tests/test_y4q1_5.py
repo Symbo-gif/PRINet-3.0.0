@@ -22,13 +22,14 @@ Total: 60 tests
 
 from __future__ import annotations
 
-import math
 import importlib
+import math
 import tomllib
 
 import pytest
 import torch
-from hypothesis import given, settings, strategies as st
+from hypothesis import given, settings
+from hypothesis import strategies as st
 
 # =====================================================================
 # TestOrderParameterSeries
@@ -118,8 +119,9 @@ class TestWindowedOrderParameterVariance:
 
     def test_increasing_variance(self) -> None:
         """Increasingly noisy series → positive trend slope."""
-        from prinet.utils.y4q1_tools import windowed_order_parameter_variance
         import numpy as np
+
+        from prinet.utils.y4q1_tools import windowed_order_parameter_variance
 
         np.random.seed(42)
         series = []
@@ -144,8 +146,9 @@ class TestWindowedOrderParameterVariance:
 
     def test_zero_slope_for_stable(self) -> None:
         """Alternating same variance → slope ≈ 0."""
-        from prinet.utils.y4q1_tools import windowed_order_parameter_variance
         import numpy as np
+
+        from prinet.utils.y4q1_tools import windowed_order_parameter_variance
 
         np.random.seed(42)
         series = [np.random.normal(0.5, 0.01) for _ in range(100)]

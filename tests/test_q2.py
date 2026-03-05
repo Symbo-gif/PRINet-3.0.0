@@ -695,9 +695,9 @@ class TestIntegration:
 
     def test_version_updated(self) -> None:
         """Package version is >=0.2.0 (bumped in later quarters)."""
-        import prinet
-
         from packaging.version import Version
+
+        import prinet
 
         assert Version(prinet.__version__) >= Version("0.2.0")
 

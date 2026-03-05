@@ -14,15 +14,15 @@ import torch
 import torch.nn as nn
 from torch import Tensor
 
+from .coupling import PhaseAmplitudeCoupling
+from .integrators import ExponentialIntegrator, MultiRateIntegrator
+from .oscillator_models import KuramotoOscillator, OscillatorModel
 from .oscillator_state import (
+    _TWO_PI,
     OscillatorState,
     OscillatorSyncError,
     _wrap_phase,
-    _TWO_PI,
 )
-from .oscillator_models import KuramotoOscillator, OscillatorModel
-from .integrators import MultiRateIntegrator, ExponentialIntegrator
-from .coupling import PhaseAmplitudeCoupling
 
 
 class ThetaGammaNetwork:

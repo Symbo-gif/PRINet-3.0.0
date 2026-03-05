@@ -244,6 +244,7 @@ class TestDiscreteDeltaThetaGamma:
 
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "benchmarks"))
         from clevr_n import make_clevr_n
+
         from prinet.nn.layers import DiscreteDeltaThetaGammaLayer
 
         torch.manual_seed(42)
@@ -611,6 +612,7 @@ class TestInterleavedHybridPRINet:
 
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "benchmarks"))
         from clevr_n import make_clevr_n
+
         from prinet.nn.hybrid import InterleavedHybridPRINet
 
         torch.manual_seed(42)
@@ -667,6 +669,7 @@ class TestInterleavedHybridPRINet:
 
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "benchmarks"))
         from clevr_n import make_clevr_n
+
         from prinet.nn.hybrid import InterleavedHybridPRINet
 
         torch.manual_seed(42)
@@ -781,8 +784,8 @@ class TestControlPolicies:
         assert mult == 1.0
 
     def test_k_range_narrowing(self) -> None:
-        from prinet.nn.training_hooks import apply_k_range_narrowing
         from prinet.core.propagation import DiscreteDeltaThetaGamma
+        from prinet.nn.training_hooks import apply_k_range_narrowing
 
         net = DiscreteDeltaThetaGamma(n_delta=4, n_theta=8, n_gamma=16)
         ctrl = _MockControlSignals(suggested_K_min=0.5, suggested_K_max=4.0)
@@ -792,8 +795,8 @@ class TestControlPolicies:
         assert k_max == pytest.approx(4.0)
 
     def test_k_range_none_control(self) -> None:
-        from prinet.nn.training_hooks import apply_k_range_narrowing
         from prinet.core.propagation import DiscreteDeltaThetaGamma
+        from prinet.nn.training_hooks import apply_k_range_narrowing
 
         net = DiscreteDeltaThetaGamma()
         k_min, k_max = apply_k_range_narrowing(None, net)

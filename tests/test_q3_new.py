@@ -30,7 +30,7 @@ from prinet.core.propagation import (
 )
 
 # ────── NN / Layer Imports ──────
-from prinet.nn.layers import DGLayer, DenseAutoencoder, PhaseToRateAutoencoder
+from prinet.nn.layers import DenseAutoencoder, DGLayer, PhaseToRateAutoencoder
 
 # ────── Utils Imports ──────
 from prinet.utils.benchmark_reporting import (

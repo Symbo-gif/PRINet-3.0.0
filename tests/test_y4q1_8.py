@@ -21,6 +21,12 @@ import pytest
 import torch
 
 # ---------------------------------------------------------------------------
+# Imports: models
+# ---------------------------------------------------------------------------
+from prinet.nn.hybrid import PhaseTracker
+from prinet.nn.slot_attention import TemporalSlotAttentionMOT
+
+# ---------------------------------------------------------------------------
 # Imports: adversarial tools
 # ---------------------------------------------------------------------------
 from prinet.utils.adversarial_tools import (
@@ -48,6 +54,12 @@ from prinet.utils.oscillosim import (
     local_order_parameter,
     ring_topology,
 )
+from prinet.utils.temporal_training import (
+    SequenceData,
+    count_parameters,
+    generate_dataset,
+    generate_temporal_clevr_n,
+)
 
 # ---------------------------------------------------------------------------
 # Imports: y4q1_tools extensions
@@ -62,18 +74,6 @@ from prinet.utils.y4q1_tools import (
     noise_degradation_curve,
     noise_tolerance_sweep,
     per_community_order_parameter,
-)
-
-# ---------------------------------------------------------------------------
-# Imports: models
-# ---------------------------------------------------------------------------
-from prinet.nn.hybrid import PhaseTracker
-from prinet.nn.slot_attention import TemporalSlotAttentionMOT
-from prinet.utils.temporal_training import (
-    SequenceData,
-    generate_dataset,
-    generate_temporal_clevr_n,
-    count_parameters,
 )
 
 SEED = 42

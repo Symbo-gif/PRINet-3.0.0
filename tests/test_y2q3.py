@@ -396,8 +396,8 @@ class TestFusedDiscreteKernel:
         """Triton kernel matches PyTorch reference (atol=1e-4)."""
         from prinet.utils.triton_kernels import (
             pytorch_fused_discrete_step,
-            triton_fused_discrete_step,
             triton_available,
+            triton_fused_discrete_step,
         )
 
         if not triton_available():
@@ -882,8 +882,8 @@ class TestSubconsciousLearning:
     def test_retrained_controller_valid_output(self) -> None:
         """Retrained controller produces valid control signals."""
         _seed()
+        from prinet.core.subconscious import CONTROL_DIM, STATE_DIM
         from prinet.nn.subconscious_model import SubconsciousController
-        from prinet.core.subconscious import STATE_DIM, CONTROL_DIM
 
         controller = SubconsciousController().to(_DEVICE)
         state = torch.randn(1, STATE_DIM, device=_DEVICE)

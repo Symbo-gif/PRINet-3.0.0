@@ -10,37 +10,29 @@ Modules:
     activations: dSiLU, HolomorphicActivation, PhaseActivation.
 """
 
+from prinet.nn.ablation_variants import (
+    PhaseTrackerFrozen,
+    PhaseTrackerStatic,
+    SlotAttentionFrozen,
+    SlotAttentionNoGRU,
+    create_ablation_tracker,
+)
 from prinet.nn.activations import (
     GatedPhaseActivation,
     HolomorphicActivation,
     PhaseActivation,
     dSiLU,
 )
+from prinet.nn.adaptive_allocation import (
+    AdaptiveOscillatorAllocator,
+    DynamicPhaseTracker,
+    OscillatorBudget,
+    estimate_complexity,
+)
 from prinet.nn.hep import (
     HolomorphicEnergy,
     HolomorphicEPTrainer,
 )
-from prinet.nn.layers import (
-    DGLayer,
-    DenseAutoencoder,
-    DiscreteDeltaThetaGammaLayer,
-    HierarchicalResonanceLayer,
-    OscillatoryAttention,
-    PRINetModel,
-    PhaseAmplitudeCouplingLayer,
-    PhaseToRateAutoencoder,
-    PhaseToRateConverter,
-    ResonanceLayer,
-    SparsityRegularizationLoss,
-    compile_model,
-    oscillatory_weight_init,
-)
-from prinet.nn.optimizers import (
-    RIPOptimizer,
-    SCALROptimizer,
-    SynchronizedGradientDescent,
-)
-from prinet.nn.subconscious_model import SubconsciousController, retrain_controller
 from prinet.nn.hybrid import (
     AlternatingOptimizer,
     HybridCLEVRN,
@@ -51,19 +43,20 @@ from prinet.nn.hybrid import (
     PhaseTracker,
     TemporalHybridPRINet,
 )
-from prinet.nn.training_hooks import (
-    ActiveControlTrainer,
-    StateCollector,
-    TelemetryLogger,
-    apply_k_range_narrowing,
-    apply_lr_adjustment,
-    apply_regime_bias,
-)
-from prinet.nn.adaptive_allocation import (
-    AdaptiveOscillatorAllocator,
-    DynamicPhaseTracker,
-    OscillatorBudget,
-    estimate_complexity,
+from prinet.nn.layers import (
+    DenseAutoencoder,
+    DGLayer,
+    DiscreteDeltaThetaGammaLayer,
+    HierarchicalResonanceLayer,
+    OscillatoryAttention,
+    PhaseAmplitudeCouplingLayer,
+    PhaseToRateAutoencoder,
+    PhaseToRateConverter,
+    PRINetModel,
+    ResonanceLayer,
+    SparsityRegularizationLoss,
+    compile_model,
+    oscillatory_weight_init,
 )
 from prinet.nn.mot_evaluation import (
     AttentionTracker,
@@ -74,17 +67,24 @@ from prinet.nn.mot_evaluation import (
     generate_linear_mot_sequence,
     generate_temporal_reasoning_sequence,
 )
+from prinet.nn.optimizers import (
+    RIPOptimizer,
+    SCALROptimizer,
+    SynchronizedGradientDescent,
+)
 from prinet.nn.slot_attention import (
-    SlotAttentionModule,
     SlotAttentionCLEVRN,
+    SlotAttentionModule,
     TemporalSlotAttentionMOT,
 )
-from prinet.nn.ablation_variants import (
-    PhaseTrackerFrozen,
-    PhaseTrackerStatic,
-    SlotAttentionNoGRU,
-    SlotAttentionFrozen,
-    create_ablation_tracker,
+from prinet.nn.subconscious_model import SubconsciousController, retrain_controller
+from prinet.nn.training_hooks import (
+    ActiveControlTrainer,
+    StateCollector,
+    TelemetryLogger,
+    apply_k_range_narrowing,
+    apply_lr_adjustment,
+    apply_regime_bias,
 )
 
 __all__ = [

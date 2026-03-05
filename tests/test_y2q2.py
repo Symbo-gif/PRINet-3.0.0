@@ -144,11 +144,11 @@ class TestTemporalCLEVR:
 
     def test_phase_propagation_preserves_continuity(self) -> None:
         """Phase propagation preserves continuity across frames."""
+        from prinet.core.measurement import inter_frame_phase_correlation
         from prinet.core.propagation import (
             DiscreteDeltaThetaGamma,
             TemporalPhasePropagator,
         )
-        from prinet.core.measurement import inter_frame_phase_correlation
 
         torch.manual_seed(SEED)
         prop = TemporalPhasePropagator(carry_strength=0.9)
@@ -494,10 +494,11 @@ class TestActiveControl:
 
     def test_training_stability_with_active_control(self) -> None:
         """Training stability maintained with active control (5 epochs)."""
-        from prinet.nn.training_hooks import ActiveControlTrainer
-        from benchmarks.y2q1_benchmarks import DiscreteDTGCLEVRN
-        from benchmarks.clevr_n import D_FEAT, D_PHASE, make_clevr_n, CLEVRNDataset
         from torch.utils.data import DataLoader
+
+        from benchmarks.clevr_n import D_FEAT, D_PHASE, CLEVRNDataset, make_clevr_n
+        from benchmarks.y2q1_benchmarks import DiscreteDTGCLEVRN
+        from prinet.nn.training_hooks import ActiveControlTrainer
 
         torch.manual_seed(SEED)
         model = DiscreteDTGCLEVRN(scene_dim=D_PHASE, query_dim=D_FEAT * 2)
@@ -679,8 +680,8 @@ class TestTopLevelExports:
     def test_nn_exports(self) -> None:
         """NN package exports temporal and control classes."""
         from prinet.nn import (
-            TemporalHybridPRINet,
             ActiveControlTrainer,
+            TemporalHybridPRINet,
             retrain_controller,
         )
 
@@ -691,10 +692,10 @@ class TestTopLevelExports:
     def test_top_level_exports(self) -> None:
         """Top-level prinet package exports all Y2 Q2 symbols."""
         from prinet import (
+            ActiveControlTrainer,
+            TemporalHybridPRINet,
             TemporalPhasePropagator,
             inter_frame_phase_correlation,
-            TemporalHybridPRINet,
-            ActiveControlTrainer,
             retrain_controller,
         )
 
