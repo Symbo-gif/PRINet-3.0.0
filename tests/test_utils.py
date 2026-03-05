@@ -32,9 +32,7 @@ SEED = 42
 @pytest.fixture
 def kuramoto_100() -> KuramotoOscillator:
     """Kuramoto model with 100 oscillators."""
-    return KuramotoOscillator(
-        n_oscillators=100, coupling_strength=2.0, decay_rate=0.1
-    )
+    return KuramotoOscillator(n_oscillators=100, coupling_strength=2.0, decay_rate=0.1)
 
 
 @pytest.fixture
@@ -56,9 +54,7 @@ class TestBatchedRK45Solver:
     ) -> None:
         """Basic solve completes without error."""
         solver = BatchedRK45Solver(atol=1e-4, rtol=1e-3)
-        result = solver.solve(
-            kuramoto_100, state_100, t_span=(0.0, 0.1), max_steps=500
-        )
+        result = solver.solve(kuramoto_100, state_100, t_span=(0.0, 0.1), max_steps=500)
         assert isinstance(result, SolverResult)
         assert result.n_steps_taken > 0
         assert result.wall_time_seconds > 0
@@ -68,9 +64,7 @@ class TestBatchedRK45Solver:
     ) -> None:
         """Solved state contains no NaN values."""
         solver = BatchedRK45Solver(atol=1e-4, rtol=1e-3)
-        result = solver.solve(
-            kuramoto_100, state_100, t_span=(0.0, 0.1), max_steps=500
-        )
+        result = solver.solve(kuramoto_100, state_100, t_span=(0.0, 0.1), max_steps=500)
         assert not torch.isnan(result.final_state.phase).any()
         assert not torch.isnan(result.final_state.amplitude).any()
         assert (result.final_state.amplitude >= 0).all()
@@ -130,18 +124,14 @@ class TestFixedStepRK4Solver:
         assert result.n_steps_taken == 100
         assert result.n_function_evals == 400  # 4 per RK4 step
 
-    def test_solve_deterministic(
-        self, kuramoto_100: KuramotoOscillator
-    ) -> None:
+    def test_solve_deterministic(self, kuramoto_100: KuramotoOscillator) -> None:
         """Same initial state produces same result."""
         solver = FixedStepRK4Solver(dt=0.01)
         state1 = OscillatorState.create_random(100, seed=SEED)
         state2 = OscillatorState.create_random(100, seed=SEED)
         r1 = solver.solve(kuramoto_100, state1, n_steps=50)
         r2 = solver.solve(kuramoto_100, state2, n_steps=50)
-        assert torch.allclose(
-            r1.final_state.phase, r2.final_state.phase, atol=1e-5
-        )
+        assert torch.allclose(r1.final_state.phase, r2.final_state.phase, atol=1e-5)
 
     def test_invalid_dt_raises(self) -> None:
         """Non-positive dt raises ValueError."""
@@ -190,9 +180,7 @@ class TestSparseCouplingMatrix:
 
     def test_symmetric(self) -> None:
         """Symmetric matrix is indeed symmetric."""
-        mat = sparse_coupling_matrix(
-            50, sparsity=0.8, symmetric=True, seed=SEED
-        )
+        mat = sparse_coupling_matrix(50, sparsity=0.8, symmetric=True, seed=SEED)
         assert torch.allclose(mat, mat.T, atol=1e-6)
 
     def test_invalid_sparsity_raises(self) -> None:
@@ -225,27 +213,19 @@ class TestGradientCheckpointIntegration:
 
     def test_result_matches_standard(self) -> None:
         """Checkpointed integration matches standard integration."""
-        model = KuramotoOscillator(
-            n_oscillators=20, coupling_strength=1.0
-        )
+        model = KuramotoOscillator(n_oscillators=20, coupling_strength=1.0)
         state = OscillatorState.create_random(20, seed=SEED)
 
         # Standard integration
-        final_std, _ = model.integrate(
-            state.clone(), n_steps=50, dt=0.01, method="rk4"
-        )
+        final_std, _ = model.integrate(state.clone(), n_steps=50, dt=0.01, method="rk4")
 
         # Checkpointed integration
         final_cp = gradient_checkpoint_integration(
             model, state.clone(), n_steps=50, dt=0.01, checkpoint_every=10
         )
 
-        assert torch.allclose(
-            final_std.phase, final_cp.phase, atol=1e-4
-        )
-        assert torch.allclose(
-            final_std.amplitude, final_cp.amplitude, atol=1e-4
-        )
+        assert torch.allclose(final_std.phase, final_cp.phase, atol=1e-4)
+        assert torch.allclose(final_std.amplitude, final_cp.amplitude, atol=1e-4)
 
     def test_handles_non_divisible_steps(self) -> None:
         """Works when n_steps is not divisible by checkpoint_every."""

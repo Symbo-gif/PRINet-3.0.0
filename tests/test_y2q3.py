@@ -50,9 +50,14 @@ class TestHybridPRINetV2:
         from prinet.nn.hybrid import HybridPRINetV2
 
         model = HybridPRINetV2(
-            n_input=128, n_classes=10,
-            d_model=32, n_heads=4, n_layers=2,
-            n_delta=4, n_theta=8, n_gamma=16,
+            n_input=128,
+            n_classes=10,
+            d_model=32,
+            n_heads=4,
+            n_layers=2,
+            n_delta=4,
+            n_theta=8,
+            n_gamma=16,
             n_discrete_steps=3,
         ).to(_DEVICE)
         x = torch.randn(4, 128, device=_DEVICE)
@@ -65,8 +70,14 @@ class TestHybridPRINetV2:
         from prinet.nn.hybrid import HybridPRINetV2
 
         model = HybridPRINetV2(
-            n_input=64, n_classes=5, d_model=16, n_heads=2,
-            n_layers=1, n_delta=2, n_theta=4, n_gamma=8,
+            n_input=64,
+            n_classes=5,
+            d_model=16,
+            n_heads=2,
+            n_layers=1,
+            n_delta=2,
+            n_theta=4,
+            n_gamma=8,
             n_discrete_steps=2,
         ).to(_DEVICE)
         x = torch.randn(64, device=_DEVICE)
@@ -79,8 +90,14 @@ class TestHybridPRINetV2:
         from prinet.nn.hybrid import HybridPRINetV2
 
         model = HybridPRINetV2(
-            n_input=64, n_classes=5, d_model=16, n_heads=2,
-            n_layers=1, n_delta=2, n_theta=4, n_gamma=8,
+            n_input=64,
+            n_classes=5,
+            d_model=16,
+            n_heads=2,
+            n_layers=1,
+            n_delta=2,
+            n_theta=4,
+            n_gamma=8,
             n_discrete_steps=2,
         ).to(_DEVICE)
         x = torch.randn(2, 64, device=_DEVICE)
@@ -89,15 +106,16 @@ class TestHybridPRINetV2:
         loss.backward()
 
         n_with_grad = sum(
-            1 for p in model.parameters()
+            1
+            for p in model.parameters()
             if p.grad is not None and p.grad.abs().sum() > 0
         )
         n_total = sum(1 for _ in model.parameters())
         assert n_with_grad > 0, "No parameters received gradients"
         # Most params should have grad (some may be unused in small config)
-        assert n_with_grad >= n_total * 0.5, (
-            f"Only {n_with_grad}/{n_total} params got gradients"
-        )
+        assert (
+            n_with_grad >= n_total * 0.5
+        ), f"Only {n_with_grad}/{n_total} params got gradients"
 
     def test_numerical_stability(self) -> None:
         """V2 output is finite (no NaN/Inf) across 5 random batches."""
@@ -105,8 +123,14 @@ class TestHybridPRINetV2:
         from prinet.nn.hybrid import HybridPRINetV2
 
         model = HybridPRINetV2(
-            n_input=64, n_classes=5, d_model=16, n_heads=2,
-            n_layers=2, n_delta=2, n_theta=4, n_gamma=8,
+            n_input=64,
+            n_classes=5,
+            d_model=16,
+            n_heads=2,
+            n_layers=2,
+            n_delta=2,
+            n_theta=4,
+            n_gamma=8,
             n_discrete_steps=3,
         ).to(_DEVICE)
         model.eval()
@@ -122,28 +146,37 @@ class TestHybridPRINetV2:
         from prinet.nn.hybrid import HybridPRINetV2
 
         model = HybridPRINetV2(
-            n_input=64, n_classes=5, d_model=16, n_heads=2,
-            n_layers=1, n_delta=2, n_theta=4, n_gamma=8,
+            n_input=64,
+            n_classes=5,
+            d_model=16,
+            n_heads=2,
+            n_layers=1,
+            n_delta=2,
+            n_theta=4,
+            n_gamma=8,
         ).to(_DEVICE)
         x = torch.randn(4, 64, device=_DEVICE)
         out = model(x)
         probs = out.exp()
         sums = probs.sum(dim=-1)
-        assert torch.allclose(sums, torch.ones_like(sums), atol=1e-4), (
-            f"Probabilities don't sum to 1: {sums}"
-        )
+        assert torch.allclose(
+            sums, torch.ones_like(sums), atol=1e-4
+        ), f"Probabilities don't sum to 1: {sums}"
 
     def test_adaptive_tokens(self) -> None:
         """V2 n_tokens equals n_oscillators (adaptive, no fixed padding)."""
         from prinet.nn.hybrid import HybridPRINetV2
 
         model = HybridPRINetV2(
-            n_input=64, n_classes=5,
-            n_delta=8, n_theta=16, n_gamma=32,
+            n_input=64,
+            n_classes=5,
+            n_delta=8,
+            n_theta=16,
+            n_gamma=32,
         )
-        assert model.n_tokens == 56, (
-            f"Expected n_tokens=56 (8+16+32), got {model.n_tokens}"
-        )
+        assert (
+            model.n_tokens == 56
+        ), f"Expected n_tokens=56 (8+16+32), got {model.n_tokens}"
 
     def test_param_groups_disjoint(self) -> None:
         """Oscillatory and rate-coded parameter groups don't overlap."""
@@ -151,15 +184,19 @@ class TestHybridPRINetV2:
         from prinet.nn.hybrid import HybridPRINetV2
 
         model = HybridPRINetV2(
-            n_input=64, n_classes=5, d_model=16, n_heads=2,
-            n_layers=1, n_delta=2, n_theta=4, n_gamma=8,
+            n_input=64,
+            n_classes=5,
+            d_model=16,
+            n_heads=2,
+            n_layers=1,
+            n_delta=2,
+            n_theta=4,
+            n_gamma=8,
         )
         osc_ids = {id(p) for p in model.oscillatory_parameters()}
         rate_ids = {id(p) for p in model.rate_coded_parameters()}
         overlap = osc_ids & rate_ids
-        assert len(overlap) == 0, (
-            f"{len(overlap)} parameters appear in both groups"
-        )
+        assert len(overlap) == 0, f"{len(overlap)} parameters appear in both groups"
 
     def test_conv_stem_shape(self) -> None:
         """V2 with conv stem handles 4D image input."""
@@ -167,10 +204,16 @@ class TestHybridPRINetV2:
         from prinet.nn.hybrid import HybridPRINetV2
 
         model = HybridPRINetV2(
-            n_input=256, n_classes=10,
-            d_model=32, n_heads=4, n_layers=1,
-            n_delta=4, n_theta=8, n_gamma=16,
-            use_conv_stem=True, stem_channels=32,
+            n_input=256,
+            n_classes=10,
+            d_model=32,
+            n_heads=4,
+            n_layers=1,
+            n_delta=4,
+            n_theta=8,
+            n_gamma=16,
+            use_conv_stem=True,
+            stem_channels=32,
         ).to(_DEVICE)
         x = torch.randn(2, 3, 32, 32, device=_DEVICE)
         out = model(x)
@@ -182,9 +225,13 @@ class TestHybridPRINetV2:
         from prinet.nn.hybrid import HybridPRINetV2CLEVRN
 
         model = HybridPRINetV2CLEVRN(
-            scene_dim=16, query_dim=44,
-            n_delta=4, n_theta=8, n_gamma=32,
-            d_model=32, n_discrete_steps=3,
+            scene_dim=16,
+            query_dim=44,
+            n_delta=4,
+            n_theta=8,
+            n_gamma=32,
+            d_model=32,
+            n_discrete_steps=3,
         ).to(_DEVICE)
 
         optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
@@ -210,9 +257,9 @@ class TestHybridPRINetV2:
         # Loss should decrease (compare first 2 epochs avg vs last 2)
         early = sum(losses[:2]) / 2
         late = sum(losses[-2:]) / 2
-        assert late < early, (
-            f"Loss did not decrease: early={early:.4f} -> late={late:.4f}"
-        )
+        assert (
+            late < early
+        ), f"Loss did not decrease: early={early:.4f} -> late={late:.4f}"
 
     def test_passes_existing_tests_api(self) -> None:
         """V2 has the same public API surface as InterleavedHybridPRINet."""
@@ -220,7 +267,9 @@ class TestHybridPRINetV2:
 
         # Both should have these methods
         for method in [
-            "forward", "oscillatory_parameters", "rate_coded_parameters",
+            "forward",
+            "oscillatory_parameters",
+            "rate_coded_parameters",
         ]:
             assert hasattr(HybridPRINetV2, method), f"V2 missing {method}"
             assert hasattr(InterleavedHybridPRINet, method)
@@ -240,15 +289,20 @@ class TestFusedDiscreteKernel:
         amp = torch.ones(B, N)
 
         new_p, new_a = pytorch_fused_discrete_step(
-            phase, amp,
+            phase,
+            amp,
             freq_delta=torch.full((nd,), 2.0),
             freq_theta=torch.full((nt,), 6.0),
             freq_gamma=torch.full((ng,), 40.0),
             W_delta=torch.randn(nd, nd) * 0.5,
             W_theta=torch.randn(nt, nt) * 0.25,
             W_gamma=torch.randn(ng, ng) * 0.125,
-            mu_delta=1.0, mu_theta=1.0, mu_gamma=1.0,
-            n_delta=nd, n_theta=nt, n_gamma=ng,
+            mu_delta=1.0,
+            mu_theta=1.0,
+            mu_gamma=1.0,
+            n_delta=nd,
+            n_theta=nt,
+            n_gamma=ng,
             dt=0.01,
         )
         assert new_p.shape == (B, N)
@@ -264,15 +318,20 @@ class TestFusedDiscreteKernel:
         amp = torch.ones(N)
 
         new_p, new_a = pytorch_fused_discrete_step(
-            phase, amp,
+            phase,
+            amp,
             freq_delta=torch.full((nd,), 2.0),
             freq_theta=torch.full((nt,), 6.0),
             freq_gamma=torch.full((ng,), 40.0),
             W_delta=torch.randn(nd, nd) * 0.5,
             W_theta=torch.randn(nt, nt) * 0.25,
             W_gamma=torch.randn(ng, ng) * 0.125,
-            mu_delta=1.0, mu_theta=1.0, mu_gamma=1.0,
-            n_delta=nd, n_theta=nt, n_gamma=ng,
+            mu_delta=1.0,
+            mu_theta=1.0,
+            mu_gamma=1.0,
+            n_delta=nd,
+            n_theta=nt,
+            n_gamma=ng,
         )
         assert new_p.shape == (N,)
         assert new_a.shape == (N,)
@@ -287,15 +346,20 @@ class TestFusedDiscreteKernel:
         amp = torch.ones(8, N)
 
         new_p, _ = pytorch_fused_discrete_step(
-            phase, amp,
+            phase,
+            amp,
             freq_delta=torch.full((nd,), 2.0),
             freq_theta=torch.full((nt,), 6.0),
             freq_gamma=torch.full((ng,), 40.0),
             W_delta=torch.randn(nd, nd) * 0.5,
             W_theta=torch.randn(nt, nt) * 0.25,
             W_gamma=torch.randn(ng, ng) * 0.125,
-            mu_delta=1.0, mu_theta=1.0, mu_gamma=1.0,
-            n_delta=nd, n_theta=nt, n_gamma=ng,
+            mu_delta=1.0,
+            mu_theta=1.0,
+            mu_gamma=1.0,
+            n_delta=nd,
+            n_theta=nt,
+            n_gamma=ng,
         )
         assert (new_p >= 0).all() and (new_p < 2 * math.pi + 0.01).all()
 
@@ -309,15 +373,20 @@ class TestFusedDiscreteKernel:
         amp = torch.rand(8, N) * 5.0 + 0.01
 
         _, new_a = pytorch_fused_discrete_step(
-            phase, amp,
+            phase,
+            amp,
             freq_delta=torch.full((nd,), 2.0),
             freq_theta=torch.full((nt,), 6.0),
             freq_gamma=torch.full((ng,), 40.0),
             W_delta=torch.randn(nd, nd) * 0.5,
             W_theta=torch.randn(nt, nt) * 0.25,
             W_gamma=torch.randn(ng, ng) * 0.125,
-            mu_delta=1.0, mu_theta=1.0, mu_gamma=1.0,
-            n_delta=nd, n_theta=nt, n_gamma=ng,
+            mu_delta=1.0,
+            mu_theta=1.0,
+            mu_gamma=1.0,
+            n_delta=nd,
+            n_theta=nt,
+            n_gamma=ng,
         )
         assert (new_a >= 1e-6).all()
         assert (new_a <= 10.0).all()
@@ -349,12 +418,38 @@ class TestFusedDiscreteKernel:
         Wg = (torch.randn(ng, ng) * 0.125).cuda()
 
         ref_p, ref_a = pytorch_fused_discrete_step(
-            phase, amp, fd, ft, fg, Wd, Wt, Wg,
-            1.0, 1.0, 1.0, nd, nt, ng, 0.01,
+            phase,
+            amp,
+            fd,
+            ft,
+            fg,
+            Wd,
+            Wt,
+            Wg,
+            1.0,
+            1.0,
+            1.0,
+            nd,
+            nt,
+            ng,
+            0.01,
         )
         tri_p, tri_a = triton_fused_discrete_step(
-            phase, amp, fd, ft, fg, Wd, Wt, Wg,
-            1.0, 1.0, 1.0, nd, nt, ng, 0.01,
+            phase,
+            amp,
+            fd,
+            ft,
+            fg,
+            Wd,
+            Wt,
+            Wg,
+            1.0,
+            1.0,
+            1.0,
+            nd,
+            nt,
+            ng,
+            0.01,
         )
 
         # Note: Triton kernel does not include coupling (only phase advance
@@ -391,12 +486,38 @@ class TestFusedDiscreteKernel:
         Wg = (torch.randn(ng, ng) * 0.125).to(device)
 
         r1_p, r1_a = pytorch_fused_discrete_step(
-            phase, amp, fd, ft, fg, Wd, Wt, Wg,
-            1.0, 1.0, 1.0, nd, nt, ng, 0.01,
+            phase,
+            amp,
+            fd,
+            ft,
+            fg,
+            Wd,
+            Wt,
+            Wg,
+            1.0,
+            1.0,
+            1.0,
+            nd,
+            nt,
+            ng,
+            0.01,
         )
         r2_p, r2_a = pytorch_fused_discrete_step(
-            phase, amp, fd, ft, fg, Wd, Wt, Wg,
-            1.0, 1.0, 1.0, nd, nt, ng, 0.01,
+            phase,
+            amp,
+            fd,
+            ft,
+            fg,
+            Wd,
+            Wt,
+            Wg,
+            1.0,
+            1.0,
+            1.0,
+            nd,
+            nt,
+            ng,
+            0.01,
         )
         assert torch.allclose(r1_p, r2_p, atol=1e-6)
         assert torch.allclose(r1_a, r2_a, atol=1e-6)
@@ -420,9 +541,14 @@ class TestHyperparamSweep:
         for nd, nt, ng in configs:
             n_osc = nd + nt + ng
             model = HybridPRINetV2(
-                n_input=n_osc, n_classes=5,
-                d_model=16, n_heads=2, n_layers=1,
-                n_delta=nd, n_theta=nt, n_gamma=ng,
+                n_input=n_osc,
+                n_classes=5,
+                d_model=16,
+                n_heads=2,
+                n_layers=1,
+                n_delta=nd,
+                n_theta=nt,
+                n_gamma=ng,
                 n_discrete_steps=3,
             ).to(_DEVICE)
             x = torch.randn(2, n_osc, device=_DEVICE)
@@ -437,9 +563,14 @@ class TestHyperparamSweep:
 
         for K in [0.1, 0.5, 1.0, 2.0, 5.0]:
             model = HybridPRINetV2(
-                n_input=28, n_classes=5,
-                d_model=16, n_heads=2, n_layers=1,
-                n_delta=4, n_theta=8, n_gamma=16,
+                n_input=28,
+                n_classes=5,
+                d_model=16,
+                n_heads=2,
+                n_layers=1,
+                n_delta=4,
+                n_theta=8,
+                n_gamma=16,
                 coupling_strength=K,
             ).to(_DEVICE)
             x = torch.randn(2, 28, device=_DEVICE)
@@ -453,9 +584,14 @@ class TestHyperparamSweep:
 
         for pac in [0.05, 0.1, 0.3, 0.5, 1.0]:
             model = HybridPRINetV2(
-                n_input=28, n_classes=5,
-                d_model=16, n_heads=2, n_layers=1,
-                n_delta=4, n_theta=8, n_gamma=16,
+                n_input=28,
+                n_classes=5,
+                d_model=16,
+                n_heads=2,
+                n_layers=1,
+                n_delta=4,
+                n_theta=8,
+                n_gamma=16,
                 pac_depth=pac,
             ).to(_DEVICE)
             x = torch.randn(2, 28, device=_DEVICE)
@@ -477,9 +613,14 @@ class TestFashionMNIST:
         from prinet.nn.hybrid import HybridPRINetV2
 
         model = HybridPRINetV2(
-            n_input=784, n_classes=10,
-            d_model=32, n_heads=4, n_layers=2,
-            n_delta=4, n_theta=8, n_gamma=32,
+            n_input=784,
+            n_classes=10,
+            d_model=32,
+            n_heads=4,
+            n_layers=2,
+            n_delta=4,
+            n_theta=8,
+            n_gamma=32,
         ).to(_DEVICE)
         x = torch.randn(8, 784, device=_DEVICE)
         out = model(x)
@@ -492,10 +633,16 @@ class TestFashionMNIST:
         from prinet.nn.hybrid import HybridPRINetV2
 
         model = HybridPRINetV2(
-            n_input=256, n_classes=10,
-            d_model=32, n_heads=4, n_layers=2,
-            n_delta=4, n_theta=8, n_gamma=32,
-            use_conv_stem=True, stem_channels=32,
+            n_input=256,
+            n_classes=10,
+            d_model=32,
+            n_heads=4,
+            n_layers=2,
+            n_delta=4,
+            n_theta=8,
+            n_gamma=32,
+            use_conv_stem=True,
+            stem_channels=32,
         ).to(_DEVICE)
         x = torch.randn(4, 3, 32, 32, device=_DEVICE)
         out = model(x)
@@ -509,10 +656,16 @@ class TestFashionMNIST:
         from prinet.nn.hybrid import HybridPRINetV2
 
         model = HybridPRINetV2(
-            n_input=256, n_classes=10,
-            d_model=64, n_heads=4, n_layers=2,
-            n_delta=4, n_theta=8, n_gamma=32,
-            use_conv_stem=True, stem_channels=64,
+            n_input=256,
+            n_classes=10,
+            d_model=64,
+            n_heads=4,
+            n_layers=2,
+            n_delta=4,
+            n_theta=8,
+            n_gamma=32,
+            use_conv_stem=True,
+            stem_channels=64,
         ).cuda()
 
         optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
@@ -575,9 +728,9 @@ class TestPhaseTracker:
         sim = tracker.phase_similarity(phase, phase)
         # Diagonal should be highest per row
         diag = sim.diag()
-        assert (diag >= sim.max(dim=1).values - 0.01).all(), (
-            "Self-similarity not highest"
-        )
+        assert (
+            diag >= sim.max(dim=1).values - 0.01
+        ).all(), "Self-similarity not highest"
 
     def test_forward_matches(self) -> None:
         """Forward pass produces valid match indices and similarity."""
@@ -585,7 +738,8 @@ class TestPhaseTracker:
         from prinet.nn.hybrid import PhaseTracker
 
         tracker = PhaseTracker(
-            detection_dim=4, match_threshold=0.0,
+            detection_dim=4,
+            match_threshold=0.0,
         ).to(_DEVICE)
         dets_t = torch.randn(3, 4, device=_DEVICE)
         dets_t1 = torch.randn(3, 4, device=_DEVICE)
@@ -602,7 +756,8 @@ class TestPhaseTracker:
         from prinet.nn.hybrid import PhaseTracker
 
         tracker = PhaseTracker(
-            detection_dim=4, match_threshold=-1.0,  # Accept all
+            detection_dim=4,
+            match_threshold=-1.0,  # Accept all
         ).to(_DEVICE)
         tracker.eval()
 
@@ -612,9 +767,7 @@ class TestPhaseTracker:
 
         # With same input, greedy matching should find a valid assignment
         n_matched = (matches >= 0).sum().item()
-        assert n_matched >= 2, (
-            f"Only {n_matched}/4 detections matched to themselves"
-        )
+        assert n_matched >= 2, f"Only {n_matched}/4 detections matched to themselves"
 
     def test_gradient_flow(self) -> None:
         """Gradients flow through PhaseTracker forward pass."""
@@ -630,7 +783,8 @@ class TestPhaseTracker:
         loss.backward()
 
         n_with_grad = sum(
-            1 for p in tracker.parameters()
+            1
+            for p in tracker.parameters()
             if p.grad is not None and p.grad.abs().sum() > 0
         )
         assert n_with_grad > 0, "No gradients in PhaseTracker"
@@ -642,6 +796,7 @@ class TestOscilloBenchV2:
     def test_benchmark_script_importable(self) -> None:
         """y2q3_benchmarks.py is importable as module."""
         import importlib
+
         mod = importlib.import_module("benchmarks.y2q3_benchmarks")
         assert hasattr(mod, "run_g_hyperparam_sweep")
         assert hasattr(mod, "run_h_medium_scale")
@@ -701,12 +856,14 @@ class TestSubconsciousLearning:
         # Generate synthetic telemetry records matching TelemetryLogger format
         records = []
         for i in range(200):
-            records.append({
-                "epoch": i // 10,
-                "loss": 1.0 / (i + 1),
-                "r_per_band": [0.5, 0.6, 0.7],
-                "r_global": 0.6,
-            })
+            records.append(
+                {
+                    "epoch": i // 10,
+                    "loss": 1.0 / (i + 1),
+                    "r_per_band": [0.5, 0.6, 0.7],
+                    "r_global": 0.6,
+                }
+            )
 
         with tempfile.TemporaryDirectory() as tmpdir:
             onnx_path = os.path.join(tmpdir, "controller.onnx")
@@ -743,14 +900,18 @@ class TestSubconsciousLearning:
 class TestTopLevelExports:
     """Verify all Y2 Q3 symbols are exported from the top-level package."""
 
-    @pytest.mark.parametrize("name", [
-        "HybridPRINetV2",
-        "HybridPRINetV2CLEVRN",
-        "PhaseTracker",
-        "TelemetryLogger",
-        "pytorch_fused_discrete_step",
-    ])
+    @pytest.mark.parametrize(
+        "name",
+        [
+            "HybridPRINetV2",
+            "HybridPRINetV2CLEVRN",
+            "PhaseTracker",
+            "TelemetryLogger",
+            "pytorch_fused_discrete_step",
+        ],
+    )
     def test_top_level_export(self, name: str) -> None:
         """Symbol is accessible from ``import prinet``."""
         import prinet
+
         assert hasattr(prinet, name), f"{name} not in prinet.__all__"

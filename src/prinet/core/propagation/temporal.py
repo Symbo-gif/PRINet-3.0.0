@@ -13,6 +13,7 @@ from torch import Tensor
 
 from .oscillator_state import OscillatorState, _wrap_phase
 
+
 class TemporalPhasePropagator:
     """Temporal phase propagation for multi-frame oscillatory binding.
 
@@ -56,9 +57,7 @@ class TemporalPhasePropagator:
         amplitude_decay: float = 0.5,
     ) -> None:
         if not 0.0 <= carry_strength <= 1.0:
-            raise ValueError(
-                f"carry_strength must be in [0, 1], got {carry_strength}"
-            )
+            raise ValueError(f"carry_strength must be in [0, 1], got {carry_strength}")
         if not 0.0 <= amplitude_decay <= 1.0:
             raise ValueError(
                 f"amplitude_decay must be in [0, 1], got {amplitude_decay}"
@@ -187,5 +186,3 @@ class TemporalPhasePropagator:
             prev_amp = final_amp.detach()
 
         return out_phases, out_amps, correlations
-
-

@@ -30,7 +30,6 @@ import pytest
 import torch
 from hypothesis import given, settings, strategies as st
 
-
 # =====================================================================
 # TestOrderParameterSeries
 # =====================================================================
@@ -70,9 +69,7 @@ class TestOrderParameterSeries:
         from prinet.utils.y4q1_tools import order_parameter_series
 
         result = order_parameter_series(torch.rand(5, 3))
-        assert set(result.keys()) == {
-            "r_series", "mean_r", "std_r", "final_r"
-        }
+        assert set(result.keys()) == {"r_series", "mean_r", "std_r", "final_r"}
 
     def test_r_series_length(self) -> None:
         from prinet.utils.y4q1_tools import order_parameter_series
@@ -86,9 +83,7 @@ class TestOrderParameterSeries:
         from prinet.utils.y4q1_tools import order_parameter_series
 
         torch.manual_seed(99)
-        result = order_parameter_series(
-            torch.rand(50, 20) * 2 * math.pi
-        )
+        result = order_parameter_series(torch.rand(50, 20) * 2 * math.pi)
         for r in result["r_series"]:
             assert -0.01 <= r <= 1.01
 
@@ -119,9 +114,7 @@ class TestWindowedOrderParameterVariance:
         from prinet.utils.y4q1_tools import windowed_order_parameter_variance
 
         result = windowed_order_parameter_variance([0.1, 0.2] * 20)
-        assert set(result.keys()) == {
-            "window_stds", "trend_slope", "mean_window_std"
-        }
+        assert set(result.keys()) == {"window_stds", "trend_slope", "mean_window_std"}
 
     def test_increasing_variance(self) -> None:
         """Increasingly noisy series → positive trend slope."""
@@ -146,9 +139,7 @@ class TestWindowedOrderParameterVariance:
     def test_window_count(self) -> None:
         from prinet.utils.y4q1_tools import windowed_order_parameter_variance
 
-        result = windowed_order_parameter_variance(
-            list(range(100)), window_size=10
-        )
+        result = windowed_order_parameter_variance(list(range(100)), window_size=10)
         assert len(result["window_stds"]) == 10
 
     def test_zero_slope_for_stable(self) -> None:
@@ -266,7 +257,9 @@ class TestInstantaneousFrequencySpread:
 
         result = instantaneous_frequency_spread(torch.rand(10, 3))
         assert set(result.keys()) == {
-            "freq_spread_series", "mean_spread", "trend_slope"
+            "freq_spread_series",
+            "mean_spread",
+            "trend_slope",
         }
 
     def test_short_trajectory(self) -> None:
@@ -320,9 +313,7 @@ class TestCumulativePhaseSlipCurve:
         from prinet.utils.y4q1_tools import cumulative_phase_slip_curve
 
         result = cumulative_phase_slip_curve(torch.rand(10, 3))
-        assert set(result.keys()) == {
-            "cumulative_slips", "total_slips", "acceleration"
-        }
+        assert set(result.keys()) == {"cumulative_slips", "total_slips", "acceleration"}
 
     def test_short_trajectory(self) -> None:
         from prinet.utils.y4q1_tools import cumulative_phase_slip_curve
@@ -374,7 +365,10 @@ class TestThroughputSeries:
 
         result = throughput_series([1.0, 2.0], frames_per_interval=50)
         assert set(result.keys()) == {
-            "fps_series", "mean_fps", "std_fps", "degradation_pct"
+            "fps_series",
+            "mean_fps",
+            "std_fps",
+            "degradation_pct",
         }
 
     def test_single_interval(self) -> None:
@@ -418,8 +412,12 @@ class TestMemoryGrowthProfile:
 
         result = memory_growth_profile([100.0, 110.0], interval_seconds=60.0)
         assert set(result.keys()) == {
-            "initial_mb", "peak_mb", "final_mb", "growth_mb",
-            "growth_rate_mb_per_min", "is_leaking",
+            "initial_mb",
+            "peak_mb",
+            "final_mb",
+            "growth_mb",
+            "growth_rate_mb_per_min",
+            "is_leaking",
         }
 
     def test_empty_input(self) -> None:
@@ -476,7 +474,11 @@ class TestSessionLengthStatisticalComparison:
         data = {"a": [1.0, 2.0], "b": [3.0, 4.0]}
         result = session_length_statistical_comparison(data)
         assert set(result.keys()) == {
-            "anova_f", "anova_p", "pairwise_d", "significant", "eta_squared"
+            "anova_f",
+            "anova_p",
+            "pairwise_d",
+            "significant",
+            "eta_squared",
         }
 
     def test_pairwise_d_count(self) -> None:
@@ -546,6 +548,7 @@ class TestSessionRunnerSmoke:
     def test_imports(self) -> None:
         """Benchmark module imports without error."""
         import benchmarks.y4q1_5_benchmarks as mod
+
         assert hasattr(mod, "run_timed_session")
         assert hasattr(mod, "benchmark_5min")
 
@@ -587,9 +590,10 @@ class TestSessionRunnerSmoke:
         r1 = run_timed_session(0.05, seed=42, warmup_seconds=1.0)
         r2 = run_timed_session(0.05, seed=42, warmup_seconds=1.0)
         # Frame counts may differ slightly due to timing, but should be close
-        assert abs(
-            r1["aggregate"]["total_frames"] - r2["aggregate"]["total_frames"]
-        ) <= r1["aggregate"]["total_frames"] * 0.5
+        assert (
+            abs(r1["aggregate"]["total_frames"] - r2["aggregate"]["total_frames"])
+            <= r1["aggregate"]["total_frames"] * 0.5
+        )
 
 
 # =====================================================================
@@ -600,11 +604,15 @@ class TestSessionRunnerSmoke:
 class TestPropertyBased:
     """Hypothesis property-based tests for session-length metrics."""
 
-    @given(phases=st.lists(
-        st.floats(min_value=0, max_value=6.28, allow_infinity=False,
-                  allow_nan=False),
-        min_size=2, max_size=50,
-    ))
+    @given(
+        phases=st.lists(
+            st.floats(
+                min_value=0, max_value=6.28, allow_infinity=False, allow_nan=False
+            ),
+            min_size=2,
+            max_size=50,
+        )
+    )
     @settings(max_examples=20, deadline=5000)
     def test_order_param_bounded(self, phases: list[float]) -> None:
         from prinet.utils.y4q1_tools import order_parameter_series
@@ -614,11 +622,13 @@ class TestPropertyBased:
         for r in result["r_series"]:
             assert -0.01 <= r <= 1.01
 
-    @given(vals=st.lists(
-        st.floats(min_value=0, max_value=10, allow_infinity=False,
-                  allow_nan=False),
-        min_size=4, max_size=100,
-    ))
+    @given(
+        vals=st.lists(
+            st.floats(min_value=0, max_value=10, allow_infinity=False, allow_nan=False),
+            min_size=4,
+            max_size=100,
+        )
+    )
     @settings(max_examples=20, deadline=5000)
     def test_windowed_var_non_negative(self, vals: list[float]) -> None:
         from prinet.utils.y4q1_tools import windowed_order_parameter_variance
@@ -626,11 +636,15 @@ class TestPropertyBased:
         result = windowed_order_parameter_variance(vals, window_size=2)
         assert all(s >= 0 for s in result["window_stds"])
 
-    @given(data=st.lists(
-        st.floats(min_value=0.1, max_value=10, allow_infinity=False,
-                  allow_nan=False),
-        min_size=2, max_size=20,
-    ))
+    @given(
+        data=st.lists(
+            st.floats(
+                min_value=0.1, max_value=10, allow_infinity=False, allow_nan=False
+            ),
+            min_size=2,
+            max_size=20,
+        )
+    )
     @settings(max_examples=20, deadline=5000)
     def test_throughput_fps_positive(self, data: list[float]) -> None:
         from prinet.utils.y4q1_tools import throughput_series
@@ -638,15 +652,17 @@ class TestPropertyBased:
         result = throughput_series(data, frames_per_interval=100)
         assert all(f > 0 for f in result["fps_series"])
 
-    @given(samples=st.lists(
-        st.floats(min_value=1, max_value=1000, allow_infinity=False,
-                  allow_nan=False),
-        min_size=2, max_size=30,
-    ))
+    @given(
+        samples=st.lists(
+            st.floats(
+                min_value=1, max_value=1000, allow_infinity=False, allow_nan=False
+            ),
+            min_size=2,
+            max_size=30,
+        )
+    )
     @settings(max_examples=20, deadline=5000)
-    def test_memory_profile_peak_gte_initial(
-        self, samples: list[float]
-    ) -> None:
+    def test_memory_profile_peak_gte_initial(self, samples: list[float]) -> None:
         from prinet.utils.y4q1_tools import memory_growth_profile
 
         result = memory_growth_profile(samples, interval_seconds=10.0)
@@ -663,11 +679,13 @@ class TestVersionConsistency:
 
     def test_version_string(self) -> None:
         import prinet
+
         parts = prinet.__version__.split(".")
         assert len(parts) == 3 and all(p.isdigit() for p in parts)
 
     def test_pyproject_matches(self) -> None:
         import prinet
+
         with open("pyproject.toml", "rb") as f:
             data = tomllib.load(f)
         assert data["project"]["version"] == prinet.__version__

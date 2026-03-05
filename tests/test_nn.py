@@ -37,9 +37,7 @@ def resonance_layer() -> ResonanceLayer:
 def prinet_model() -> PRINetModel:
     """Standard PRINet model for tests."""
     torch.manual_seed(SEED)
-    return PRINetModel(
-        n_resonances=32, n_dims=64, n_concepts=10, n_layers=2, n_steps=5
-    )
+    return PRINetModel(n_resonances=32, n_dims=64, n_concepts=10, n_layers=2, n_steps=5)
 
 
 # ===========================================================================
@@ -146,9 +144,7 @@ class TestPRINetModel:
         out = prinet_model(x)
         assert out.shape == (10,)
 
-    def test_gradient_flow_through_model(
-        self, prinet_model: PRINetModel
-    ) -> None:
+    def test_gradient_flow_through_model(self, prinet_model: PRINetModel) -> None:
         """Gradients flow end-to-end."""
         x = torch.randn(4, 64)
         out = prinet_model(x)
@@ -158,9 +154,7 @@ class TestPRINetModel:
             if param.requires_grad:
                 assert param.grad is not None, f"No gradient for {name}"
 
-    def test_training_step_reduces_loss(
-        self, prinet_model: PRINetModel
-    ) -> None:
+    def test_training_step_reduces_loss(self, prinet_model: PRINetModel) -> None:
         """A training step reduces (or maintains) the loss."""
         torch.manual_seed(SEED)
         x = torch.randn(8, 64)
@@ -290,9 +284,7 @@ class TestSynchronizedGradientDescent:
     def test_invalid_lr_raises(self) -> None:
         """Negative learning rate raises ValueError."""
         with pytest.raises(ValueError, match="Invalid learning rate"):
-            SynchronizedGradientDescent(
-                [torch.randn(5, requires_grad=True)], lr=-0.1
-            )
+            SynchronizedGradientDescent([torch.randn(5, requires_grad=True)], lr=-0.1)
 
     def test_invalid_critical_order_raises(self) -> None:
         """Critical order > 1 raises ValueError."""
@@ -316,9 +308,7 @@ class TestSynchronizedGradientDescent:
         """Optimizer works with momentum."""
         param = torch.randn(10, requires_grad=True)
         param.grad = torch.randn(10)
-        opt = SynchronizedGradientDescent(
-            [param], lr=0.01, momentum=0.9
-        )
+        opt = SynchronizedGradientDescent([param], lr=0.01, momentum=0.9)
         opt.step()
         param.grad = torch.randn(10)
         opt.step()  # Second step uses momentum buffer
@@ -356,9 +346,7 @@ class TestRIPOptimizer:
     def test_invalid_lr_raises(self) -> None:
         """Negative lr raises ValueError."""
         with pytest.raises(ValueError, match="Invalid learning rate"):
-            RIPOptimizer(
-                [torch.randn(5, requires_grad=True)], lr=-0.01
-            )
+            RIPOptimizer([torch.randn(5, requires_grad=True)], lr=-0.01)
 
     def test_invalid_target_amplitude_raises(self) -> None:
         """Non-positive target amplitude raises ValueError."""
@@ -382,9 +370,7 @@ class TestOscillatoryWeightInit:
         """Initialization changes parameter values."""
         torch.manual_seed(SEED)
         model = PRINetModel(n_resonances=16, n_dims=32, n_concepts=5)
-        before = {
-            n: p.clone() for n, p in model.named_parameters()
-        }
+        before = {n: p.clone() for n, p in model.named_parameters()}
         oscillatory_weight_init(model)
 
         changed = False

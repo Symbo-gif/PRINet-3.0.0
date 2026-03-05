@@ -331,7 +331,10 @@ def _find_msvc_cl() -> Optional[str]:
 
         install_dir = Path(vs_info[0]["installationPath"])
         version_file = (
-            install_dir / "VC" / "Auxiliary" / "Build"
+            install_dir
+            / "VC"
+            / "Auxiliary"
+            / "Build"
             / "Microsoft.VCToolsVersion.default.txt"
         )
         if not version_file.exists():
@@ -339,8 +342,15 @@ def _find_msvc_cl() -> Optional[str]:
 
         msvc_version = version_file.read_text().strip()
         cl_path = (
-            install_dir / "VC" / "Tools" / "MSVC" / msvc_version
-            / "bin" / "HostX64" / "x64" / "cl.exe"
+            install_dir
+            / "VC"
+            / "Tools"
+            / "MSVC"
+            / msvc_version
+            / "bin"
+            / "HostX64"
+            / "x64"
+            / "cl.exe"
         )
         if cl_path.exists():
             logger.info("Auto-detected MSVC cl.exe: %s", cl_path)
@@ -456,6 +466,7 @@ def cuda_fused_kernel_available() -> bool:
 
 # ── Wrap-phase helper ─────────────────────────────────────────────
 
+
 def _wrap_phase(p: Tensor) -> Tensor:
     """Wrap phases to [0, 2π)."""
     two_pi = 2.0 * math.pi
@@ -463,6 +474,7 @@ def _wrap_phase(p: Tensor) -> Tensor:
 
 
 # ── PyTorch reference implementation ─────────────────────────────
+
 
 def pytorch_fused_discrete_step_full(
     phase: Tensor,
@@ -509,26 +521,20 @@ def pytorch_fused_discrete_step_full(
 
     # Split into bands
     p_d = phase[:, :nd]
-    p_t = phase[:, nd: nd + nt]
-    p_g = phase[:, nd + nt:]
+    p_t = phase[:, nd : nd + nt]
+    p_g = phase[:, nd + nt :]
     a_d = amplitude[:, :nd]
-    a_t = amplitude[:, nd: nd + nt]
-    a_g = amplitude[:, nd + nt:]
+    a_t = amplitude[:, nd : nd + nt]
+    a_g = amplitude[:, nd + nt :]
 
     # Phase coupling per band
     def _coupling(p: Tensor, W: Tensor) -> Tensor:
         diff = p.unsqueeze(-2) - p.unsqueeze(-1)
         return (W.unsqueeze(0) * torch.sin(diff)).sum(dim=-1)
 
-    new_p_d = _wrap_phase(
-        p_d + two_pi * freq_delta * dt + dt * _coupling(p_d, W_delta)
-    )
-    new_p_t = _wrap_phase(
-        p_t + two_pi * freq_theta * dt + dt * _coupling(p_t, W_theta)
-    )
-    new_p_g = _wrap_phase(
-        p_g + two_pi * freq_gamma * dt + dt * _coupling(p_g, W_gamma)
-    )
+    new_p_d = _wrap_phase(p_d + two_pi * freq_delta * dt + dt * _coupling(p_d, W_delta))
+    new_p_t = _wrap_phase(p_t + two_pi * freq_theta * dt + dt * _coupling(p_t, W_theta))
+    new_p_g = _wrap_phase(p_g + two_pi * freq_gamma * dt + dt * _coupling(p_g, W_gamma))
 
     # PAC gating: delta → theta
     delta_repr = torch.cat([torch.cos(new_p_d), torch.sin(new_p_d)], dim=-1)
@@ -618,23 +624,38 @@ def fused_discrete_step_cuda(
             mu_delta,
             mu_theta,
             mu_gamma,
-            nd, nt, ng,
+            nd,
+            nt,
+            ng,
         )
         return result[0], result[1]
 
     # Fallback to PyTorch
     return pytorch_fused_discrete_step_full(
-        phase, amplitude,
-        freq_delta, freq_theta, freq_gamma,
-        W_delta, W_theta, W_gamma,
-        W_pac_dt_weight, W_pac_dt_bias,
-        W_pac_tg_weight, W_pac_tg_bias,
-        mu_delta, mu_theta, mu_gamma,
-        dt, nd, nt, ng,
+        phase,
+        amplitude,
+        freq_delta,
+        freq_theta,
+        freq_gamma,
+        W_delta,
+        W_theta,
+        W_gamma,
+        W_pac_dt_weight,
+        W_pac_dt_bias,
+        W_pac_tg_weight,
+        W_pac_tg_bias,
+        mu_delta,
+        mu_theta,
+        mu_gamma,
+        dt,
+        nd,
+        nt,
+        ng,
     )
 
 
 # ── Mixed-Precision Training Utilities (O.3) ─────────────────────
+
 
 class MixedPrecisionTrainer:
     """Mixed-precision training wrapper for HybridPRINetV2.
@@ -722,6 +743,7 @@ class MixedPrecisionTrainer:
 
 
 # ── CSR Sparse Coupling Matrix (R.4) ─────────────────────────────
+
 
 def sparse_coupling_matrix_csr(
     n_oscillators: int,
@@ -849,6 +871,7 @@ def csr_coupling_step(
 
 # ── Large-Scale Oscillator System (O.4) ──────────────────────────
 
+
 def build_knn_neighbors(
     n_oscillators: int,
     k: int = 8,
@@ -887,7 +910,7 @@ def build_knn_neighbors(
 
     for i in range(N):
         # Exclude self
-        candidates = torch.cat([all_indices[:i], all_indices[i + 1:]])
+        candidates = torch.cat([all_indices[:i], all_indices[i + 1 :]])
         perm = torch.randperm(N - 1, generator=gen)[:k]
         neighbors[i] = candidates[perm]
 
@@ -981,9 +1004,7 @@ class LargeScaleOscillatorSystem(torch.nn.Module):
         self._coupling_strength = coupling_strength
 
         # Learnable frequencies
-        self.frequencies = torch.nn.Parameter(
-            torch.randn(n_oscillators) * 0.1 + 5.0
-        )
+        self.frequencies = torch.nn.Parameter(torch.randn(n_oscillators) * 0.1 + 5.0)
         self.mu = torch.nn.Parameter(torch.tensor(mu))
 
         # Pre-build neighbor topology (not learnable)
@@ -1015,9 +1036,7 @@ class LargeScaleOscillatorSystem(torch.nn.Module):
         coupling = sparse_knn_coupling_step(
             phase, amplitude, self.neighbors, self._coupling_strength
         )
-        new_phase = _wrap_phase(
-            phase + two_pi * self.frequencies * dt + dt * coupling
-        )
+        new_phase = _wrap_phase(phase + two_pi * self.frequencies * dt + dt * coupling)
 
         # Stuart-Landau amplitude
         da = dt * amplitude * (self.mu - amplitude * amplitude)
@@ -1048,6 +1067,7 @@ class LargeScaleOscillatorSystem(torch.nn.Module):
 
 
 # ── Async CPU+GPU Pipeline (O.5) ─────────────────────────────────
+
 
 class AsyncCPUGPUPipeline:
     """Overlapped CPU (ONNX) + GPU (training) pipeline.
@@ -1163,6 +1183,7 @@ class AsyncCPUGPUPipeline:
 
 # ── Model Pruning (O.6) ──────────────────────────────────────────
 
+
 class OscillatorPruner:
     """Prune inactive oscillators from a DiscreteDeltaThetaGamma model.
 
@@ -1266,8 +1287,8 @@ class OscillatorPruner:
         mask = stats["active_mask"]
 
         delta_mask = mask[:n_delta]
-        theta_mask = mask[n_delta: n_delta + n_theta]
-        gamma_mask = mask[n_delta + n_theta:]
+        theta_mask = mask[n_delta : n_delta + n_theta]
+        gamma_mask = mask[n_delta + n_theta :]
 
         return {
             "delta_active": delta_mask.nonzero(as_tuple=True)[0],

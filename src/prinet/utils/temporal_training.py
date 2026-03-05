@@ -37,7 +37,6 @@ from prinet.utils.temporal_metrics import (
     track_fragmentation_rate,
 )
 
-
 # =========================================================================
 # 1. Dataset Generator
 # =========================================================================
@@ -123,9 +122,7 @@ def generate_temporal_clevr_n(
     if reversal_count > 0 and n_frames > 2:
         rev_gen = torch.Generator()
         rev_gen.manual_seed(seed + 999)
-        rev_idx = torch.randint(
-            1, n_frames - 1, (reversal_count,), generator=rev_gen
-        )
+        rev_idx = torch.randint(1, n_frames - 1, (reversal_count,), generator=rev_gen)
         reversal_frames = set(rev_idx.tolist())
 
     # Pre-compute occlusion mask (1=visible, 0=occluded)
@@ -320,7 +317,11 @@ def temporal_smoothness_loss(
         Scalar loss tensor.
     """
     if len(similarity_sequence) < 2:
-        return similarity_sequence[0].new_tensor(0.0) if similarity_sequence else torch.tensor(0.0)
+        return (
+            similarity_sequence[0].new_tensor(0.0)
+            if similarity_sequence
+            else torch.tensor(0.0)
+        )
 
     diffs = []
     for t in range(1, len(similarity_sequence)):
@@ -644,9 +645,7 @@ class TemporalTrainer:
             return True
         return False
 
-    def train_epoch(
-        self, dataset: list[SequenceData]
-    ) -> float:
+    def train_epoch(self, dataset: list[SequenceData]) -> float:
         """Run one training epoch over the dataset.
 
         Args:
@@ -668,9 +667,7 @@ class TemporalTrainer:
 
             if loss_val > 0:
                 # Only backpropagate if there are trainable parameters
-                has_trainable = any(
-                    p.requires_grad for p in self.model.parameters()
-                )
+                has_trainable = any(p.requires_grad for p in self.model.parameters())
                 if has_trainable and loss_tensor.requires_grad:
                     loss_tensor.backward()
                     if self.grad_clip > 0:
@@ -684,9 +681,7 @@ class TemporalTrainer:
         return total_loss / max(len(dataset), 1)
 
     @torch.no_grad()
-    def evaluate(
-        self, dataset: list[SequenceData]
-    ) -> dict[str, float]:
+    def evaluate(self, dataset: list[SequenceData]) -> dict[str, float]:
         """Evaluate model on a dataset.
 
         Args:
@@ -733,7 +728,9 @@ class TemporalTrainer:
                 else:
                     # Re-run to get similarity
                     prev_slots_eval = self.model.process_frame(dets_prev)
-                    curr_slots_eval = self.model.process_frame(dets_curr, prev_slots_eval)
+                    curr_slots_eval = self.model.process_frame(
+                        dets_curr, prev_slots_eval
+                    )
                     sim = self.model.slot_similarity(prev_slots_eval, curr_slots_eval)
                 loss += float(hungarian_similarity_loss(sim, seq.n_objects).item())
                 n_trans += 1
@@ -764,7 +761,9 @@ class TemporalTrainer:
         # Phase-specific: compute coherence
         if self._is_phase_tracker() and hasattr(self.model, "dynamics"):
             try:
-                test_phase = torch.rand(1, self.model.n_osc, device=self.device) * 2 * math.pi
+                test_phase = (
+                    torch.rand(1, self.model.n_osc, device=self.device) * 2 * math.pi
+                )
                 test_amp = torch.ones(1, self.model.n_osc, device=self.device)
                 evolved_phase, _ = self.model.evolve(test_phase, test_amp)
                 z = torch.exp(1j * evolved_phase.to(torch.complex64))
@@ -823,9 +822,10 @@ class TemporalTrainer:
 
             # Early stopping with smoothed loss
             if len(val_loss_history) >= self.smoothing_window:
-                smoothed = sum(
-                    val_loss_history[-self.smoothing_window :]
-                ) / self.smoothing_window
+                smoothed = (
+                    sum(val_loss_history[-self.smoothing_window :])
+                    / self.smoothing_window
+                )
             else:
                 smoothed = val_loss
 
@@ -847,7 +847,9 @@ class TemporalTrainer:
         wall_time = time.perf_counter() - t0
         final_val = self.evaluate(val_data)
 
-        result.final_train_loss = result.train_losses[-1] if result.train_losses else 0.0
+        result.final_train_loss = (
+            result.train_losses[-1] if result.train_losses else 0.0
+        )
         result.final_val_loss = final_val["loss"]
         result.final_val_ip = final_val["ip"]
         result.best_val_loss = best_val_loss
@@ -924,9 +926,7 @@ def train_multi_seed(
     for seed in seeds:
         torch.manual_seed(seed)
         model = model_factory()
-        trainer = TemporalTrainer(
-            model, device=device, seed=seed, **trainer_kwargs
-        )
+        trainer = TemporalTrainer(model, device=device, seed=seed, **trainer_kwargs)
         tr = trainer.train(train_data, val_data)
         result.per_seed.append(tr)
 

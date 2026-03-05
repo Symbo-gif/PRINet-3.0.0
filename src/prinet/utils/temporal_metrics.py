@@ -84,9 +84,7 @@ def temporal_smoothness(
         Temporal smoothness value (lower = better).
     """
     if positions.dim() != 3 or positions.shape[-1] < 2:
-        raise ValueError(
-            f"Expected positions shape (T, N, 2+), got {positions.shape}"
-        )
+        raise ValueError(f"Expected positions shape (T, N, 2+), got {positions.shape}")
     T = positions.shape[0]
     if T < 3:
         return 0.0
@@ -166,7 +164,12 @@ def track_fragmentation_rate(
             m = matches_history[t]
             is_matched = (
                 obj_id < len(m)
-                and (int(m[obj_id].item()) if isinstance(m[obj_id], Tensor) else int(m[obj_id])) >= 0
+                and (
+                    int(m[obj_id].item())
+                    if isinstance(m[obj_id], Tensor)
+                    else int(m[obj_id])
+                )
+                >= 0
             )
             if is_matched and not in_fragment:
                 fragments += 1
@@ -239,7 +242,11 @@ def mostly_tracked_lost(
         for t in range(T):
             m = matches_history[t]
             if obj_id < len(m):
-                val = int(m[obj_id].item()) if isinstance(m[obj_id], Tensor) else int(m[obj_id])
+                val = (
+                    int(m[obj_id].item())
+                    if isinstance(m[obj_id], Tensor)
+                    else int(m[obj_id])
+                )
                 if val >= 0:
                     tracked_frames += 1
         frac = tracked_frames / max(T, 1)
@@ -278,7 +285,11 @@ def track_duration_stats(
             m = matches_history[t]
             val = -1
             if obj_id < len(m):
-                val = int(m[obj_id].item()) if isinstance(m[obj_id], Tensor) else int(m[obj_id])
+                val = (
+                    int(m[obj_id].item())
+                    if isinstance(m[obj_id], Tensor)
+                    else int(m[obj_id])
+                )
 
             if val >= 0 and (prev_match < 0 or val == prev_match):
                 run_length += 1
@@ -338,7 +349,11 @@ def recovery_speed(
                     m = matches_history[t2]
                     val = -1
                     if obj_id < len(m):
-                        val = int(m[obj_id].item()) if isinstance(m[obj_id], Tensor) else int(m[obj_id])
+                        val = (
+                            int(m[obj_id].item())
+                            if isinstance(m[obj_id], Tensor)
+                            else int(m[obj_id])
+                        )
                     frames_to_rebind += 1
                     if val >= 0:
                         break

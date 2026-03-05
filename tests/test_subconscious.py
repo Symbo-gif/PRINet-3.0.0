@@ -45,7 +45,6 @@ from prinet.utils.npu_backend import (
     npu_available,
 )
 
-
 # ======================================================================
 # Fixtures
 # ======================================================================
@@ -88,7 +87,9 @@ class TestNpuBackend:
         monkeypatch.setenv("PRINET_SUBCONSCIOUS_BACKEND", "cpu")
         assert detect_best_backend() == "cpu"
 
-    def test_backend_override_invalid_ignored(self, monkeypatch: pytest.MonkeyPatch) -> None:
+    def test_backend_override_invalid_ignored(
+        self, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
         monkeypatch.setenv("PRINET_SUBCONSCIOUS_BACKEND", "quantum")
         # Should fall through to auto-detection (not crash)
         result = detect_best_backend()
@@ -427,9 +428,7 @@ class TestSubconsciousDaemon:
 
     def test_daemon_lifecycle(self, tmp_onnx: Path) -> None:
         """Start → submit → read → stop without errors."""
-        daemon = SubconsciousDaemon(
-            tmp_onnx, backend="cpu", interval=0.5, warmup=True
-        )
+        daemon = SubconsciousDaemon(tmp_onnx, backend="cpu", interval=0.5, warmup=True)
         daemon.start()
         time.sleep(0.5)  # let it warm up
 
@@ -467,9 +466,7 @@ class TestSubconsciousDaemon:
         daemon.stop(timeout=3.0)
 
     def test_daemon_multiple_inferences(self, tmp_onnx: Path) -> None:
-        daemon = SubconsciousDaemon(
-            tmp_onnx, backend="cpu", interval=0.1, warmup=False
-        )
+        daemon = SubconsciousDaemon(tmp_onnx, backend="cpu", interval=0.1, warmup=False)
         daemon.start()
         for i in range(5):
             state = SubconsciousState(epoch=i, timestamp=time.time())
@@ -536,9 +533,7 @@ class TestIntegration:
 
     def test_state_through_daemon(self, tmp_onnx: Path) -> None:
         """Full pipeline: state → tensor → daemon → control signals."""
-        daemon = SubconsciousDaemon(
-            tmp_onnx, backend="cpu", interval=0.2, warmup=True
-        )
+        daemon = SubconsciousDaemon(tmp_onnx, backend="cpu", interval=0.2, warmup=True)
         daemon.start()
         time.sleep(0.5)
 
@@ -574,9 +569,7 @@ class TestIntegration:
 
     def test_no_gpu_throughput_regression(self, tmp_onnx: Path) -> None:
         """Daemon should not significantly affect CPU-bound work."""
-        daemon = SubconsciousDaemon(
-            tmp_onnx, backend="cpu", interval=0.5, warmup=True
-        )
+        daemon = SubconsciousDaemon(tmp_onnx, backend="cpu", interval=0.5, warmup=True)
 
         # Baseline: compute without daemon
         t0 = time.perf_counter()

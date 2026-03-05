@@ -140,7 +140,11 @@ class TestCLEVRNBaselines:
 
     def test_loss_computable(self) -> None:
         """All baselines should produce valid loss values."""
-        for ModelClass in [LSTMCLEVRNBaseline, TransformerCLEVRN, HopfieldCLEVRNBaseline]:
+        for ModelClass in [
+            LSTMCLEVRNBaseline,
+            TransformerCLEVRN,
+            HopfieldCLEVRNBaseline,
+        ]:
             model = ModelClass(scene_dim=D_PHASE, query_dim=D_FEAT * 2)
             scene = torch.randn(4, 6, D_PHASE)
             query = torch.randn(4, D_FEAT * 2)

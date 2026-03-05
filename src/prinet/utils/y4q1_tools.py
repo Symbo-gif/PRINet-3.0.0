@@ -21,7 +21,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch import Tensor
 
-
 # =========================================================================
 # T.5: Ablation Framework
 # =========================================================================
@@ -48,9 +47,9 @@ class AblationConfig:
         dropout: Dropout rate.
     """
 
-    variant: Literal[
-        "full", "attention_only", "oscillator_only", "shared_phase"
-    ] = "full"
+    variant: Literal["full", "attention_only", "oscillator_only", "shared_phase"] = (
+        "full"
+    )
     n_input: int = 256
     n_classes: int = 10
     d_model: int = 64
@@ -163,9 +162,7 @@ class AblationHybridPRINetV2(nn.Module):
                 )
                 self._shared_phase = False
 
-            self.phase_init = nn.Linear(
-                config.n_input, n_osc * config.n_heads
-            )
+            self.phase_init = nn.Linear(config.n_input, n_osc * config.n_heads)
         else:
             self.dynamics = None
             self._shared_phase = False
@@ -201,9 +198,7 @@ class AblationHybridPRINetV2(nn.Module):
         # Phase computation
         phase_state: Optional[Tensor] = None
         if self.dynamics is not None and self.phase_init is not None:
-            phase_raw = self.phase_init(x).view(
-                B, self.n_tokens, self.config.n_heads
-            )
+            phase_raw = self.phase_init(x).view(B, self.n_tokens, self.config.n_heads)
             phase_state = phase_raw % (2.0 * math.pi)
 
             # For shared_phase: set all oscillator frequencies equal
@@ -212,9 +207,7 @@ class AblationHybridPRINetV2(nn.Module):
                     phase_state
                 )
 
-            amp_state = torch.ones(
-                B, self.n_tokens, device=x.device, dtype=x.dtype
-            )
+            amp_state = torch.ones(B, self.n_tokens, device=x.device, dtype=x.dtype)
             dyn_phase = phase_state.mean(dim=-1)
 
         for i in range(self.n_layers):
@@ -222,26 +215,28 @@ class AblationHybridPRINetV2(nn.Module):
             token_phase: Optional[Tensor] = None
             if self.dynamics is not None and phase_state is not None:
                 dyn_phase, amp_state = self.dynamics.integrate(
-                    dyn_phase, amp_state,
-                    n_steps=self.config.n_discrete_steps, dt=0.01,
+                    dyn_phase,
+                    amp_state,
+                    n_steps=self.config.n_discrete_steps,
+                    dt=0.01,
                 )
                 token_phase = dyn_phase.unsqueeze(-1).expand(
                     B, self.n_tokens, self.config.n_heads
                 )
 
             # Attention or MLP mixing
-            if (
-                self.attn_layers is not None
-                and self.norm1_layers is not None
-            ):
+            if self.attn_layers is not None and self.norm1_layers is not None:
                 h_norm = self.norm1_layers[i](h)
                 if token_phase is not None:
                     h = h + self.attn_layers[i](h_norm, phase=token_phase)
                 else:
                     # attention_only: use zero phase
                     zero_phase = torch.zeros(
-                        B, self.n_tokens, self.config.n_heads,
-                        device=x.device, dtype=x.dtype,
+                        B,
+                        self.n_tokens,
+                        self.config.n_heads,
+                        device=x.device,
+                        dtype=x.dtype,
                     )
                     h = h + self.attn_layers[i](h_norm, phase=zero_phase)
             else:
@@ -450,7 +445,9 @@ def train_clevr_n_extended(
     mean_acc = sum(accs) / len(accs)
     std_acc = (sum((a - mean_acc) ** 2 for a in accs) / max(len(accs) - 1, 1)) ** 0.5
     mean_loss = sum(losses) / len(losses)
-    std_loss = (sum((l - mean_loss) ** 2 for l in losses) / max(len(losses) - 1, 1)) ** 0.5
+    std_loss = (
+        sum((l - mean_loss) ** 2 for l in losses) / max(len(losses) - 1, 1)
+    ) ** 0.5
 
     return ExtendedTrainingResult(
         model_name=model_name,
@@ -522,13 +519,15 @@ def count_flops(
             if module.bias is not None:
                 flops += module.out_features
             total_flops += flops
-            layer_details.append({
-                "name": name,
-                "type": "Linear",
-                "flops": flops,
-                "params": module.in_features * module.out_features
-                + (module.out_features if module.bias is not None else 0),
-            })
+            layer_details.append(
+                {
+                    "name": name,
+                    "type": "Linear",
+                    "flops": flops,
+                    "params": module.in_features * module.out_features
+                    + (module.out_features if module.bias is not None else 0),
+                }
+            )
         elif isinstance(module, nn.Conv2d):
             flops = (
                 2
@@ -538,22 +537,28 @@ def count_flops(
                 * module.kernel_size[1]
             )
             total_flops += flops
-            layer_details.append({
-                "name": name,
-                "type": "Conv2d",
-                "flops": flops,
-                "params": sum(p.numel() for p in module.parameters()),
-            })
+            layer_details.append(
+                {
+                    "name": name,
+                    "type": "Conv2d",
+                    "flops": flops,
+                    "params": sum(p.numel() for p in module.parameters()),
+                }
+            )
         elif isinstance(module, nn.GRUCell):
             # GRUCell: 3 gates × 2 × (input_size + hidden_size) × hidden_size
-            flops = 3 * 2 * (module.input_size + module.hidden_size) * module.hidden_size
+            flops = (
+                3 * 2 * (module.input_size + module.hidden_size) * module.hidden_size
+            )
             total_flops += flops
-            layer_details.append({
-                "name": name,
-                "type": "GRUCell",
-                "flops": flops,
-                "params": sum(p.numel() for p in module.parameters()),
-            })
+            layer_details.append(
+                {
+                    "name": name,
+                    "type": "GRUCell",
+                    "flops": flops,
+                    "params": sum(p.numel() for p in module.parameters()),
+                }
+            )
 
     # Scale by batch size
     batch_size = input_shape[0] if len(input_shape) > 1 else 1
@@ -848,7 +853,7 @@ def spatial_correlation(
     """
     v = r_local.float().cpu()
     v = v - v.mean()
-    var = (v ** 2).mean()
+    var = (v**2).mean()
     if var < 1e-12:
         return [1.0] + [0.0] * max_lag
     result = []
@@ -933,8 +938,7 @@ def phase_slip_rate(
     """
     if phase_trajectory.dim() != 2:
         raise ValueError(
-            f"Expected 2-D (T, N) trajectory, got shape "
-            f"{phase_trajectory.shape}."
+            f"Expected 2-D (T, N) trajectory, got shape " f"{phase_trajectory.shape}."
         )
     T, N = phase_trajectory.shape
     if T < 2:
@@ -1004,9 +1008,7 @@ def binding_persistence(
     T = len(matches_history)
     per_obj: list[float] = []
     for obj_idx in range(n_objects):
-        matched_count = sum(
-            1 for m in matches_history if m[obj_idx].item() >= 0
-        )
+        matched_count = sum(1 for m in matches_history if m[obj_idx].item() >= 0)
         per_obj.append(matched_count / T)
 
     return {
@@ -1109,9 +1111,7 @@ def rebinding_speed(
     if not matches_before:
         pre_rate = 1.0
     else:
-        rates_before = [
-            (m >= 0).float().mean().item() for m in matches_before
-        ]
+        rates_before = [(m >= 0).float().mean().item() for m in matches_before]
         pre_rate = sum(rates_before) / len(rates_before)
 
     target = 0.9 * pre_rate
@@ -1172,8 +1172,7 @@ def cross_frequency_coupling(
 
     # 2-D: (T, N)
     per_step = [
-        float(torch.sin(diff[t]).mean().abs().item())
-        for t in range(diff.shape[0])
+        float(torch.sin(diff[t]).mean().abs().item()) for t in range(diff.shape[0])
     ]
     return {
         "pac": sum(per_step) / len(per_step),
@@ -1581,12 +1580,8 @@ def session_length_statistical_comparison(
     n_total = len(all_vals)
     k = len(groups)
 
-    ss_between = sum(
-        len(g) * (float(np.mean(g)) - grand_mean) ** 2 for g in groups
-    )
-    ss_within = sum(
-        sum((v - float(np.mean(g))) ** 2 for v in g) for g in groups
-    )
+    ss_between = sum(len(g) * (float(np.mean(g)) - grand_mean) ** 2 for g in groups)
+    ss_within = sum(sum((v - float(np.mean(g))) ** 2 for v in g) for g in groups)
     ss_total = ss_between + ss_within
 
     df_between = k - 1
@@ -1623,11 +1618,15 @@ def session_length_statistical_comparison(
         for j in range(i + 1, k):
             g_a = np.array(groups[i], dtype=float)
             g_b = np.array(groups[j], dtype=float)
-            pooled_std = float(np.sqrt(
-                ((len(g_a) - 1) * g_a.var(ddof=1)
-                 + (len(g_b) - 1) * g_b.var(ddof=1))
-                / max(len(g_a) + len(g_b) - 2, 1)
-            ))
+            pooled_std = float(
+                np.sqrt(
+                    (
+                        (len(g_a) - 1) * g_a.var(ddof=1)
+                        + (len(g_b) - 1) * g_b.var(ddof=1)
+                    )
+                    / max(len(g_a) + len(g_b) - 2, 1)
+                )
+            )
             d = (float(g_a.mean()) - float(g_b.mean())) / max(pooled_std, 1e-9)
             pairwise_d[f"{labels[i]}_vs_{labels[j]}"] = round(d, 4)
 
@@ -1641,7 +1640,9 @@ def session_length_statistical_comparison(
 
 
 def _f_distribution_p_value(
-    f_stat: float, df1: int, df2: int,
+    f_stat: float,
+    df1: int,
+    df2: int,
 ) -> float:
     """Approximate p-value for F-distribution using the regularised
     incomplete beta function.
@@ -1660,7 +1661,10 @@ def _f_distribution_p_value(
 
 
 def _regularised_incomplete_beta(
-    x: float, a: float, b: float, max_iter: int = 200,
+    x: float,
+    a: float,
+    b: float,
+    max_iter: int = 200,
 ) -> float:
     """Regularised incomplete beta function I_x(a, b) via continued fraction.
 
@@ -1679,8 +1683,11 @@ def _regularised_incomplete_beta(
 
     # Log of the prefactor
     ln_prefix = (
-        _math.lgamma(a + b) - _math.lgamma(a) - _math.lgamma(b)
-        + a * _math.log(x) + b * _math.log(1.0 - x)
+        _math.lgamma(a + b)
+        - _math.lgamma(a)
+        - _math.lgamma(b)
+        + a * _math.log(x)
+        + b * _math.log(1.0 - x)
     )
     prefix = _math.exp(ln_prefix)
 
@@ -1696,14 +1703,15 @@ def _regularised_incomplete_beta(
             a_m = 1.0
         elif m % 2 == 1:
             k = (m - 1) // 2 + 1
-            a_m = -(a + k - 1.0 + k) * (a + k - 1.0) * x / (
-                (a + 2 * k - 2.0) * (a + 2 * k - 1.0)
+            a_m = (
+                -(a + k - 1.0 + k)
+                * (a + k - 1.0)
+                * x
+                / ((a + 2 * k - 2.0) * (a + 2 * k - 1.0))
             )
         else:
             k = m // 2
-            a_m = k * (b - k) * x / (
-                (a + 2 * k - 1.0) * (a + 2 * k)
-            )
+            a_m = k * (b - k) * x / ((a + 2 * k - 1.0) * (a + 2 * k))
 
         d = 1.0 + a_m * d
         if abs(d) < tiny:
@@ -1772,8 +1780,8 @@ class PhaseTrackerLarge(nn.Module):
         )
 
         # Band split: 16 delta + 32 theta + 64 gamma = 112
-        n_delta = n_osc // 7       # 16
-        n_theta = n_osc * 2 // 7   # 32
+        n_delta = n_osc // 7  # 16
+        n_theta = n_osc * 2 // 7  # 32
         n_gamma = n_osc - n_delta - n_theta  # 64
 
         self.dynamics = DiscreteDeltaThetaGamma(
@@ -1799,8 +1807,10 @@ class PhaseTrackerLarge(nn.Module):
     def evolve(self, phase: Tensor, amplitude: Tensor) -> tuple[Tensor, Tensor]:
         """Evolve phase state through dynamics + residual refinement."""
         phase, amplitude = self.dynamics.integrate(
-            phase, amplitude,
-            n_steps=self._n_discrete_steps, dt=0.01,
+            phase,
+            amplitude,
+            n_steps=self._n_discrete_steps,
+            dt=0.01,
         )
         # Residual refinement
         phase = phase + 0.1 * self.phase_refine(phase)
@@ -1814,11 +1824,17 @@ class PhaseTrackerLarge(nn.Module):
         z_b = torch.exp(1j * phase_b.to(torch.complex64))
         z_a_norm = z_a / (z_a.abs().pow(2).sum(dim=-1, keepdim=True).sqrt() + _EPS)
         z_b_norm = z_b / (z_b.abs().pow(2).sum(dim=-1, keepdim=True).sqrt() + _EPS)
-        sim = (z_a_norm.unsqueeze(1) * z_b_norm.conj().unsqueeze(0)).sum(dim=-1).real.float()
+        sim = (
+            (z_a_norm.unsqueeze(1) * z_b_norm.conj().unsqueeze(0))
+            .sum(dim=-1)
+            .real.float()
+        )
         return sim
 
     def forward(
-        self, detections_t: Tensor, detections_t1: Tensor,
+        self,
+        detections_t: Tensor,
+        detections_t1: Tensor,
     ) -> tuple[Tensor, Tensor]:
         """Match detections across two consecutive frames."""
         phase_t, amp_t = self.encode(detections_t)
@@ -1826,10 +1842,10 @@ class PhaseTrackerLarge(nn.Module):
         phase_t_evolved, _ = self.evolve(phase_t, amp_t)
         sim = self.phase_similarity(phase_t_evolved, phase_t1)
         N_t = detections_t.shape[0]
-        matches = torch.full((N_t,), -1, dtype=torch.long,
-                             device=detections_t.device)
-        used = torch.zeros(detections_t1.shape[0], dtype=torch.bool,
-                           device=detections_t.device)
+        matches = torch.full((N_t,), -1, dtype=torch.long, device=detections_t.device)
+        used = torch.zeros(
+            detections_t1.shape[0], dtype=torch.bool, device=detections_t.device
+        )
         max_sims, max_idxs = sim.max(dim=1)
         order = max_sims.argsort(descending=True)
         for idx in order:
@@ -1856,9 +1872,14 @@ class PhaseTrackerLarge(nn.Module):
             matches, sim = self(frame_detections[t], frame_detections[t + 1])
             all_matches.append(matches)
             all_sims.append(float(sim.max(dim=1).values.mean().item()))
-            diag_sim = torch.diagonal(sim[:min(sim.shape[0], sim.shape[1]),
-                                          :min(sim.shape[0], sim.shape[1])])
-            all_corrs.append(float(diag_sim.mean().item()) if diag_sim.numel() > 0 else 0.0)
+            diag_sim = torch.diagonal(
+                sim[
+                    : min(sim.shape[0], sim.shape[1]), : min(sim.shape[0], sim.shape[1])
+                ]
+            )
+            all_corrs.append(
+                float(diag_sim.mean().item()) if diag_sim.numel() > 0 else 0.0
+            )
         # Identity preservation
         n_correct = 0
         n_total = 0
@@ -2065,8 +2086,11 @@ def curriculum_dataset(
     }
     n_obj, n_frames = stage_config.get(stage, (4, 20))
     return generate_dataset(
-        n_seqs, n_objects=n_obj, n_frames=n_frames,
-        det_dim=det_dim, base_seed=seed,
+        n_seqs,
+        n_objects=n_obj,
+        n_frames=n_frames,
+        det_dim=det_dim,
+        base_seed=seed,
     )
 
 

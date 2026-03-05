@@ -118,9 +118,7 @@ def mean_phase_coherence(phase: Tensor) -> Tensor:
     """
     n = phase.shape[-1]
     if n < 2:
-        raise ValueError(
-            f"Need at least 2 oscillators for coherence, got {n}."
-        )
+        raise ValueError(f"Need at least 2 oscillators for coherence, got {n}.")
 
     # Phase difference matrix: cos(φᵢ - φⱼ)
     phase_diff = phase.unsqueeze(-1) - phase.unsqueeze(-2)  # (..., N, N)
@@ -177,9 +175,7 @@ def power_spectral_density(
         n_freq_bins = 2 * n
 
     # Complex resonance signal
-    signal = amplitude * torch.exp(
-        1j * phase.to(torch.float64)
-    ).to(torch.complex64)
+    signal = amplitude * torch.exp(1j * phase.to(torch.float64)).to(torch.complex64)
 
     # FFT and power spectrum
     spectrum = torch.fft.fft(signal, n=n_freq_bins, dim=-1)
@@ -230,14 +226,11 @@ def extract_concept_probabilities(
             amplitude.shape[0], k, device=amplitude.device, dtype=amplitude.dtype
         )
     else:
-        probs = torch.zeros(
-            k, device=amplitude.device, dtype=amplitude.dtype
-        )
+        probs = torch.zeros(k, device=amplitude.device, dtype=amplitude.dtype)
 
     for idx in range(k):
         band_mask = (
-            torch.abs(freq_indices - concept_frequencies[idx])
-            < concept_bandwidths[idx]
+            torch.abs(freq_indices - concept_frequencies[idx]) < concept_bandwidths[idx]
         )
         if batched:
             probs[:, idx] = power[:, band_mask].sum(dim=-1)
@@ -331,9 +324,7 @@ def build_phase_knn(
     if k < 1:
         raise ValueError(f"k must be >= 1, got {k}.")
     if k >= n:
-        raise ValueError(
-            f"k must be < N ({n}), got {k}. Use dense metrics instead."
-        )
+        raise ValueError(f"k must be < N ({n}), got {k}. Use dense metrics instead.")
 
     flat = phase.reshape(-1, n)  # (B, N)
     return _build_phase_knn_index(flat, k)
@@ -375,9 +366,7 @@ def sparse_mean_phase_coherence(
     """
     n = phase.shape[-1]
     if n < 2:
-        raise ValueError(
-            f"Need at least 2 oscillators for coherence, got {n}."
-        )
+        raise ValueError(f"Need at least 2 oscillators for coherence, got {n}.")
 
     was_1d = phase.dim() == 1
     flat_phase = phase.reshape(-1, n)  # (B, N)
@@ -385,9 +374,7 @@ def sparse_mean_phase_coherence(
     k = nbr_idx.shape[-1]
 
     # Gather neighbour phases → (B, N, k)
-    nbr_phase = flat_phase.gather(
-        1, nbr_idx.reshape(B, -1)
-    ).reshape(B, n, k)
+    nbr_phase = flat_phase.gather(1, nbr_idx.reshape(B, -1)).reshape(B, n, k)
 
     # Wrapped phase differences
     phase_i = flat_phase.unsqueeze(-1)  # (B, N, 1)
@@ -498,12 +485,8 @@ def sparse_synchronization_energy(
     k = nbr_idx.shape[-1]
 
     # Gather neighbour phases and amplitudes
-    nbr_phase = flat_phase.gather(
-        1, nbr_idx.reshape(B, -1)
-    ).reshape(B, n, k)
-    nbr_amp = flat_amp.gather(
-        1, nbr_idx.reshape(B, -1)
-    ).reshape(B, n, k)
+    nbr_phase = flat_phase.gather(1, nbr_idx.reshape(B, -1)).reshape(B, n, k)
+    nbr_amp = flat_amp.gather(1, nbr_idx.reshape(B, -1)).reshape(B, n, k)
 
     # Wrapped phase differences
     phase_i = flat_phase.unsqueeze(-1)

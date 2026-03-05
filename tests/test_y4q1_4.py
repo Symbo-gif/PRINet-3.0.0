@@ -32,7 +32,6 @@ from prinet.utils.y4q1_tools import (
     welch_t_test,
 )
 
-
 # =========================================================================
 # Fixtures
 # =========================================================================
@@ -66,7 +65,10 @@ def slot_tracker() -> TemporalSlotAttentionMOT:
 
 
 def _make_smooth_sequence(
-    n_frames: int, n_objects: int, det_dim: int = 4, seed: int = 42,
+    n_frames: int,
+    n_objects: int,
+    det_dim: int = 4,
+    seed: int = 42,
 ) -> list[torch.Tensor]:
     """Generate a smooth detection sequence (slowly drifting features)."""
     torch.manual_seed(seed)
@@ -286,6 +288,7 @@ class TestCoherenceDecayRate:
     def test_exponential_decay(self) -> None:
         """Known exponential → correct lambda recovery."""
         import numpy as np
+
         lam = 0.1
         series = [math.exp(-lam * t) for t in range(50)]
         result = coherence_decay_rate(series)
@@ -434,16 +437,22 @@ class TestTemporalAdvantageReport:
 
     def test_advantage_positive_when_phase_wins(self) -> None:
         """ip_advantage is positive when PhaseTracker leads."""
-        pt = {"identity_preservation": 0.9, "per_frame_similarity": [],
-              "per_frame_phase_correlation": []}
+        pt = {
+            "identity_preservation": 0.9,
+            "per_frame_similarity": [],
+            "per_frame_phase_correlation": [],
+        }
         sa = {"identity_preservation": 0.7, "per_frame_similarity": []}
         report = temporal_advantage_report(pt, sa)
         assert report["ip_advantage"] == pytest.approx(0.2, abs=1e-6)
 
     def test_advantage_negative_when_slot_wins(self) -> None:
         """ip_advantage is negative when SlotAttention leads."""
-        pt = {"identity_preservation": 0.5, "per_frame_similarity": [],
-              "per_frame_phase_correlation": []}
+        pt = {
+            "identity_preservation": 0.5,
+            "per_frame_similarity": [],
+            "per_frame_phase_correlation": [],
+        }
         sa = {"identity_preservation": 0.8, "per_frame_similarity": []}
         report = temporal_advantage_report(pt, sa)
         assert report["ip_advantage"] < 0
@@ -458,7 +467,9 @@ class TestHeadToHeadTracking:
     """Integration tests running both trackers on the same sequences."""
 
     def test_both_trackers_produce_valid_results(
-        self, phase_tracker: PhaseTracker, slot_tracker: TemporalSlotAttentionMOT,
+        self,
+        phase_tracker: PhaseTracker,
+        slot_tracker: TemporalSlotAttentionMOT,
     ) -> None:
         """Both trackers run without error on the same data."""
         frames = _make_smooth_sequence(10, 4)
@@ -469,7 +480,9 @@ class TestHeadToHeadTracking:
         assert 0.0 <= sa_result["identity_preservation"] <= 1.0
 
     def test_report_from_both_trackers(
-        self, phase_tracker: PhaseTracker, slot_tracker: TemporalSlotAttentionMOT,
+        self,
+        phase_tracker: PhaseTracker,
+        slot_tracker: TemporalSlotAttentionMOT,
     ) -> None:
         """temporal_advantage_report works with real tracker outputs."""
         frames = _make_smooth_sequence(8, 3)
@@ -481,7 +494,8 @@ class TestHeadToHeadTracking:
         assert math.isfinite(report["mean_rho_phase"])
 
     def test_phase_slip_from_tracker_output(
-        self, phase_tracker: PhaseTracker,
+        self,
+        phase_tracker: PhaseTracker,
     ) -> None:
         """phase_slip_rate works on PhaseTracker phase_history."""
         frames = _make_smooth_sequence(15, 4)
@@ -493,7 +507,8 @@ class TestHeadToHeadTracking:
         assert psr["slip_fraction"] >= 0.0
 
     def test_binding_persistence_from_tracker_output(
-        self, phase_tracker: PhaseTracker,
+        self,
+        phase_tracker: PhaseTracker,
     ) -> None:
         """binding_persistence works on PhaseTracker matches."""
         frames = _make_smooth_sequence(10, 4)
@@ -502,7 +517,8 @@ class TestHeadToHeadTracking:
         assert 0.0 <= bp["mean_persistence"] <= 1.0
 
     def test_coherence_decay_from_tracker_output(
-        self, phase_tracker: PhaseTracker,
+        self,
+        phase_tracker: PhaseTracker,
     ) -> None:
         """coherence_decay_rate works on per_frame_phase_correlation."""
         frames = _make_smooth_sequence(20, 4)
@@ -513,7 +529,9 @@ class TestHeadToHeadTracking:
             assert math.isfinite(decay["decay_rate"])
 
     def test_sequence_length_scaling(
-        self, phase_tracker: PhaseTracker, slot_tracker: TemporalSlotAttentionMOT,
+        self,
+        phase_tracker: PhaseTracker,
+        slot_tracker: TemporalSlotAttentionMOT,
     ) -> None:
         """Both trackers handle increasing sequence lengths."""
         for n_frames in [5, 10, 20]:
@@ -550,9 +568,7 @@ class TestPropertyBased:
     @settings(max_examples=20, suppress_health_check=[HealthCheck.too_slow])
     def test_binding_persistence_bounded(self, n_frames: int, n_obj: int) -> None:
         """Mean persistence always in [0, 1]."""
-        matches = [
-            torch.randint(-1, 3, (n_obj,)) for _ in range(n_frames)
-        ]
+        matches = [torch.randint(-1, 3, (n_obj,)) for _ in range(n_frames)]
         result = binding_persistence(matches, n_objects=n_obj)
         assert 0.0 <= result["mean_persistence"] <= 1.0
 
@@ -563,6 +579,7 @@ class TestPropertyBased:
     def test_coherence_decay_finite(self, n_values: int) -> None:
         """coherence_decay_rate returns finite values for random input."""
         import random
+
         random.seed(42)
         series = [random.uniform(0.01, 1.0) for _ in range(n_values)]
         result = coherence_decay_rate(series)
@@ -591,12 +608,14 @@ class TestVersionConsistency:
 
     def test_version_string(self) -> None:
         import prinet
+
         parts = prinet.__version__.split(".")
         assert len(parts) == 3 and all(p.isdigit() for p in parts)
 
     def test_pyproject_version(self) -> None:
         import prinet, tomllib
         from pathlib import Path
+
         pp = Path(__file__).resolve().parent.parent / "pyproject.toml"
         data = tomllib.loads(pp.read_text())
         assert data["project"]["version"] == prinet.__version__

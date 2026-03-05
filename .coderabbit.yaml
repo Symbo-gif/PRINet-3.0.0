@@ -1,0 +1,10 @@
+language: en-US
+reviews:
+  auto_review:
+    enabled: true
+    drafts: false
+  path_instructions:
+    - path: "src/**/*.py"
+      instructions: "Follow black formatting (line-length 88). Use type hints consistently."
+    - path: "tests/**/*.py"
+      instructions: "Follow black formatting (line-length 88). Tests use pytest."

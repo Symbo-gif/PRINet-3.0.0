@@ -30,7 +30,6 @@ from prinet.utils.y4q1_tools import (
 )
 from prinet.nn.slot_attention import TemporalSlotAttentionMOT
 
-
 # =====================================================================
 # T.1: Ring / Small-World Topology
 # =====================================================================
@@ -204,8 +203,10 @@ class TestOscilloSimRingMode:
 
     def test_ring_mode_runs(self) -> None:
         sim = OscilloSim(
-            n_oscillators=32, coupling_mode="ring",
-            k_neighbors=4, coupling_strength=2.0,
+            n_oscillators=32,
+            coupling_mode="ring",
+            k_neighbors=4,
+            coupling_strength=2.0,
         )
         result = sim.run(n_steps=50, record_trajectory=True, record_interval=1)
         assert result.trajectory_phase is not None
@@ -214,8 +215,10 @@ class TestOscilloSimRingMode:
 
     def test_ring_mode_with_phase_lag(self) -> None:
         sim = OscilloSim(
-            n_oscillators=32, coupling_mode="ring",
-            k_neighbors=4, coupling_strength=2.0,
+            n_oscillators=32,
+            coupling_mode="ring",
+            k_neighbors=4,
+            coupling_strength=2.0,
             phase_lag=1.457,
         )
         result = sim.run(n_steps=50)
@@ -224,8 +227,10 @@ class TestOscilloSimRingMode:
 
     def test_small_world_mode_runs(self) -> None:
         sim = OscilloSim(
-            n_oscillators=32, coupling_mode="small_world",
-            k_neighbors=4, coupling_strength=2.0,
+            n_oscillators=32,
+            coupling_mode="small_world",
+            k_neighbors=4,
+            coupling_strength=2.0,
             p_rewire=0.3,
         )
         result = sim.run(n_steps=50)
@@ -234,8 +239,10 @@ class TestOscilloSimRingMode:
 
     def test_state_summary_includes_mode(self) -> None:
         sim = OscilloSim(
-            n_oscillators=16, coupling_mode="ring",
-            k_neighbors=4, coupling_strength=1.0,
+            n_oscillators=16,
+            coupling_mode="ring",
+            k_neighbors=4,
+            coupling_strength=1.0,
         )
         summary = sim.state_summary()
         assert summary["coupling_mode"] == "ring"
@@ -251,14 +258,19 @@ class TestTemporalSlotAttentionMOT:
 
     def test_construction(self) -> None:
         model = TemporalSlotAttentionMOT(
-            detection_dim=4, num_slots=6, slot_dim=32,
+            detection_dim=4,
+            num_slots=6,
+            slot_dim=32,
         )
         assert model.num_slots == 6
         assert model.slot_dim == 32
 
     def test_process_single_frame(self) -> None:
         model = TemporalSlotAttentionMOT(
-            detection_dim=4, num_slots=4, slot_dim=16, num_iterations=2,
+            detection_dim=4,
+            num_slots=4,
+            slot_dim=16,
+            num_iterations=2,
         )
         dets = torch.randn(5, 4)  # 5 detections, dim=4
         slots = model.process_frame(dets, prev_slots=None)
@@ -267,7 +279,10 @@ class TestTemporalSlotAttentionMOT:
 
     def test_process_frame_with_carry(self) -> None:
         model = TemporalSlotAttentionMOT(
-            detection_dim=4, num_slots=4, slot_dim=16, num_iterations=2,
+            detection_dim=4,
+            num_slots=4,
+            slot_dim=16,
+            num_iterations=2,
         )
         dets = torch.randn(5, 4)
         prev = torch.randn(1, 4, 16)
@@ -276,7 +291,9 @@ class TestTemporalSlotAttentionMOT:
 
     def test_slot_similarity(self) -> None:
         model = TemporalSlotAttentionMOT(
-            detection_dim=4, num_slots=4, slot_dim=16,
+            detection_dim=4,
+            num_slots=4,
+            slot_dim=16,
         )
         a = torch.randn(4, 16)
         b = torch.randn(4, 16)
@@ -289,7 +306,10 @@ class TestTemporalSlotAttentionMOT:
 
     def test_track_sequence(self) -> None:
         model = TemporalSlotAttentionMOT(
-            detection_dim=4, num_slots=4, slot_dim=16, num_iterations=2,
+            detection_dim=4,
+            num_slots=4,
+            slot_dim=16,
+            num_iterations=2,
         )
         frames = [torch.randn(5, 4) for _ in range(3)]
         result = model.track_sequence(frames)
@@ -300,7 +320,9 @@ class TestTemporalSlotAttentionMOT:
 
     def test_track_empty_sequence(self) -> None:
         model = TemporalSlotAttentionMOT(
-            detection_dim=4, num_slots=4, slot_dim=16,
+            detection_dim=4,
+            num_slots=4,
+            slot_dim=16,
         )
         result = model.track_sequence([])
         assert result["identity_preservation"] == 0.0
@@ -327,7 +349,9 @@ class TestAblationConfig:
 class TestAblationHybridPRINetV2:
     """Tests for :class:`AblationHybridPRINetV2`."""
 
-    @pytest.fixture(params=["full", "attention_only", "oscillator_only", "shared_phase"])
+    @pytest.fixture(
+        params=["full", "attention_only", "oscillator_only", "shared_phase"]
+    )
     def variant(self, request: pytest.FixtureRequest) -> str:
         return request.param
 

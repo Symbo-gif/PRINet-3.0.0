@@ -95,11 +95,7 @@ class HolomorphicEnergy(nn.Module):
         energy = coupling_energy + self_energy
 
         # 3. Task energy (nudge): β · L_task
-        if (
-            beta != 0.0
-            and target_logits is not None
-            and target_labels is not None
-        ):
+        if beta != 0.0 and target_logits is not None and target_labels is not None:
             task_loss = torch.nn.functional.cross_entropy(
                 target_logits, target_labels, reduction="none"
             )
@@ -153,13 +149,9 @@ class HolomorphicEPTrainer:
         if beta <= 0.0:
             raise ValueError(f"beta must be positive, got {beta}")
         if free_steps < 1:
-            raise ValueError(
-                f"free_steps must be >= 1, got {free_steps}"
-            )
+            raise ValueError(f"free_steps must be >= 1, got {free_steps}")
         if nudge_steps < 1:
-            raise ValueError(
-                f"nudge_steps must be >= 1, got {nudge_steps}"
-            )
+            raise ValueError(f"nudge_steps must be >= 1, got {nudge_steps}")
 
         self._model = model
         self._beta = beta
@@ -169,15 +161,11 @@ class HolomorphicEPTrainer:
         # Extract ResonanceLayer references from model
         self._resonance_layers: List[nn.Module] = []
         for module in model.modules():
-            if hasattr(module, "coupling") and hasattr(
-                module, "n_oscillators"
-            ):
+            if hasattr(module, "coupling") and hasattr(module, "n_oscillators"):
                 self._resonance_layers.append(module)
 
         if not self._resonance_layers:
-            raise ValueError(
-                "Model must contain at least one ResonanceLayer"
-            )
+            raise ValueError("Model must contain at least one ResonanceLayer")
 
         n_osc: int = self._resonance_layers[0].n_oscillators  # type: ignore[assignment]
         self._energy_fn = energy_fn or HolomorphicEnergy(n_osc)
@@ -248,22 +236,16 @@ class HolomorphicEPTrainer:
             amp_weight = amplitude.unsqueeze(-2)
 
             phase_update = (coupling * sin_diff * amp_weight).sum(dim=-1)
-            phase = (phase + dt * (frequency + phase_update)) % (
-                2.0 * math.pi
-            )
+            phase = (phase + dt * (frequency + phase_update)) % (2.0 * math.pi)
 
-            amp_coupling = (coupling * cos_diff * amp_weight).sum(
-                dim=-1
-            )
+            amp_coupling = (coupling * cos_diff * amp_weight).sum(dim=-1)
             amplitude = torch.clamp(
                 amplitude + dt * (-decay * amplitude + amp_coupling),
                 min=1e-6,
                 max=10.0,
             )
 
-            freq_update = (modulation * sin_diff * amp_weight).sum(
-                dim=-1
-            )
+            freq_update = (modulation * sin_diff * amp_weight).sum(dim=-1)
             frequency = frequency + dt * gamma * freq_update
 
             # Apply nudge toward target if in nudge phase
@@ -330,17 +312,15 @@ class HolomorphicEPTrainer:
 
         # Convert to complex for energy
         phase_free = torch.zeros_like(amp_free)
-        z_free = amp_free * torch.exp(
-            1j * phase_free.to(torch.float64)
-        ).to(torch.complex64)
+        z_free = amp_free * torch.exp(1j * phase_free.to(torch.float64)).to(
+            torch.complex64
+        )
 
         free_energy = self._energy_fn(
             z_free, coupling, logits_free, target_labels, beta=0.0
         )
 
-        free_loss = torch.nn.functional.cross_entropy(
-            logits_free, target_labels
-        ).item()
+        free_loss = torch.nn.functional.cross_entropy(logits_free, target_labels).item()
 
         # Positive nudge phase
         with torch.no_grad():
@@ -397,12 +377,8 @@ class HolomorphicEPTrainer:
                 # Analytic coupling gradient via outer-product formula:
                 # ∂E/∂K_{ij} = -Re(z_i^* z_j)
                 n = param.shape[0]
-                outer_pos = torch.matmul(
-                    amp_pos.T, amp_pos
-                ) / amp_pos.shape[0]
-                outer_neg = torch.matmul(
-                    amp_neg.T, amp_neg
-                ) / amp_neg.shape[0]
+                outer_pos = torch.matmul(amp_pos.T, amp_pos) / amp_pos.shape[0]
+                outer_neg = torch.matmul(amp_neg.T, amp_neg) / amp_neg.shape[0]
                 grad = -(outer_pos - outer_neg) / (2.0 * self._beta)
                 gradients[name] = grad[: param.shape[0], : param.shape[1]]
             elif "concept_proj" in name and param.dim() == 2:
@@ -415,42 +391,30 @@ class HolomorphicEPTrainer:
                     target_labels, num_classes=n_classes
                 ).float()
                 # Softmax gradients: ∂L/∂logits = softmax(logits) - y
-                grad_logits_pos = (
-                    torch.softmax(logits_pos, dim=-1) - target_onehot
-                )
-                grad_logits_neg = (
-                    torch.softmax(logits_neg, dim=-1) - target_onehot
-                )
+                grad_logits_pos = torch.softmax(logits_pos, dim=-1) - target_onehot
+                grad_logits_neg = torch.softmax(logits_neg, dim=-1) - target_onehot
                 # dL/dW = (1/2β)(grad_logits_+ @ amp_+^T -
                 #                 grad_logits_- @ amp_-^T) / B
                 B = amp_pos.shape[0]
                 grad_W_pos = grad_logits_pos.T @ amp_pos / B
                 grad_W_neg = grad_logits_neg.T @ amp_neg / B
                 grad = (grad_W_pos - grad_W_neg) / (2.0 * self._beta)
-                gradients[name] = grad[
-                    : param.shape[0], : param.shape[1]
-                ]
+                gradients[name] = grad[: param.shape[0], : param.shape[1]]
             elif "concept_proj" in name and param.dim() == 1:
                 # Bias gradient for concept projection
                 n_classes = logits_pos.shape[-1]
                 target_onehot = torch.nn.functional.one_hot(
                     target_labels, num_classes=n_classes
                 ).float()
-                grad_logits_pos = (
-                    torch.softmax(logits_pos, dim=-1) - target_onehot
+                grad_logits_pos = torch.softmax(logits_pos, dim=-1) - target_onehot
+                grad_logits_neg = torch.softmax(logits_neg, dim=-1) - target_onehot
+                grad = (grad_logits_pos.mean(dim=0) - grad_logits_neg.mean(dim=0)) / (
+                    2.0 * self._beta
                 )
-                grad_logits_neg = (
-                    torch.softmax(logits_neg, dim=-1) - target_onehot
-                )
-                grad = (
-                    grad_logits_pos.mean(dim=0) - grad_logits_neg.mean(dim=0)
-                ) / (2.0 * self._beta)
                 gradients[name] = grad[: param.shape[0]]
             else:
                 # Fallback: finite-difference via scalar energy
-                gradients[name] = energy_diff.detach() * torch.ones_like(
-                    param
-                ) * 0.01
+                gradients[name] = energy_diff.detach() * torch.ones_like(param) * 0.01
 
         return gradients, free_loss
 

@@ -177,14 +177,21 @@ def adversarial_evaluate(
                 continue
             if attack_fn == "fgsm":
                 adv_f = fgsm_attack(
-                    model, frames[t - 1], frames[t],
-                    seq.n_objects, epsilon,
+                    model,
+                    frames[t - 1],
+                    frames[t],
+                    seq.n_objects,
+                    epsilon,
                 )
             else:
                 adv_f = pgd_attack(
-                    model, frames[t - 1], frames[t],
-                    seq.n_objects, epsilon,
-                    steps=pgd_steps, seed=seed + i * 100 + t,
+                    model,
+                    frames[t - 1],
+                    frames[t],
+                    seq.n_objects,
+                    epsilon,
+                    steps=pgd_steps,
+                    seed=seed + i * 100 + t,
                 )
             adv_frames.append(adv_f)
 
@@ -193,6 +200,7 @@ def adversarial_evaluate(
             adv_ips.append(adv_result["identity_preservation"])
 
     import numpy as np
+
     clean_arr = np.array(clean_ips)
     adv_arr = np.array(adv_ips)
 
@@ -233,10 +241,20 @@ def adversarial_comparison(
         results[attack] = {}
         for eps in epsilons:
             pt_res = adversarial_evaluate(
-                pt_model, dataset, eps, attack, pgd_steps, seed,
+                pt_model,
+                dataset,
+                eps,
+                attack,
+                pgd_steps,
+                seed,
             )
             sa_res = adversarial_evaluate(
-                sa_model, dataset, eps, attack, pgd_steps, seed,
+                sa_model,
+                dataset,
+                eps,
+                attack,
+                pgd_steps,
+                seed,
             )
             results[attack][str(eps)] = {
                 "epsilon": eps,

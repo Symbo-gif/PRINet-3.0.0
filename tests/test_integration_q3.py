@@ -132,8 +132,7 @@ class PhaseToRatePipeline(nn.Module):
             ts = OscillatorState(
                 phase=ts.phase,
                 amplitude=ts.amplitude
-                + feature[self.n_delta : self.n_delta + self.n_theta].abs()
-                * 0.01,
+                + feature[self.n_delta : self.n_delta + self.n_theta].abs() * 0.01,
                 frequency=ts.frequency,
             )
             gs = OscillatorState(
@@ -145,9 +144,7 @@ class PhaseToRatePipeline(nn.Module):
 
             final, _ = net.integrate((ds, ts, gs), n_steps=self.n_steps, dt=0.01)
             # Concatenate phases and amplitudes
-            phase = torch.cat(
-                [final[0].phase, final[1].phase, final[2].phase]
-            )
+            phase = torch.cat([final[0].phase, final[1].phase, final[2].phase])
             amplitude = torch.cat(
                 [final[0].amplitude, final[1].amplitude, final[2].amplitude]
             )
@@ -190,8 +187,12 @@ class TestHierarchicalPipeline:
         """Full pipeline: input → hierarchical layer → classifier → logits."""
         torch.manual_seed(SEED)
         model = HierarchicalClassifier(
-            n_dims=128, n_delta=4, n_theta=8, n_gamma=32,
-            n_classes=5, n_steps=3,
+            n_dims=128,
+            n_delta=4,
+            n_theta=8,
+            n_gamma=32,
+            n_classes=5,
+            n_steps=3,
         )
         x = torch.randn(4, 128)
         logits = model(x)
@@ -201,8 +202,12 @@ class TestHierarchicalPipeline:
         """Pipeline outputs are finite (no NaN/Inf)."""
         torch.manual_seed(SEED)
         model = HierarchicalClassifier(
-            n_dims=64, n_delta=2, n_theta=4, n_gamma=16,
-            n_classes=3, n_steps=3,
+            n_dims=64,
+            n_delta=2,
+            n_theta=4,
+            n_gamma=16,
+            n_classes=3,
+            n_steps=3,
         )
         x = torch.randn(4, 64)
         logits = model(x)
@@ -212,8 +217,12 @@ class TestHierarchicalPipeline:
         """Cross-entropy loss on pipeline output is finite."""
         torch.manual_seed(SEED)
         model = HierarchicalClassifier(
-            n_dims=64, n_delta=2, n_theta=4, n_gamma=16,
-            n_classes=3, n_steps=3,
+            n_dims=64,
+            n_delta=2,
+            n_theta=4,
+            n_gamma=16,
+            n_classes=3,
+            n_steps=3,
         )
         x = torch.randn(4, 64)
         targets = torch.randint(0, 3, (4,))
@@ -225,8 +234,12 @@ class TestHierarchicalPipeline:
         """Gradients flow from loss through hierarchical layer to input projection."""
         torch.manual_seed(SEED)
         model = HierarchicalClassifier(
-            n_dims=64, n_delta=2, n_theta=4, n_gamma=16,
-            n_classes=3, n_steps=3,
+            n_dims=64,
+            n_delta=2,
+            n_theta=4,
+            n_gamma=16,
+            n_classes=3,
+            n_steps=3,
         )
         x = torch.randn(4, 64)
         targets = torch.randint(0, 3, (4,))
@@ -252,8 +265,12 @@ class TestHierarchicalPipeline:
         """
         torch.manual_seed(SEED)
         model = HierarchicalClassifier(
-            n_dims=64, n_delta=2, n_theta=4, n_gamma=16,
-            n_classes=3, n_steps=3,
+            n_dims=64,
+            n_delta=2,
+            n_theta=4,
+            n_gamma=16,
+            n_classes=3,
+            n_steps=3,
         )
         # Verify they are registered parameters
         param_names = {n for n, _ in model.hier.named_parameters()}
@@ -272,8 +289,11 @@ class TestHierarchicalPipeline:
         ]
         for nd, nt, ng in configs:
             layer = HierarchicalResonanceLayer(
-                n_delta=nd, n_theta=nt, n_gamma=ng,
-                n_dims=32, n_steps=2,
+                n_delta=nd,
+                n_theta=nt,
+                n_gamma=ng,
+                n_dims=32,
+                n_steps=2,
             )
             x = torch.randn(2, 32)
             out = layer(x)
@@ -297,8 +317,11 @@ class TestPhaseToRatePipeline:
         torch.manual_seed(SEED)
         n_total = 4 + 8 + 32
         model = PhaseToRatePipeline(
-            n_delta=4, n_theta=8, n_gamma=32,
-            n_classes=5, n_steps=3,
+            n_delta=4,
+            n_theta=8,
+            n_gamma=32,
+            n_classes=5,
+            n_steps=3,
         )
         x = torch.randn(4, n_total)
         logits = model(x)
@@ -309,8 +332,11 @@ class TestPhaseToRatePipeline:
         torch.manual_seed(SEED)
         n_total = 4 + 8 + 32
         model = PhaseToRatePipeline(
-            n_delta=4, n_theta=8, n_gamma=32,
-            n_classes=5, n_steps=3,
+            n_delta=4,
+            n_theta=8,
+            n_gamma=32,
+            n_classes=5,
+            n_steps=3,
         )
         x = torch.randn(4, n_total)
         targets = torch.randint(0, 5, (4,))
@@ -323,8 +349,11 @@ class TestPhaseToRatePipeline:
         torch.manual_seed(SEED)
         n_total = 2 + 4 + 16
         model = PhaseToRatePipeline(
-            n_delta=2, n_theta=4, n_gamma=16,
-            n_classes=3, n_steps=3,
+            n_delta=2,
+            n_theta=4,
+            n_gamma=16,
+            n_classes=3,
+            n_steps=3,
         )
         x = torch.randn(2, n_total)
         targets = torch.randint(0, 3, (2,))
@@ -345,8 +374,11 @@ class TestPhaseToRatePipeline:
         torch.manual_seed(SEED)
         n_total = 2 + 4 + 16
         model = PhaseToRatePipeline(
-            n_delta=2, n_theta=4, n_gamma=16,
-            n_classes=3, n_steps=3,
+            n_delta=2,
+            n_theta=4,
+            n_gamma=16,
+            n_classes=3,
+            n_steps=3,
         )
         temp_param = model.converter.temperature
         assert isinstance(temp_param, nn.Parameter)
@@ -369,18 +401,16 @@ class TestPhaseToRatePipeline:
         rate = converter(phase, amplitude)
 
         sparsity_loss = sparsity_loss_fn(rate)
-        assert torch.isfinite(sparsity_loss), (
-            f"Sparsity loss not finite: {sparsity_loss.item()}"
-        )
+        assert torch.isfinite(
+            sparsity_loss
+        ), f"Sparsity loss not finite: {sparsity_loss.item()}"
         assert sparsity_loss.item() >= 0.0, "Sparsity loss should be >= 0"
 
     def test_phase_to_rate_deterministic(self) -> None:
         """Same inputs produce same outputs (deterministic)."""
         torch.manual_seed(SEED)
         n = 22
-        converter = PhaseToRateConverter(
-            n_oscillators=n, mode="soft", sparsity=0.1
-        )
+        converter = PhaseToRateConverter(n_oscillators=n, mode="soft", sparsity=0.1)
         phase = torch.randn(4, n)
         amplitude = torch.ones(4, n)
 
@@ -392,18 +422,16 @@ class TestPhaseToRatePipeline:
         """Hard mode produces truly sparse outputs."""
         torch.manual_seed(SEED)
         n = 100
-        converter = PhaseToRateConverter(
-            n_oscillators=n, mode="hard", sparsity=0.1
-        )
+        converter = PhaseToRateConverter(n_oscillators=n, mode="hard", sparsity=0.1)
         phase = torch.randn(8, n)
         amplitude = torch.ones(8, n)
         rate = converter(phase, amplitude)
 
         # In hard mode, ~10% should be active (non-zero)
         active_frac = (rate > 0).float().mean().item()
-        assert active_frac <= 0.15, (
-            f"Hard mode too dense: {active_frac:.2%} active, expected ≤15%"
-        )
+        assert (
+            active_frac <= 0.15
+        ), f"Hard mode too dense: {active_frac:.2%} active, expected ≤15%"
 
 
 # ══════════════════════════════════════════════════════════════════
@@ -417,7 +445,9 @@ class TestCoreToNNBoundary:
     def test_dtg_state_to_layer_compatibility(self) -> None:
         """DeltaThetaGammaNetwork state is compatible with nn layer input."""
         net = DeltaThetaGammaNetwork(
-            n_delta=4, n_theta=8, n_gamma=32,
+            n_delta=4,
+            n_theta=8,
+            n_gamma=32,
             coupling_strength=2.0,
         )
         state = net.create_initial_state(seed=SEED)
@@ -431,7 +461,9 @@ class TestCoreToNNBoundary:
     def test_dtg_integrate_shape_consistency(self) -> None:
         """Integrate preserves oscillator count in final state."""
         net = DeltaThetaGammaNetwork(
-            n_delta=4, n_theta=8, n_gamma=32,
+            n_delta=4,
+            n_theta=8,
+            n_gamma=32,
         )
         state = net.create_initial_state(seed=SEED)
         final, _ = net.integrate(state, n_steps=10, dt=0.01)
@@ -450,7 +482,9 @@ class TestCoreToNNBoundary:
     def test_order_parameters_finite_after_integration(self) -> None:
         """Order parameters are finite and in [0, 1] after integration."""
         net = DeltaThetaGammaNetwork(
-            n_delta=4, n_theta=8, n_gamma=32,
+            n_delta=4,
+            n_theta=8,
+            n_gamma=32,
             coupling_strength=2.0,
         )
         state = net.create_initial_state(seed=SEED)
@@ -459,6 +493,4 @@ class TestCoreToNNBoundary:
 
         for r, name in [(r_d, "delta"), (r_t, "theta"), (r_g, "gamma")]:
             assert torch.isfinite(r), f"r_{name} not finite: {r}"
-            assert 0.0 <= r.item() <= 1.0 + 1e-6, (
-                f"r_{name} out of range: {r.item()}"
-            )
+            assert 0.0 <= r.item() <= 1.0 + 1e-6, f"r_{name} out of range: {r.item()}"

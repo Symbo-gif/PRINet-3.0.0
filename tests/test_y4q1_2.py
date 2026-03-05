@@ -47,7 +47,6 @@ from prinet.utils.y4q1_tools import (
 )
 from prinet.nn.slot_attention import TemporalSlotAttentionMOT
 
-
 # =====================================================================
 # Section 1: Edge-Case Tests for Topology Functions
 # =====================================================================
@@ -221,7 +220,9 @@ class TestBimodalityIndexProperties:
 class TestAblationGradientFlow:
     """Verify that gradients flow through all trainable parameters."""
 
-    @pytest.fixture(params=["full", "attention_only", "oscillator_only", "shared_phase"])
+    @pytest.fixture(
+        params=["full", "attention_only", "oscillator_only", "shared_phase"]
+    )
     def variant(self, request: pytest.FixtureRequest) -> str:
         return request.param
 
@@ -239,21 +240,27 @@ class TestAblationGradientFlow:
         loss.backward()
 
         # These param prefixes must always receive gradients
-        core_prefixes = ("input_proj", "ffn_layers", "norm2_layers",
-                         "pool_norm", "classifier")
+        core_prefixes = (
+            "input_proj",
+            "ffn_layers",
+            "norm2_layers",
+            "pool_norm",
+            "classifier",
+        )
         missing_core = []
         for name, p in model.named_parameters():
             if any(name.startswith(pfx) for pfx in core_prefixes):
                 if p.requires_grad and p.grad is None:
                     missing_core.append(name)
 
-        assert len(missing_core) == 0, (
-            f"Core parameters without gradient: {missing_core}"
-        )
+        assert (
+            len(missing_core) == 0
+        ), f"Core parameters without gradient: {missing_core}"
 
         # Count total params that *do* get gradients (informational)
         n_with_grad = sum(
-            1 for _, p in model.named_parameters()
+            1
+            for _, p in model.named_parameters()
             if p.requires_grad and p.grad is not None
         )
         assert n_with_grad > 0
@@ -271,9 +278,7 @@ class TestAblationGradientFlow:
 
         for name, p in model.named_parameters():
             if p.grad is not None:
-                assert torch.isfinite(p.grad).all(), (
-                    f"Non-finite gradient in {name}"
-                )
+                assert torch.isfinite(p.grad).all(), f"Non-finite gradient in {name}"
 
     def test_loss_decreases_after_step(self, variant: str) -> None:
         """A single optimiser step should decrease the loss."""
@@ -297,7 +302,7 @@ class TestAblationGradientFlow:
         loss1 = torch.nn.functional.nll_loss(out1, y).item()
         # Due to stochastic training this isn't strictly guaranteed,
         # but with lr=1e-2 and full batch it should hold
-        assert loss1 < loss0 * 1.5  # allow some noise  
+        assert loss1 < loss0 * 1.5  # allow some noise
 
 
 # =====================================================================
@@ -566,7 +571,10 @@ class TestTemporalMOTExtended:
     def test_single_frame_tracking(self) -> None:
         """Tracking with just 1 frame should work."""
         model = TemporalSlotAttentionMOT(
-            detection_dim=4, num_slots=4, slot_dim=16, num_iterations=2,
+            detection_dim=4,
+            num_slots=4,
+            slot_dim=16,
+            num_iterations=2,
         )
         model.eval()
         frames = [torch.randn(3, 4)]
@@ -577,7 +585,10 @@ class TestTemporalMOTExtended:
     def test_large_detection_count(self) -> None:
         """More detections than slots should not crash."""
         model = TemporalSlotAttentionMOT(
-            detection_dim=4, num_slots=4, slot_dim=16, num_iterations=2,
+            detection_dim=4,
+            num_slots=4,
+            slot_dim=16,
+            num_iterations=2,
         )
         model.eval()
         frames = [torch.randn(20, 4) for _ in range(5)]
@@ -588,7 +599,10 @@ class TestTemporalMOTExtended:
     def test_single_detection_per_frame(self) -> None:
         """Only 1 detection per frame."""
         model = TemporalSlotAttentionMOT(
-            detection_dim=4, num_slots=4, slot_dim=16, num_iterations=2,
+            detection_dim=4,
+            num_slots=4,
+            slot_dim=16,
+            num_iterations=2,
         )
         model.eval()
         frames = [torch.randn(1, 4) for _ in range(5)]
@@ -599,7 +613,9 @@ class TestTemporalMOTExtended:
     def test_slot_similarity_symmetric(self) -> None:
         """Similarity matrix should be symmetric for same inputs."""
         model = TemporalSlotAttentionMOT(
-            detection_dim=4, num_slots=4, slot_dim=16,
+            detection_dim=4,
+            num_slots=4,
+            slot_dim=16,
         )
         a = torch.randn(4, 16)
         sim = model.slot_similarity(a, a)
@@ -608,7 +624,10 @@ class TestTemporalMOTExtended:
     def test_varying_detection_counts(self) -> None:
         """Different number of detections across frames."""
         model = TemporalSlotAttentionMOT(
-            detection_dim=4, num_slots=4, slot_dim=16, num_iterations=2,
+            detection_dim=4,
+            num_slots=4,
+            slot_dim=16,
+            num_iterations=2,
         )
         model.eval()
         frames = [
@@ -687,8 +706,10 @@ class TestOscilloSimExtended:
             coupling_strength=2.0,
         )
         result = sim.run(
-            n_steps=100, dt=0.01,
-            record_trajectory=True, record_interval=10,
+            n_steps=100,
+            dt=0.01,
+            record_trajectory=True,
+            record_interval=10,
         )
         assert result.trajectory_phase is not None
         # Should have ~10 snapshots (100 / 10)
@@ -746,7 +767,9 @@ class TestCountFlopsExtended:
             (4, 64),
         )["total_flops"]
         osc = count_flops(
-            create_ablation_model("oscillator_only", n_input=64, n_classes=5, d_model=32),
+            create_ablation_model(
+                "oscillator_only", n_input=64, n_classes=5, d_model=32
+            ),
             (4, 64),
         )["total_flops"]
         assert osc < full

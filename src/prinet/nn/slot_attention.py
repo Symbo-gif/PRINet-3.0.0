@@ -372,10 +372,8 @@ class TemporalSlotAttentionMOT(nn.Module):
 
         sim = self.slot_similarity(slots_t, slots_t1)  # (K, K)
         K = self.num_slots
-        matches = torch.full((K,), -1, dtype=torch.long,
-                             device=detections_t.device)
-        used = torch.zeros(K, dtype=torch.bool,
-                           device=detections_t.device)
+        matches = torch.full((K,), -1, dtype=torch.long, device=detections_t.device)
+        used = torch.zeros(K, dtype=torch.bool, device=detections_t.device)
         max_sims, max_idxs = sim.max(dim=1)
         order = max_sims.argsort(descending=True)
 

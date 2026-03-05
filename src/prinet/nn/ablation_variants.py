@@ -22,7 +22,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch import Tensor
 
-
 # =========================================================================
 # PhaseTracker Ablation Variants
 # =========================================================================
@@ -89,7 +88,9 @@ class PhaseTrackerFrozen(nn.Module):
     def phase_similarity(self, phase_a: Tensor, phase_b: Tensor) -> Tensor:
         return self._inner.phase_similarity(phase_a, phase_b)
 
-    def forward(self, detections_t: Tensor, detections_t1: Tensor) -> tuple[Tensor, Tensor]:
+    def forward(
+        self, detections_t: Tensor, detections_t1: Tensor
+    ) -> tuple[Tensor, Tensor]:
         return self._inner(detections_t, detections_t1)
 
     def track_sequence(self, frame_detections: list[Tensor]) -> dict:
@@ -150,9 +151,7 @@ class PhaseTrackerStatic(nn.Module):
         freqs.extend([2.0] * n_delta)
         freqs.extend([6.0] * n_theta)
         freqs.extend([40.0] * n_gamma)
-        self.register_buffer(
-            "frequencies", torch.tensor(freqs)
-        )
+        self.register_buffer("frequencies", torch.tensor(freqs))
 
     def encode(self, detections: Tensor) -> tuple[Tensor, Tensor]:
         phase_raw = self.det_to_phase(detections)
@@ -173,10 +172,16 @@ class PhaseTrackerStatic(nn.Module):
         z_b = torch.exp(1j * phase_b.to(torch.complex64))
         z_a_norm = z_a / (z_a.abs().pow(2).sum(dim=-1, keepdim=True).sqrt() + self._EPS)
         z_b_norm = z_b / (z_b.abs().pow(2).sum(dim=-1, keepdim=True).sqrt() + self._EPS)
-        sim = (z_a_norm.unsqueeze(1) * z_b_norm.conj().unsqueeze(0)).sum(dim=-1).real.float()
+        sim = (
+            (z_a_norm.unsqueeze(1) * z_b_norm.conj().unsqueeze(0))
+            .sum(dim=-1)
+            .real.float()
+        )
         return sim
 
-    def forward(self, detections_t: Tensor, detections_t1: Tensor) -> tuple[Tensor, Tensor]:
+    def forward(
+        self, detections_t: Tensor, detections_t1: Tensor
+    ) -> tuple[Tensor, Tensor]:
         phase_t, amp_t = self.encode(detections_t)
         phase_t1, amp_t1 = self.encode(detections_t1)
         phase_t_evolved, _ = self.evolve(phase_t, amp_t)
@@ -184,7 +189,9 @@ class PhaseTrackerStatic(nn.Module):
 
         N_t = detections_t.shape[0]
         matches = torch.full((N_t,), -1, dtype=torch.long, device=detections_t.device)
-        used = torch.zeros(detections_t1.shape[0], dtype=torch.bool, device=detections_t.device)
+        used = torch.zeros(
+            detections_t1.shape[0], dtype=torch.bool, device=detections_t.device
+        )
         max_sims, max_idxs = sim.max(dim=1)
         order = max_sims.argsort(descending=True)
         for idx in order:
@@ -220,13 +227,19 @@ class PhaseTrackerStatic(nn.Module):
                 N_prev = evolved_phase.shape[0]
                 N_curr = phase_t.shape[0]
                 N_match = min(N_prev, N_curr)
-                matches = torch.full((N_prev,), -1, dtype=torch.long, device=dets.device)
+                matches = torch.full(
+                    (N_prev,), -1, dtype=torch.long, device=dets.device
+                )
                 used = torch.zeros(N_curr, dtype=torch.bool, device=dets.device)
                 max_sims, max_idxs = sim.max(dim=1)
                 order = max_sims.argsort(descending=True)
                 for idx in order:
                     best_j = max_idxs[idx].item()
-                    if best_j < N_curr and not used[best_j] and max_sims[idx] > self.match_threshold:
+                    if (
+                        best_j < N_curr
+                        and not used[best_j]
+                        and max_sims[idx] > self.match_threshold
+                    ):
                         matches[idx] = best_j
                         used[best_j] = True
 
@@ -359,7 +372,9 @@ class SlotAttentionNoGRU(nn.Module):
             "per_frame_similarity": per_frame_sim,
         }
 
-    def forward(self, detections_t: Tensor, detections_t1: Tensor) -> tuple[Tensor, Tensor]:
+    def forward(
+        self, detections_t: Tensor, detections_t1: Tensor
+    ) -> tuple[Tensor, Tensor]:
         """Process two consecutive frames for training."""
         slots_t = self.process_frame(detections_t)
         slots_t1 = self.process_frame(detections_t1, None)
@@ -428,13 +443,17 @@ class SlotAttentionFrozen(nn.Module):
     def match_threshold(self) -> float:
         return self._inner.match_threshold
 
-    def process_frame(self, detections: Tensor, prev_slots: Optional[Tensor] = None) -> Tensor:
+    def process_frame(
+        self, detections: Tensor, prev_slots: Optional[Tensor] = None
+    ) -> Tensor:
         return self._inner.process_frame(detections, prev_slots)
 
     def slot_similarity(self, slots_a: Tensor, slots_b: Tensor) -> Tensor:
         return self._inner.slot_similarity(slots_a, slots_b)
 
-    def forward(self, detections_t: Tensor, detections_t1: Tensor) -> tuple[Tensor, Tensor]:
+    def forward(
+        self, detections_t: Tensor, detections_t1: Tensor
+    ) -> tuple[Tensor, Tensor]:
         """Process two consecutive frames."""
         prev_slots = self._inner.process_frame(detections_t)
         curr_slots = self._inner.process_frame(detections_t1, prev_slots)
@@ -483,6 +502,7 @@ def create_ablation_tracker(
 
     if variant == "pt_full":
         from prinet.nn.hybrid import PhaseTracker
+
         return PhaseTracker(detection_dim=detection_dim, **kwargs)
     elif variant == "pt_frozen":
         return PhaseTrackerFrozen(detection_dim=detection_dim, **kwargs)
@@ -490,6 +510,7 @@ def create_ablation_tracker(
         return PhaseTrackerStatic(detection_dim=detection_dim, **kwargs)
     elif variant == "sa_full":
         from prinet.nn.slot_attention import TemporalSlotAttentionMOT
+
         return TemporalSlotAttentionMOT(detection_dim=detection_dim, **kwargs)
     elif variant == "sa_no_gru":
         return SlotAttentionNoGRU(detection_dim=detection_dim, **kwargs)

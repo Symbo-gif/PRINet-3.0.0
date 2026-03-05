@@ -16,6 +16,7 @@ from .oscillator_state import OscillatorState, _wrap_phase
 from .oscillator_models import KuramotoOscillator, OscillatorModel
 from .networks import DeltaThetaGammaNetwork
 
+
 def detect_oscillation(
     r_history: list[float],
     window: int = 20,
@@ -45,8 +46,6 @@ def detect_oscillation(
     mean = sum(recent) / len(recent)
     var = sum((v - mean) ** 2 for v in recent) / len(recent)
     return var > threshold
-
-
 
 
 def phase_to_rate(
@@ -108,9 +107,7 @@ def phase_to_rate(
         hard = torch.zeros_like(rate)
         hard.scatter_(-1, topk_idx, topk_vals)
         # Blend factor: sigmoid(1/temp - 1) ∈ (0, 1)
-        blend = torch.sigmoid(
-            torch.tensor(1.0 / max(temperature, 1e-6) - 1.0)
-        )
+        blend = torch.sigmoid(torch.tensor(1.0 / max(temperature, 1e-6) - 1.0))
         rate = (1.0 - blend) * soft + blend * hard
     else:
         raise ValueError(
@@ -124,8 +121,6 @@ def phase_to_rate(
 # =========================================================================
 # Q3: Feedforward Inhibition, Feedback Inhibition, DG-Inspired Pipeline
 # =========================================================================
-
-
 
 
 def sweep_coupling_params(

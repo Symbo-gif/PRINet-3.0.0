@@ -103,18 +103,14 @@ class TestOscilloSimCreation:
         """Explicit mean_field mode is accepted."""
         from prinet.utils.oscillosim import OscilloSim
 
-        sim = OscilloSim(
-            n_oscillators=200, coupling_mode="mean_field", seed=SEED
-        )
+        sim = OscilloSim(n_oscillators=200, coupling_mode="mean_field", seed=SEED)
         assert sim.coupling_mode == "mean_field"
 
     def test_explicit_sparse_knn_mode(self) -> None:
         """Explicit sparse_knn mode is accepted."""
         from prinet.utils.oscillosim import OscilloSim
 
-        sim = OscilloSim(
-            n_oscillators=200, coupling_mode="sparse_knn", seed=SEED
-        )
+        sim = OscilloSim(n_oscillators=200, coupling_mode="sparse_knn", seed=SEED)
         assert sim.coupling_mode == "sparse_knn"
 
     def test_state_summary_has_required_keys(self) -> None:
@@ -167,9 +163,7 @@ class TestOscilloSimRun:
         from prinet.utils.oscillosim import OscilloSim
 
         _seed()
-        sim = OscilloSim(
-            n_oscillators=64, coupling_strength=2.0, seed=SEED
-        )
+        sim = OscilloSim(n_oscillators=64, coupling_strength=2.0, seed=SEED)
         result = sim.run(n_steps=100, dt=0.01)
         assert len(result.order_parameter) > 0
         assert all(0.0 <= r <= 1.0 + 1e-6 for r in result.order_parameter)
@@ -310,9 +304,7 @@ class TestSlotAttentionModule:
         from prinet.nn.slot_attention import SlotAttentionModule
 
         _seed()
-        mod = SlotAttentionModule(
-            num_slots=8, slot_dim=64, input_dim=128
-        )
+        mod = SlotAttentionModule(num_slots=8, slot_dim=64, input_dim=128)
         x = torch.randn(4, 16, 128)  # (B, T, D)
         slots = mod(x)
         assert slots.shape == (4, 8, 64)
@@ -351,9 +343,7 @@ class TestSlotAttentionModule:
         from prinet.nn.slot_attention import SlotAttentionModule
 
         _seed()
-        mod = SlotAttentionModule(
-            num_slots=4, slot_dim=32, input_dim=64
-        )
+        mod = SlotAttentionModule(num_slots=4, slot_dim=32, input_dim=64)
         x = torch.randn(2, 8, 64, requires_grad=True)
         slots = mod(x)
         loss = slots.sum()
@@ -370,9 +360,7 @@ class TestSlotAttentionCLEVRN:
         from prinet.nn.slot_attention import SlotAttentionCLEVRN
 
         _seed()
-        model = SlotAttentionCLEVRN(
-            scene_dim=16, query_dim=60, num_slots=8, d_model=64
-        )
+        model = SlotAttentionCLEVRN(scene_dim=16, query_dim=60, num_slots=8, d_model=64)
         scene = torch.randn(4, 16)
         query = torch.randn(4, 60)
         logits = model(scene, query)

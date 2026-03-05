@@ -269,10 +269,7 @@ class ControlSignals:
         """
         flat = np.asarray(arr, dtype=np.float32).ravel()
         if flat.shape[0] < CONTROL_DIM:
-            msg = (
-                f"Expected at least {CONTROL_DIM} elements, "
-                f"got {flat.shape[0]}."
-            )
+            msg = f"Expected at least {CONTROL_DIM} elements, " f"got {flat.shape[0]}."
             raise ValueError(msg)
         return ControlSignals(
             suggested_K_min=float(flat[0]),

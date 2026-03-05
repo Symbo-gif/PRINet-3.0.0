@@ -49,13 +49,9 @@ class TensorDecompositionBase(ABC):
 
     def __init__(self, shape: Tuple[int, ...], rank: int) -> None:
         if rank < 1:
-            raise ValueError(
-                f"Rank must be a positive integer, got {rank}."
-            )
+            raise ValueError(f"Rank must be a positive integer, got {rank}.")
         if any(s < 1 for s in shape):
-            raise ValueError(
-                f"All shape dimensions must be positive, got {shape}."
-            )
+            raise ValueError(f"All shape dimensions must be positive, got {shape}.")
         self._shape = shape
         self._rank = rank
 
@@ -257,13 +253,10 @@ class PolyadicTensor(TensorDecompositionBase):
         """
         if tuple(original.shape) != self._shape:
             raise DimensionsMismatchError(
-                f"Expected shape {self._shape}, "
-                f"got {tuple(original.shape)}."
+                f"Expected shape {self._shape}, " f"got {tuple(original.shape)}."
             )
         reconstructed = self.reconstruct()
-        original_device = original.to(
-            device=self._device, dtype=self._dtype
-        )
+        original_device = original.to(device=self._device, dtype=self._dtype)
         error = torch.norm(original_device - reconstructed).item()
         norm = torch.norm(original_device).item()
         if norm < 1e-12:
@@ -342,8 +335,7 @@ class CPDecomposition(TensorDecompositionBase):
         """
         if tuple(tensor.shape) != self._shape:
             raise DimensionsMismatchError(
-                f"Expected shape {self._shape}, "
-                f"got {tuple(tensor.shape)}."
+                f"Expected shape {self._shape}, " f"got {tuple(tensor.shape)}."
             )
         tensor = tensor.to(device=self._device, dtype=self._dtype)
         n_modes = tensor.dim()
@@ -372,17 +364,13 @@ class CPDecomposition(TensorDecompositionBase):
                 gram = kr.T @ kr  # (R, R)
                 rhs = unfolded @ kr  # (I_mode, R)
                 try:
-                    self._factors[mode] = torch.linalg.solve(
-                        gram.T, rhs.T
-                    ).T
+                    self._factors[mode] = torch.linalg.solve(gram.T, rhs.T).T
                 except torch.linalg.LinAlgError:  # type: ignore[attr-defined]
                     # Fallback to pseudoinverse
                     self._factors[mode] = rhs @ torch.linalg.pinv(gram)
 
             # Normalize factors and extract weights
-            self._weights = torch.ones(
-                rank, device=self._device, dtype=self._dtype
-            )
+            self._weights = torch.ones(rank, device=self._device, dtype=self._dtype)
             for m in range(n_modes):
                 norms = torch.norm(self._factors[m], dim=0)
                 norms = torch.clamp(norms, min=1e-12)
@@ -392,9 +380,7 @@ class CPDecomposition(TensorDecompositionBase):
             # Check convergence
             recon = self.reconstruct()
             error = torch.norm(tensor - recon).item()
-            rel_change = abs(prev_error - error) / max(
-                abs(prev_error), 1e-12
-            )
+            rel_change = abs(prev_error - error) / max(abs(prev_error), 1e-12)
             if rel_change < self._tol:
                 break
             prev_error = error
@@ -411,9 +397,7 @@ class CPDecomposition(TensorDecompositionBase):
             Khatri-Rao product matrix of shape
             ``(prod(I_n for n != skip_mode), R)``.
         """
-        modes = [
-            m for m in range(len(self._factors)) if m != skip_mode
-        ]
+        modes = [m for m in range(len(self._factors)) if m != skip_mode]
         result = self._factors[modes[0]]
         for m in modes[1:]:
             result = self._khatri_rao(result, self._factors[m])
@@ -449,15 +433,11 @@ class CPDecomposition(TensorDecompositionBase):
                 "No decomposition performed yet. Call decompose() first."
             )
 
-        result = torch.zeros(
-            self._shape, device=self._device, dtype=self._dtype
-        )
+        result = torch.zeros(self._shape, device=self._device, dtype=self._dtype)
         weights = (
             self._weights
             if self._weights is not None
-            else torch.ones(
-                self._rank, device=self._device, dtype=self._dtype
-            )
+            else torch.ones(self._rank, device=self._device, dtype=self._dtype)
         )
 
         for r in range(min(self._rank, self._factors[0].shape[1])):

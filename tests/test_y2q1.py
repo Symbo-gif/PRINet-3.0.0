@@ -21,8 +21,8 @@ import torch
 import torch.nn as nn
 from torch import Tensor
 
-
 # ---- Fixtures -----------------------------------------------------------
+
 
 @pytest.fixture
 def device() -> torch.device:
@@ -193,12 +193,18 @@ class TestDiscreteDeltaThetaGamma:
         n_total = n_delta + n_theta + n_gamma
 
         dtg_layer = DiscreteDeltaThetaGammaLayer(
-            n_delta=n_delta, n_theta=n_theta, n_gamma=n_gamma,
-            n_dims=D, n_steps=5,
+            n_delta=n_delta,
+            n_theta=n_theta,
+            n_gamma=n_gamma,
+            n_dims=D,
+            n_steps=5,
         )
         # Transformer baseline: roughly comparable parameter count
         transformer_layer = nn.TransformerEncoderLayer(
-            d_model=D, nhead=4, dim_feedforward=D * 4, batch_first=True,
+            d_model=D,
+            nhead=4,
+            dim_feedforward=D * 4,
+            batch_first=True,
         )
 
         x_dtg = torch.randn(B, D)
@@ -227,14 +233,15 @@ class TestDiscreteDeltaThetaGamma:
             tf_time = time.perf_counter() - t0
 
         ratio = dtg_time / max(tf_time, 1e-9)
-        assert ratio <= 5.0, (
-            f"DiscreteDTG is {ratio:.2f}× slower than Transformer (limit: 5×)"
-        )
+        assert (
+            ratio <= 5.0
+        ), f"DiscreteDTG is {ratio:.2f}× slower than Transformer (limit: 5×)"
 
     @pytest.mark.slow
     def test_clevr6_convergence(self) -> None:
         """Training on CLEVR-6 should show loss decrease over 10 epochs."""
         import sys
+
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "benchmarks"))
         from clevr_n import make_clevr_n
         from prinet.nn.layers import DiscreteDeltaThetaGammaLayer
@@ -252,12 +259,17 @@ class TestDiscreteDeltaThetaGamma:
                 super().__init__()
                 self.scene_proj = nn.Linear(scene_dim, n_total)
                 self.dtg = DiscreteDeltaThetaGammaLayer(
-                    n_delta=n_delta, n_theta=n_theta, n_gamma=n_gamma,
-                    n_dims=n_total, n_steps=5,
+                    n_delta=n_delta,
+                    n_theta=n_theta,
+                    n_gamma=n_gamma,
+                    n_dims=n_total,
+                    n_steps=5,
                 )
                 self.query_proj = nn.Linear(query_dim, 64)
                 self.head = nn.Sequential(
-                    nn.Linear(n_total + 64, 64), nn.ReLU(), nn.Linear(64, 2),
+                    nn.Linear(n_total + 64, 64),
+                    nn.ReLU(),
+                    nn.Linear(64, 2),
                 )
 
             def forward(self, scene: Tensor, query: Tensor) -> Tensor:
@@ -290,9 +302,9 @@ class TestDiscreteDeltaThetaGamma:
                 last_loss = loss.item()
 
         assert first_loss is not None and last_loss is not None
-        assert last_loss < first_loss, (
-            f"Loss did not decrease: {first_loss:.4f} → {last_loss:.4f}"
-        )
+        assert (
+            last_loss < first_loss
+        ), f"Loss did not decrease: {first_loss:.4f} → {last_loss:.4f}"
 
 
 class TestDiscreteDeltaThetaGammaLayer:
@@ -471,9 +483,15 @@ class TestInterleavedHybridPRINet:
         from prinet.nn.hybrid import InterleavedHybridPRINet
 
         model = InterleavedHybridPRINet(
-            n_input=128, n_classes=10, n_tokens=44,
-            d_model=32, n_heads=4, n_layers=2,
-            n_delta=4, n_theta=8, n_gamma=32,
+            n_input=128,
+            n_classes=10,
+            n_tokens=44,
+            d_model=32,
+            n_heads=4,
+            n_layers=2,
+            n_delta=4,
+            n_theta=8,
+            n_gamma=32,
         )
         x = torch.randn(8, 128)
         out = model(x)
@@ -483,9 +501,15 @@ class TestInterleavedHybridPRINet:
         from prinet.nn.hybrid import InterleavedHybridPRINet
 
         model = InterleavedHybridPRINet(
-            n_input=64, n_classes=5, n_tokens=14,
-            d_model=16, n_heads=2, n_layers=1,
-            n_delta=2, n_theta=4, n_gamma=8,
+            n_input=64,
+            n_classes=5,
+            n_tokens=14,
+            d_model=16,
+            n_heads=2,
+            n_layers=1,
+            n_delta=2,
+            n_theta=4,
+            n_gamma=8,
         )
         x = torch.randn(64)
         out = model(x)
@@ -495,26 +519,36 @@ class TestInterleavedHybridPRINet:
         from prinet.nn.hybrid import InterleavedHybridPRINet
 
         model = InterleavedHybridPRINet(
-            n_input=64, n_classes=5, n_tokens=14,
-            d_model=16, n_heads=2, n_layers=1,
-            n_delta=2, n_theta=4, n_gamma=8,
+            n_input=64,
+            n_classes=5,
+            n_tokens=14,
+            d_model=16,
+            n_heads=2,
+            n_layers=1,
+            n_delta=2,
+            n_theta=4,
+            n_gamma=8,
         )
         x = torch.randn(4, 64)
         out = model(x)
         # log_softmax: all values ≤ 0, exp sums to ~1
         assert (out <= 0.0).all()
         probs = out.exp().sum(dim=-1)
-        torch.testing.assert_close(
-            probs, torch.ones(4), atol=1e-5, rtol=1e-5
-        )
+        torch.testing.assert_close(probs, torch.ones(4), atol=1e-5, rtol=1e-5)
 
     def test_gradient_flow(self) -> None:
         from prinet.nn.hybrid import InterleavedHybridPRINet
 
         model = InterleavedHybridPRINet(
-            n_input=64, n_classes=3, n_tokens=14,
-            d_model=16, n_heads=2, n_layers=1,
-            n_delta=2, n_theta=4, n_gamma=8,
+            n_input=64,
+            n_classes=3,
+            n_tokens=14,
+            d_model=16,
+            n_heads=2,
+            n_layers=1,
+            n_delta=2,
+            n_theta=4,
+            n_gamma=8,
         )
         x = torch.randn(2, 64, requires_grad=True)
         out = model(x)
@@ -528,9 +562,15 @@ class TestInterleavedHybridPRINet:
         from prinet.nn.hybrid import InterleavedHybridPRINet
 
         model = InterleavedHybridPRINet(
-            n_input=64, n_classes=5, n_tokens=14,
-            d_model=16, n_heads=2, n_layers=1,
-            n_delta=2, n_theta=4, n_gamma=8,
+            n_input=64,
+            n_classes=5,
+            n_tokens=14,
+            d_model=16,
+            n_heads=2,
+            n_layers=1,
+            n_delta=2,
+            n_theta=4,
+            n_gamma=8,
         )
         osc_params = model.oscillatory_parameters()
         rate_params = model.rate_coded_parameters()
@@ -548,9 +588,15 @@ class TestInterleavedHybridPRINet:
 
         torch.manual_seed(0)
         model = InterleavedHybridPRINet(
-            n_input=128, n_classes=10, n_tokens=44,
-            d_model=32, n_heads=4, n_layers=2,
-            n_delta=4, n_theta=8, n_gamma=32,
+            n_input=128,
+            n_classes=10,
+            n_tokens=44,
+            d_model=32,
+            n_heads=4,
+            n_layers=2,
+            n_delta=4,
+            n_theta=8,
+            n_gamma=32,
         )
         # Run multiple batches
         for _ in range(5):
@@ -562,6 +608,7 @@ class TestInterleavedHybridPRINet:
     def test_clevr6_no_nan(self) -> None:
         """InterleavedHybridPRINet trains on CLEVR-6 for 10 epochs without NaN."""
         import sys
+
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "benchmarks"))
         from clevr_n import make_clevr_n
         from prinet.nn.hybrid import InterleavedHybridPRINet
@@ -599,24 +646,25 @@ class TestInterleavedHybridPRINet:
             model.train()
             optimizer.zero_grad()
             log_probs = model(x)
-            assert torch.isfinite(log_probs).all(), (
-                f"NaN/Inf in output at epoch {epoch}"
-            )
+            assert torch.isfinite(
+                log_probs
+            ).all(), f"NaN/Inf in output at epoch {epoch}"
             loss = torch.nn.functional.nll_loss(log_probs, labels)
             assert torch.isfinite(loss), f"NaN loss at epoch {epoch}"
             loss.backward()
             # Check gradients for NaN
             for name, p in model.named_parameters():
                 if p.grad is not None:
-                    assert torch.isfinite(p.grad).all(), (
-                        f"NaN gradient in {name} at epoch {epoch}"
-                    )
+                    assert torch.isfinite(
+                        p.grad
+                    ).all(), f"NaN gradient in {name} at epoch {epoch}"
             optimizer.step()
 
     @pytest.mark.slow
     def test_ablation_oscillatory_bias(self) -> None:
         """Removing oscillatory bias (alpha=0) should degrade performance."""
         import sys
+
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "benchmarks"))
         from clevr_n import make_clevr_n
         from prinet.nn.hybrid import InterleavedHybridPRINet
@@ -693,6 +741,7 @@ class TestInterleavedHybridPRINet:
 @dataclass
 class _MockControlSignals:
     """Lightweight mock of ControlSignals for testing policies."""
+
     suggested_K_min: float = 0.5
     suggested_K_max: float = 4.0
     lr_multiplier: float = 1.1
@@ -738,9 +787,7 @@ class TestControlPolicies:
         net = DiscreteDeltaThetaGamma(n_delta=4, n_theta=8, n_gamma=16)
         ctrl = _MockControlSignals(suggested_K_min=0.5, suggested_K_max=4.0)
 
-        k_min, k_max = apply_k_range_narrowing(
-            ctrl, net, field_name="W_delta"
-        )
+        k_min, k_max = apply_k_range_narrowing(ctrl, net, field_name="W_delta")
         assert k_min == pytest.approx(0.5)
         assert k_max == pytest.approx(4.0)
 
@@ -797,13 +844,12 @@ class TestTelemetryLogger:
         logger = TelemetryLogger()
         logger.record(epoch=1, loss=0.5)
         logger.record(
-            epoch=2, loss=0.3,
+            epoch=2,
+            loss=0.3,
             control=_MockControlSignals(),
         )
 
-        with tempfile.NamedTemporaryFile(
-            suffix=".json", delete=False, mode="w"
-        ) as f:
+        with tempfile.NamedTemporaryFile(suffix=".json", delete=False, mode="w") as f:
             path = f.name
 
         try:

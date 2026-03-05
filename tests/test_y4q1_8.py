@@ -86,12 +86,17 @@ RESULTS_DIR = Path(__file__).resolve().parent.parent / "benchmarks" / "results"
 # Fixtures
 # =========================================================================
 
+
 @pytest.fixture()
 def pt_model() -> PhaseTracker:
     torch.manual_seed(SEED)
     return PhaseTracker(
-        detection_dim=DET_DIM, n_delta=2, n_theta=4, n_gamma=8,
-        n_discrete_steps=3, match_threshold=0.1,
+        detection_dim=DET_DIM,
+        n_delta=2,
+        n_theta=4,
+        n_gamma=8,
+        n_discrete_steps=3,
+        match_threshold=0.1,
     )
 
 
@@ -99,8 +104,11 @@ def pt_model() -> PhaseTracker:
 def sa_model() -> TemporalSlotAttentionMOT:
     torch.manual_seed(SEED)
     return TemporalSlotAttentionMOT(
-        detection_dim=DET_DIM, num_slots=6, slot_dim=32,
-        num_iterations=2, match_threshold=0.1,
+        detection_dim=DET_DIM,
+        num_slots=6,
+        slot_dim=32,
+        num_iterations=2,
+        match_threshold=0.1,
     )
 
 
@@ -121,20 +129,28 @@ def sample_dets() -> tuple[torch.Tensor, torch.Tensor]:
 @pytest.fixture()
 def sample_sequence() -> SequenceData:
     return generate_temporal_clevr_n(
-        n_objects=3, n_frames=10, det_dim=DET_DIM, seed=SEED,
+        n_objects=3,
+        n_frames=10,
+        det_dim=DET_DIM,
+        seed=SEED,
     )
 
 
 @pytest.fixture()
 def short_dataset() -> list[SequenceData]:
     return generate_dataset(
-        n_sequences=3, n_objects=3, n_frames=8, det_dim=DET_DIM, base_seed=SEED,
+        n_sequences=3,
+        n_objects=3,
+        n_frames=8,
+        det_dim=DET_DIM,
+        base_seed=SEED,
     )
 
 
 # =========================================================================
 # B1: Adversarial Robustness Tests (~20)
 # =========================================================================
+
 
 class TestFGSMAttack:
     """FGSM attack unit tests."""
@@ -175,28 +191,33 @@ class TestPGDAttack:
     def test_stays_in_eps_ball(self, pt_model, sample_dets):
         dets_t, dets_t1 = sample_dets
         eps = 0.1
-        adv = pgd_attack(pt_model, dets_t, dets_t1, n_objects=4,
-                         epsilon=eps, steps=5, seed=42)
+        adv = pgd_attack(
+            pt_model, dets_t, dets_t1, n_objects=4, epsilon=eps, steps=5, seed=42
+        )
         diff = (adv - dets_t).abs()
         assert diff.max().item() <= eps + 1e-6
 
     def test_convergence(self, pt_model, sample_dets):
         """More steps should produce larger perturbation (up to eps limit)."""
         dets_t, dets_t1 = sample_dets
-        adv5 = pgd_attack(pt_model, dets_t, dets_t1, n_objects=4,
-                          epsilon=0.1, steps=5, seed=42)
-        adv20 = pgd_attack(pt_model, dets_t, dets_t1, n_objects=4,
-                           epsilon=0.1, steps=20, seed=42)
+        adv5 = pgd_attack(
+            pt_model, dets_t, dets_t1, n_objects=4, epsilon=0.1, steps=5, seed=42
+        )
+        adv20 = pgd_attack(
+            pt_model, dets_t, dets_t1, n_objects=4, epsilon=0.1, steps=20, seed=42
+        )
         # Both should be valid perturbations
         assert adv5.shape == dets_t.shape
         assert adv20.shape == dets_t.shape
 
     def test_random_restart_different(self, pt_model, sample_dets):
         dets_t, dets_t1 = sample_dets
-        adv1 = pgd_attack(pt_model, dets_t, dets_t1, n_objects=4,
-                          epsilon=0.1, steps=5, seed=42)
-        adv2 = pgd_attack(pt_model, dets_t, dets_t1, n_objects=4,
-                          epsilon=0.1, steps=5, seed=999)
+        adv1 = pgd_attack(
+            pt_model, dets_t, dets_t1, n_objects=4, epsilon=0.1, steps=5, seed=42
+        )
+        adv2 = pgd_attack(
+            pt_model, dets_t, dets_t1, n_objects=4, epsilon=0.1, steps=5, seed=999
+        )
         # Different seeds can produce different perturbations
         # (this is a weak test -- just checks no crash)
         assert adv1.shape == adv2.shape
@@ -205,8 +226,9 @@ class TestPGDAttack:
         """PGD with multiple steps should find at least as strong a perturbation."""
         dets_t, dets_t1 = sample_dets
         fgsm_adv = fgsm_attack(pt_model, dets_t, dets_t1, n_objects=4, epsilon=0.1)
-        pgd_adv = pgd_attack(pt_model, dets_t, dets_t1, n_objects=4,
-                             epsilon=0.1, steps=10, seed=42)
+        pgd_adv = pgd_attack(
+            pt_model, dets_t, dets_t1, n_objects=4, epsilon=0.1, steps=10, seed=42
+        )
         # Both produce valid adversarial examples
         assert fgsm_adv.shape == dets_t.shape
         assert pgd_adv.shape == dets_t.shape
@@ -214,8 +236,9 @@ class TestPGDAttack:
     def test_steps_zero_like_fgsm(self, pt_model, sample_dets):
         """PGD with 0 steps returns something within eps-ball."""
         dets_t, dets_t1 = sample_dets
-        adv = pgd_attack(pt_model, dets_t, dets_t1, n_objects=4,
-                         epsilon=0.1, steps=1, seed=42)
+        adv = pgd_attack(
+            pt_model, dets_t, dets_t1, n_objects=4, epsilon=0.1, steps=1, seed=42
+        )
         diff = (adv - dets_t).abs()
         assert diff.max().item() <= 0.1 + 1e-6
 
@@ -301,6 +324,7 @@ class TestAdversarialComparison:
 # B2: Heterogeneous Frequency Chimera Tests (~15)
 # =========================================================================
 
+
 class TestHeterogeneousFrequencies:
     """heterogeneous_natural_frequencies unit tests."""
 
@@ -341,7 +365,9 @@ class TestConductionDelay:
 
     def test_zero_delay(self):
         nbr_idx = ring_topology(64, 20)
-        D = conduction_delay_matrix(64, nbr_idx, delay_type="constant", max_delay=0, seed=42)
+        D = conduction_delay_matrix(
+            64, nbr_idx, delay_type="constant", max_delay=0, seed=42
+        )
         assert torch.allclose(D, torch.zeros_like(D))
 
     def test_max_bound(self):
@@ -411,6 +437,7 @@ class TestFrequencySweep:
 # =========================================================================
 # B3: Noise Tolerance Scaling Tests (~15)
 # =========================================================================
+
 
 class TestNoiseSweep:
     """Tests for B3.1 noise sweep."""
@@ -521,6 +548,7 @@ class TestCrossoverAnalysis:
 # B4: Parameter-Matched Comparison Tests (~20)
 # =========================================================================
 
+
 class TestPhaseTrackerLargeModel:
     """PhaseTrackerLarge model unit tests."""
 
@@ -553,9 +581,9 @@ class TestPhaseTrackerLargeModel:
 
     def test_valid_ip(self, pt_large_model):
         """IP should be in [0, 1] range on generated data."""
-        ds = generate_dataset(2, n_objects=3, n_frames=8,
-                              det_dim=DET_DIM, base_seed=42)
+        ds = generate_dataset(2, n_objects=3, n_frames=8, det_dim=DET_DIM, base_seed=42)
         from prinet.utils.temporal_training import TemporalTrainer
+
         trainer = TemporalTrainer(pt_large_model, lr=1e-3, device="cpu")
         metrics = trainer.evaluate(ds)
         ip = metrics.get("mean_ip", 0.0)
@@ -631,8 +659,7 @@ class TestOcclusionStressMatched:
     def test_monotonic_degradation(self, report):
         """IP should generally decrease with higher occlusion."""
         for model_key in ["pt_small_ip", "pt_large_ip"]:
-            vals = [r.get(model_key) for r in report["occlusion"]
-                    if model_key in r]
+            vals = [r.get(model_key) for r in report["occlusion"] if model_key in r]
             if len(vals) >= 2:
                 assert vals[0] >= vals[-1] - 0.1
                 break
@@ -673,6 +700,7 @@ class TestEfficiencyFrontier:
 # =========================================================================
 # B5: Multi-Scale Chimera Topology Tests (~15)
 # =========================================================================
+
 
 class TestCommunityTopologyFunc:
     """community_topology unit tests."""
@@ -781,6 +809,7 @@ class TestTopologyComparison:
 # B7: Curriculum Convergence Tests (~10)
 # =========================================================================
 
+
 class TestCurriculumDatasetFunc:
     """curriculum_dataset unit tests."""
 
@@ -846,6 +875,7 @@ class TestTransferAnalysis:
 
     def test_ip_in_range(self, report):
         """All IP values should be in [0, 1]."""
+
         def _check(d):
             if isinstance(d, dict):
                 for k, v in d.items():
@@ -856,12 +886,14 @@ class TestTransferAnalysis:
             elif isinstance(d, list):
                 for item in d:
                     _check(item)
+
         _check(report)
 
 
 # =========================================================================
 # B8: Evolutionary Chimera Dynamics Tests (~10)
 # =========================================================================
+
 
 class TestEvolutionaryCoupling:
     """evolutionary_coupling_update unit tests."""
@@ -872,7 +904,8 @@ class TestEvolutionaryCoupling:
         weights = cosine_coupling_kernel(N, K)
         phase = torch.randn(N)
         new_w = evolutionary_coupling_update(
-            weights, phase, nbr_idx, "coordination", 0.1, seed=42)
+            weights, phase, nbr_idx, "coordination", 0.1, seed=42
+        )
         assert not torch.allclose(new_w, weights, atol=1e-6)
 
     def test_bounded(self):
@@ -881,7 +914,8 @@ class TestEvolutionaryCoupling:
         weights = cosine_coupling_kernel(N, K)
         phase = torch.randn(N)
         new_w = evolutionary_coupling_update(
-            weights, phase, nbr_idx, "coordination", 0.01, seed=42)
+            weights, phase, nbr_idx, "coordination", 0.01, seed=42
+        )
         assert new_w.min() >= -1e-6
 
     def test_mutation_rate_effect(self):
@@ -890,9 +924,11 @@ class TestEvolutionaryCoupling:
         weights = cosine_coupling_kernel(N, K)
         phase = torch.randn(N)
         w_low = evolutionary_coupling_update(
-            weights, phase, nbr_idx, "coordination", 0.001, seed=42)
+            weights, phase, nbr_idx, "coordination", 0.001, seed=42
+        )
         w_high = evolutionary_coupling_update(
-            weights, phase, nbr_idx, "coordination", 0.5, seed=42)
+            weights, phase, nbr_idx, "coordination", 0.5, seed=42
+        )
         diff_low = (w_low - weights).abs().mean()
         diff_high = (w_high - weights).abs().mean()
         # Higher mutation rate should change weights more
@@ -967,6 +1003,7 @@ class TestEvolutionaryChimera:
 # Infrastructure Tests
 # =========================================================================
 
+
 class TestInfrastructure:
     """Cross-cutting infrastructure checks."""
 
@@ -1003,8 +1040,14 @@ class TestInfrastructure:
             assert 0.0 <= val <= 1.0 + 1e-6
 
     def test_oscillosim_basic_run(self):
-        sim = OscilloSim(64, coupling_strength=1.0, coupling_mode="ring",
-                         k_neighbors=10, integrator="rk4", seed=42)
+        sim = OscilloSim(
+            64,
+            coupling_strength=1.0,
+            coupling_mode="ring",
+            k_neighbors=10,
+            integrator="rk4",
+            seed=42,
+        )
         result = sim.run(100, dt=0.05)
         assert isinstance(result, SimulationResult)
         assert result.final_phase.shape == (64,)

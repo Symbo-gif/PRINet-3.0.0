@@ -110,7 +110,11 @@ class TestSoloRegimeExecution:
     """Each coupling regime runs successfully on each device."""
 
     def _run_quick(
-        self, regime: str, device: str, N: int = 128, steps: int = 20,
+        self,
+        regime: str,
+        device: str,
+        N: int = 128,
+        steps: int = 20,
     ) -> dict[str, Any]:
         """Quick run of a regime and return basic metrics."""
         if regime == "csr":
@@ -218,9 +222,7 @@ class TestCSRMode:
             r_vals.append(result.order_parameter[-1])
         # r should be monotonically non-decreasing with K
         # (K=0 should give low r, K=20 should give high r)
-        assert r_vals[2] >= r_vals[0] - 0.1, (
-            f"CSR r not increasing with K: {r_vals}"
-        )
+        assert r_vals[2] >= r_vals[0] - 0.1, f"CSR r not increasing with K: {r_vals}"
 
     def test_csr_sparsity_parameter(self) -> None:
         """Different sparsity values produce different coupling matrices."""
@@ -247,8 +249,7 @@ class TestCSRMode:
             device="cuda",
             seed=SEED,
         )
-        result = sim.run(n_steps=100, dt=DT, record_trajectory=True,
-                         record_interval=10)
+        result = sim.run(n_steps=100, dt=DT, record_trajectory=True, record_interval=10)
         assert len(result.order_parameter) > 0
         for r in result.order_parameter:
             assert 0.0 <= r <= 1.0 + 1e-6
@@ -276,7 +277,9 @@ class TestConcurrentExecution:
                     device=torch.device("cpu"),
                 )
                 state = OscillatorState.create_random(
-                    128, device=torch.device("cpu"), seed=SEED + idx,
+                    128,
+                    device=torch.device("cpu"),
+                    seed=SEED + idx,
                 )
                 for _ in range(20):
                     state = model.step(state, dt=DT)
@@ -312,7 +315,9 @@ class TestConcurrentExecution:
                     device=torch.device("cuda"),
                 )
                 state = OscillatorState.create_random(
-                    512, device=torch.device("cuda"), seed=SEED,
+                    512,
+                    device=torch.device("cuda"),
+                    seed=SEED,
                 )
                 for _ in range(20):
                     state = model.step(state, dt=DT)
@@ -331,7 +336,9 @@ class TestConcurrentExecution:
                     device=torch.device("cpu"),
                 )
                 state = OscillatorState.create_random(
-                    256, device=torch.device("cpu"), seed=SEED,
+                    256,
+                    device=torch.device("cpu"),
+                    seed=SEED,
                 )
                 for _ in range(20):
                     state = model.step(state, dt=DT)
@@ -372,16 +379,18 @@ class TestGoldilocksZone:
                 device=torch.device("cpu"),
             )
             state = OscillatorState.create_random(
-                512, device=torch.device("cpu"), seed=SEED,
+                512,
+                device=torch.device("cpu"),
+                seed=SEED,
             )
             for _ in range(100):
                 state = model.step(state, dt=DT)
             r_vals.append(kuramoto_order_parameter(state.phase).item())
 
         # r at K=10 should exceed r at K=0
-        assert r_vals[-1] > r_vals[0] - 0.1, (
-            f"r not increasing with K: {dict(zip(K_vals, r_vals))}"
-        )
+        assert (
+            r_vals[-1] > r_vals[0] - 0.1
+        ), f"r not increasing with K: {dict(zip(K_vals, r_vals))}"
 
     def test_full_pairwise_k_sweep(self) -> None:
         """Full pairwise r increases with K at small N."""
@@ -395,7 +404,9 @@ class TestGoldilocksZone:
                 device=torch.device("cpu"),
             )
             state = OscillatorState.create_random(
-                64, device=torch.device("cpu"), seed=SEED,
+                64,
+                device=torch.device("cpu"),
+                seed=SEED,
             )
             for _ in range(100):
                 state = model.step(state, dt=DT)
@@ -430,7 +441,9 @@ class TestFiniteSizeScaling:
                     device=torch.device("cpu"),
                 )
                 state = OscillatorState.create_random(
-                    N, device=torch.device("cpu"), seed=SEED,
+                    N,
+                    device=torch.device("cpu"),
+                    seed=SEED,
                 )
                 for _ in range(50):
                     state = model.step(state, dt=DT)
@@ -487,9 +500,9 @@ class TestPhaseCoherence:
 
         # r should drop (or at least not increase substantially)
         # We allow some tolerance since small N can fluctuate
-        assert r_free < r_sync + 0.3, (
-            f"r didn't drop: sync={r_sync:.3f}, free={r_free:.3f}"
-        )
+        assert (
+            r_free < r_sync + 0.3
+        ), f"r didn't drop: sync={r_sync:.3f}, free={r_free:.3f}"
 
 
 # ============================================================================

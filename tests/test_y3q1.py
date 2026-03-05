@@ -107,7 +107,10 @@ class TestR1PropagationPackage:
             n_steps=5,
         )
         assert len(results) == 4
-        assert all({"K", "m", "r_delta", "r_theta", "r_gamma"} == set(r.keys()) for r in results)
+        assert all(
+            {"K", "m", "r_delta", "r_theta", "r_gamma"} == set(r.keys())
+            for r in results
+        )
 
     def test_detect_oscillation_bool(self) -> None:
         from prinet.core.propagation import detect_oscillation
@@ -217,7 +220,9 @@ class TestR2DaemonDLQ:
         d._start_time = 0.0
 
         for i in range(5):
-            d._dead_letter_queue.append({"error": str(i), "error_count": i, "timestamp": 0.0})
+            d._dead_letter_queue.append(
+                {"error": str(i), "error_count": i, "timestamp": 0.0}
+            )
 
         assert d.dlq_size == 3
         # Most-recent-first — dead_letter_queue property reverses deque
@@ -271,7 +276,9 @@ class TestR3PseudoPhaseFix:
     def test_return_phase_false_returns_tensor(self) -> None:
         from prinet.nn.layers import HierarchicalResonanceLayer
 
-        layer = HierarchicalResonanceLayer(n_delta=2, n_theta=4, n_gamma=8, n_dims=16, n_steps=2)
+        layer = HierarchicalResonanceLayer(
+            n_delta=2, n_theta=4, n_gamma=8, n_dims=16, n_steps=2
+        )
         x = torch.randn(2, 16)
         out = layer(x)
         assert isinstance(out, torch.Tensor)
@@ -280,7 +287,9 @@ class TestR3PseudoPhaseFix:
     def test_return_phase_true_returns_tuple(self) -> None:
         from prinet.nn.layers import HierarchicalResonanceLayer
 
-        layer = HierarchicalResonanceLayer(n_delta=2, n_theta=4, n_gamma=8, n_dims=16, n_steps=2)
+        layer = HierarchicalResonanceLayer(
+            n_delta=2, n_theta=4, n_gamma=8, n_dims=16, n_steps=2
+        )
         x = torch.randn(2, 16)
         result = layer(x, return_phase=True)
         assert isinstance(result, tuple)
@@ -291,7 +300,9 @@ class TestR3PseudoPhaseFix:
         """Returned phases are finite and bounded to [0, 2π) by layer's _wrap_phase."""
         from prinet.nn.layers import HierarchicalResonanceLayer
 
-        layer = HierarchicalResonanceLayer(n_delta=2, n_theta=4, n_gamma=8, n_dims=16, n_steps=3)
+        layer = HierarchicalResonanceLayer(
+            n_delta=2, n_theta=4, n_gamma=8, n_dims=16, n_steps=3
+        )
         x = torch.randn(3, 16)
         _, phases = layer(x, return_phase=True)
         assert torch.all(torch.isfinite(phases))
@@ -303,9 +314,13 @@ class TestR3PseudoPhaseFix:
         from prinet.nn.hybrid import HybridPRINet
 
         model = HybridPRINet(
-            n_input=16, n_classes=4,
-            n_delta=2, n_theta=4, n_gamma=8,
-            n_lobm_layers=2, lobm_steps=2,
+            n_input=16,
+            n_classes=4,
+            n_delta=2,
+            n_theta=4,
+            n_gamma=8,
+            n_lobm_layers=2,
+            lobm_steps=2,
         )
         x = torch.randn(3, 16)
         out = model(x)
@@ -318,9 +333,13 @@ class TestR3PseudoPhaseFix:
         from prinet.nn.hybrid import HybridPRINet
 
         model = HybridPRINet(
-            n_input=16, n_classes=4,
-            n_delta=2, n_theta=4, n_gamma=8,
-            n_lobm_layers=2, lobm_steps=2,
+            n_input=16,
+            n_classes=4,
+            n_delta=2,
+            n_theta=4,
+            n_gamma=8,
+            n_lobm_layers=2,
+            lobm_steps=2,
         )
         x = torch.randn(2, 16)
         log_probs, rates = model(x, return_rates=True)
@@ -330,7 +349,9 @@ class TestR3PseudoPhaseFix:
     def test_1d_input_squeezed_correctly(self) -> None:
         from prinet.nn.layers import HierarchicalResonanceLayer
 
-        layer = HierarchicalResonanceLayer(n_delta=2, n_theta=4, n_gamma=8, n_dims=16, n_steps=2)
+        layer = HierarchicalResonanceLayer(
+            n_delta=2, n_theta=4, n_gamma=8, n_dims=16, n_steps=2
+        )
         x = torch.randn(16)
         amps, phases = layer(x, return_phase=True)
         assert amps.dim() == 1 and amps.shape[0] == 14
@@ -349,10 +370,14 @@ class TestM1M2ConvStemArchitecture:
         from prinet.nn.hybrid import HybridPRINetV2
 
         model = HybridPRINetV2(
-            n_input=64 * 16, n_classes=10,
-            n_delta=4, n_theta=8, n_gamma=16,
+            n_input=64 * 16,
+            n_classes=10,
+            n_delta=4,
+            n_theta=8,
+            n_gamma=16,
             n_discrete_steps=2,
-            use_conv_stem=True, stem_channels=64,
+            use_conv_stem=True,
+            stem_channels=64,
         )
         x = torch.randn(4, 3, 32, 32)
         with torch.no_grad():
@@ -364,10 +389,14 @@ class TestM1M2ConvStemArchitecture:
         from prinet.nn.hybrid import HybridPRINetV2
 
         model = HybridPRINetV2(
-            n_input=64 * 16, n_classes=10,
-            n_delta=4, n_theta=8, n_gamma=16,
+            n_input=64 * 16,
+            n_classes=10,
+            n_delta=4,
+            n_theta=8,
+            n_gamma=16,
             n_discrete_steps=2,
-            use_conv_stem=True, stem_channels=64,
+            use_conv_stem=True,
+            stem_channels=64,
         )
         x = torch.randn(4, 3, 32, 32)
         with torch.no_grad():
@@ -378,10 +407,14 @@ class TestM1M2ConvStemArchitecture:
         from prinet.nn.hybrid import HybridPRINetV2
 
         model = HybridPRINetV2(
-            n_input=64 * 16, n_classes=10,
-            n_delta=2, n_theta=4, n_gamma=8,
+            n_input=64 * 16,
+            n_classes=10,
+            n_delta=2,
+            n_theta=4,
+            n_gamma=8,
             n_discrete_steps=2,
-            use_conv_stem=True, stem_channels=64,
+            use_conv_stem=True,
+            stem_channels=64,
         )
         x = torch.randn(2, 3, 32, 32)
         with torch.no_grad():
@@ -399,6 +432,7 @@ class TestM1M2ConvStemArchitecture:
             get_cifar10_loaders,
             get_fashion_mnist_loaders,
         )
+
         assert len(CIFAR10_CLASSES) == 10
         assert len(FMNIST_CLASSES) == 10
 
@@ -413,7 +447,10 @@ class TestM3M4ExtendedCLEVRN:
 
     def test_colors_24_length(self) -> None:
         import sys
-        sys.path.insert(0, str(__import__('pathlib').Path(__file__).resolve().parents[1]))
+
+        sys.path.insert(
+            0, str(__import__("pathlib").Path(__file__).resolve().parents[1])
+        )
         from benchmarks.clevr_n import COLORS_24, D_COLOR_24
 
         assert len(COLORS_24) == 24
@@ -594,7 +631,9 @@ class TestR5HypothesisInvariants:
         # (add generous tolerance for stochastic initial conditions)
         assert r_strong >= r_weak - 0.3
 
-    @settings(max_examples=20, deadline=500, suppress_health_check=[HealthCheck.too_slow])
+    @settings(
+        max_examples=20, deadline=500, suppress_health_check=[HealthCheck.too_slow]
+    )
     @given(n=st.integers(min_value=3, max_value=24))
     def test_dtg_order_params_always_in_unit_interval(self, n: int) -> None:
         """DeltaThetaGammaNetwork order parameters always ∈ [0, 1]."""
@@ -612,7 +651,9 @@ class TestR5HypothesisInvariants:
 
     @settings(max_examples=30, suppress_health_check=[HealthCheck.too_slow])
     @given(
-        phase=st.lists(st.floats(min_value=-100.0, max_value=100.0), min_size=4, max_size=32),
+        phase=st.lists(
+            st.floats(min_value=-100.0, max_value=100.0), min_size=4, max_size=32
+        ),
     )
     def test_phase_to_rate_output_in_valid_range(self, phase: list[float]) -> None:
         """phase_to_rate output is always finite and non-negative."""

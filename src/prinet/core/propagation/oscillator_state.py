@@ -116,9 +116,7 @@ def _build_phase_knn_index(
     ) % N  # (B, N, k)
 
     # Map sorted positions back to original oscillator indices
-    nbr_idx = sort_idx.gather(
-        1, nbr_sorted_pos.reshape(B, -1)
-    ).reshape(B, N, k)
+    nbr_idx = sort_idx.gather(1, nbr_sorted_pos.reshape(B, -1)).reshape(B, N, k)
 
     return nbr_idx
 
@@ -186,9 +184,7 @@ class OscillatorState:
             gen = None
 
         shape = (
-            (batch_size, n_oscillators)
-            if batch_size is not None
-            else (n_oscillators,)
+            (batch_size, n_oscillators) if batch_size is not None else (n_oscillators,)
         )
 
         phase = torch.rand(shape, device=device, dtype=dtype, generator=gen)
@@ -197,14 +193,10 @@ class OscillatorState:
         amplitude = torch.ones(shape, device=device, dtype=dtype)
 
         freq_lo, freq_hi = freq_range
-        frequency = torch.rand(
-            shape, device=device, dtype=dtype, generator=gen
-        )
+        frequency = torch.rand(shape, device=device, dtype=dtype, generator=gen)
         frequency = frequency * (freq_hi - freq_lo) + freq_lo
 
-        return OscillatorState(
-            phase=phase, amplitude=amplitude, frequency=frequency
-        )
+        return OscillatorState(phase=phase, amplitude=amplitude, frequency=frequency)
 
     @staticmethod
     def create_synchronized(
@@ -231,18 +223,12 @@ class OscillatorState:
             Synchronized ``OscillatorState``.
         """
         shape = (
-            (batch_size, n_oscillators)
-            if batch_size is not None
-            else (n_oscillators,)
+            (batch_size, n_oscillators) if batch_size is not None else (n_oscillators,)
         )
         phase = torch.zeros(shape, device=device, dtype=dtype)
         amplitude = torch.ones(shape, device=device, dtype=dtype)
-        frequency = torch.full(
-            shape, base_frequency, device=device, dtype=dtype
-        )
-        return OscillatorState(
-            phase=phase, amplitude=amplitude, frequency=frequency
-        )
+        frequency = torch.full(shape, base_frequency, device=device, dtype=dtype)
+        return OscillatorState(phase=phase, amplitude=amplitude, frequency=frequency)
 
     def clone(self) -> "OscillatorState":
         """Create a deep copy of this state.
@@ -266,5 +252,3 @@ class OscillatorState:
     def device(self) -> torch.device:
         """Device of the state tensors."""
         return self.phase.device
-
-

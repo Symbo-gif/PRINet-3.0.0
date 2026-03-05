@@ -103,27 +103,19 @@ class ResonanceLayer(nn.Module):
         self._coupling_scale: float = 1.0 / math.sqrt(n_oscillators)
 
         # Learnable coupling matrix (N, N)
-        self.coupling = nn.Parameter(
-            torch.randn(n_oscillators, n_oscillators) * 0.1
-        )
+        self.coupling = nn.Parameter(torch.randn(n_oscillators, n_oscillators) * 0.1)
 
         # Learnable decay rates per oscillator
-        self.decay = nn.Parameter(
-            torch.full((n_oscillators,), decay_rate)
-        )
+        self.decay = nn.Parameter(torch.full((n_oscillators,), decay_rate))
 
         # Input projection: maps input features to initial oscillator states
         self.input_proj = nn.Linear(n_dims, n_oscillators, bias=False)
 
         # Frequency modulation parameters
-        self.modulation = nn.Parameter(
-            torch.randn(n_oscillators, n_oscillators) * 0.01
-        )
+        self.modulation = nn.Parameter(torch.randn(n_oscillators, n_oscillators) * 0.01)
 
         # Base frequencies initialized as linearly spaced
-        self.base_frequency = nn.Parameter(
-            torch.linspace(0.1, 10.0, n_oscillators)
-        )
+        self.base_frequency = nn.Parameter(torch.linspace(0.1, 10.0, n_oscillators))
 
         # Initialize with oscillatory-aware scheme
         self._initialize_weights()
@@ -144,9 +136,7 @@ class ResonanceLayer(nn.Module):
         # Xavier-like initialization scaled for oscillators
         nn.init.xavier_uniform_(self.input_proj.weight, gain=0.5)
 
-    def _compute_initial_state(
-        self, x: Tensor
-    ) -> Tuple[Tensor, Tensor, Tensor]:
+    def _compute_initial_state(self, x: Tensor) -> Tuple[Tensor, Tensor, Tensor]:
         """Project input features to initial oscillator state.
 
         Args:
@@ -220,9 +210,7 @@ class ResonanceLayer(nn.Module):
 
         for _ in range(self.n_steps):
             # Phase differences: φⱼ - φᵢ
-            phase_diff = (
-                phase.unsqueeze(-2) - phase.unsqueeze(-1)
-            )  # (..., R, R)
+            phase_diff = phase.unsqueeze(-2) - phase.unsqueeze(-1)  # (..., R, R)
 
             sin_diff = torch.sin(phase_diff)
             cos_diff = torch.cos(phase_diff)
@@ -239,16 +227,13 @@ class ResonanceLayer(nn.Module):
             # Amplitude update: drᵢ/dt = -λᵢ rᵢ + Σⱼ Kᵢⱼ cos(...) |rⱼ|
             amp_coupling = (coupling * cos_diff * amp_weight).sum(dim=-1)
             amplitude = torch.clamp(
-                amplitude
-                + self.dt * (-self.decay * amplitude + amp_coupling),
+                amplitude + self.dt * (-self.decay * amplitude + amp_coupling),
                 min=_EPS,
                 max=_AMP_MAX,
             )
 
             # Frequency modulation (slow)
-            freq_update = (self.modulation * sin_diff * amp_weight).sum(
-                dim=-1
-            )
+            freq_update = (self.modulation * sin_diff * amp_weight).sum(dim=-1)
             frequency = frequency + self.dt * self._gamma * freq_update
 
         return amplitude
@@ -278,9 +263,7 @@ class ResonanceLayer(nn.Module):
             sin_diff = torch.sin(phase_diff)
             amp_weight = amplitude.unsqueeze(-2)
             phase_update = (coupling * sin_diff * amp_weight).sum(dim=-1)
-            phase = _wrap_phase(
-                phase + self.dt * (frequency + phase_update)
-            )
+            phase = _wrap_phase(phase + self.dt * (frequency + phase_update))
 
         return kuramoto_order_parameter(phase)
 
@@ -563,13 +546,9 @@ class PhaseToRateConverter(nn.Module):
         self._sparsity = sparsity
 
         if learnable_temperature:
-            self.temperature = nn.Parameter(
-                torch.tensor(initial_temperature)
-            )
+            self.temperature = nn.Parameter(torch.tensor(initial_temperature))
         else:
-            self.register_buffer(
-                "temperature", torch.tensor(initial_temperature)
-            )
+            self.register_buffer("temperature", torch.tensor(initial_temperature))
 
     @property
     def mode(self) -> str:
@@ -758,26 +737,16 @@ class HierarchicalResonanceLayer(nn.Module):
         gamma_phase = _wrap_phase(self.proj_gamma(x))
 
         # Initial frequencies (fixed per band)
-        delta_freq = torch.full(
-            (B, self.n_delta), 2.0, device=x.device, dtype=x.dtype
-        )
-        theta_freq = torch.full(
-            (B, self.n_theta), 6.0, device=x.device, dtype=x.dtype
-        )
-        gamma_freq = torch.full(
-            (B, self.n_gamma), 40.0, device=x.device, dtype=x.dtype
-        )
+        delta_freq = torch.full((B, self.n_delta), 2.0, device=x.device, dtype=x.dtype)
+        theta_freq = torch.full((B, self.n_theta), 6.0, device=x.device, dtype=x.dtype)
+        gamma_freq = torch.full((B, self.n_gamma), 40.0, device=x.device, dtype=x.dtype)
 
         # Create per-sample PAC with clamped learnable depths
         pac_dt = PhaseAmplitudeCoupling(
-            modulation_depth=torch.clamp(
-                self.pac_depth_dt, 0.0, 1.0
-            ).item()
+            modulation_depth=torch.clamp(self.pac_depth_dt, 0.0, 1.0).item()
         )
         pac_tg = PhaseAmplitudeCoupling(
-            modulation_depth=torch.clamp(
-                self.pac_depth_tg, 0.0, 1.0
-            ).item()
+            modulation_depth=torch.clamp(self.pac_depth_tg, 0.0, 1.0).item()
         )
 
         # Run dynamics per-sample (batched oscillator models don't
@@ -786,15 +755,18 @@ class HierarchicalResonanceLayer(nn.Module):
         all_phases = []
         for b in range(B):
             ds = OscillatorState(
-                phase=delta_phase[b], amplitude=delta_amp[b],
+                phase=delta_phase[b],
+                amplitude=delta_amp[b],
                 frequency=delta_freq[b],
             )
             ts = OscillatorState(
-                phase=theta_phase[b], amplitude=theta_amp[b],
+                phase=theta_phase[b],
+                amplitude=theta_amp[b],
                 frequency=theta_freq[b],
             )
             gs = OscillatorState(
-                phase=gamma_phase[b], amplitude=gamma_amp[b],
+                phase=gamma_phase[b],
+                amplitude=gamma_amp[b],
                 frequency=gamma_freq[b],
             )
 
@@ -808,22 +780,26 @@ class HierarchicalResonanceLayer(nn.Module):
                 device=x.device,
                 dtype=x.dtype,
             )
-            final, _ = net.integrate(
-                (ds, ts, gs), n_steps=self.n_steps, dt=self.dt
-            )
+            final, _ = net.integrate((ds, ts, gs), n_steps=self.n_steps, dt=self.dt)
             # Concatenate final amplitudes from all bands
-            combined = torch.cat([
-                final[0].amplitude,
-                final[1].amplitude,
-                final[2].amplitude,
-            ])
+            combined = torch.cat(
+                [
+                    final[0].amplitude,
+                    final[1].amplitude,
+                    final[2].amplitude,
+                ]
+            )
             all_amps.append(combined)
             # Concatenate final phases from all bands (wrapped to [-π, π])
-            combined_phase = _wrap_phase(torch.cat([
-                final[0].phase,
-                final[1].phase,
-                final[2].phase,
-            ]))
+            combined_phase = _wrap_phase(
+                torch.cat(
+                    [
+                        final[0].phase,
+                        final[1].phase,
+                        final[2].phase,
+                    ]
+                )
+            )
             all_phases.append(combined_phase)
 
         out = torch.stack(all_amps, dim=0)  # (B, n_total)
@@ -856,13 +832,9 @@ class PhaseAmplitudeCouplingLayer(nn.Module):
 
     def __init__(self, initial_depth: float = 0.3) -> None:
         super().__init__()
-        self.modulation_depth = nn.Parameter(
-            torch.tensor(initial_depth)
-        )
+        self.modulation_depth = nn.Parameter(torch.tensor(initial_depth))
 
-    def forward(
-        self, slow_phase: Tensor, fast_amplitude: Tensor
-    ) -> Tensor:
+    def forward(self, slow_phase: Tensor, fast_amplitude: Tensor) -> Tensor:
         """Apply learnable PAC modulation.
 
         Args:
@@ -1027,9 +999,7 @@ class PhaseToRateAutoencoder(nn.Module):
         # Classification head on bottleneck codes
         self.classifier = nn.Linear(n_oscillators, 10)
 
-    def forward(
-        self, x: Tensor
-    ) -> tuple[Tensor, Tensor]:
+    def forward(self, x: Tensor) -> tuple[Tensor, Tensor]:
         """Forward pass through autoencoder.
 
         Args:
@@ -1087,9 +1057,7 @@ class DenseAutoencoder(nn.Module):
         )
         self.classifier = nn.Linear(n_bottleneck, 10)
 
-    def forward(
-        self, x: Tensor
-    ) -> tuple[Tensor, Tensor]:
+    def forward(self, x: Tensor) -> tuple[Tensor, Tensor]:
         """Forward pass.
 
         Returns:
@@ -1199,9 +1167,7 @@ class DiscreteDeltaThetaGammaLayer(nn.Module):
 
         # Project to initial phases and amplitudes
         phase_0 = _wrap_phase(self.proj_phase(x))  # (B, n_total)
-        amp_0 = torch.clamp(
-            torch.abs(self.proj_amplitude(x)), min=_EPS
-        )  # (B, n_total)
+        amp_0 = torch.clamp(torch.abs(self.proj_amplitude(x)), min=_EPS)  # (B, n_total)
 
         # Run discrete integration
         _final_phase, final_amp = self.dynamics.integrate(
@@ -1264,8 +1230,7 @@ class OscillatoryAttention(nn.Module):
 
         if d_model % n_heads != 0:
             raise ValueError(
-                f"d_model ({d_model}) must be divisible by "
-                f"n_heads ({n_heads})"
+                f"d_model ({d_model}) must be divisible by " f"n_heads ({n_heads})"
             )
 
         self.d_model = d_model
@@ -1285,7 +1250,7 @@ class OscillatoryAttention(nn.Module):
         self.alpha = nn.Parameter(torch.zeros(n_heads))
 
         self.dropout = nn.Dropout(dropout)
-        self._scale = self.d_k ** -0.5
+        self._scale = self.d_k**-0.5
 
     def forward(
         self,
@@ -1344,9 +1309,7 @@ class OscillatoryAttention(nn.Module):
 
         # Apply attention to values
         attn_out = torch.matmul(attn_weights, V)  # (B, n_heads, S, d_k)
-        attn_out = (
-            attn_out.transpose(1, 2).contiguous().view(B, S, D)
-        )
+        attn_out = attn_out.transpose(1, 2).contiguous().view(B, S, D)
 
         out: Tensor = self.W_o(attn_out)
         return out

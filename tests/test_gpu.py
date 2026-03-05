@@ -156,9 +156,7 @@ class TestKuramotoOscillatorGPU:
     """Kuramoto oscillator dynamics on CUDA."""
 
     def test_step_on_gpu(self) -> None:
-        osc = KuramotoOscillator(
-            n_oscillators=32, coupling_strength=2.0, device=DEVICE
-        )
+        osc = KuramotoOscillator(n_oscillators=32, coupling_strength=2.0, device=DEVICE)
         state = OscillatorState.create_random(
             n_oscillators=32, device=DEVICE, dtype=DTYPE, seed=SEED
         )
@@ -168,9 +166,7 @@ class TestKuramotoOscillatorGPU:
         assert new_state.frequency.device.type == "cuda"
 
     def test_step_with_coupling_matrix_gpu(self) -> None:
-        osc = KuramotoOscillator(
-            n_oscillators=16, coupling_strength=2.0, device=DEVICE
-        )
+        osc = KuramotoOscillator(n_oscillators=16, coupling_strength=2.0, device=DEVICE)
         K = sparse_coupling_matrix(16, sparsity=0.5, device=DEVICE)
         osc.set_coupling_matrix(K)
         state = OscillatorState.create_random(
@@ -193,9 +189,7 @@ class TestKuramotoOscillatorGPU:
         assert new_state.phase.device.type == "cuda"
 
     def test_derivatives_on_gpu(self) -> None:
-        osc = KuramotoOscillator(
-            n_oscillators=16, coupling_strength=2.0, device=DEVICE
-        )
+        osc = KuramotoOscillator(n_oscillators=16, coupling_strength=2.0, device=DEVICE)
         state = OscillatorState.create_random(
             n_oscillators=16, device=DEVICE, dtype=DTYPE, seed=SEED
         )
@@ -302,9 +296,9 @@ class TestResonanceLayerGPU:
 
     def test_forward_on_gpu(self) -> None:
         torch.manual_seed(SEED)
-        layer = ResonanceLayer(
-            n_oscillators=32, n_dims=64, n_steps=5, dt=0.01
-        ).to(DEVICE)
+        layer = ResonanceLayer(n_oscillators=32, n_dims=64, n_steps=5, dt=0.01).to(
+            DEVICE
+        )
         x = torch.randn(8, 64, device=DEVICE)
         out = layer(x)
         assert out.device.type == "cuda"
@@ -313,9 +307,9 @@ class TestResonanceLayerGPU:
 
     def test_gradient_flow_gpu(self) -> None:
         torch.manual_seed(SEED)
-        layer = ResonanceLayer(
-            n_oscillators=16, n_dims=32, n_steps=3, dt=0.01
-        ).to(DEVICE)
+        layer = ResonanceLayer(n_oscillators=16, n_dims=32, n_steps=3, dt=0.01).to(
+            DEVICE
+        )
         x = torch.randn(4, 32, device=DEVICE, requires_grad=True)
         out = layer(x)
         loss = out.sum()
@@ -325,9 +319,9 @@ class TestResonanceLayerGPU:
 
     def test_order_parameter_gpu(self) -> None:
         torch.manual_seed(SEED)
-        layer = ResonanceLayer(
-            n_oscillators=16, n_dims=32, n_steps=3, dt=0.01
-        ).to(DEVICE)
+        layer = ResonanceLayer(n_oscillators=16, n_dims=32, n_steps=3, dt=0.01).to(
+            DEVICE
+        )
         x = torch.randn(4, 32, device=DEVICE)
         r = layer.get_order_parameter(x)
         assert (r >= 0).all() and (r <= 1.0 + 1e-6).all()
@@ -363,9 +357,9 @@ class TestPRINetModelGPU:
 
     def test_oscillatory_weight_init_gpu(self) -> None:
         torch.manual_seed(SEED)
-        model = PRINetModel(
-            n_resonances=16, n_dims=32, n_concepts=5, n_layers=2
-        ).to(DEVICE)
+        model = PRINetModel(n_resonances=16, n_dims=32, n_concepts=5, n_layers=2).to(
+            DEVICE
+        )
         oscillatory_weight_init(model)
         x = torch.randn(4, 32, device=DEVICE)
         out = model(x)
@@ -377,9 +371,9 @@ class TestSynchronizedGradientDescentGPU:
 
     def test_step_on_gpu(self) -> None:
         torch.manual_seed(SEED)
-        model = ResonanceLayer(
-            n_oscillators=16, n_dims=32, n_steps=3, dt=0.01
-        ).to(DEVICE)
+        model = ResonanceLayer(n_oscillators=16, n_dims=32, n_steps=3, dt=0.01).to(
+            DEVICE
+        )
         opt = SynchronizedGradientDescent(
             model.parameters(), lr=0.01, sync_penalty=0.1, critical_order=0.5
         )
@@ -398,9 +392,9 @@ class TestRIPOptimizerGPU:
 
     def test_step_on_gpu(self) -> None:
         torch.manual_seed(SEED)
-        model = ResonanceLayer(
-            n_oscillators=16, n_dims=32, n_steps=3, dt=0.01
-        ).to(DEVICE)
+        model = ResonanceLayer(n_oscillators=16, n_dims=32, n_steps=3, dt=0.01).to(
+            DEVICE
+        )
         opt = RIPOptimizer(model.parameters(), lr=0.01)
         x = torch.randn(4, 32, device=DEVICE)
         out = model(x)
@@ -420,9 +414,7 @@ class TestBatchedRK45SolverGPU:
     """Batched adaptive RK45 solver on CUDA."""
 
     def test_solve_on_gpu(self) -> None:
-        osc = KuramotoOscillator(
-            n_oscillators=16, coupling_strength=2.0, device=DEVICE
-        )
+        osc = KuramotoOscillator(n_oscillators=16, coupling_strength=2.0, device=DEVICE)
         state = OscillatorState.create_random(
             n_oscillators=16, device=DEVICE, dtype=DTYPE, seed=SEED
         )
@@ -431,16 +423,12 @@ class TestBatchedRK45SolverGPU:
         assert result.final_state.phase.device.type == "cuda"
 
     def test_solve_with_trajectory_gpu(self) -> None:
-        osc = KuramotoOscillator(
-            n_oscillators=8, coupling_strength=2.0, device=DEVICE
-        )
+        osc = KuramotoOscillator(n_oscillators=8, coupling_strength=2.0, device=DEVICE)
         state = OscillatorState.create_random(
             n_oscillators=8, device=DEVICE, dtype=DTYPE, seed=SEED
         )
         solver = BatchedRK45Solver(atol=1e-6, rtol=1e-3)
-        result = solver.solve(
-            osc, state, t_span=(0.0, 0.1), record_trajectory=True
-        )
+        result = solver.solve(osc, state, t_span=(0.0, 0.1), record_trajectory=True)
         assert len(result.trajectory) > 0
         for s in result.trajectory:
             assert s.phase.device.type == "cuda"
@@ -484,15 +472,11 @@ class TestGradientCheckpointGPU:
     """Gradient checkpoint integration on CUDA."""
 
     def test_checkpoint_on_gpu(self) -> None:
-        osc = KuramotoOscillator(
-            n_oscillators=16, coupling_strength=2.0, device=DEVICE
-        )
+        osc = KuramotoOscillator(n_oscillators=16, coupling_strength=2.0, device=DEVICE)
         state = OscillatorState.create_random(
             n_oscillators=16, device=DEVICE, dtype=DTYPE, seed=SEED
         )
-        result = gradient_checkpoint_integration(
-            osc, state, n_steps=10, dt=0.01
-        )
+        result = gradient_checkpoint_integration(osc, state, n_steps=10, dt=0.01)
         assert result.phase.device.type == "cuda"
 
 
@@ -526,12 +510,8 @@ class TestGPUCPUConsistency:
         new_cpu = osc_cpu.step(state_cpu, dt=0.01)
         new_gpu = osc_gpu.step(state_gpu, dt=0.01)
 
-        assert torch.allclose(
-            new_cpu.phase, new_gpu.phase.cpu(), atol=1e-5
-        )
-        assert torch.allclose(
-            new_cpu.amplitude, new_gpu.amplitude.cpu(), atol=1e-5
-        )
+        assert torch.allclose(new_cpu.phase, new_gpu.phase.cpu(), atol=1e-5)
+        assert torch.allclose(new_cpu.amplitude, new_gpu.amplitude.cpu(), atol=1e-5)
 
     def test_order_parameter_consistency(self) -> None:
         torch.manual_seed(SEED)

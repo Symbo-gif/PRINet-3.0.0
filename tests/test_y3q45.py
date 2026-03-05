@@ -173,9 +173,7 @@ class TestCLEVRNQueryFix:
         _seed()
         from prinet.nn.hybrid import HybridPRINetV2CLEVRN
 
-        model = HybridPRINetV2CLEVRN(
-            scene_dim=16, query_dim=44, d_model=32
-        )
+        model = HybridPRINetV2CLEVRN(scene_dim=16, query_dim=44, d_model=32)
         scene = torch.randn(2, 6, 16)
         query = torch.randn(2, 44)
         out = model(scene, query)
@@ -186,9 +184,7 @@ class TestCLEVRNQueryFix:
         _seed()
         from prinet.nn.hybrid import HybridPRINetV2CLEVRN
 
-        model = HybridPRINetV2CLEVRN(
-            scene_dim=16, query_dim=60, d_model=32
-        )
+        model = HybridPRINetV2CLEVRN(scene_dim=16, query_dim=60, d_model=32)
         model.eval()
 
         scene = torch.randn(2, 6, 16)
@@ -200,17 +196,15 @@ class TestCLEVRNQueryFix:
             out_b = model(scene, query_b)
 
         # Different queries → different outputs (proves query is used)
-        assert not torch.allclose(out_a, out_b, atol=1e-6), (
-            "Same output for different queries — query may not be used"
-        )
+        assert not torch.allclose(
+            out_a, out_b, atol=1e-6
+        ), "Same output for different queries — query may not be used"
 
     def test_has_query_proj_and_merge(self) -> None:
         """Model has query_proj and merge layers (architecture fix)."""
         from prinet.nn.hybrid import HybridPRINetV2CLEVRN
 
-        model = HybridPRINetV2CLEVRN(
-            scene_dim=16, query_dim=60, d_model=32
-        )
+        model = HybridPRINetV2CLEVRN(scene_dim=16, query_dim=60, d_model=32)
         assert hasattr(model, "query_proj"), "Missing query_proj layer"
         assert hasattr(model, "merge"), "Missing merge layer"
         assert isinstance(model.query_proj, nn.Linear)
@@ -273,12 +267,8 @@ class TestCSRWarningSuppression:
             warnings.simplefilter("always")
             _ = sparse_coupling_matrix_csr(100, sparsity=0.9, seed=42)
 
-        csr_warnings = [
-            x for x in w if "Sparse CSR" in str(x.message)
-        ]
-        assert len(csr_warnings) == 0, (
-            f"Got {len(csr_warnings)} CSR beta warning(s)"
-        )
+        csr_warnings = [x for x in w if "Sparse CSR" in str(x.message)]
+        assert len(csr_warnings) == 0, f"Got {len(csr_warnings)} CSR beta warning(s)"
 
     def test_csr_coupling_step_no_warning(self) -> None:
         """csr_coupling_step() produces no beta warnings."""
@@ -294,12 +284,8 @@ class TestCSRWarningSuppression:
             warnings.simplefilter("always")
             _ = csr_coupling_step(phase, csr)
 
-        csr_warnings = [
-            x for x in w if "Sparse CSR" in str(x.message)
-        ]
-        assert len(csr_warnings) == 0, (
-            f"Got {len(csr_warnings)} CSR beta warning(s)"
-        )
+        csr_warnings = [x for x in w if "Sparse CSR" in str(x.message)]
+        assert len(csr_warnings) == 0, f"Got {len(csr_warnings)} CSR beta warning(s)"
 
     def test_oscillosim_csr_mode_no_warning(self) -> None:
         """OscilloSim in csr mode produces no beta warnings."""
@@ -309,17 +295,16 @@ class TestCSRWarningSuppression:
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
             sim = OscilloSim(
-                n_oscillators=100, coupling_strength=2.0,
-                coupling_mode="csr", k_neighbors=8, device="cpu",
+                n_oscillators=100,
+                coupling_strength=2.0,
+                coupling_mode="csr",
+                k_neighbors=8,
+                device="cpu",
             )
             _ = sim.run(n_steps=10, dt=0.01)
 
-        csr_warnings = [
-            x for x in w if "Sparse CSR" in str(x.message)
-        ]
-        assert len(csr_warnings) == 0, (
-            f"Got {len(csr_warnings)} CSR beta warning(s)"
-        )
+        csr_warnings = [x for x in w if "Sparse CSR" in str(x.message)]
+        assert len(csr_warnings) == 0, f"Got {len(csr_warnings)} CSR beta warning(s)"
 
 
 # ================================================================
@@ -335,9 +320,7 @@ class TestQ45CrossIntegration:
         _seed()
         from prinet.nn.hybrid import HybridPRINetV2CLEVRN
 
-        model = HybridPRINetV2CLEVRN(
-            scene_dim=8, query_dim=16, d_model=16
-        )
+        model = HybridPRINetV2CLEVRN(scene_dim=8, query_dim=16, d_model=16)
         opt = torch.optim.Adam(model.parameters(), lr=1e-3)
 
         for _ in range(5):
@@ -369,8 +352,11 @@ class TestQ45CrossIntegration:
         _seed()
         for mode in ["mean_field", "sparse_knn", "csr"]:
             sim = OscilloSim(
-                n_oscillators=50, coupling_strength=2.0,
-                coupling_mode=mode, k_neighbors=8, device="cpu",
+                n_oscillators=50,
+                coupling_strength=2.0,
+                coupling_mode=mode,
+                k_neighbors=8,
+                device="cpu",
             )
             result = sim.run(n_steps=10, dt=0.01)
             r = result.order_parameter[-1]

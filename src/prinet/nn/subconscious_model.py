@@ -135,11 +135,11 @@ class SubconsciousController(nn.Module):
         raw = self.net(z)  # (B, 8)
 
         # Apply per-channel activations to enforce physical bounds
-        k_range = F.softplus(raw[:, 0:2])         # positive K bounds
-        lr_mult = F.softplus(raw[:, 2:3])          # positive multiplier
-        regime = F.softmax(raw[:, 3:6], dim=-1)    # probability simplex
-        alert = torch.sigmoid(raw[:, 6:7])         # [0, 1]
-        coupling = raw[:, 7:8]                     # raw logit (floored later)
+        k_range = F.softplus(raw[:, 0:2])  # positive K bounds
+        lr_mult = F.softplus(raw[:, 2:3])  # positive multiplier
+        regime = F.softmax(raw[:, 3:6], dim=-1)  # probability simplex
+        alert = torch.sigmoid(raw[:, 6:7])  # [0, 1]
+        coupling = raw[:, 7:8]  # raw logit (floored later)
 
         return torch.cat([k_range, lr_mult, regime, alert, coupling], dim=-1)
 
@@ -334,9 +334,7 @@ def retrain_controller(
         with open(telemetry_path, "r") as f:
             records = _json.load(f)
     else:
-        raise ValueError(
-            "Provide either telemetry_path or telemetry_records."
-        )
+        raise ValueError("Provide either telemetry_path or telemetry_records.")
 
     if len(records) == 0:
         raise ValueError("Telemetry data is empty.")
@@ -364,27 +362,37 @@ def retrain_controller(
         # Control target (8 dims)
         ctrl_data = rec.get("control", None)
         if ctrl_data is not None and isinstance(ctrl_data, dict):
-            ctrl_vec = torch.tensor([
-                ctrl_data.get("suggested_K_min", 0.5),
-                ctrl_data.get("suggested_K_max", 5.0),
-                ctrl_data.get("lr_multiplier", 1.0),
-                ctrl_data.get("regime_mf_weight", 0.5),
-                ctrl_data.get("regime_sk_weight", 0.3),
-                ctrl_data.get("regime_full_weight", 0.2),
-                ctrl_data.get("alert_level", 0.0),
-                ctrl_data.get("coupling_mode_suggestion", 0.0),
-            ], dtype=torch.float32)
+            ctrl_vec = torch.tensor(
+                [
+                    ctrl_data.get("suggested_K_min", 0.5),
+                    ctrl_data.get("suggested_K_max", 5.0),
+                    ctrl_data.get("lr_multiplier", 1.0),
+                    ctrl_data.get("regime_mf_weight", 0.5),
+                    ctrl_data.get("regime_sk_weight", 0.3),
+                    ctrl_data.get("regime_full_weight", 0.2),
+                    ctrl_data.get("alert_level", 0.0),
+                    ctrl_data.get("coupling_mode_suggestion", 0.0),
+                ],
+                dtype=torch.float32,
+            )
         else:
             # Synthetic target: mean-field heuristic
-            ctrl_vec = torch.tensor([
-                0.5, 5.0, 1.0,  # K_min, K_max, lr_mult
-                0.5, 0.3, 0.2,  # regime weights
-                max(0.0, min(1.0, float(loss_val))),  # alert
-                0.0,  # coupling mode
-            ], dtype=torch.float32)
+            ctrl_vec = torch.tensor(
+                [
+                    0.5,
+                    5.0,
+                    1.0,  # K_min, K_max, lr_mult
+                    0.5,
+                    0.3,
+                    0.2,  # regime weights
+                    max(0.0, min(1.0, float(loss_val))),  # alert
+                    0.0,  # coupling mode
+                ],
+                dtype=torch.float32,
+            )
         controls.append(ctrl_vec)
 
-    state_tensor = torch.stack(states)      # (N, 32)
+    state_tensor = torch.stack(states)  # (N, 32)
     control_tensor = torch.stack(controls)  # (N, 8)
 
     # Create and train controller
@@ -397,7 +405,9 @@ def retrain_controller(
     optimizer = torch.optim.Adam(controller.parameters(), lr=lr)
     dataset = torch.utils.data.TensorDataset(state_tensor, control_tensor)
     loader = torch.utils.data.DataLoader(
-        dataset, batch_size=batch_size, shuffle=True,
+        dataset,
+        batch_size=batch_size,
+        shuffle=True,
     )
 
     final_loss = 0.0

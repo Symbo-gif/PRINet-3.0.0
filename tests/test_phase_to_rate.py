@@ -93,9 +93,7 @@ class TestPhaseToRateConverter:
         # Higher sparsity → more active units
         assert active_high > active_low
 
-    @pytest.mark.skipif(
-        not torch.cuda.is_available(), reason="CUDA not available"
-    )
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA not available")
     def test_gpu_parity(self) -> None:
         """CPU and GPU results should be close."""
         converter = PhaseToRateConverter(32, mode="soft", sparsity=0.1)
@@ -104,9 +102,7 @@ class TestPhaseToRateConverter:
 
         cpu_rates = converter(phase, amplitude)
         gpu_rates = converter(phase.cuda(), amplitude.cuda())
-        torch.testing.assert_close(
-            cpu_rates, gpu_rates.cpu(), atol=1e-5, rtol=1e-5
-        )
+        torch.testing.assert_close(cpu_rates, gpu_rates.cpu(), atol=1e-5, rtol=1e-5)
 
 
 # ===================================================================
@@ -175,12 +171,8 @@ class TestFeedbackInhibition:
         phase = torch.rand(100) * TWO_PI
         amplitude = torch.ones(100)
 
-        rates_sparse = phase_to_rate(
-            phase, amplitude, mode="hard", sparsity=0.05
-        )
-        rates_dense = phase_to_rate(
-            phase, amplitude, mode="hard", sparsity=0.5
-        )
+        rates_sparse = phase_to_rate(phase, amplitude, mode="hard", sparsity=0.05)
+        rates_dense = phase_to_rate(phase, amplitude, mode="hard", sparsity=0.5)
 
         active_sparse = (rates_sparse.abs() > 1e-8).float().mean().item()
         active_dense = (rates_dense.abs() > 1e-8).float().mean().item()
@@ -310,12 +302,8 @@ class TestInformationPreservation:
         phase = torch.rand(100) * TWO_PI
         amplitude = torch.ones(100)
 
-        sparse_rates = phase_to_rate(
-            phase, amplitude, mode="hard", sparsity=0.1
-        )
-        dense_rates = phase_to_rate(
-            phase, amplitude, mode="soft", sparsity=0.9
-        )
+        sparse_rates = phase_to_rate(phase, amplitude, mode="hard", sparsity=0.1)
+        dense_rates = phase_to_rate(phase, amplitude, mode="soft", sparsity=0.9)
 
         sparse_l0 = (sparse_rates.abs() > 1e-8).float().sum().item()
         dense_l0 = (dense_rates.abs() > 1e-8).float().sum().item()
@@ -338,9 +326,7 @@ class TestPhaseToRateProperties:
         """Output sparsity is always in [0, 1]."""
         phase = torch.rand(64) * TWO_PI
         amplitude = torch.ones(64)
-        rates = phase_to_rate(
-            phase, amplitude, mode="soft", sparsity=sparsity
-        )
+        rates = phase_to_rate(phase, amplitude, mode="soft", sparsity=sparsity)
         active_frac = (rates.abs() > 1e-8).float().mean().item()
         assert 0.0 <= active_frac <= 1.0
 
