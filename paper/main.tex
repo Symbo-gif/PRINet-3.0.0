@@ -1,0 +1,841 @@
+% =========================================================================
+% Phase-Resonance Binding: Preprint
+% =========================================================================
+\documentclass[11pt]{article}
+
+% Venue-neutral layout (suitable for distribution across outlets)
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage[nopatch=showhyphens]{microtype}
+
+% --- Packages ---
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{booktabs}
+\newtheorem{proposition}{Proposition}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{xcolor}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{multirow}
+\usepackage{caption}
+\usepackage{subcaption}
+\captionsetup{font=small}
+\captionsetup[sub]{font=small}
+\usepackage{wrapfig}
+\usepackage{xspace}
+\usepackage{enumitem}
+
+% Allow a little extra interword stretch to prevent overfull boxes.
+\setlength{\emergencystretch}{2em}
+
+% Suppress underfull \hbox warnings below this badness threshold.
+\hbadness=2000
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!60!black,
+  citecolor=green!50!black,
+  urlcolor=blue!70!black,
+  pdfauthor={Michael Maillet},
+  pdftitle={Phase-Resonance Binding: A Parameter-Efficient Alternative to Slot Attention for Temporal Object Tracking},
+}
+
+% --- Convenience macros ---
+% Latin Modern doesn't provide bold small-caps; headings can be bold.
+% Using \textnormal avoids requests for missing bold small-caps font shapes.
+\providecommand{\prinet}{\textnormal{\textsc{PRINet}}\xspace}
+\providecommand{\oscillosim}{\textnormal{\textsc{OscilloSim}}\xspace}
+\providecommand{\pt}{\textnormal{\textsc{PhaseTracker}}\xspace}
+\providecommand{\sa}{\textnormal{\textsc{SlotAttention}}\xspace}
+\providecommand{\ip}{\text{IP}}
+\providecommand{\bc}{\text{BC}}
+\providecommand{\R}{\mathbb{R}}
+
+% =========================================================================
+\title{Phase-Resonance Binding: A Parameter-Efficient Alternative\\
+       to Slot Attention for Temporal Object Tracking}
+
+\author{%
+Michael Maillet\\
+shedtech, Moncton, New Brunswick, Canada\\
+\texttt{therealmichaelmaillet@gmail.com}\\
+\href{https://orcid.org/0009-0001-3920-5180}{ORCID: 0009-0001-3920-5180}
+}
+
+\date{}
+
+\begin{document}
+\maketitle
+
+% =========================================================================
+%  ABSTRACT
+% =========================================================================
+\begin{abstract}
+We introduce \prinet, a neural architecture that augments standard
+attention with oscillatory dynamics inspired by cortical gamma-band
+synchronisation.  Comparing phase-based temporal binding
+(\pt, 4{,}991 parameters) against \sa (83{,}904 parameters) on
+synthetic multi-object tracking across 7 seeds, we establish four
+contributions:
+(1)~\pt achieves \textbf{practical equivalence} to \sa
+(TOST: $p = 0.004$ at $\delta = 0.5\%$; IP 0.998 vs.\ 1.000)
+with $\mathbf{16.8\times}$ fewer parameters and
+$\mathbf{44.7\times}$ fewer FLOPs;
+(2)~we provide a \textbf{formal parameter efficiency argument}
+showing that oscillatory binding requires $O(1)$ parameters
+(379 coupling/frequency weights) versus $O(d^2)$ for attention
+(54{,}336 weights)---a $\mathbf{143\times}$ gap in binding-specific
+parameters;
+(3)~\pt produces \textbf{topologically compact representations}
+($3.3\times$ higher $k$-NN purity, intrinsic dimensionality 16
+vs.\ 47) operating in the \textbf{supercritical Kuramoto regime}
+($K_{\text{eff}}/K_c = 15$--$207\times$), with complementary failure
+modes to \sa that motivate hybrid architectures; and
+(4)~we confirm \textbf{chimera states} ($\bc = 0.643 \pm 0.057$,
+5~sequences) in \oscillosim v2.0, scaling to 1M+ oscillators at
+1.95B\,osc$\cdot$step/s.
+All 152 benchmark artefacts and \texttt{reproduce.py} accompany
+this submission.
+\end{abstract}
+
+\paragraph{Code and metadata.}
+Repository: \href{https://github.com/Symbo-gif/PRINet-3.0.0}{Symbo-gif/PRINet-3.0.0}.\\
+Keywords: Software Development; Artificial Intelligence.
+
+% =========================================================================
+%  1  INTRODUCTION
+% =========================================================================
+\section{Introduction}
+\label{sec:intro}
+
+The binding problem---how distributed neural features are integrated
+into coherent object representations---remains a central challenge in
+both neuroscience and artificial intelligence
+\citep{treisman1980feature,greff2020binding}.  The \emph{temporal
+correlation hypothesis} proposes that gamma-band ($30$--$80$\,Hz)
+synchronisation achieves feature integration through phase coherence
+rather than explicit routing
+\citep{vonDerMalsburg1981,singer1995visual}.
+
+Despite decades of theoretical development, oscillatory binding has
+seen limited adoption in deep learning.  Recent work begins to bridge
+this gap: AKOrN \citep{miyato2025akorn} integrates Kuramoto oscillators
+with attention (ICLR~2025 Oral); HORN \citep{engelken2025horn}
+shows that oscillatory advantages emerge \emph{after training}
+(PNAS~2025); \citet{donn2025} incorporate Hopf oscillators with
+emergent binding and STDP-like dynamics (Sci.\ Reports~2025); and
+\citet{ssa2025} derive attention from Kuramoto phase-locking in
+closed form.  However, no prior work provides a systematic,
+statistically rigorous comparison between oscillatory and
+competitive-attention temporal binding with matched evaluation,
+component ablation, scaling analysis, computational profiling,
+representation geometry analysis, and theoretical grounding.
+
+We address this gap with four contributions:
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+  \item \textbf{Parameter-efficient oscillatory tracking:}
+        \pt (4{,}991 params) achieves practical equivalence to \sa
+        (83{,}904 params) in identity preservation (TOST $p = 0.004$
+        at $\delta = 0.5\%$) with $16.8\times$ fewer parameters and
+        $44.7\times$ fewer FLOPs, established across 7 seeds with
+        Bayes Factor, Cliff's delta, and Holm--Bonferroni corrections
+        (Section~\ref{sec:trained}).
+  \item \textbf{Formal parameter efficiency argument:}
+        We show that oscillatory binding requires $O(1)$ parameters
+        (w.r.t.\ object count $N$ and embedding dimension $d$) via
+        intra-band coupling matrices, versus $O(d^2)$ for attention's
+        query-key-value projections.  Concretely: 379 binding
+        parameters (PT) versus 54{,}336 (SA), a $143\times$ gap
+        (Proposition~\ref{prop:efficiency}).
+  \item \textbf{Complementary architectures with geometric
+        characterisation:}
+        \pt and \sa exhibit complementary failure modes (\sa is
+        GRU-critical; \pt is occlusion-sensitive) and distinct
+        representation geometry ($k$-NN purity $0.687$ vs.\ $0.207$;
+        manifold dimension 16 vs.\ 47).  Both operate in qualitatively
+        different regimes of the same tracking task, motivating hybrid
+        architectures (Section~\ref{sec:analysis}).
+  \item \textbf{Chimera states and \oscillosim v2.0:}
+        Confirmed chimera states ($\bc = 0.643$, 5~sequences, 95\%~CI
+        $[0.600, 0.692]$) in a differentiable neural framework.
+        \oscillosim v2.0 scales to 1M+ oscillators with 8 coupling
+        topologies at 1.95B\,osc$\cdot$step/s
+        (Section~\ref{sec:chimera}).
+\end{enumerate}
+
+% =========================================================================
+%  2  BACKGROUND
+% =========================================================================
+\section{Background}
+\label{sec:background}
+
+\paragraph{Temporal correlation hypothesis.}
+Cortical circuits organise temporal information through a hierarchy of
+oscillations: delta ($1$--$4$\,Hz), theta ($4$--$8$\,Hz), and gamma
+($30$--$80$\,Hz) rhythms.  Phase-amplitude coupling (PAC)---particularly
+between theta phase and gamma amplitude---coordinates information
+transfer across timescales \citep{singer1995visual,fries2005mechanism}.
+\prinet implements this hierarchy as a discrete delta-theta-gamma (DTG)
+network with multiplicative phase-amplitude gating, providing a
+computational instantiation of the temporal correlation hypothesis
+\citep{vonDerMalsburg1981,engel2001dynamic}.
+
+\paragraph{Kuramoto model.}
+The classical Kuramoto model describes $N$ coupled oscillators with
+natural frequencies $\omega_i$:
+\begin{equation}
+  \dot{\theta}_i
+  = \omega_i
+  + \frac{K}{N} \sum_{j=1}^{N} \sin(\theta_j - \theta_i),
+  \qquad i = 1, \ldots, N
+  \label{eq:kuramoto}
+\end{equation}
+The macroscopic order parameter $r = \frac{1}{N}|\sum_j e^{i\theta_j}|$
+quantifies synchronisation ($r \to 1$: full sync; $r \to 0$:
+incoherent).  \citet{dorfler2014synchronization} establish that for
+$K > K_c = \max_{i,j}|\omega_i - \omega_j|$, the phase-locked state is
+exponentially stable (all-to-all coupling).  For nonlocal coupling with
+phase frustration $\alpha$, \citet{abrams2004chimera} showed chimera
+states---coexisting coherent and incoherent domains---emerge for
+$\alpha \lesssim \pi/2$.
+
+\paragraph{Related work.}
+\textbf{Slot Attention} \citep{locatello2020object} achieves
+object-centric representations via iterative competitive binding with
+softmax attention and GRU updates; it has become the dominant paradigm
+for unsupervised object decomposition.
+\textbf{AKOrN} \citep{miyato2025akorn} augments self-attention with
+vector Kuramoto dynamics on $S^{d-1}$, reporting ${\sim}4$ FG-ARI
+improvement on object discovery.  AKOrN addresses static object
+decomposition; our work addresses temporal tracking---orthogonal task
+axes with complementary insights.
+\textbf{HORN} \citep{engelken2025horn} shows that oscillatory
+advantages emerge \emph{after training}---consistent with our finding
+that untrained \pt massively underperforms \sa while trained \pt
+closes the gap to practical equivalence.
+
+% =========================================================================
+%  3  ARCHITECTURE
+% =========================================================================
+\section{\prinet Architecture}
+\label{sec:architecture}
+
+\paragraph{Discrete delta-theta-gamma layer.}
+The core unit is a discrete delta-theta-gamma (DTG) layer implementing
+multi-rate oscillatory dynamics.  Three frequency bands with learnable
+natural frequencies ($f_\delta \approx 2$\,Hz, $f_\theta \approx 6$\,Hz,
+$f_\gamma \approx 40$\,Hz) and $N_b \in \{4, 8, 16\}$ oscillators per
+band evolve via a discrete Kuramoto update with learned
+coupling matrices $W_b \in \R^{N_b \times N_b}$:
+\begin{equation}
+  \theta_i^{(t+1)} = \theta_i^{(t)} + 2\pi f_i \Delta t
+  + \Delta t \sum_{j=1}^{N_b} W_{ij} \sin(\theta_j^{(t)} - \theta_i^{(t)})
+  \label{eq:dtg_update}
+\end{equation}
+PAC is realised as multiplicative gating:
+\begin{equation}
+  a_\gamma^{(t)} = a_\gamma^{(t-1)}
+  \cdot \sigma\!\bigl(w_{\text{pac}} \cos(\phi_\theta^{(t)})\bigr)
+  \label{eq:pac}
+\end{equation}
+where $\sigma$ is the sigmoid function, $w_{\text{pac}}$ is a learned
+scalar, and $\phi_\theta^{(t)}$ is the theta-band phase at step~$t$.
+Stuart--Landau amplitude dynamics ($\dot{a} = a(\mu - |a|^2)$,
+$\mu$ learnable per band) provide gain control.
+
+\paragraph{PhaseTracker for temporal binding.}
+\pt maintains per-object phase variables evolving via
+Eq.~\eqref{eq:dtg_update} with $n_{\text{steps}} = 5$ discrete
+sub-steps per frame.
+Identity preservation is computed by matching phase coherence patterns
+across consecutive frames.  With only 4{,}991 trainable parameters
+(379 in the binding dynamics, 4{,}280 in detection encoding,
+332 in additional broadcast parameters),
+\pt achieves continuous phase evolution (zero phase slips) and a
+coherence half-life of 527 frames untrained, improving to
+effectively infinite ($>$417K frames) after training
+across 7 seeds (Supplementary~S7).
+
+% =========================================================================
+%  4  EXPERIMENTS
+% =========================================================================
+\section{Experiments}
+\label{sec:experiments}
+
+All experiments were conducted on a single NVIDIA RTX~4060 (8\,GB VRAM)
+with an AMD Ryzen (8c/16t) CPU and 32\,GB RAM.
+
+Statistical comparisons use TOST equivalence testing; Welch's $t$-test
+with Holm--Bonferroni correction; Bayes Factor analysis (JZS prior,
+$r = \sqrt{2}/2$); Cliff's delta (non-parametric effect size); and
+bootstrap 95\% confidence intervals.
+
+Unless otherwise noted, all experiments use 7 random seeds:
+$\{42, 123, 456, 789, 1024,\allowbreak 2048,\allowbreak 3072\}$.
+Full protocols and raw data tables are provided in the Supplementary.
+
+% --- 4.1 Trained PT vs SA ---
+\subsection{Trained PhaseTracker vs.\ Slot Attention}
+\label{sec:trained}
+
+We compare \pt and \sa on a synthetic MOT task (5 objects, 50-frame
+sequences, curriculum training, 7 seeds) with pre-registered analysis.
+
+\input{tables/tab_statistical}
+
+\pt achieves $\ip = 0.998$ versus \sa's $\ip = 1.000$
+(Table~\ref{tab:statistical}).  TOST equivalence testing confirms
+practical equivalence at the $\delta = 0.5\%$ margin ($p = 0.004$),
+resolving the inconclusive Bayes Factor ($\text{BF}_{10} = 0.783$
+at 15~seeds).  The ${\sim}0.2\%$ gap is statistically negligible:
+Cliff's $\delta = -0.286$ (small effect); after Holm--Bonferroni
+correction across 12 comparisons, the standard-condition test
+is non-significant ($p_{\text{adj}} = 1.0$).
+
+% --- 4.2 Scaling Analysis ---
+\subsection{Scaling Analysis}
+\label{sec:scaling}
+
+\paragraph{Object count scaling.}
+Across $N \in \{5, 8, 10, 15, 20\}$ with 7 seeds per condition,
+both architectures maintain near-ceiling \ip.  \pt: $\ip = 0.998$
+(mean across all $N$); \sa: $\ip = 1.000$.  No crossover $N^*$ is
+observed---the binding capacity limit for both architectures exceeds
+$N = 20$ objects, indicating the ${\sim}0.2\%$ gap is constant and
+independent of object count.
+
+\paragraph{Sequence length scaling.}
+At $T \in \{50, 100, 200, 500, 1000\}$ frames, \pt maintains
+$\ip \geq 0.999$ at all sequence lengths.  \sa shows negligible degradation
+($\ip = 1.000$ at $T{=}50$; $\ip = 0.9998$ at $T{=}1000$).
+The gap narrows from $0.10\%$ to $0.07\%$ with increasing $T$, but
+\pt does not overtake \sa---both architectures are effectively
+sequence-length-invariant in the tested range.
+
+\paragraph{Occlusion recovery dynamics.}
+After 20~frames of 60\% occlusion, \pt recovers phase coherence in
+$\tau_r = 0.43 \pm 0.53$ frames (effectively instantaneous).  This
+self-healing property---oscillatory phase relationships snap back to
+coherent configurations once detections resume---is a unique feature
+of phase-based binding. \sa requires no recovery ($\ip = 1.000$
+throughout) due to its GRU memory.
+
+% --- 4.3 CLEVR-N ---
+\subsection{CLEVR-N Binding Capacity}
+\label{sec:clevr_n}
+
+We evaluate binding capacity on a binary classification task---``are
+all $N$ object colours unique?''---for $N \in \{2, \ldots, 8\}$, with
+500 train / 200 test samples, 30 epochs, Adam ($\text{lr} = 10^{-3}$).
+
+LSTM accuracy collapses at $N{=}4$, revealing a hard binding bottleneck.
+HybridPRINetV2 matches Transformer performance (87.5\% vs.\ 91.0\%
+at $N{=}8$) while incorporating oscillatory dynamics, confirming that
+phase-resonance is a viable binding mechanism (Figure~\ref{fig:clevr_n}).
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.85\linewidth]{figures/fig2_clevr_n_capacity.pdf}
+  \caption{CLEVR-N binding capacity.  This task requires joint
+  identification of $N$ coloured objects under occlusion; chance
+  accuracy is $1/C^N$ (rapidly approaching zero).  Absolute
+  accuracies are low because the task is designed to stress-test
+  binding, not to benchmark real-world performance.  LSTM collapses
+  at $N{=}4$ (binding bottleneck).  HybridPRINetV2 matches
+  Transformer capacity while incorporating oscillatory dynamics.}
+  \label{fig:clevr_n}
+\end{figure}
+
+% --- 4.4 Stress and ablation ---
+\subsection{Stress Tests and Ablation}
+\label{sec:ablation}
+
+\paragraph{Stress conditions.}
+We evaluate both architectures under four stress conditions
+(Table~\ref{tab:stress}).  \sa wins all four conditions on raw IP,
+though \pt ties on swap and motion-reversal.  The gap is largest
+under 60\% occlusion ($\ip = 0.416$ vs.\ $1.000$), confirming
+occlusion as \pt's primary failure mode.
+
+\input{tables/tab_stress}
+
+\paragraph{Noise degradation.}
+A fine-grained noise sweep ($\sigma \in [0, 1]$, 7 seeds per level)
+reveals exponential degradation for \pt:
+$\ip(\sigma) = 1.025 \cdot \exp(-\sigma / 4.17)$, $R^2 = 0.955$.
+\sa remains invariant ($\ip = 1.000$) at all tested noise levels.
+
+\paragraph{Velocity stress.}
+\pt degrades under high-velocity conditions: $\ip = 0.999$ at
+$1\times$, $0.971$ at $5\times$, $0.899$ at $10\times$.  \sa
+maintains $\ip = 1.000$ at all velocities.  Phase coupling dynamics
+have a characteristic velocity scale beyond which temporal coherence
+breaks down.
+
+\paragraph{Ablation.}
+\textbf{MOT ablation (6~variants).}  \pt is robust to component
+freezing: all variants achieve $\ip \geq 0.998$.  \sa's GRU
+removal collapses performance from $\ip = 1.0$ to $0.551$, revealing
+a critical single-component dependency
+(Figure~\ref{fig:ablation}).
+
+\textbf{CLEVR-N ablation (4~HybridPRINetV2 variants).}
+Full (31.2\%) $>$ shared\_phase (25.0\%) $>$ attn\_only (21.9\%)
+$>$ osc\_only (15.6\%).  Both oscillatory and attention components
+contribute to binding capacity.
+
+\input{tables/tab_ablation}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.85\linewidth]{figures/fig7_ablation_results.pdf}
+  \caption{Ablation results.  All \pt variants maintain $\ip \geq 0.998$;
+  \sa collapses without GRU ($\ip = 0.551$).}
+  \label{fig:ablation}
+\end{figure}
+
+% --- 4.5 Computational Efficiency ---
+\subsection{Computational Efficiency}
+\label{sec:efficiency}
+
+\input{tables/tab_efficiency}
+
+Despite $44.7\times$ fewer FLOPs, \pt is ${\sim}16\%$ slower per
+frame than \sa in wall-clock time (Table~\ref{tab:efficiency}).
+This reflects \sa's optimised CUDA GRU kernels versus \pt's
+iterative Kuramoto-like updates with complex arithmetic.  At
+$N{=}4$ objects, framework overhead dominates and both models use
+comparable ($<$10~MB) memory.  \pt's FLOPs scale linearly with
+$N$ (doubling per $2\times$ objects) while \sa's are dominated by
+the attention module and scale sub-linearly.
+
+% --- 4.6 Chimera states ---
+\subsection{Chimera States in Kuramoto Oscillators}
+\label{sec:chimera}
+
+We demonstrate chimera states---the coexistence of coherent and
+incoherent oscillator domains---in a differentiable neural framework.
+Setup: $N = 256$, $K = 100$, $\alpha = \pi/2 + 0.05$,
+$k_{\text{neighbors}} = 90$, cosine coupling kernel
+\citep{abrams2004chimera}, RK4 integration ($\mathrm{d}t = 0.05$,
+10{,}000 steps), 7 seeds.
+
+\input{tables/tab_chimera}
+
+$\bc = 0.643 \pm 0.057$ (mean $\pm$ std, 5~sequences), 95\% CI
+$[0.600, 0.692]$ (Table~\ref{tab:chimera}).  All sequences exceed the
+chimera threshold $\bc > 0.555$.  The $K$-$\alpha$ sweet spot lies at
+$K \in [75, 150]$, $\alpha \in [1.47, 1.57]$
+(Figure~\ref{fig:chimera}b).
+
+\begin{figure}[t]
+  \centering
+  \begin{subfigure}[t]{0.48\linewidth}
+    \includegraphics[width=\linewidth]{figures/fig3_chimera_metrics.pdf}
+    \caption{Multi-metric chimera characterisation (7~seeds).}
+    \label{fig:chimera_metrics}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.48\linewidth}
+    \includegraphics[width=\linewidth]{figures/fig4_chimera_k_alpha_heatmap.pdf}
+    \caption{$K$-$\alpha$ heatmap showing chimera sweet spot.}
+    \label{fig:chimera_heatmap}
+  \end{subfigure}
+  \caption{Chimera state analysis.  (a)~Characterisation metrics confirm
+  chimera states above $\bc = 0.555$ threshold.  (b)~Bimodality
+  coefficient as a function of coupling strength $K$ and frustration
+  parameter $\alpha$.}
+  \label{fig:chimera}
+\end{figure}
+
+% --- 4.7 OscilloSim ---
+\subsection{\oscillosim v2.0 Scaling}
+\label{sec:oscillosim}
+
+\input{tables/tab_oscillosim}
+
+\oscillosim v2.0 supports 8 coupling modes
+(Table~\ref{tab:oscillosim}, Figure~\ref{fig:oscillosim}):
+mean-field $O(N)$, sparse $k$-NN $O(N \log N)$, full $O(N^2)$,
+CSR $O(\text{nnz})$, ring, small-world, community, and hierarchical.
+At $N = 10^6$, mean-field throughput reaches
+1.95B\,osc$\cdot$step/s on a single consumer GPU (RTX~4060).
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.85\linewidth]{figures/fig6_oscillosim_scaling.pdf}
+  \caption{\oscillosim throughput (osc$\cdot$step/s) vs.\ system size
+  by coupling mode.  Mean-field achieves 1.95B at $N{=}10^6$.}
+  \label{fig:oscillosim}
+\end{figure}
+
+% =========================================================================
+%  5  THEORY
+% =========================================================================
+\section{Theoretical Analysis}
+\label{sec:theory}
+
+\subsection{Supercritical Operating Regime}
+\label{sec:convergence}
+
+We verify that the learned \pt dynamics operate deeply in the
+supercritical Kuramoto regime, providing a mechanistic explanation for
+the observed tracking performance and fast occlusion recovery.
+
+\begin{proposition}[Supercritical Phase Locking]
+\label{prop:convergence}
+Let $W_b \in \R^{N_b \times N_b}$ be the learned coupling matrix for
+band $b \in \{\delta, \theta, \gamma\}$ with oscillators of natural
+frequencies $f_1, \ldots, f_{N_b}$.  Define the effective coupling
+$K_{\emph{eff}} = \|W_b\|_2$ (operator norm) and the theoretical
+critical coupling $K_c = \max_{i,j}|2\pi f_i - 2\pi f_j|$
+(all-to-all Kuramoto threshold; \citealp{dorfler2014synchronization}).
+
+After training on the MOT task (7~seeds), the ratio
+$K_{\emph{eff}} / K_c$ satisfies:
+\begin{equation}
+  \frac{K_{\emph{eff}}}{K_c}
+  = \begin{cases}
+    207 \pm \text{var} & \text{delta band ($N_\delta = 4$)} \\
+    128 \pm \text{var} & \text{theta band ($N_\theta = 8$)} \\
+    15 \pm \text{var}  & \text{gamma band ($N_\gamma = 16$)}
+  \end{cases}
+  \label{eq:supercritical}
+\end{equation}
+That is, training drives the system to operate $15$--$207\times$
+above the synchronisation threshold.
+\end{proposition}
+
+\paragraph{Verification.}
+We extract the learned coupling matrices $W_b$ and natural frequencies
+$f_b$ from 7 trained \pt models.  Training drives oscillator
+frequencies toward near-isochrony within each band: $\sigma_\omega
+\leq 0.021$\,Hz, two orders of magnitude smaller than inter-band
+separation.  This simultaneously minimises $K_c$ (by reducing
+frequency spread) and maintains strong coupling ($\|W_b\|_2
+\approx 0.92$--$1.65$).  Convergence to the phase-locked state
+follows exponential dynamics: $1 - r(t) \approx A\exp(-\lambda t)$
+with $R^2 > 0.91$ across all bands.
+
+\paragraph{Interpretation.}
+The large supercritical margin explains three empirical observations:
+(i)~training convergence in $<$1 epoch (the landscape is dominated by
+a single attractor basin); (ii)~robustness to component freezing
+(any single component can be ablated without losing synchronisation);
+(iii)~fast occlusion recovery ($\tau_r < 1$ frame---the system returns
+to its stable phase-locked state immediately).
+
+The classical all-to-all bound is not tight for \pt's structured
+sparse coupling (empirical $K_c$ in \oscillosim is 31--$120\times$
+larger than the theoretical prediction).  A tighter bound incorporating
+the coupling graph's algebraic connectivity $\lambda_2(L_W) > 0$
+(verified empirically for all bands) remains an open problem.
+See Supplementary~S20 for the full derivation and numerical tables.
+
+\subsection{Parameter Efficiency of Oscillatory Binding}
+\label{sec:param_theory}
+
+\begin{proposition}[Parameter Efficiency]
+\label{prop:efficiency}
+Let $N$ be the number of tracked objects and $d$ the embedding
+dimension.  \sa computes binding via query-key-value projections
+$W_Q, W_K, W_V \in \R^{d \times d}$ plus a GRU update, requiring
+$\Theta(d^2)$ parameters.  \pt achieves binding through intra-band
+coupling matrices $W_b \in \R^{N_b \times N_b}$ ($b \in \{\delta,
+\theta, \gamma\}$) with band sizes $N_b$ that are architectural
+constants independent of $N$ and $d$.  The binding mechanism uses
+$O(1)$ parameters with respect to both $N$ and $d$.
+\end{proposition}
+
+\paragraph{Argument.}
+\sa's slot attention module requires $3d^2$ projection parameters plus
+$12d^2$ GRU parameters, totaling $\Theta(d^2)$.  At $d = 64$:
+54{,}336 attention parameters plus 24{,}960 temporal GRU parameters
+$= 79{,}296$ total binding parameters.
+
+\pt's binding mechanism consists of coupling matrices
+($4^2 + 8^2 + 16^2 = 336$ params), natural frequencies (28 params),
+Stuart--Landau parameters (3), and PAC gating weights (12), totaling
+\textbf{379 parameters}---none of which depend on $N$ or $d$.
+
+The fundamental asymmetry: \sa stores the \emph{machinery for
+pairwise comparison} ($O(d^2)$ projection matrices); \pt stores the
+\emph{rules of interaction} ($O(N_b^2)$ coupling weights, $N_b$
+constant), from which binding \emph{emerges} via collective
+synchronisation dynamics.  This is analogous to a look-up table
+versus a rule-based system: the former scales with the key space; the
+latter stores a compact set of rules and computes the answer
+dynamically.
+
+\input{tables/tab_binding_params}
+
+% =========================================================================
+%  6  ANALYSIS
+% =========================================================================
+\section{Analysis}
+\label{sec:analysis}
+
+\paragraph{Complementary failure modes.}
+\label{sec:complementary}
+\sa maintains perfect \ip under every stress condition
+tested but collapses ($\ip\;1.0 \to 0.551$) when its GRU component
+is removed.  \pt degrades under occlusion
+($\ip = 0.416$ at 60\%), velocity ($\ip = 0.899$ at $10\times$), and
+noise ($\ip = 0.781$ at $\sigma = 1.0$; see Supplementary)
+but is robust to component freezing (all variants
+$\ip \geq 0.998$).  This complementarity is not a defect but an
+opportunity: a system that uses \pt for efficient standard tracking
+and switches to \sa under detected occlusion could exceed either
+architecture alone.
+
+\paragraph{Representation geometry.}
+\pt embeddings ($\cos\theta, \sin\theta$, amplitude for 28 phase
+channels; ambient dimension 84) achieve $3.3\times$ higher $k$-NN
+purity than \sa (0.687 vs.\ 0.207, $k{=}5$, 3~seeds).  Intrinsic
+dimensionality analysis reveals that \pt concentrates information on a
+16-dimensional manifold (19\% of ambient space), consistent with the
+toroidal topology $\mathbb{T}^n \subset \R^{2n}$ of phase
+representations.  \sa uses 47 of its 64 dimensions (73\%), indicating
+less structured, more distributed representations.  Both models show
+weakly negative global silhouette ($-0.011$ vs.\ $-0.005$),
+confirming that the discriminating metric is local identity coherence
+(k-NN purity), not global cluster separation.
+
+\paragraph{Gradient flow.}
+\pt's 2-layer architecture produces $15.4\times$ larger gradient
+norms per layer than \sa's 13-layer design, with zero vanishing
+gradients.  \sa exhibits partial vanishing in query projection
+(7.1\%) and slot normalisation (11.2\%) layers.  The compact
+oscillatory architecture avoids gradient dilution, concentrating the
+learning signal on binding-relevant parameters.
+
+\paragraph{Parameter efficiency frontier.}
+\pt achieves $\ip$/kParam $= 0.200$ vs.\ \sa's $0.012$
+($16.8\times$ more efficient).  Scaling \pt to
+136K parameters (PT-Large, $27\times$ PT-Small, $1.6\times$ \sa)
+does \textbf{not} improve performance under stress (Supplementary
+Table~S3), confirming that \sa's advantages are architectural, not
+capacity-based.
+
+\paragraph{Chimera as computational primitive.}
+Chimera states ($\bc = 0.643$, 5~sequences) in \oscillosim demonstrate
+that differentiable neural frameworks can reproduce complex
+spatiotemporal phenomena from the physics literature.  Chimera
+strength persists across system sizes ($N \in \{128, 256, 512,
+1024\}$; $\bc > 0.5$ at all sizes).  Community topologies yield more
+reproducible chimera dynamics than ring topology (CI width 0.047
+vs.\ 0.151; Supplementary Table~S5).
+
+% =========================================================================
+%  7  DISCUSSION
+% =========================================================================
+\section{Discussion}
+\label{sec:discussion}
+
+\textbf{A publishable and honest outcome.}
+\pt does not beat \sa on raw accuracy, but achieves practical
+equivalence (TOST $p = 0.004$) with $16.8\times$ fewer parameters,
+$44.7\times$ fewer FLOPs, and $143\times$ fewer binding-specific
+parameters.  We characterise precisely \emph{when} and \emph{why}
+each architecture fails, providing actionable guidance for system
+design.
+
+\textbf{Complementary, not competing.}
+The distinct failure modes (\sa: GRU-critical; \pt: occlusion-sensitive)
+suggest that phase binding and competitive attention are complementary
+mechanisms.  A system that uses \pt for efficient standard tracking
+and switches to \sa under detected occlusion could exceed either
+architecture alone.  The $143\times$ binding parameter gap
+(Proposition~\ref{prop:efficiency}) means \pt handles the common case
+at negligible cost, with \sa reserved for challenging frames.
+
+\textbf{Connection to the temporal correlation hypothesis.}
+\pt provides a computational instantiation of
+the temporal correlation hypothesis (TCH) in a modern deep learning
+framework.  We identify 11 parameter-level correspondences between
+\pt and the neuroscience literature: coupling matrices $\leftrightarrow$
+synaptic connectivity; natural frequencies $\leftrightarrow$ intrinsic
+neural oscillation; PAC gating $\leftrightarrow$ theta-gamma
+cross-frequency coupling; Stuart--Landau amplitude
+$\leftrightarrow$ cortical gain control
+\citep{vonDerMalsburg1981,singer1995visual,engel2001dynamic,fries2005mechanism,fries2015rhythms}.
+This mapping is interpretive, not a biological model---\pt
+simulates millisecond temporal dynamics on a discrete computer, not
+cortical circuits.  However, the success of phase-based binding in
+achieving near-optimal tracking with extreme parameter efficiency
+lends computational credibility to the TCH: synchronisation-based
+binding \emph{works} in a regime where attention-based binding works
+equally well, while using qualitatively fewer resources.
+
+\textbf{Supercritical regime and self-healing.}
+The $15$--$207\times$ supercritical operating margin
+(Proposition~\ref{prop:convergence}) explains both the architectural
+robustness (no single component is critical) and the fast occlusion
+recovery ($\tau_r < 1$ frame).  From a dynamical systems perspective,
+training shapes the energy landscape to have a deep, wide basin around
+the phase-locked state.  This stands in contrast to \sa's GRU-based
+memory, which provides explicit state persistence but creates a
+critical single-point-of-failure dependency.
+
+\textbf{Comparison with AKOrN.}
+AKOrN \citep{miyato2025akorn} adds Kuramoto dynamics to
+self-attention for object discovery, operating on $S^{d-1}$
+(high-dimensional phase).  \pt uses scalar phases in a neuroscience-grounded
+multi-band hierarchy, applied to temporal tracking.  The two approaches
+are complementary: AKOrN demonstrates that oscillatory dynamics improve
+\emph{static} object decomposition; \pt demonstrates that they provide
+\emph{temporal} binding at extreme parameter efficiency.
+
+\textbf{Limitations.}
+\pt's occlusion sensitivity ($\ip = 0.416$ at 60\%), velocity
+degradation ($\ip = 0.899$ at $10\times$), and noise fragility
+($\sigma_c = 4.17$) are significant weaknesses.  All experiments
+use synthetic data; generalisation to natural video benchmarks
+(MOTChallenge, DAVIS) remains future work.  The theoretical
+convergence bound (Proposition~\ref{prop:convergence}) uses the
+all-to-all Kuramoto threshold, which is vacuous for \pt's sparse
+topology; a tighter spectral bound is needed.  Our RTX~4060 hardware
+limits the largest system sizes explored.
+
+% =========================================================================
+%  8  CONCLUSION
+% =========================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+\prinet demonstrates that oscillatory dynamics provide a viable,
+parameter-efficient mechanism for temporal object binding.  Trained
+\pt (4{,}991 parameters) achieves practical equivalence to \sa
+(83{,}904 parameters)---TOST equivalence at $\delta = 0.5\%$ ($p =
+0.004$)---through continuous phase coherence rather than learned
+gated recurrence, using $16.8\times$ fewer parameters, $44.7\times$
+fewer FLOPs, and $143\times$ fewer binding-specific parameters.
+
+The two architectures exhibit complementary failure modes: \sa excels
+under occlusion and adversarial perturbation while \pt offers
+intrinsic temporal coherence, component robustness, a compact
+16-dimensional manifold representation ($3.3\times$ higher
+$k$-NN purity), and operation deep within the supercritical Kuramoto
+regime ($K_{\text{eff}}/K_c = 15$--$207\times$).
+
+We confirm chimera states ($\bc = 0.643 \pm 0.057$, 5~sequences) within
+\oscillosim v2.0, reproducing Abrams \& Strogatz (2004) in a
+differentiable neural framework scaling to 1M+ oscillators.
+
+The v3.0.0 release (1{,}640 tests, 175 public API symbols, 152
+benchmark artefacts, \oscillosim scaling to 1M+ oscillators) and
+\texttt{reproduce.py} establish a fully reproducible foundation for
+oscillatory-attentive hybrid architectures.
+
+% =========================================================================
+%  REPRODUCIBILITY STATEMENT
+% =========================================================================
+\section*{Reproducibility Statement}
+
+All 152 benchmark JSON artefacts, trained model checkpoints, and
+pre-registration hashes (SHA-256) are included in supplementary
+materials.  Running \texttt{reproduce.py} regenerates all figures
+and tables from stored artefacts.  Source code for PRINet v3.0.0 is
+available at \href{https://github.com/Symbo-gif/PRINet-3.0.0}{Symbo-gif/PRINet-3.0.0}.
+
+\textbf{Compute budget:} All experiments ran on a single NVIDIA
+RTX~4060 (8\,GB VRAM), AMD Ryzen 8c/16t, 32\,GB RAM, under 24 total
+GPU-hours across 4 experimental phases.
+
+% =========================================================================
+%  REFERENCES
+% =========================================================================
+\bibliographystyle{plainnat}
+
+\begin{thebibliography}{20}
+
+\bibitem[Abrams and Strogatz(2004)]{abrams2004chimera}
+D.~M. Abrams and S.~H. Strogatz.
+\newblock Chimera states for coupled oscillators.
+\newblock \emph{Physical Review Letters}, 93(17):174102, 2004.
+
+\bibitem[D\"orfler and Bullo(2014)]{dorfler2014synchronization}
+F.~D\"orfler and F.~Bullo.
+\newblock Synchronization in complex networks of phase oscillators: A survey.
+\newblock \emph{Automatica}, 50(6):1539--1564, 2014.
+
+\bibitem[Rohan et~al.(2025)]{donn2025}
+N.~R.~Rohan, C.~Vigneswaran, S.~Ghosh, K.~Rajendran, A.~Gaurav,
+  and V.~S.~Chakravarthy.
+\newblock Deep oscillatory neural network.
+\newblock \emph{Scientific Reports}, 15(1):40968, 2025.
+
+\bibitem[Engel et~al.(2001)]{engel2001dynamic}
+A.~K. Engel, P.~Fries, and W.~Singer.
+\newblock Dynamic predictions: oscillations and synchrony in top-down
+  processing.
+\newblock \emph{Nature Reviews Neuroscience}, 2(10):704--716, 2001.
+
+\bibitem[Effenberger et~al.(2025)]{engelken2025horn}
+F.~Effenberger, P.~Carvalho, I.~Dubinin, and W.~Singer.
+\newblock The functional role of oscillatory dynamics in neocortical
+  circuits: A computational perspective.
+\newblock \emph{Proceedings of the National Academy of Sciences},
+  122(4):e2412830122, 2025.
+
+\bibitem[Fries(2005)]{fries2005mechanism}
+P.~Fries.
+\newblock A mechanism for cognitive dynamics: neuronal communication through
+  neuronal coherence.
+\newblock \emph{Trends in Cognitive Sciences}, 9(10):474--480, 2005.
+
+\bibitem[Fries(2015)]{fries2015rhythms}
+P.~Fries.
+\newblock Rhythms for cognition: communication through coherence.
+\newblock \emph{Neuron}, 88(1):220--235, 2015.
+
+\bibitem[Greff et~al.(2020)]{greff2020binding}
+K.~Greff, S.~van Steenkiste, and J.~Schmidhuber.
+\newblock On the binding problem in artificial neural networks.
+\newblock \emph{arXiv preprint arXiv:2012.05208}, 2020.
+
+\bibitem[Kuramoto(1984)]{kuramoto1984chemical}
+Y.~Kuramoto.
+\newblock \emph{Chemical Oscillations, Waves, and Turbulence}.
+\newblock Springer, 1984.
+
+\bibitem[Locatello et~al.(2020)]{locatello2020object}
+F.~Locatello, D.~Weissenborn, T.~Unterthiner, A.~Mahendran,
+G.~Heigold, J.~Uszkoreit, A.~Dosovitskiy, and T.~Kipf.
+\newblock Object-centric learning with slot attention.
+\newblock In \emph{NeurIPS}, 2020.
+
+\bibitem[Miyato et~al.(2025)]{miyato2025akorn}
+T.~Miyato, S.~L\"owe, A.~Geiger, and M.~Welling.
+\newblock Artificial {K}uramoto oscillatory neurons.
+\newblock In \emph{ICLR (Oral)}, 2025.
+
+\bibitem[Singer and Gray(1995)]{singer1995visual}
+W.~Singer and C.~M. Gray.
+\newblock Visual feature integration and the temporal correlation
+  hypothesis.
+\newblock \emph{Annual Review of Neuroscience}, 18:555--586, 1995.
+
+\bibitem[Hays(2026)]{ssa2025}
+Hasi~Hays.
+\newblock Selective synchronization attention.
+\newblock \emph{arXiv preprint arXiv:2602.14445}, 2026.
+
+\bibitem[Treisman and Gelade(1980)]{treisman1980feature}
+A.~M. Treisman and G.~Gelade.
+\newblock A feature-integration theory of attention.
+\newblock \emph{Cognitive Psychology}, 12(1):97--136, 1980.
+
+\bibitem[von~der Malsburg(1981)]{vonDerMalsburg1981}
+C.~von~der Malsburg.
+\newblock The correlation theory of brain function.
+\newblock Internal Report 81-2, Max-Planck-Institute for Biophysical
+  Chemistry, 1981.
+
+\end{thebibliography}
+
+\end{document}

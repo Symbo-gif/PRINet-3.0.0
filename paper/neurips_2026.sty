@@ -1,0 +1,81 @@
+% neurips_2026.sty -- Style file for NeurIPS 2026 submissions.
+%
+% Based on NeurIPS 2025 formatting specifications.
+% When the official neurips_2026.sty is released, replace this file.
+%
+% Options:
+%   [final]    -- Camera-ready version (named authors, no line numbers)
+%   [preprint] -- Preprint version for arXiv (named authors, no line numbers)
+%   (default)  -- Submission version (anonymous, line numbers)
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{neurips_2026}[2026/02/27 NeurIPS 2026 submission style]
+
+% --- Option handling ---
+\newif\if@neurips@final\@neurips@finalfalse
+\newif\if@neurips@preprint\@neurips@preprintfalse
+\DeclareOption{final}{\@neurips@finaltrue}
+\DeclareOption{preprint}{\@neurips@preprinttrue}
+\ProcessOptions\relax
+
+% --- Page geometry: 5.5in x 9in text block, 1.5in left margin ---
+\RequirePackage[
+  letterpaper,
+  textwidth=5.5in,
+  textheight=9in,
+  left=1.5in,
+  top=1in,
+]{geometry}
+
+% --- Typography: 10pt Times, 11pt leading ---
+\RequirePackage{times}
+\RequirePackage[T1]{fontenc}
+\RequirePackage[utf8]{inputenc}
+\renewcommand{\normalsize}{\fontsize{10}{11}\selectfont}
+\normalsize
+
+% --- Paragraph formatting: standard NeurIPS (indented paragraphs) ---
+\setlength{\parindent}{15pt}
+\setlength{\parskip}{0pt plus 1pt}
+
+% --- Section formatting ---
+\RequirePackage{titlesec}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\itshape}{\thesubsubsection}{1em}{}
+
+% --- Title formatting: 17pt bold, centered, ruled ---
+\renewcommand{\maketitle}{%
+  \begin{center}%
+    {\rule{\linewidth}{4pt}\par\vspace{6pt}}%
+    {\fontsize{17}{20}\bfseries\selectfont \@title \par}%
+    \vspace{6pt}%
+    {\rule{\linewidth}{1pt}\par\vspace{12pt}}%
+    \if@neurips@final
+      {\normalsize \@author \par}%
+    \else\if@neurips@preprint
+      {\normalsize \@author \par}%
+    \else
+      {\normalsize Anonymous Author(s)\par}%
+      {\small Submitted to the Thirty-Ninth Conference on Neural
+       Information Processing Systems (NeurIPS 2026).
+       Do not distribute.\par}%
+    \fi\fi
+    \vspace{12pt}%
+  \end{center}%
+}
+
+% --- Line numbers for submission version ---
+\if@neurips@final\else
+\if@neurips@preprint\else
+  \RequirePackage{lineno}
+  \linenumbers
+\fi\fi
+
+% --- Footnote style ---
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+% --- Hyperref (loaded last by user) ---
+% Users should load hyperref themselves with desired options.
+
+\endinput

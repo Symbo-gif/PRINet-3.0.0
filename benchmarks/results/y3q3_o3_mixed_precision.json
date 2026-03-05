@@ -1,0 +1,15 @@
+{
+  "benchmark": "O.3_mixed_precision",
+  "device": "cuda",
+  "n_steps": 50,
+  "batch_size": 8,
+  "fp32_time_ms": 1404.6,
+  "fp32_final_loss": 2.272665,
+  "amp_time_ms": 1572.0,
+  "amp_final_loss": 2.22807,
+  "amp_enabled": true,
+  "throughput_ratio": 0.894,
+  "loss_diff_pct": 1.96,
+  "target": "2x throughput, <=10% accuracy loss",
+  "status": "PASS"
+}

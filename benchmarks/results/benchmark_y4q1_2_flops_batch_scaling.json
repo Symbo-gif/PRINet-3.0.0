@@ -1,0 +1,410 @@
+{
+  "benchmark": "flops_batch_scaling",
+  "models": [
+    {
+      "variant": "full",
+      "d_model": 32,
+      "batch_size": 1,
+      "total_flops": 461258,
+      "total_params": 233233,
+      "flops_per_param": 1.9776703982712567,
+      "flops_per_sample": 461258.0
+    },
+    {
+      "variant": "attention_only",
+      "d_model": 32,
+      "batch_size": 1,
+      "total_flops": 414834,
+      "total_params": 208762,
+      "flops_per_param": 1.9871145131776855,
+      "flops_per_sample": 414834.0
+    },
+    {
+      "variant": "oscillator_only",
+      "d_model": 32,
+      "batch_size": 1,
+      "total_flops": 444098,
+      "total_params": 224385,
+      "flops_per_param": 1.9791786438487422,
+      "flops_per_sample": 444098.0
+    },
+    {
+      "variant": "full",
+      "d_model": 32,
+      "batch_size": 4,
+      "total_flops": 1845032,
+      "total_params": 233233,
+      "flops_per_param": 7.910681593085027,
+      "flops_per_sample": 461258.0
+    },
+    {
+      "variant": "attention_only",
+      "d_model": 32,
+      "batch_size": 4,
+      "total_flops": 1659336,
+      "total_params": 208762,
+      "flops_per_param": 7.948458052710742,
+      "flops_per_sample": 414834.0
+    },
+    {
+      "variant": "oscillator_only",
+      "d_model": 32,
+      "batch_size": 4,
+      "total_flops": 1776392,
+      "total_params": 224385,
+      "flops_per_param": 7.916714575394969,
+      "flops_per_sample": 444098.0
+    },
+    {
+      "variant": "full",
+      "d_model": 32,
+      "batch_size": 8,
+      "total_flops": 3690064,
+      "total_params": 233233,
+      "flops_per_param": 15.821363186170053,
+      "flops_per_sample": 461258.0
+    },
+    {
+      "variant": "attention_only",
+      "d_model": 32,
+      "batch_size": 8,
+      "total_flops": 3318672,
+      "total_params": 208762,
+      "flops_per_param": 15.896916105421484,
+      "flops_per_sample": 414834.0
+    },
+    {
+      "variant": "oscillator_only",
+      "d_model": 32,
+      "batch_size": 8,
+      "total_flops": 3552784,
+      "total_params": 224385,
+      "flops_per_param": 15.833429150789938,
+      "flops_per_sample": 444098.0
+    },
+    {
+      "variant": "full",
+      "d_model": 32,
+      "batch_size": 16,
+      "total_flops": 7380128,
+      "total_params": 233233,
+      "flops_per_param": 31.642726372340107,
+      "flops_per_sample": 461258.0
+    },
+    {
+      "variant": "attention_only",
+      "d_model": 32,
+      "batch_size": 16,
+      "total_flops": 6637344,
+      "total_params": 208762,
+      "flops_per_param": 31.793832210842968,
+      "flops_per_sample": 414834.0
+    },
+    {
+      "variant": "oscillator_only",
+      "d_model": 32,
+      "batch_size": 16,
+      "total_flops": 7105568,
+      "total_params": 224385,
+      "flops_per_param": 31.666858301579875,
+      "flops_per_sample": 444098.0
+    },
+    {
+      "variant": "full",
+      "d_model": 32,
+      "batch_size": 32,
+      "total_flops": 14760256,
+      "total_params": 233233,
+      "flops_per_param": 63.285452744680214,
+      "flops_per_sample": 461258.0
+    },
+    {
+      "variant": "attention_only",
+      "d_model": 32,
+      "batch_size": 32,
+      "total_flops": 13274688,
+      "total_params": 208762,
+      "flops_per_param": 63.587664421685936,
+      "flops_per_sample": 414834.0
+    },
+    {
+      "variant": "oscillator_only",
+      "d_model": 32,
+      "batch_size": 32,
+      "total_flops": 14211136,
+      "total_params": 224385,
+      "flops_per_param": 63.33371660315975,
+      "flops_per_sample": 444098.0
+    },
+    {
+      "variant": "full",
+      "d_model": 64,
+      "batch_size": 1,
+      "total_flops": 978474,
+      "total_params": 493169,
+      "flops_per_param": 1.98405414776679,
+      "flops_per_sample": 978474.0
+    },
+    {
+      "variant": "attention_only",
+      "d_model": 64,
+      "batch_size": 1,
+      "total_flops": 932050,
+      "total_params": 468698,
+      "flops_per_param": 1.9885939346871546,
+      "flops_per_sample": 932050.0
+    },
+    {
+      "variant": "oscillator_only",
+      "d_model": 64,
+      "batch_size": 1,
+      "total_flops": 911394,
+      "total_params": 459105,
+      "flops_per_param": 1.9851537230045415,
+      "flops_per_sample": 911394.0
+    },
+    {
+      "variant": "full",
+      "d_model": 64,
+      "batch_size": 4,
+      "total_flops": 3913896,
+      "total_params": 493169,
+      "flops_per_param": 7.93621659106716,
+      "flops_per_sample": 978474.0
+    },
+    {
+      "variant": "attention_only",
+      "d_model": 64,
+      "batch_size": 4,
+      "total_flops": 3728200,
+      "total_params": 468698,
+      "flops_per_param": 7.9543757387486185,
+      "flops_per_sample": 932050.0
+    },
+    {
+      "variant": "oscillator_only",
+      "d_model": 64,
+      "batch_size": 4,
+      "total_flops": 3645576,
+      "total_params": 459105,
+      "flops_per_param": 7.940614892018166,
+      "flops_per_sample": 911394.0
+    },
+    {
+      "variant": "full",
+      "d_model": 64,
+      "batch_size": 8,
+      "total_flops": 7827792,
+      "total_params": 493169,
+      "flops_per_param": 15.87243318213432,
+      "flops_per_sample": 978474.0
+    },
+    {
+      "variant": "attention_only",
+      "d_model": 64,
+      "batch_size": 8,
+      "total_flops": 7456400,
+      "total_params": 468698,
+      "flops_per_param": 15.908751477497237,
+      "flops_per_sample": 932050.0
+    },
+    {
+      "variant": "oscillator_only",
+      "d_model": 64,
+      "batch_size": 8,
+      "total_flops": 7291152,
+      "total_params": 459105,
+      "flops_per_param": 15.881229784036332,
+      "flops_per_sample": 911394.0
+    },
+    {
+      "variant": "full",
+      "d_model": 64,
+      "batch_size": 16,
+      "total_flops": 15655584,
+      "total_params": 493169,
+      "flops_per_param": 31.74486636426864,
+      "flops_per_sample": 978474.0
+    },
+    {
+      "variant": "attention_only",
+      "d_model": 64,
+      "batch_size": 16,
+      "total_flops": 14912800,
+      "total_params": 468698,
+      "flops_per_param": 31.817502954994474,
+      "flops_per_sample": 932050.0
+    },
+    {
+      "variant": "oscillator_only",
+      "d_model": 64,
+      "batch_size": 16,
+      "total_flops": 14582304,
+      "total_params": 459105,
+      "flops_per_param": 31.762459568072664,
+      "flops_per_sample": 911394.0
+    },
+    {
+      "variant": "full",
+      "d_model": 64,
+      "batch_size": 32,
+      "total_flops": 31311168,
+      "total_params": 493169,
+      "flops_per_param": 63.48973272853728,
+      "flops_per_sample": 978474.0
+    },
+    {
+      "variant": "attention_only",
+      "d_model": 64,
+      "batch_size": 32,
+      "total_flops": 29825600,
+      "total_params": 468698,
+      "flops_per_param": 63.63500590998895,
+      "flops_per_sample": 932050.0
+    },
+    {
+      "variant": "oscillator_only",
+      "d_model": 64,
+      "batch_size": 32,
+      "total_flops": 29164608,
+      "total_params": 459105,
+      "flops_per_param": 63.52491913614533,
+      "flops_per_sample": 911394.0
+    },
+    {
+      "variant": "full",
+      "d_model": 128,
+      "batch_size": 1,
+      "total_flops": 2320106,
+      "total_params": 1166641,
+      "flops_per_param": 1.988706037247105,
+      "flops_per_sample": 2320106.0
+    },
+    {
+      "variant": "attention_only",
+      "d_model": 128,
+      "batch_size": 1,
+      "total_flops": 2273682,
+      "total_params": 1142170,
+      "flops_per_param": 1.990668639519511,
+      "flops_per_sample": 2273682.0
+    },
+    {
+      "variant": "oscillator_only",
+      "d_model": 128,
+      "batch_size": 1,
+      "total_flops": 2054882,
+      "total_params": 1032993,
+      "flops_per_param": 1.9892506531990053,
+      "flops_per_sample": 2054882.0
+    },
+    {
+      "variant": "full",
+      "d_model": 128,
+      "batch_size": 4,
+      "total_flops": 9280424,
+      "total_params": 1166641,
+      "flops_per_param": 7.95482414898842,
+      "flops_per_sample": 2320106.0
+    },
+    {
+      "variant": "attention_only",
+      "d_model": 128,
+      "batch_size": 4,
+      "total_flops": 9094728,
+      "total_params": 1142170,
+      "flops_per_param": 7.962674558078044,
+      "flops_per_sample": 2273682.0
+    },
+    {
+      "variant": "oscillator_only",
+      "d_model": 128,
+      "batch_size": 4,
+      "total_flops": 8219528,
+      "total_params": 1032993,
+      "flops_per_param": 7.957002612796021,
+      "flops_per_sample": 2054882.0
+    },
+    {
+      "variant": "full",
+      "d_model": 128,
+      "batch_size": 8,
+      "total_flops": 18560848,
+      "total_params": 1166641,
+      "flops_per_param": 15.90964829797684,
+      "flops_per_sample": 2320106.0
+    },
+    {
+      "variant": "attention_only",
+      "d_model": 128,
+      "batch_size": 8,
+      "total_flops": 18189456,
+      "total_params": 1142170,
+      "flops_per_param": 15.925349116156088,
+      "flops_per_sample": 2273682.0
+    },
+    {
+      "variant": "oscillator_only",
+      "d_model": 128,
+      "batch_size": 8,
+      "total_flops": 16439056,
+      "total_params": 1032993,
+      "flops_per_param": 15.914005225592042,
+      "flops_per_sample": 2054882.0
+    },
+    {
+      "variant": "full",
+      "d_model": 128,
+      "batch_size": 16,
+      "total_flops": 37121696,
+      "total_params": 1166641,
+      "flops_per_param": 31.81929659595368,
+      "flops_per_sample": 2320106.0
+    },
+    {
+      "variant": "attention_only",
+      "d_model": 128,
+      "batch_size": 16,
+      "total_flops": 36378912,
+      "total_params": 1142170,
+      "flops_per_param": 31.850698232312176,
+      "flops_per_sample": 2273682.0
+    },
+    {
+      "variant": "oscillator_only",
+      "d_model": 128,
+      "batch_size": 16,
+      "total_flops": 32878112,
+      "total_params": 1032993,
+      "flops_per_param": 31.828010451184085,
+      "flops_per_sample": 2054882.0
+    },
+    {
+      "variant": "full",
+      "d_model": 128,
+      "batch_size": 32,
+      "total_flops": 74243392,
+      "total_params": 1166641,
+      "flops_per_param": 63.63859319190736,
+      "flops_per_sample": 2320106.0
+    },
+    {
+      "variant": "attention_only",
+      "d_model": 128,
+      "batch_size": 32,
+      "total_flops": 72757824,
+      "total_params": 1142170,
+      "flops_per_param": 63.70139646462435,
+      "flops_per_sample": 2273682.0
+    },
+    {
+      "variant": "oscillator_only",
+      "d_model": 128,
+      "batch_size": 32,
+      "total_flops": 65756224,
+      "total_params": 1032993,
+      "flops_per_param": 63.65602090236817,
+      "flops_per_sample": 2054882.0
+    }
+  ]
+}

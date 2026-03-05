@@ -1,0 +1,27 @@
+{
+  "benchmark": "M.3_clevr_n_extended_palette",
+  "n_colors": 24,
+  "per_n": [
+    {
+      "n_items": 4,
+      "n_samples": 200,
+      "gen_ms": 41.0
+    },
+    {
+      "n_items": 8,
+      "n_samples": 200,
+      "gen_ms": 59.7
+    },
+    {
+      "n_items": 12,
+      "n_samples": 200,
+      "gen_ms": 107.9
+    },
+    {
+      "n_items": 16,
+      "n_samples": 200,
+      "gen_ms": 102.3
+    }
+  ],
+  "status": "PASS"
+}

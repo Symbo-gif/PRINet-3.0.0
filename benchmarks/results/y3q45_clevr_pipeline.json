@@ -1,0 +1,33 @@
+{
+  "benchmark": "Q4.5_clevr_pipeline",
+  "device": "cuda",
+  "dataset": {
+    "scene_dim": 16,
+    "query_dim": 60,
+    "n_items": 6,
+    "n_train": 400,
+    "n_test": 100
+  },
+  "comparisons": {
+    "SlotAttentionCLEVRN": {
+      "accuracy": 0.52,
+      "train_time_s": 3.237,
+      "n_params": 67714,
+      "n_epochs": 30
+    },
+    "HybridPRINetV2CLEVRN": {
+      "accuracy": 0.46,
+      "train_time_s": 11.493,
+      "n_params": 105269,
+      "n_epochs": 30
+    },
+    "MLP": {
+      "accuracy": 0.4,
+      "train_time_s": 0.416,
+      "n_params": 18242,
+      "n_epochs": 30
+    }
+  },
+  "winner": "SlotAttentionCLEVRN",
+  "status": "PASS"
+}

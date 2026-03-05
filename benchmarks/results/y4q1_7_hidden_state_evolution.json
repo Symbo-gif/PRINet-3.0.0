@@ -1,0 +1,57 @@
+{
+  "benchmark": "hidden_state_evolution",
+  "phase_tracker": [
+    {
+      "epoch": 0,
+      "train_loss": 0.8499786162376404,
+      "val_loss": 0.7465360928522914,
+      "val_ip": 0.9223684210526315,
+      "gradient_norm": 0.9999994606558159,
+      "param_norm": 161.23947223078122,
+      "phase_coherence": 0.09394984692335129,
+      "slot_entropy": 0.0
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.08809702451806516,
+      "val_loss": 0.1237830139335098,
+      "val_ip": 1.0,
+      "gradient_norm": 0.25021327329553045,
+      "param_norm": 161.22059445230843,
+      "phase_coherence": 0.1597825288772583,
+      "slot_entropy": 0.0
+    },
+    {
+      "epoch": 19,
+      "train_loss": 0.0681730776373297,
+      "val_loss": 0.10416034558469331,
+      "val_ip": 1.0,
+      "gradient_norm": 0.15357293894172588,
+      "param_norm": 161.21425660256185,
+      "phase_coherence": 0.10171528160572052,
+      "slot_entropy": 0.0
+    }
+  ],
+  "slot_attention": [
+    {
+      "epoch": 0,
+      "train_loss": 0.04234802864026278,
+      "val_loss": 0.052830239581434346,
+      "val_ip": 1.0,
+      "gradient_norm": 0.47889733077549973,
+      "param_norm": 26.345075350259997,
+      "phase_coherence": 0.0,
+      "slot_entropy": 0.0
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.005462946355110034,
+      "val_loss": 0.014679579230295003,
+      "val_ip": 1.0,
+      "gradient_norm": 0.9999998442742126,
+      "param_norm": 26.361566187477255,
+      "phase_coherence": 0.0,
+      "slot_entropy": 0.0
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "benchmark": "binding_persistence_comparison",
+  "description": "Per-object binding persistence for PhaseTracker vs SlotAttention across sequence lengths.",
+  "results": [
+    {
+      "n_frames": 10,
+      "bp_phase_mean": 0.25,
+      "bp_phase_min": 0.0,
+      "bp_slot_mean": 1.0,
+      "bp_slot_min": 1.0
+    },
+    {
+      "n_frames": 20,
+      "bp_phase_mean": 0.3026315789473684,
+      "bp_phase_min": 0.0,
+      "bp_slot_mean": 1.0,
+      "bp_slot_min": 1.0
+    },
+    {
+      "n_frames": 40,
+      "bp_phase_mean": 0.3782051282051282,
+      "bp_phase_min": 0.07692307692307693,
+      "bp_slot_mean": 1.0,
+      "bp_slot_min": 1.0
+    },
+    {
+      "n_frames": 60,
+      "bp_phase_mean": 0.40254237288135597,
+      "bp_phase_min": 0.1694915254237288,
+      "bp_slot_mean": 1.0,
+      "bp_slot_min": 1.0
+    },
+    {
+      "n_frames": 100,
+      "bp_phase_mean": 0.45202020202020204,
+      "bp_phase_min": 0.25252525252525254,
+      "bp_slot_mean": 1.0,
+      "bp_slot_min": 1.0
+    }
+  ]
+}

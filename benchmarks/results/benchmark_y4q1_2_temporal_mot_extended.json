@@ -1,0 +1,131 @@
+{
+  "benchmark": "temporal_mot_extended",
+  "experiments": [
+    {
+      "experiment": "sequence_length_scaling",
+      "n_frames": 5,
+      "n_slots": 6,
+      "identity_preservation": 1.0,
+      "n_identity_matches": 4
+    },
+    {
+      "experiment": "sequence_length_scaling",
+      "n_frames": 10,
+      "n_slots": 6,
+      "identity_preservation": 1.0,
+      "n_identity_matches": 9
+    },
+    {
+      "experiment": "sequence_length_scaling",
+      "n_frames": 20,
+      "n_slots": 6,
+      "identity_preservation": 1.0,
+      "n_identity_matches": 19
+    },
+    {
+      "experiment": "sequence_length_scaling",
+      "n_frames": 40,
+      "n_slots": 6,
+      "identity_preservation": 0.9957264957264957,
+      "n_identity_matches": 39
+    },
+    {
+      "experiment": "sequence_length_scaling",
+      "n_frames": 60,
+      "n_slots": 6,
+      "identity_preservation": 0.9943502824858758,
+      "n_identity_matches": 59
+    },
+    {
+      "experiment": "noise_sensitivity",
+      "noise_scale": 0.01,
+      "n_frames": 20,
+      "identity_preservation": 1.0
+    },
+    {
+      "experiment": "noise_sensitivity",
+      "noise_scale": 0.05,
+      "n_frames": 20,
+      "identity_preservation": 0.9912280701754386
+    },
+    {
+      "experiment": "noise_sensitivity",
+      "noise_scale": 0.1,
+      "n_frames": 20,
+      "identity_preservation": 0.9912280701754386
+    },
+    {
+      "experiment": "noise_sensitivity",
+      "noise_scale": 0.2,
+      "n_frames": 20,
+      "identity_preservation": 0.9912280701754386
+    },
+    {
+      "experiment": "noise_sensitivity",
+      "noise_scale": 0.5,
+      "n_frames": 20,
+      "identity_preservation": 1.0
+    },
+    {
+      "experiment": "noise_sensitivity",
+      "noise_scale": 1.0,
+      "n_frames": 20,
+      "identity_preservation": 1.0
+    },
+    {
+      "experiment": "occlusion",
+      "occlusion_rate": 0.0,
+      "identity_preservation": 0.9912280701754386
+    },
+    {
+      "experiment": "occlusion",
+      "occlusion_rate": 0.1,
+      "identity_preservation": 0.9912280701754386
+    },
+    {
+      "experiment": "occlusion",
+      "occlusion_rate": 0.2,
+      "identity_preservation": 0.9912280701754386
+    },
+    {
+      "experiment": "occlusion",
+      "occlusion_rate": 0.3,
+      "identity_preservation": 1.0
+    },
+    {
+      "experiment": "occlusion",
+      "occlusion_rate": 0.5,
+      "identity_preservation": 1.0
+    },
+    {
+      "experiment": "slot_count_scaling",
+      "n_slots": 2,
+      "n_objects": 2,
+      "identity_preservation": 1.0
+    },
+    {
+      "experiment": "slot_count_scaling",
+      "n_slots": 4,
+      "n_objects": 4,
+      "identity_preservation": 1.0
+    },
+    {
+      "experiment": "slot_count_scaling",
+      "n_slots": 6,
+      "n_objects": 6,
+      "identity_preservation": 0.9824561403508771
+    },
+    {
+      "experiment": "slot_count_scaling",
+      "n_slots": 8,
+      "n_objects": 6,
+      "identity_preservation": 1.0
+    },
+    {
+      "experiment": "slot_count_scaling",
+      "n_slots": 12,
+      "n_objects": 6,
+      "identity_preservation": 1.0
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+\begin{table}[t]
+\centering
+\caption{HybridPRINetV2 ablation study. Accuracy, parameter count, and FLOPs for each architectural variant on CLEVR-N (N=6).}
+\label{tab:ablation}
+\begin{tabular}{lccc}
+\toprule
+Variant & Accuracy (\%) & Params & FLOPs \\
+\midrule
+full & 31.2 & 131,692 & 2,065,448 \\
+attention\_only & 21.9 & 118,485 & 1,874,280 \\
+oscillator\_only & 15.6 & 122,844 & 1,928,168 \\
+shared\_phase & 25.0 & 131,692 & 2,065,448 \\
+\bottomrule
+\end{tabular}
+\end{table}

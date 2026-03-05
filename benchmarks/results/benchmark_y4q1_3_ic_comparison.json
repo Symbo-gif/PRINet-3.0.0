@@ -1,0 +1,47 @@
+{
+  "benchmark": "ic_comparison",
+  "params": {
+    "N": 256,
+    "k": 90,
+    "K": 100.0,
+    "alpha": 1.5207963267948965,
+    "A": 0.995,
+    "dt": 0.05,
+    "n_steps": 6000
+  },
+  "comparisons": [
+    {
+      "ic_type": "original_bump",
+      "bc_mean": 0.6266123652458191,
+      "bc_values": [
+        0.6190972328186035,
+        0.6053157448768616,
+        0.6554241180419922
+      ],
+      "si_mean": 0.7915564179420471,
+      "chimera_detected": true
+    },
+    {
+      "ic_type": "gaussian_bump",
+      "bc_mean": 0.5790330171585083,
+      "bc_values": [
+        0.6537409424781799,
+        0.4493958353996277,
+        0.6339622735977173
+      ],
+      "si_mean": 0.7871548732121786,
+      "chimera_detected": true
+    },
+    {
+      "ic_type": "half_sync_random",
+      "bc_mean": 0.5857309699058533,
+      "bc_values": [
+        0.5307329297065735,
+        0.5888632535934448,
+        0.6375967264175415
+      ],
+      "si_mean": 0.7815083463986715,
+      "chimera_detected": true
+    }
+  ]
+}

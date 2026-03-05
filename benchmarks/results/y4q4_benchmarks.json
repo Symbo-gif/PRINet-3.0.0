@@ -1,0 +1,90 @@
+{
+  "suite": "y4q4_archival_close",
+  "timestamp": "2026-02-26T21:10:59",
+  "results": [
+    {
+      "benchmark": "B.1_year4_report",
+      "exists": true,
+      "word_count": 2276,
+      "sections_found": [
+        "Executive Summary",
+        "Q1",
+        "Q2",
+        "Q3",
+        "Q4",
+        "Benchmark",
+        "Metrics"
+      ],
+      "sections_expected": 7,
+      "gate_passed": true
+    },
+    {
+      "benchmark": "B.2_retrospective",
+      "exists": true,
+      "word_count": 1524,
+      "sections_found": [
+        "What Worked",
+        "What Didn't",
+        "Technical Decisions",
+        "Extension"
+      ],
+      "gate_passed": true
+    },
+    {
+      "benchmark": "B.3_archive_files",
+      "citation_cff_exists": true,
+      "citation_cff_valid": true,
+      "code_of_conduct_exists": true,
+      "code_of_conduct_valid": true,
+      "gate_passed": true
+    },
+    {
+      "benchmark": "B.4_sha256_manifest",
+      "artefacts_hashed": 151,
+      "manifest_path": "C:\\dev\\PRINet\\benchmarks\\results\\sha256_manifest.json",
+      "gate_passed": true
+    },
+    {
+      "benchmark": "B.5_final_regression",
+      "return_code": 0,
+      "passed": 1626,
+      "failed": 0,
+      "skipped": 14,
+      "run_time_s": 423.81,
+      "gate_passed": true
+    },
+    {
+      "benchmark": "B.6_doc_completeness",
+      "root_files_found": 9,
+      "root_files_total": 10,
+      "root_files_detail": {
+        "LICENSE": true,
+        "README.md": false,
+        "CITATION.cff": true,
+        "CODE_OF_CONDUCT.md": true,
+        "pyproject.toml": true,
+        "reproduce.py": true,
+        "Year-4-Plan.md": true,
+        "Arxiv_Preprint_Outline.md": true,
+        "Year_4_Comprehensive_Report.md": true,
+        "Project_Retrospective.md": true
+      },
+      "triad_ok": 6,
+      "triad_total": 6,
+      "gate_passed": true
+    },
+    {
+      "benchmark": "B.7_project_metrics",
+      "version": "3.0.0",
+      "api_symbols": 175,
+      "benchmark_artefacts": 152,
+      "test_files": 36,
+      "benchmark_scripts": 54,
+      "notebooks": 3,
+      "source_lines": 21748,
+      "gate_passed": true
+    }
+  ],
+  "gates_passed": 7,
+  "gates_total": 7
+}

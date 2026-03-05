@@ -1,0 +1,34 @@
+{
+  "benchmark": "M.4_adversarial_clevr",
+  "n_adversarial_pairs": 8,
+  "top5_pairs": [
+    {
+      "a": "cyan",
+      "b": "turquoise",
+      "delta_e": 12.47
+    },
+    {
+      "a": "navy",
+      "b": "indigo",
+      "delta_e": 14.26
+    },
+    {
+      "a": "orange",
+      "b": "coral",
+      "delta_e": 16.24
+    },
+    {
+      "a": "salmon",
+      "b": "coral",
+      "delta_e": 18.4
+    },
+    {
+      "a": "purple",
+      "b": "indigo",
+      "delta_e": 20.55
+    }
+  ],
+  "n_samples": 200,
+  "gen_ms": 40.5,
+  "status": "PASS"
+}

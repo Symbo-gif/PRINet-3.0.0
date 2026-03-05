@@ -1,0 +1,34 @@
+{
+  "benchmark": "Y3 Q4.9 Scientific Regime Benchmark",
+  "timestamp": "2026-02-19T16:03:44+00:00",
+  "platform": {
+    "os": "Windows 11",
+    "python": "3.14.2",
+    "pytorch": "2.10.0+cu130",
+    "cuda_available": true,
+    "gpu": "NVIDIA GeForce RTX 4060"
+  },
+  "config": {
+    "n_seeds": 3,
+    "n_steps": 100,
+    "dt": 0.01,
+    "coupling_K": 2.0,
+    "regimes": [
+      "mean_field",
+      "sparse_knn",
+      "full",
+      "csr"
+    ]
+  },
+  "counts": {
+    "solo_matrix_cells": 8,
+    "concurrent_pairs": 18,
+    "concurrent_triples": 16,
+    "concurrent_quads": 4,
+    "goldilocks_zones": 8,
+    "finite_size_data_points": 18,
+    "phase_coherence_experiments": 20,
+    "chimera_analyses": 12
+  },
+  "status": "PASS"
+}

@@ -1,0 +1,8 @@
+{
+  "benchmark": "R.3_pseudo_vs_real_phase",
+  "device": "cuda",
+  "pseudo_phase_ms": 1090.843,
+  "real_phase_ms": 1054.275,
+  "overhead_pct": -3.35,
+  "status": "PASS"
+}

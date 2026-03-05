@@ -1,0 +1,96 @@
+{
+  "benchmark": "chimera_seed_stability",
+  "N": 256,
+  "k": 16,
+  "alpha": 1.457,
+  "n_seeds": 10,
+  "per_seed": [
+    {
+      "seed": 0,
+      "bimodality_coefficient": 0.4519670903682709,
+      "chimera_detected": false,
+      "final_order_param": 0.04541542008519173,
+      "r_local_mean": 0.25731372833251953,
+      "r_local_std": 0.13140931725502014
+    },
+    {
+      "seed": 1,
+      "bimodality_coefficient": 0.43780437111854553,
+      "chimera_detected": false,
+      "final_order_param": 0.06464961916208267,
+      "r_local_mean": 0.23349909484386444,
+      "r_local_std": 0.1210169792175293
+    },
+    {
+      "seed": 2,
+      "bimodality_coefficient": 0.5070068836212158,
+      "chimera_detected": false,
+      "final_order_param": 0.0547003448009491,
+      "r_local_mean": 0.18532897531986237,
+      "r_local_std": 0.09186775237321854
+    },
+    {
+      "seed": 3,
+      "bimodality_coefficient": 0.3983007073402405,
+      "chimera_detected": false,
+      "final_order_param": 0.005852746777236462,
+      "r_local_mean": 0.2638019919395447,
+      "r_local_std": 0.10776421427726746
+    },
+    {
+      "seed": 4,
+      "bimodality_coefficient": 0.3546680212020874,
+      "chimera_detected": false,
+      "final_order_param": 0.05436880886554718,
+      "r_local_mean": 0.2733841836452484,
+      "r_local_std": 0.11802201718091965
+    },
+    {
+      "seed": 5,
+      "bimodality_coefficient": 0.38704556226730347,
+      "chimera_detected": false,
+      "final_order_param": 0.03783077746629715,
+      "r_local_mean": 0.20580559968948364,
+      "r_local_std": 0.08841881155967712
+    },
+    {
+      "seed": 6,
+      "bimodality_coefficient": 0.3962811529636383,
+      "chimera_detected": false,
+      "final_order_param": 0.0491434745490551,
+      "r_local_mean": 0.23053030669689178,
+      "r_local_std": 0.10245281457901001
+    },
+    {
+      "seed": 7,
+      "bimodality_coefficient": 0.4352385699748993,
+      "chimera_detected": false,
+      "final_order_param": 0.014560399577021599,
+      "r_local_mean": 0.26992136240005493,
+      "r_local_std": 0.11677006632089615
+    },
+    {
+      "seed": 8,
+      "bimodality_coefficient": 0.5218147039413452,
+      "chimera_detected": false,
+      "final_order_param": 0.020427482202649117,
+      "r_local_mean": 0.21464942395687103,
+      "r_local_std": 0.1261993795633316
+    },
+    {
+      "seed": 9,
+      "bimodality_coefficient": 0.4093703329563141,
+      "chimera_detected": false,
+      "final_order_param": 0.039394062012434006,
+      "r_local_mean": 0.27044010162353516,
+      "r_local_std": 0.12914049625396729
+    }
+  ],
+  "stability": {
+    "mean": 0.42994973957538607,
+    "std": 0.05272387011637608,
+    "cv": 0.12262798476967478,
+    "range": 0.1671466827392578,
+    "n_seeds": 10
+  }
+}

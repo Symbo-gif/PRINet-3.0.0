@@ -1,0 +1,38 @@
+{
+  "benchmark": "phase1_unified_summary",
+  "description": "Unified Phase 1 statistical hardening summary",
+  "go_no_go": {
+    "chimera_bc": {
+      "criterion": "Mean BC > 0.5, 95% CI excludes 0.3",
+      "pass": true,
+      "mean": 0.6430519461631775,
+      "ci_low": 0.5999127864837647,
+      "ci_high": 0.6915773868560791
+    },
+    "clevr_n_cv": {
+      "criterion": "CV < 5% across seeds",
+      "pass": true,
+      "cv": 0.000984690679981551
+    },
+    "bayes_factor": {
+      "criterion": "BF_10 < 1/3 (evidence for equivalence)",
+      "pass": false,
+      "bf10": 0.7827233432114755,
+      "bf10_pingouin": 1.111816910966146,
+      "interpretation": "anecdotal_evidence_for_H0",
+      "n_seeds": 15,
+      "note": "Extended from 7 to 15 seeds",
+      "tost_resolution": {
+        "smallest_equivalent_margin": 0.005,
+        "tost_p_at_1pct": 8.013070379453424e-07,
+        "bayesian_prob_equiv_1pct": 1.0,
+        "resolved": true
+      }
+    }
+  },
+  "all_pass": false,
+  "phase1_recommendation": "Review failed criteria before proceeding.",
+  "n_experiments_run": 5,
+  "timestamp": "2026-03-04T16:46:27",
+  "bf_extension_timestamp": "2026-03-04T17:30:47"
+}

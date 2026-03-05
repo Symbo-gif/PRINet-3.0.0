@@ -1,0 +1,83 @@
+{
+  "benchmark": "g8_1_pac_significance",
+  "n_seeds": 7,
+  "n_surrogates": 1000,
+  "surrogate_method": "time_shift_phase_shuffling",
+  "per_seed": [
+    {
+      "seed": 42,
+      "observed_pac": 0.21479692570865155,
+      "null_mean": 0.22049523399607862,
+      "null_std": 0.021495430875022193,
+      "z_score": -0.2650939318480251,
+      "p_value": 0.585,
+      "n_surrogates": 1000
+    },
+    {
+      "seed": 123,
+      "observed_pac": 0.28977411799132824,
+      "null_mean": 0.2827317825032689,
+      "null_std": 0.019167975455741514,
+      "z_score": 0.3674011115216598,
+      "p_value": 0.362,
+      "n_surrogates": 1000
+    },
+    {
+      "seed": 456,
+      "observed_pac": 0.20781244952231645,
+      "null_mean": 0.21501155833629892,
+      "null_std": 0.019116149233634996,
+      "z_score": -0.3765982743697979,
+      "p_value": 0.638,
+      "n_surrogates": 1000
+    },
+    {
+      "seed": 789,
+      "observed_pac": 0.29570867102593185,
+      "null_mean": 0.2886950427045754,
+      "null_std": 0.025159745928576713,
+      "z_score": 0.27876387707835637,
+      "p_value": 0.391,
+      "n_surrogates": 1000
+    },
+    {
+      "seed": 1024,
+      "observed_pac": 0.3296712335199118,
+      "null_mean": 0.29378799877119016,
+      "null_std": 0.02452081827894788,
+      "z_score": 1.4633783563221805,
+      "p_value": 0.069,
+      "n_surrogates": 1000
+    },
+    {
+      "seed": 2048,
+      "observed_pac": 0.20055924598127603,
+      "null_mean": 0.1961449482685886,
+      "null_std": 0.016892488047357407,
+      "z_score": 0.26131720207894277,
+      "p_value": 0.383,
+      "n_surrogates": 1000
+    },
+    {
+      "seed": 3072,
+      "observed_pac": 0.296833779476583,
+      "null_mean": 0.25749387445400646,
+      "null_std": 0.02193536777125021,
+      "z_score": 1.7934463389365993,
+      "p_value": 0.03,
+      "n_surrogates": 1000
+    }
+  ],
+  "aggregate": {
+    "observed_pac_mean": 0.26216520331799986,
+    "observed_pac_std": 0.04875545424436683,
+    "mean_z_score": 0.5032306685314165,
+    "combined_p_value": 0.12513770610454428,
+    "significant_at_005": false
+  },
+  "conclusion": "PAC is NOT significantly above null distribution (drop claim)",
+  "comparison_to_untrained": {
+    "untrained_pac": 0.047,
+    "note": "Re-measured on trained checkpoint with significance testing"
+  }
+}

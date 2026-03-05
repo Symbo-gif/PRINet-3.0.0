@@ -1,0 +1,16 @@
+{
+  "benchmark": "P.3_packaging_v2",
+  "version": "2.0.0",
+  "total_public_symbols": 114,
+  "nn_public_symbols": 51,
+  "utils_public_symbols": 43,
+  "q4_symbols": {
+    "SlotAttentionModule": true,
+    "SlotAttentionCLEVRN": true,
+    "OscilloSim": true,
+    "SimulationResult": true,
+    "quick_simulate": true
+  },
+  "all_q4_present": true,
+  "status": "PASS"
+}

@@ -1,0 +1,38 @@
+{
+  "benchmark": "pt_large_training",
+  "params": {
+    "total": 136227,
+    "trainable": 136227,
+    "frozen": 0,
+    "complex_adjusted": 136227
+  },
+  "seeds": [
+    42,
+    123,
+    456
+  ],
+  "per_seed": [
+    {
+      "seed": 42,
+      "final_val_ip": 0.993421052631579,
+      "best_epoch": 19,
+      "total_epochs": 20,
+      "wall_time_s": 368.1621386000006
+    },
+    {
+      "seed": 123,
+      "final_val_ip": 0.9960526315789473,
+      "best_epoch": 19,
+      "total_epochs": 20,
+      "wall_time_s": 370.4462052000017
+    },
+    {
+      "seed": 456,
+      "final_val_ip": 0.9947368421052631,
+      "best_epoch": 19,
+      "total_epochs": 20,
+      "wall_time_s": 369.8962169999977
+    }
+  ],
+  "mean_ip": 0.994736842105263
+}

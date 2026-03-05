@@ -1,0 +1,60 @@
+{
+  "benchmark": "M.5_profiler_cifar10",
+  "device": "cuda",
+  "avg_step_ms": 128.45,
+  "total_wall_ms": 770.67,
+  "bottleneck_op": "ProfilerStep*",
+  "top_ops": [
+    {
+      "op": "ProfilerStep*",
+      "cpu_ms": 137.154,
+      "cuda_ms": 0.0
+    },
+    {
+      "op": "ProfilerStep*",
+      "cpu_ms": 0.0,
+      "cuda_ms": 90.463
+    },
+    {
+      "op": "cudaLaunchKernel",
+      "cpu_ms": 57.057,
+      "cuda_ms": 0.0
+    },
+    {
+      "op": "aten::mul",
+      "cpu_ms": 12.164,
+      "cuda_ms": 4.245
+    },
+    {
+      "op": "aten::sum",
+      "cpu_ms": 6.326,
+      "cuda_ms": 5.722
+    },
+    {
+      "op": "aten::convolution_backward",
+      "cpu_ms": 0.833,
+      "cuda_ms": 9.604
+    },
+    {
+      "op": "aten::addmm",
+      "cpu_ms": 5.402,
+      "cuda_ms": 2.613
+    },
+    {
+      "op": "aten::mm",
+      "cpu_ms": 4.652,
+      "cuda_ms": 3.36
+    },
+    {
+      "op": "Optimizer.step#Adam.step",
+      "cpu_ms": 6.298,
+      "cuda_ms": 0.0
+    },
+    {
+      "op": "aten::bmm",
+      "cpu_ms": 1.525,
+      "cuda_ms": 4.356
+    }
+  ],
+  "status": "PASS"
+}

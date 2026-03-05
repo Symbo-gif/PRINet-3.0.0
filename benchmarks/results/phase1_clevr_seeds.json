@@ -1,0 +1,86 @@
+{
+  "benchmark": "phase1_exp1_2_clevr_seeds",
+  "description": "CLEVR-N multi-seed analysis with 7 seeds",
+  "n_seeds": 7,
+  "seeds": [
+    42,
+    123,
+    456,
+    789,
+    1024,
+    2048,
+    3072
+  ],
+  "phase_tracker": {
+    "mean": 0.9995300751879699,
+    "std": 0.0009842279493988528,
+    "cv": 0.000984690679981551,
+    "ci_95": [
+      0.9987781954887218,
+      1.0
+    ],
+    "cv_pass": true
+  },
+  "slot_attention": {
+    "mean": 1.0,
+    "std": 0.0,
+    "cv": 0.0,
+    "ci_95": [
+      1.0,
+      1.0
+    ],
+    "cv_pass": true
+  },
+  "cliffs_delta": -0.2857142857142857,
+  "cliffs_delta_interpretation": "small",
+  "per_seed": [
+    {
+      "seed": 42,
+      "pt_ip": 0.9973684210526315,
+      "sa_ip": 1.0,
+      "difference": -0.0026315789473685403
+    },
+    {
+      "seed": 123,
+      "pt_ip": 0.9993421052631579,
+      "sa_ip": 1.0,
+      "difference": -0.0006578947368420796
+    },
+    {
+      "seed": 456,
+      "pt_ip": 1.0,
+      "sa_ip": 1.0,
+      "difference": 0.0
+    },
+    {
+      "seed": 789,
+      "pt_ip": 1.0,
+      "sa_ip": 1.0,
+      "difference": 0.0
+    },
+    {
+      "seed": 1024,
+      "pt_ip": 1.0,
+      "sa_ip": 1.0,
+      "difference": 0.0
+    },
+    {
+      "seed": 2048,
+      "pt_ip": 1.0,
+      "sa_ip": 1.0,
+      "difference": 0.0
+    },
+    {
+      "seed": 3072,
+      "pt_ip": 1.0,
+      "sa_ip": 1.0,
+      "difference": 0.0
+    }
+  ],
+  "go_no_go": {
+    "pt_cv_below_5pct": true,
+    "sa_cv_below_5pct": true,
+    "overall_pass": true
+  },
+  "timestamp": "2026-03-04T16:46:26"
+}

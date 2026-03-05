@@ -1,0 +1,43 @@
+{
+  "benchmark": "parameter_budget",
+  "variants": {
+    "pt_full": {
+      "total": 4991,
+      "trainable": 4991,
+      "frozen": 0,
+      "complex_adjusted": 4991
+    },
+    "pt_frozen": {
+      "total": 4991,
+      "trainable": 4280,
+      "frozen": 711,
+      "complex_adjusted": 4991
+    },
+    "pt_static": {
+      "total": 4280,
+      "trainable": 4280,
+      "frozen": 0,
+      "complex_adjusted": 4280
+    },
+    "sa_full": {
+      "total": 83904,
+      "trainable": 83904,
+      "frozen": 0,
+      "complex_adjusted": 83904
+    },
+    "sa_no_gru": {
+      "total": 58816,
+      "trainable": 58816,
+      "frozen": 0,
+      "complex_adjusted": 58816
+    },
+    "sa_frozen": {
+      "total": 83904,
+      "trainable": 0,
+      "frozen": 83904,
+      "complex_adjusted": 83904
+    }
+  },
+  "pt_sa_ratio": 0.059484649122807015,
+  "within_10pct": false
+}

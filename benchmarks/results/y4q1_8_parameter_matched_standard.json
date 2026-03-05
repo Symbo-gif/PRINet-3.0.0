@@ -1,0 +1,26 @@
+{
+  "benchmark": "parameter_matched_standard",
+  "conditions": [
+    {
+      "condition": "standard_T20",
+      "n_frames": 20,
+      "pt_small_ip": 1.0,
+      "pt_large_ip": 0.994736842105263,
+      "sa_ip": 1.0
+    },
+    {
+      "condition": "long_T50",
+      "n_frames": 50,
+      "pt_small_ip": 0.9987244897959183,
+      "pt_large_ip": 0.9979591836734694,
+      "sa_ip": 1.0
+    },
+    {
+      "condition": "extrapolation_T100",
+      "n_frames": 100,
+      "pt_small_ip": 0.9993686868686869,
+      "pt_large_ip": 0.9992424242424243,
+      "sa_ip": 1.0
+    }
+  ]
+}

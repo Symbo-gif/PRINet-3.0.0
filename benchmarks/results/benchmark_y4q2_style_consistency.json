@@ -1,0 +1,104 @@
+{
+  "benchmark": "style_consistency",
+  "total_checks": 16,
+  "passed": 16,
+  "all_passed": true,
+  "checks": [
+    {
+      "check": "dpi_300",
+      "expected": 300,
+      "actual": 300.0,
+      "passed": true
+    },
+    {
+      "check": "font_size_9",
+      "expected": 9,
+      "actual": 9.0,
+      "passed": true
+    },
+    {
+      "check": "font_serif",
+      "expected": "serif",
+      "actual": "['serif']",
+      "passed": true
+    },
+    {
+      "check": "savefig_dpi_300",
+      "expected": 300,
+      "actual": 300.0,
+      "passed": true
+    },
+    {
+      "check": "color_pt",
+      "expected": "hex string",
+      "actual": "#4477AA",
+      "passed": true
+    },
+    {
+      "check": "color_sa",
+      "expected": "hex string",
+      "actual": "#EE6677",
+      "passed": true
+    },
+    {
+      "check": "color_pt_large",
+      "expected": "hex string",
+      "actual": "#228833",
+      "passed": true
+    },
+    {
+      "check": "color_chimera",
+      "expected": "hex string",
+      "actual": "#CCBB44",
+      "passed": true
+    },
+    {
+      "check": "color_coherent",
+      "expected": "hex string",
+      "actual": "#66CCEE",
+      "passed": true
+    },
+    {
+      "check": "color_full",
+      "expected": "hex string",
+      "actual": "#4477AA",
+      "passed": true
+    },
+    {
+      "check": "color_attention_only",
+      "expected": "hex string",
+      "actual": "#EE6677",
+      "passed": true
+    },
+    {
+      "check": "color_oscillator_only",
+      "expected": "hex string",
+      "actual": "#228833",
+      "passed": true
+    },
+    {
+      "check": "color_shared_phase",
+      "expected": "hex string",
+      "actual": "#CCBB44",
+      "passed": true
+    },
+    {
+      "check": "color_mean_field",
+      "expected": "hex string",
+      "actual": "#4477AA",
+      "passed": true
+    },
+    {
+      "check": "color_sparse_knn",
+      "expected": "hex string",
+      "actual": "#EE6677",
+      "passed": true
+    },
+    {
+      "check": "color_csr",
+      "expected": "hex string",
+      "actual": "#228833",
+      "passed": true
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "benchmark": "artefact_completeness",
+  "groups": {
+    "q1.1": [
+      {
+        "prefix": "benchmark_y4q1_ring_chimera",
+        "found": true,
+        "matched_files": [
+          "benchmark_y4q1_ring_chimera.json"
+        ]
+      },
+      {
+        "prefix": "benchmark_y4q1_small_world_chimera",
+        "found": true,
+        "matched_files": [
+          "benchmark_y4q1_small_world_chimera.json"
+        ]
+      },
+      {
+        "prefix": "benchmark_y4q1_phase_lag_sweep",
+        "found": true,
+        "matched_files": [
+          "benchmark_y4q1_phase_lag_sweep.json"
+        ]
+      },
+      {
+        "prefix": "benchmark_y4q1_temporal_mot",
+        "found": true,
+        "matched_files": [
+          "benchmark_y4q1_temporal_mot.json"
+        ]
+      },
+      {
+        "prefix": "benchmark_y4q1_ablation_variants",
+        "found": true,
+        "matched_files": [
+          "benchmark_y4q1_ablation_variants.json"
+        ]
+      },
+      {
+        "prefix": "benchmark_y4q1_flops_efficiency",
+        "found": true,
+        "matched_files": [
+          "benchmark_y4q1_flops_efficiency.json"
+        ]
+      },
+      {
+        "prefix": "benchmark_y4q1_wall_time",
+        "found": true,
+        "matched_files": [
+          "benchmark_y4q1_wall_time.json"
+        ]
+      },
+      {
+        "prefix": "benchmark_y4q1_ring_scaling",
+        "found": true,
+        "matched_files": [
+          "benchmark_y4q1_ring_scaling.json"
+        ]
+      }
+    ],
+    "q1.3": [
+      {
+        "prefix": "benchmark_y4q1_3_gold_standard_chimera",
+        "found": true,
+        "matched_files": [
+          "benchmark_y4q1_3_gold_standard_chimera.json"
+        ]
+      },
+      {
+        "prefix": "benchmark_y4q1_3_k_alpha_sensitivity",
+        "found": true,
+        "matched_files": [
+          "benchmark_y4q1_3_k_alpha_sensitivity.json"
+        ]
+      }
+    ],
+    "q1.7": [
+      {
+        "prefix": "y4q1_7_statistical_summary",
+        "found": true,
+        "matched_files": [
+          "y4q1_7_statistical_summary.json"
+        ]
+      },
+      {
+        "prefix": "y4q1_7_training_curves_pt",
+        "found": true,
+        "matched_files": [
+          "y4q1_7_training_curves_pt.json"
+        ]
+      },
+      {
+        "prefix": "y4q1_7_training_curves_sa",
+        "found": true,
+        "matched_files": [
+          "y4q1_7_training_curves_sa.json"
+        ]
+      }
+    ],
+    "q1.8": [
+      {
+        "prefix": "y4q1_8_parameter_efficiency_frontier",
+        "found": true,
+        "matched_files": [
+          "y4q1_8_parameter_efficiency_frontier.json"
+        ]
+      }
+    ],
+    "figure_deps": [
+      {
+        "prefix": "y4q1_9_fine_occlusion",
+        "found": true,
+        "matched_files": [
+          "y4q1_9_fine_occlusion.json"
+        ]
+      },
+      {
+        "prefix": "y3q4_p4_oscillosim_scaling",
+        "found": true,
+        "matched_files": [
+          "y3q4_p4_oscillosim_scaling.json"
+        ]
+      }
+    ]
+  },
+  "total_json_files": 146,
+  "total_required": 16,
+  "total_found": 16,
+  "completeness_pct": 100.0
+}

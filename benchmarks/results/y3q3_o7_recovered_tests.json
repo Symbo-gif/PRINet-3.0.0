@@ -1,0 +1,25 @@
+{
+  "benchmark": "O.7_recovered_tests_summary",
+  "recovered_count": 17,
+  "recovered_tests": [
+    "TestRecoveredMeanFieldRK4::test_mean_field_rk4_pytorch[N=64]",
+    "TestRecoveredMeanFieldRK4::test_mean_field_rk4_pytorch[N=256]",
+    "TestRecoveredMeanFieldRK4::test_mean_field_rk4_pytorch[N=1024]",
+    "TestRecoveredMeanFieldRK4::test_mean_field_rk4_pytorch[N=4096]",
+    "TestRecoveredMeanFieldRK4::test_mean_field_rk4_pytorch[N=16384]",
+    "TestRecoveredMeanFieldRK4::test_phase_wrapping",
+    "TestRecoveredMeanFieldRK4::test_amplitude_clamping",
+    "TestRecoveredSparseKNN::test_sparse_knn_coupling[N=32,k=4]",
+    "TestRecoveredSparseKNN::test_sparse_knn_coupling[N=128,k=8]",
+    "TestRecoveredSparseKNN::test_sparse_knn_coupling[N=512,k=16]",
+    "TestRecoveredSparseKNN::test_sparse_knn_coupling[N=1024,k=32]",
+    "TestRecoveredSparseKNN::test_zero_coupling_identity",
+    "TestRecoveredPACModulation::test_pac_matches_manual",
+    "TestRecoveredPACModulation::test_pac_modulation_depth",
+    "TestRecoveredHierarchicalOrderParam::test_aligned_bands",
+    "TestRecoveredHierarchicalOrderParam::test_perfectly_aligned",
+    "TestFusedDiscreteStep::test_pytorch_fused_step_self_consistency (test_y2q3)"
+  ],
+  "target": "<=8 total skips (was 25)",
+  "status": "PASS"
+}

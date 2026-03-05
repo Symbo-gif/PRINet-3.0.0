@@ -1,0 +1,22 @@
+\begin{table}[t]
+\centering
+\caption{Computational efficiency profile. PhaseTracker (PT) vs Slot Attention (SA) across object counts. FLOPs ratio exceeds 44$\times$ at all scales.}
+\label{tab:efficiency}
+\begin{tabular}{clccc}
+\toprule
+$N$ & Model & FLOPs & Latency (ms) & Memory (MB) \\
+\midrule
+\multirow{2}{*}{4} & PT & 86,336 & 5.99 & 9.6 \\
+& SA & 3,857,184 & 5.00 & 9.9 \\
+& \textit{Ratio} & \textit{44.7$\times$} & & \\
+\midrule
+\multirow{2}{*}{8} & PT & 172,672 & 6.46 & 9.6 \\
+& SA & 4,063,296 & 4.83 & 9.9 \\
+& \textit{Ratio} & \textit{23.5$\times$} & & \\
+\midrule
+\multirow{2}{*}{16} & PT & 345,344 & 6.84 & 9.7 \\
+& SA & 4,475,520 & 4.91 & 10.0 \\
+& \textit{Ratio} & \textit{13.0$\times$} & & \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,33 @@
+{
+  "benchmark": "ring_scaling",
+  "scales": [
+    {
+      "N": 64,
+      "k_neighbors": 16,
+      "wall_time_s": 0.06474330008495599,
+      "throughput": 197703.85481129127,
+      "final_order_param": 0.1543961465358734
+    },
+    {
+      "N": 256,
+      "k_neighbors": 20,
+      "wall_time_s": 0.06414989999029785,
+      "throughput": 798130.6285394612,
+      "final_order_param": 0.051563337445259094
+    },
+    {
+      "N": 1024,
+      "k_neighbors": 20,
+      "wall_time_s": 0.06648889998905361,
+      "throughput": 3080213.389508884,
+      "final_order_param": 0.014382313005626202
+    },
+    {
+      "N": 4096,
+      "k_neighbors": 20,
+      "wall_time_s": 0.05365959997288883,
+      "throughput": 15266606.5422384,
+      "final_order_param": 0.009668090380728245
+    }
+  ]
+}

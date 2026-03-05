@@ -1,0 +1,41 @@
+{
+  "benchmark": "Q4.5_cross_integration",
+  "device": "cuda",
+  "tests": {
+    "mixed_precision_hybrid_v2": {
+      "status": "PASS",
+      "initial_loss": 2.2338,
+      "final_loss": 2.3743,
+      "converged": false
+    },
+    "csr_oscillosim": {
+      "status": "PASS",
+      "final_r": 0.1265,
+      "throughput": 2338894.0
+    },
+    "pruning_hybrid_v2": {
+      "status": "PASS",
+      "n_oscillators": 44,
+      "n_active": 4,
+      "reduction_pct": 90.9090909090909
+    },
+    "adaptive_dynamic_tracker": {
+      "status": "PASS",
+      "match_ids_shape": [
+        5
+      ],
+      "budget": {
+        "n_delta": 4,
+        "n_theta": 8,
+        "n_gamma": 29
+      }
+    },
+    "forward_backward_train": {
+      "status": "PASS",
+      "initial_loss": 2.2515,
+      "final_loss": 2.3323
+    }
+  },
+  "summary": "5/5 integration tests passed",
+  "status": "PASS"
+}

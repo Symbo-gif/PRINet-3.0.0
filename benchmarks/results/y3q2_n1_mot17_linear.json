@@ -1,0 +1,40 @@
+{
+  "benchmark": "N.1_mot17_linear",
+  "device": "cuda",
+  "results": [
+    {
+      "n_objects": 5,
+      "n_frames": 30,
+      "mota": 0.6071,
+      "motp": 0.1714,
+      "idf1": 0.3571,
+      "id_switches": 55,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "elapsed_ms": 214.2
+    },
+    {
+      "n_objects": 10,
+      "n_frames": 30,
+      "mota": 0.5528,
+      "motp": 0.338,
+      "idf1": 0.2676,
+      "id_switches": 127,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "elapsed_ms": 86.7
+    },
+    {
+      "n_objects": 20,
+      "n_frames": 30,
+      "mota": 0.2381,
+      "motp": 0.1919,
+      "idf1": 0.1199,
+      "id_switches": 432,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "elapsed_ms": 124.2
+    }
+  ],
+  "status": "PASS"
+}

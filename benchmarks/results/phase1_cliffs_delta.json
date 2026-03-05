@@ -1,0 +1,228 @@
+{
+  "benchmark": "phase1_exp1_3_cliffs_delta",
+  "description": "Cliff's delta (non-parametric effect size) for all PT vs SA comparisons",
+  "n_comparisons": 11,
+  "comparisons": [
+    {
+      "condition": "standard_7seed",
+      "pt_values": [
+        0.9973684210526315,
+        0.9993421052631579,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "sa_values": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "cliffs_delta": -0.2857142857142857,
+      "interpretation": "small",
+      "cohens_d": -0.6752237049095511,
+      "p_value": 0.25337396440227056,
+      "n_pt": 7,
+      "n_sa": 7
+    },
+    {
+      "condition": "noise_sigma_0.0",
+      "pt_values": [
+        1.0,
+        0.9993421052631579,
+        0.9980263157894737
+      ],
+      "sa_values": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "cliffs_delta": -0.6666666666666666,
+      "interpretation": "large",
+      "cohens_d": null,
+      "n_pt": 3,
+      "n_sa": 3
+    },
+    {
+      "condition": "noise_sigma_0.05",
+      "pt_values": [
+        0.9993421052631579,
+        1.0,
+        0.9973684210526315
+      ],
+      "sa_values": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "cliffs_delta": -0.6666666666666666,
+      "interpretation": "large",
+      "cohens_d": null,
+      "n_pt": 3,
+      "n_sa": 3
+    },
+    {
+      "condition": "noise_sigma_0.1",
+      "pt_values": [
+        0.9973684210526315,
+        0.9967105263157894,
+        0.9953947368421053
+      ],
+      "sa_values": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "cliffs_delta": -1.0,
+      "interpretation": "large",
+      "cohens_d": null,
+      "n_pt": 3,
+      "n_sa": 3
+    },
+    {
+      "condition": "noise_sigma_0.2",
+      "pt_values": [
+        0.9894736842105264,
+        0.9842105263157894,
+        0.9875
+      ],
+      "sa_values": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "cliffs_delta": -1.0,
+      "interpretation": "large",
+      "cohens_d": null,
+      "n_pt": 3,
+      "n_sa": 3
+    },
+    {
+      "condition": "noise_sigma_0.3",
+      "pt_values": [
+        0.9776315789473683,
+        0.975657894736842,
+        0.9730263157894736
+      ],
+      "sa_values": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "cliffs_delta": -1.0,
+      "interpretation": "large",
+      "cohens_d": null,
+      "n_pt": 3,
+      "n_sa": 3
+    },
+    {
+      "condition": "noise_sigma_0.5",
+      "pt_values": [
+        0.9473684210526316,
+        0.9559210526315788,
+        0.9335526315789474
+      ],
+      "sa_values": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "cliffs_delta": -1.0,
+      "interpretation": "large",
+      "cohens_d": null,
+      "n_pt": 3,
+      "n_sa": 3
+    },
+    {
+      "condition": "noise_sigma_0.7",
+      "pt_values": [
+        0.9046052631578947,
+        0.8980263157894738,
+        0.850657894736842
+      ],
+      "sa_values": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "cliffs_delta": -1.0,
+      "interpretation": "large",
+      "cohens_d": null,
+      "n_pt": 3,
+      "n_sa": 3
+    },
+    {
+      "condition": "noise_sigma_1.0",
+      "pt_values": [
+        0.7519736842105262,
+        0.7335526315789475,
+        0.6934210526315789
+      ],
+      "sa_values": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "cliffs_delta": -1.0,
+      "interpretation": "large",
+      "cohens_d": null,
+      "n_pt": 3,
+      "n_sa": 3
+    },
+    {
+      "condition": "noise_sigma_1.5",
+      "pt_values": [
+        0.5815789473684211,
+        0.5421052631578946,
+        0.5506578947368422
+      ],
+      "sa_values": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "cliffs_delta": -1.0,
+      "interpretation": "large",
+      "cohens_d": null,
+      "n_pt": 3,
+      "n_sa": 3
+    },
+    {
+      "condition": "noise_sigma_2.0",
+      "pt_values": [
+        0.4855263157894737,
+        0.44605263157894737,
+        0.49078947368421055
+      ],
+      "sa_values": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "cliffs_delta": -1.0,
+      "interpretation": "large",
+      "cohens_d": null,
+      "n_pt": 3,
+      "n_sa": 3
+    }
+  ],
+  "summary": {
+    "negligible": 0,
+    "small": 1,
+    "medium": 0,
+    "large": 10
+  },
+  "interpretation_thresholds": {
+    "negligible": "< 0.147",
+    "small": "0.147 - 0.33",
+    "medium": "0.33 - 0.474",
+    "large": ">= 0.474"
+  },
+  "reference": "Romano, J. et al. (2006). Exploring methods for evaluating group differences on the NSSE.",
+  "timestamp": "2026-03-04T16:46:26"
+}

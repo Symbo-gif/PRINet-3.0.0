@@ -1,0 +1,53 @@
+{
+  "benchmark": "Q4.5_regression_gate",
+  "device": "cuda",
+  "gates": {
+    "core_dynamics": {
+      "status": "PASS"
+    },
+    "phase_to_rate": {
+      "status": "PASS",
+      "output_shape": [
+        4,
+        32
+      ]
+    },
+    "hybrid_v2": {
+      "status": "PASS"
+    },
+    "hybrid_v2_clevrn": {
+      "status": "PASS",
+      "query_dim": 60
+    },
+    "slot_attention": {
+      "status": "PASS"
+    },
+    "oscillosim_v2": {
+      "status": "PASS",
+      "final_r": 0.0419
+    },
+    "csr_sparse": {
+      "status": "PASS",
+      "warnings_suppressed": true
+    },
+    "torch_compile": {
+      "status": "PASS",
+      "auto_downgrade": true
+    },
+    "mixed_precision": {
+      "status": "PASS"
+    },
+    "subconscious": {
+      "status": "PASS"
+    },
+    "adaptive_allocation": {
+      "status": "PASS"
+    },
+    "msvc_autodetect": {
+      "status": "PASS",
+      "cl_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64\\cl.exe"
+    }
+  },
+  "summary": "12/12 gates passed",
+  "status": "PASS"
+}

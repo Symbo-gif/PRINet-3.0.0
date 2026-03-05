@@ -1,0 +1,109 @@
+{
+  "benchmark": "phase1_exp1_5_holm_bonferroni",
+  "description": "Holm-Bonferroni step-down correction for all PT vs SA comparisons",
+  "alpha": 0.05,
+  "n_comparisons": 12,
+  "n_rejected": 4,
+  "n_not_rejected": 8,
+  "comparisons": [
+    {
+      "condition": "standard_7seed",
+      "source": "y4q1_9_7seed_comparison.json",
+      "p_value": 0.25337396440227056,
+      "adjusted_p": 1.0,
+      "reject_H0": false,
+      "rank": 9
+    },
+    {
+      "condition": "q17_summary",
+      "source": "y4q1_7_statistical_summary.json",
+      "p_value": 0.4226497308103851,
+      "adjusted_p": 1.0,
+      "reject_H0": false,
+      "rank": 12
+    },
+    {
+      "condition": "noise_sigma_0.0",
+      "source": "y4q1_8_noise_sweep.json",
+      "p_value": 0.2697032566597846,
+      "adjusted_p": 1.0,
+      "reject_H0": false,
+      "rank": 10
+    },
+    {
+      "condition": "noise_sigma_0.05",
+      "source": "y4q1_8_noise_sweep.json",
+      "p_value": 0.29985995798600334,
+      "adjusted_p": 1.0,
+      "reject_H0": false,
+      "rank": 11
+    },
+    {
+      "condition": "noise_sigma_0.1",
+      "source": "y4q1_8_noise_sweep.json",
+      "p_value": 0.026271008879699513,
+      "adjusted_p": 0.13135504439849757,
+      "reject_H0": false,
+      "rank": 8
+    },
+    {
+      "condition": "noise_sigma_0.2",
+      "source": "y4q1_8_noise_sweep.json",
+      "p_value": 0.013786002059106102,
+      "adjusted_p": 0.11028801647284882,
+      "reject_H0": false,
+      "rank": 5
+    },
+    {
+      "condition": "noise_sigma_0.3",
+      "source": "y4q1_8_noise_sweep.json",
+      "p_value": 0.0029366308097506484,
+      "adjusted_p": 0.029366308097506483,
+      "reject_H0": true,
+      "rank": 3
+    },
+    {
+      "condition": "noise_sigma_0.5",
+      "source": "y4q1_8_noise_sweep.json",
+      "p_value": 0.014054830454027915,
+      "adjusted_p": 0.11028801647284882,
+      "reject_H0": false,
+      "rank": 6
+    },
+    {
+      "condition": "noise_sigma_0.7",
+      "source": "y4q1_8_noise_sweep.json",
+      "p_value": 0.02094151472443177,
+      "adjusted_p": 0.1256490883465906,
+      "reject_H0": false,
+      "rank": 7
+    },
+    {
+      "condition": "noise_sigma_1.0",
+      "source": "y4q1_8_noise_sweep.json",
+      "p_value": 0.003965363343087777,
+      "adjusted_p": 0.03568827008779,
+      "reject_H0": true,
+      "rank": 4
+    },
+    {
+      "condition": "noise_sigma_1.5",
+      "source": "y4q1_8_noise_sweep.json",
+      "p_value": 0.000735354184493405,
+      "adjusted_p": 0.008638403515376562,
+      "reject_H0": true,
+      "rank": 2
+    },
+    {
+      "condition": "noise_sigma_2.0",
+      "source": "y4q1_8_noise_sweep.json",
+      "p_value": 0.0007198669596147135,
+      "adjusted_p": 0.008638403515376562,
+      "reject_H0": true,
+      "rank": 1
+    }
+  ],
+  "method": "Holm-Bonferroni step-down (sequentially rejective Bonferroni)",
+  "reference": "Holm, S. (1979). A simple sequentially rejective multiple test procedure. Scandinavian Journal of Statistics, 6(2), 65-70.",
+  "timestamp": "2026-03-04T16:46:27"
+}

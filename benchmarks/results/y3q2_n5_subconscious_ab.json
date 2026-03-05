@@ -1,0 +1,34 @@
+{
+  "benchmark": "N.5_subconscious_ab",
+  "device": "cuda",
+  "n_trials": 10,
+  "mean_mota_with_daemon": 0.5713,
+  "mean_mota_without_daemon": 0.5713,
+  "mota_values_with": [
+    0.5745,
+    0.5638,
+    0.5745,
+    0.5798,
+    0.5745,
+    0.5691,
+    0.5638,
+    0.5745,
+    0.5745,
+    0.5638
+  ],
+  "mota_values_without": [
+    0.5745,
+    0.5638,
+    0.5745,
+    0.5798,
+    0.5745,
+    0.5691,
+    0.5638,
+    0.5745,
+    0.5745,
+    0.5638
+  ],
+  "p_value": 1.0,
+  "elapsed_ms": 1024.6,
+  "status": "PASS"
+}

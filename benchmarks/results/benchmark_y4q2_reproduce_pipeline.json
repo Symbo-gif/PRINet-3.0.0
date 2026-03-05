@@ -1,0 +1,11 @@
+{
+  "benchmark": "reproduce_pipeline",
+  "status": "OK",
+  "return_code": 0,
+  "stdout_lines": 67,
+  "stderr_lines": 0,
+  "figures_generated": 18,
+  "tables_generated": 6,
+  "total_files": 24,
+  "elapsed_s": 4.773479223251343
+}

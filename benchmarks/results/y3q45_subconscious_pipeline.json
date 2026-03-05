@@ -1,0 +1,26 @@
+{
+  "benchmark": "Q4.5_subconscious_pipeline",
+  "device": "cuda",
+  "tests": {
+    "onnx_inference": {
+      "status": "PASS",
+      "mean_ms": 0.068,
+      "p99_ms": 0.094,
+      "onnx_size_kb": 88.0
+    },
+    "daemon_lifecycle": {
+      "status": "PASS",
+      "states_submitted": 10
+    },
+    "full_control_loop": {
+      "status": "PASS",
+      "actions_taken": 5,
+      "action_shape": [
+        1,
+        8
+      ]
+    }
+  },
+  "summary": "3/3 pipeline stages passed",
+  "status": "PASS"
+}

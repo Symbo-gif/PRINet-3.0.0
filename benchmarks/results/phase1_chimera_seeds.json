@@ -1,0 +1,38 @@
+{
+  "benchmark": "phase1_exp1_1_chimera_seeds",
+  "description": "Enhanced chimera statistics with bootstrap CI and effect sizes",
+  "bimodality_coefficient": {
+    "mean": 0.6430519461631775,
+    "std": 0.05658846136703824,
+    "cv": 0.0879998291035086,
+    "ci_95_low": 0.5999127864837647,
+    "ci_95_high": 0.6915773868560791,
+    "n_sequences": 5,
+    "pass_criteria": true,
+    "raw_values": [
+      0.6403282284736633,
+      0.7256298065185547,
+      0.6266743540763855,
+      0.654323160648346,
+      0.568304181098938
+    ]
+  },
+  "chimera_index": {
+    "mean": 0.5,
+    "std": 0.05646924393157819,
+    "n_sequences": 5
+  },
+  "coherence_ratio": {
+    "mean": 1.0758526201756236,
+    "std": 0.35318910864226616,
+    "n_sequences": 5
+  },
+  "gold_standard_source": "benchmark_y4q1_3_gold_standard_chimera.json",
+  "gold_standard_keys": [
+    "benchmark",
+    "params",
+    "seeds",
+    "aggregate"
+  ],
+  "timestamp": "2026-03-04T16:46:26"
+}

@@ -1,0 +1,81 @@
+{
+  "benchmark": "g4_1_chimera_in_tracking",
+  "n_sequences": 20,
+  "aggregate": {
+    "intra_object_coherence_mean": 0.3165064261760563,
+    "intra_object_coherence_std": 0.06431507813874836,
+    "inter_object_coherence_mean": 0.3296661534036199,
+    "inter_object_coherence_std": 0.048093344914311414,
+    "coherence_ratio_mean": 0.9853155139095048,
+    "coherence_ratio_std": 0.26795531054885247,
+    "bimodality_coefficient_mean": 0.6537551373243332,
+    "bimodality_coefficient_std": 0.05938778739365611,
+    "chimera_index_mean": 0.4625,
+    "chimera_index_std": 0.11488403647476308,
+    "phase_slip_fraction_mean": 0.0,
+    "phase_slip_fraction_std": 0.0,
+    "pac_mean": 0.46062022652477025,
+    "pac_std": 0.32063535941066884,
+    "ip_mean": 0.9986842105263157,
+    "ip_std": 0.005735393346764038
+  },
+  "chimera_like_dynamics_detected": false,
+  "interpretation": "Trained PT does not exhibit strong chimera-like dynamics in its phase representation during tracking.",
+  "per_sequence": [
+    {
+      "seq_idx": 0,
+      "intra_object_coherence": 0.31907662004232407,
+      "inter_object_coherence": 0.3301832675933838,
+      "coherence_ratio": 0.9663621732499861,
+      "bimodality_coefficient": 0.6403282284736633,
+      "chimera_index": 0.4642857142857143,
+      "phase_slip_fraction": 0.0,
+      "pac": 0.594694197177887,
+      "ip": 1.0
+    },
+    {
+      "seq_idx": 1,
+      "intra_object_coherence": 0.426071397960186,
+      "inter_object_coherence": 0.25190044939517975,
+      "coherence_ratio": 1.6914277008365635,
+      "bimodality_coefficient": 0.7256298065185547,
+      "chimera_index": 0.5,
+      "phase_slip_fraction": 0.0,
+      "pac": 0.1882653534412384,
+      "ip": 1.0
+    },
+    {
+      "seq_idx": 2,
+      "intra_object_coherence": 0.28750255703926086,
+      "inter_object_coherence": 0.31839768836895627,
+      "coherence_ratio": 0.9029668478814632,
+      "bimodality_coefficient": 0.6266743540763855,
+      "chimera_index": 0.5714285714285714,
+      "phase_slip_fraction": 0.0,
+      "pac": 0.6176585555076599,
+      "ip": 1.0
+    },
+    {
+      "seq_idx": 3,
+      "intra_object_coherence": 0.3095672447234392,
+      "inter_object_coherence": 0.3047911375761032,
+      "coherence_ratio": 1.0156700984986595,
+      "bimodality_coefficient": 0.654323160648346,
+      "chimera_index": 0.42857142857142855,
+      "phase_slip_fraction": 0.0,
+      "pac": 0.10536341369152069,
+      "ip": 1.0
+    },
+    {
+      "seq_idx": 4,
+      "intra_object_coherence": 0.254732396453619,
+      "inter_object_coherence": 0.3172905892133713,
+      "coherence_ratio": 0.8028362804114458,
+      "bimodality_coefficient": 0.568304181098938,
+      "chimera_index": 0.5357142857142857,
+      "phase_slip_fraction": 0.0,
+      "pac": 0.6402837038040161,
+      "ip": 1.0
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "benchmark": "R.1_propagation_import",
+  "import_ms": 56.86,
+  "functional_ms": 397.38,
+  "r_delta": 0.0412,
+  "r_theta": 0.4987,
+  "r_gamma": 0.0391,
+  "status": "PASS"
+}

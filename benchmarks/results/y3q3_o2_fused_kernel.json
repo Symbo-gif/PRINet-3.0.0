@@ -1,0 +1,33 @@
+{
+  "benchmark": "O.2_fused_kernel",
+  "device": "cuda",
+  "cuda_cpp_available": false,
+  "results": [
+    {
+      "N": 16,
+      "label": "16 oscillators",
+      "pytorch_ms": 1.134,
+      "fused_ms": 3.066,
+      "speedup": 0.37,
+      "using_cuda_cpp": false
+    },
+    {
+      "N": 64,
+      "label": "64 oscillators",
+      "pytorch_ms": 1.073,
+      "fused_ms": 3.048,
+      "speedup": 0.352,
+      "using_cuda_cpp": false
+    },
+    {
+      "N": 256,
+      "label": "256 oscillators",
+      "pytorch_ms": 0.976,
+      "fused_ms": 2.785,
+      "speedup": 0.35,
+      "using_cuda_cpp": false
+    }
+  ],
+  "target": ">=1.5x speedup with CUDA C++",
+  "status": "PASS"
+}

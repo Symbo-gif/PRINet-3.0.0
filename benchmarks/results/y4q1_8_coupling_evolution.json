@@ -1,0 +1,84 @@
+{
+  "benchmark": "coupling_evolution",
+  "N": 256,
+  "generations": 200,
+  "trajectory": [
+    {
+      "generation": 0,
+      "coupling_entropy": 9.773124694824219,
+      "coupling_sparsity": 1.0,
+      "mean_weight": 0.010866136290133,
+      "std_weight": 0.008737160824239254
+    },
+    {
+      "generation": 20,
+      "coupling_entropy": 9.752872467041016,
+      "coupling_sparsity": 0.9705859422683716,
+      "mean_weight": 0.03315003961324692,
+      "std_weight": 0.0290121678262949
+    },
+    {
+      "generation": 40,
+      "coupling_entropy": 9.7908296585083,
+      "coupling_sparsity": 0.8885546922683716,
+      "mean_weight": 0.047420114278793335,
+      "std_weight": 0.039509695023298264
+    },
+    {
+      "generation": 60,
+      "coupling_entropy": 9.79941177368164,
+      "coupling_sparsity": 0.809374988079071,
+      "mean_weight": 0.05838095769286156,
+      "std_weight": 0.04807240515947342
+    },
+    {
+      "generation": 80,
+      "coupling_entropy": 9.80809497833252,
+      "coupling_sparsity": 0.7454687356948853,
+      "mean_weight": 0.06794830411672592,
+      "std_weight": 0.05540823936462402
+    },
+    {
+      "generation": 100,
+      "coupling_entropy": 9.81759262084961,
+      "coupling_sparsity": 0.6936328411102295,
+      "mean_weight": 0.0763617530465126,
+      "std_weight": 0.06152845174074173
+    },
+    {
+      "generation": 120,
+      "coupling_entropy": 9.819056510925293,
+      "coupling_sparsity": 0.6541796922683716,
+      "mean_weight": 0.08349791169166565,
+      "std_weight": 0.06730610132217407
+    },
+    {
+      "generation": 140,
+      "coupling_entropy": 9.8218355178833,
+      "coupling_sparsity": 0.6166015863418579,
+      "mean_weight": 0.09048762917518616,
+      "std_weight": 0.07266712188720703
+    },
+    {
+      "generation": 160,
+      "coupling_entropy": 9.8241605758667,
+      "coupling_sparsity": 0.5841015577316284,
+      "mean_weight": 0.09672302007675171,
+      "std_weight": 0.07723181694746017
+    },
+    {
+      "generation": 180,
+      "coupling_entropy": 9.828718185424805,
+      "coupling_sparsity": 0.5625390410423279,
+      "mean_weight": 0.10252975672483444,
+      "std_weight": 0.08148025721311569
+    },
+    {
+      "generation": 199,
+      "coupling_entropy": 9.830058097839355,
+      "coupling_sparsity": 0.5422656536102295,
+      "mean_weight": 0.10802274942398071,
+      "std_weight": 0.0857301875948906
+    }
+  ]
+}

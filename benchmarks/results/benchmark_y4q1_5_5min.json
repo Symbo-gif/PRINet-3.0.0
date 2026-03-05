@@ -1,0 +1,132 @@
+{
+  "benchmark": "session_length_5min",
+  "description": "5-minute continuous tracking session with PhaseTracker and SlotAttention. 3 seeds. Metrics sampled every 50 frames.",
+  "results": {
+    "duration_minutes": 5.0,
+    "n_seeds": 3,
+    "per_seed": [
+      {
+        "seed": 42,
+        "aggregate": {
+          "duration_minutes": 5.0,
+          "seed": 42,
+          "total_frames": 117200,
+          "total_wall_seconds": 300.02,
+          "n_intervals": 2344,
+          "n_objects": 4,
+          "mean_fps": 398.35,
+          "std_fps": 24.35,
+          "fps_degradation_pct": 15.45,
+          "gpu_mem_initial_mb": 0.0,
+          "gpu_mem_peak_mb": 0.0,
+          "gpu_mem_final_mb": 0.0,
+          "gpu_mem_growth_mb": 0.0,
+          "pt_mean_ip": 0.492584,
+          "pt_std_ip": 0.085421,
+          "sa_mean_ip": 0.999934,
+          "sa_std_ip": 0.000503,
+          "pt_mean_order_param": 0.973207,
+          "pt_std_order_param": 0.004305,
+          "pt_mean_slip_fraction": 1.5e-05,
+          "pt_max_slip_fraction": 0.005102,
+          "fps_trend_slope": -0.002196,
+          "pt_ip_trend_slope": 5.33e-06,
+          "sa_ip_trend_slope": 1e-08,
+          "pt_r_trend_slope": -1e-07
+        },
+        "n_intervals": 2344
+      },
+      {
+        "seed": 43,
+        "aggregate": {
+          "duration_minutes": 5.0,
+          "seed": 43,
+          "total_frames": 117010,
+          "total_wall_seconds": 300.01,
+          "n_intervals": 2340,
+          "n_objects": 4,
+          "mean_fps": 397.79,
+          "std_fps": 25.18,
+          "fps_degradation_pct": -0.72,
+          "gpu_mem_initial_mb": 0.0,
+          "gpu_mem_peak_mb": 0.0,
+          "gpu_mem_final_mb": 0.0,
+          "gpu_mem_growth_mb": 0.0,
+          "pt_mean_ip": 0.473091,
+          "pt_std_ip": 0.075214,
+          "sa_mean_ip": 0.999986,
+          "sa_std_ip": 0.000229,
+          "pt_mean_order_param": 0.966827,
+          "pt_std_order_param": 0.003516,
+          "pt_mean_slip_fraction": 0.0,
+          "pt_max_slip_fraction": 0.0,
+          "fps_trend_slope": -0.000533,
+          "pt_ip_trend_slope": 6.6e-07,
+          "sa_ip_trend_slope": -0.0,
+          "pt_r_trend_slope": -9e-08
+        },
+        "n_intervals": 2340
+      },
+      {
+        "seed": 44,
+        "aggregate": {
+          "duration_minutes": 5.0,
+          "seed": 44,
+          "total_frames": 115840,
+          "total_wall_seconds": 300.01,
+          "n_intervals": 2316,
+          "n_objects": 4,
+          "mean_fps": 393.81,
+          "std_fps": 24.52,
+          "fps_degradation_pct": 28.16,
+          "gpu_mem_initial_mb": 0.0,
+          "gpu_mem_peak_mb": 0.0,
+          "gpu_mem_final_mb": 0.0,
+          "gpu_mem_growth_mb": 0.0,
+          "pt_mean_ip": 0.431599,
+          "pt_std_ip": 0.074016,
+          "sa_mean_ip": 0.999896,
+          "sa_std_ip": 0.000631,
+          "pt_mean_order_param": 0.963483,
+          "pt_std_order_param": 0.00522,
+          "pt_mean_slip_fraction": 2e-06,
+          "pt_max_slip_fraction": 0.005102,
+          "fps_trend_slope": 0.000154,
+          "pt_ip_trend_slope": -1.27e-06,
+          "sa_ip_trend_slope": 1e-08,
+          "pt_r_trend_slope": -4e-08
+        },
+        "n_intervals": 2316
+      }
+    ],
+    "pt_ip_ci": {
+      "mean": 0.46575800000000006,
+      "ci_lower": 0.431599,
+      "ci_upper": 0.4925840000000001,
+      "ci_width": 0.06098500000000007,
+      "se": 0.014703373069748199
+    },
+    "sa_ip_ci": {
+      "mean": 0.9999386666666666,
+      "ci_lower": 0.999896,
+      "ci_upper": 0.9999860000000002,
+      "ci_width": 9.000000000014552e-05,
+      "se": 2.1223310934103094e-05
+    },
+    "fps_ci": {
+      "mean": 396.65000000000003,
+      "ci_lower": 393.81,
+      "ci_upper": 398.3500000000001,
+      "ci_width": 4.540000000000077,
+      "se": 1.1649234465835192
+    },
+    "order_param_ci": {
+      "mean": 0.967839,
+      "ci_lower": 0.963483,
+      "ci_upper": 0.973207,
+      "ci_width": 0.009724000000000066,
+      "se": 0.002347046221716188
+    },
+    "mean_slip_fraction": 6e-06
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "benchmark": "stress_test_summary",
+  "conditions": [
+    {
+      "condition": "occlusion_60pct",
+      "pt_ip": 0.4161184210526316,
+      "sa_ip": 1.0,
+      "advantage": -0.5838815789473684
+    },
+    {
+      "condition": "swap_10pct",
+      "pt_ip": 1.0,
+      "sa_ip": 1.0,
+      "advantage": 0.0
+    },
+    {
+      "condition": "motion_3_reversals",
+      "pt_ip": 1.0,
+      "sa_ip": 1.0,
+      "advantage": 0.0
+    },
+    {
+      "condition": "noise_sigma_0.3",
+      "pt_ip": 0.9822368421052632,
+      "sa_ip": 1.0,
+      "advantage": -0.017763157894736814
+    }
+  ],
+  "pt_wins": 0,
+  "sa_wins": 1,
+  "stress_conclusion": "mixed_or_tied"
+}

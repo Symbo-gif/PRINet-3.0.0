@@ -1,0 +1,293 @@
+{
+  "benchmark": "wall_time_extended",
+  "timings": [
+    {
+      "variant": "full",
+      "batch_size": 1,
+      "device": "cpu",
+      "mean_ms": 2.6918533258140087,
+      "std_ms": 0.2226390064299527,
+      "min_ms": 2.5070999981835485,
+      "max_ms": 3.34689998999238
+    },
+    {
+      "variant": "full",
+      "batch_size": 1,
+      "device": "cuda",
+      "mean_ms": 10.990195996128023,
+      "std_ms": 1.922489706092414,
+      "min_ms": 10.003200033679605,
+      "max_ms": 23.58099992852658
+    },
+    {
+      "variant": "attention_only",
+      "batch_size": 1,
+      "device": "cpu",
+      "mean_ms": 0.8743366614604989,
+      "std_ms": 0.11647610168613616,
+      "min_ms": 0.707700033672154,
+      "max_ms": 1.1747999815270305
+    },
+    {
+      "variant": "attention_only",
+      "batch_size": 1,
+      "device": "cuda",
+      "mean_ms": 1.8324160110205412,
+      "std_ms": 1.3485410503831328,
+      "min_ms": 1.3774000108242035,
+      "max_ms": 10.726600070483983
+    },
+    {
+      "variant": "oscillator_only",
+      "batch_size": 1,
+      "device": "cpu",
+      "mean_ms": 2.8422599968810878,
+      "std_ms": 0.345807051805093,
+      "min_ms": 2.2179000079631805,
+      "max_ms": 3.558299969881773
+    },
+    {
+      "variant": "oscillator_only",
+      "batch_size": 1,
+      "device": "cuda",
+      "mean_ms": 10.253427997231483,
+      "std_ms": 1.5207259160213444,
+      "min_ms": 9.441800066269934,
+      "max_ms": 19.716600072570145
+    },
+    {
+      "variant": "shared_phase",
+      "batch_size": 1,
+      "device": "cpu",
+      "mean_ms": 2.993693334671358,
+      "std_ms": 0.3935846335943394,
+      "min_ms": 2.513500046916306,
+      "max_ms": 3.5513000329956412
+    },
+    {
+      "variant": "shared_phase",
+      "batch_size": 1,
+      "device": "cuda",
+      "mean_ms": 10.909968006890267,
+      "std_ms": 1.391075989255045,
+      "min_ms": 10.07940003182739,
+      "max_ms": 18.91890005208552
+    },
+    {
+      "variant": "full",
+      "batch_size": 8,
+      "device": "cpu",
+      "mean_ms": 4.200823329544316,
+      "std_ms": 0.43102875198506047,
+      "min_ms": 3.367300028912723,
+      "max_ms": 4.7839999897405505
+    },
+    {
+      "variant": "full",
+      "batch_size": 8,
+      "device": "cuda",
+      "mean_ms": 10.652534002438188,
+      "std_ms": 1.3245980273027753,
+      "min_ms": 9.918099967762828,
+      "max_ms": 19.394800066947937
+    },
+    {
+      "variant": "attention_only",
+      "batch_size": 8,
+      "device": "cpu",
+      "mean_ms": 1.8505000004855294,
+      "std_ms": 0.1249576301396008,
+      "min_ms": 1.6783999744802713,
+      "max_ms": 2.126900013536215
+    },
+    {
+      "variant": "attention_only",
+      "batch_size": 8,
+      "device": "cuda",
+      "mean_ms": 1.9855600083246827,
+      "std_ms": 0.9858267378380979,
+      "min_ms": 1.4226000057533383,
+      "max_ms": 7.981500006280839
+    },
+    {
+      "variant": "oscillator_only",
+      "batch_size": 8,
+      "device": "cpu",
+      "mean_ms": 3.29065666689227,
+      "std_ms": 0.5177522164494044,
+      "min_ms": 2.6799000333994627,
+      "max_ms": 4.316800041124225
+    },
+    {
+      "variant": "oscillator_only",
+      "batch_size": 8,
+      "device": "cuda",
+      "mean_ms": 9.884548003319651,
+      "std_ms": 1.7585686279048318,
+      "min_ms": 8.96949996240437,
+      "max_ms": 21.025200025178492
+    },
+    {
+      "variant": "shared_phase",
+      "batch_size": 8,
+      "device": "cpu",
+      "mean_ms": 4.389923333656043,
+      "std_ms": 0.3883750903437878,
+      "min_ms": 3.4989999840036035,
+      "max_ms": 4.933499963954091
+    },
+    {
+      "variant": "shared_phase",
+      "batch_size": 8,
+      "device": "cuda",
+      "mean_ms": 10.90911400038749,
+      "std_ms": 1.522831202660116,
+      "min_ms": 9.86300001386553,
+      "max_ms": 17.630400019697845
+    },
+    {
+      "variant": "full",
+      "batch_size": 16,
+      "device": "cpu",
+      "mean_ms": 4.7711733224180835,
+      "std_ms": 0.47902778332795837,
+      "min_ms": 4.079899983480573,
+      "max_ms": 5.478600040078163
+    },
+    {
+      "variant": "full",
+      "batch_size": 16,
+      "device": "cuda",
+      "mean_ms": 10.722341991495341,
+      "std_ms": 1.5050664862432606,
+      "min_ms": 9.809699957259,
+      "max_ms": 20.210899994708598
+    },
+    {
+      "variant": "attention_only",
+      "batch_size": 16,
+      "device": "cpu",
+      "mean_ms": 2.1723666577599943,
+      "std_ms": 0.19713526188784083,
+      "min_ms": 1.820300007238984,
+      "max_ms": 2.512300037778914
+    },
+    {
+      "variant": "attention_only",
+      "batch_size": 16,
+      "device": "cuda",
+      "mean_ms": 1.7209839937277138,
+      "std_ms": 1.31625952374225,
+      "min_ms": 1.3385999482125044,
+      "max_ms": 10.387300048023462
+    },
+    {
+      "variant": "oscillator_only",
+      "batch_size": 16,
+      "device": "cpu",
+      "mean_ms": 3.7055999971926212,
+      "std_ms": 0.3691983081793716,
+      "min_ms": 3.060300019569695,
+      "max_ms": 4.188199993222952
+    },
+    {
+      "variant": "oscillator_only",
+      "batch_size": 16,
+      "device": "cuda",
+      "mean_ms": 10.072417987976223,
+      "std_ms": 1.6055952844194281,
+      "min_ms": 9.21259995084256,
+      "max_ms": 17.89779996033758
+    },
+    {
+      "variant": "shared_phase",
+      "batch_size": 16,
+      "device": "cpu",
+      "mean_ms": 4.421956662554294,
+      "std_ms": 0.45207501271869066,
+      "min_ms": 4.067500005476177,
+      "max_ms": 6.028300034813583
+    },
+    {
+      "variant": "shared_phase",
+      "batch_size": 16,
+      "device": "cuda",
+      "mean_ms": 10.645590007770807,
+      "std_ms": 1.3224082828141597,
+      "min_ms": 9.883999940939248,
+      "max_ms": 18.858700059354305
+    },
+    {
+      "variant": "full",
+      "batch_size": 32,
+      "device": "cpu",
+      "mean_ms": 6.149756679466615,
+      "std_ms": 0.6064136357968773,
+      "min_ms": 5.297799943946302,
+      "max_ms": 7.306599989533424
+    },
+    {
+      "variant": "full",
+      "batch_size": 32,
+      "device": "cuda",
+      "mean_ms": 11.039197996724397,
+      "std_ms": 1.9658564066776059,
+      "min_ms": 10.257499990984797,
+      "max_ms": 24.446800001896918
+    },
+    {
+      "variant": "attention_only",
+      "batch_size": 32,
+      "device": "cpu",
+      "mean_ms": 3.2132333338571093,
+      "std_ms": 0.27338477704264,
+      "min_ms": 2.918299986049533,
+      "max_ms": 3.8737000431865454
+    },
+    {
+      "variant": "attention_only",
+      "batch_size": 32,
+      "device": "cuda",
+      "mean_ms": 1.6372520057484508,
+      "std_ms": 0.2307238986917798,
+      "min_ms": 1.3816000428050756,
+      "max_ms": 2.122600097209215
+    },
+    {
+      "variant": "oscillator_only",
+      "batch_size": 32,
+      "device": "cpu",
+      "mean_ms": 4.5075599996683495,
+      "std_ms": 0.4894685992166651,
+      "min_ms": 3.7243999540805817,
+      "max_ms": 5.3035999881103635
+    },
+    {
+      "variant": "oscillator_only",
+      "batch_size": 32,
+      "device": "cuda",
+      "mean_ms": 10.122013995423913,
+      "std_ms": 1.7581197790528638,
+      "min_ms": 9.250499890185893,
+      "max_ms": 20.630900049582124
+    },
+    {
+      "variant": "shared_phase",
+      "batch_size": 32,
+      "device": "cpu",
+      "mean_ms": 6.2652333290316164,
+      "std_ms": 0.5687740344102755,
+      "min_ms": 5.2319999085739255,
+      "max_ms": 6.992799928411841
+    },
+    {
+      "variant": "shared_phase",
+      "batch_size": 32,
+      "device": "cuda",
+      "mean_ms": 11.106855997350067,
+      "std_ms": 1.900257557516699,
+      "min_ms": 10.096599929966033,
+      "max_ms": 22.821699967607856
+    }
+  ]
+}

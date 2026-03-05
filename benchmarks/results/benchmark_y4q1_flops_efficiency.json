@@ -1,0 +1,77 @@
+{
+  "benchmark": "flops_efficiency",
+  "models": [
+    {
+      "variant": "full",
+      "d_model": 32,
+      "total_flops": 3690064,
+      "total_params": 233233,
+      "flops_per_param": 15.821363186170053,
+      "n_layers": 20
+    },
+    {
+      "variant": "attention_only",
+      "d_model": 32,
+      "total_flops": 3318672,
+      "total_params": 208762,
+      "flops_per_param": 15.896916105421484,
+      "n_layers": 17
+    },
+    {
+      "variant": "oscillator_only",
+      "d_model": 32,
+      "total_flops": 3552784,
+      "total_params": 224385,
+      "flops_per_param": 15.833429150789938,
+      "n_layers": 10
+    },
+    {
+      "variant": "full",
+      "d_model": 64,
+      "total_flops": 7827792,
+      "total_params": 493169,
+      "flops_per_param": 15.87243318213432,
+      "n_layers": 20
+    },
+    {
+      "variant": "attention_only",
+      "d_model": 64,
+      "total_flops": 7456400,
+      "total_params": 468698,
+      "flops_per_param": 15.908751477497237,
+      "n_layers": 17
+    },
+    {
+      "variant": "oscillator_only",
+      "d_model": 64,
+      "total_flops": 7291152,
+      "total_params": 459105,
+      "flops_per_param": 15.881229784036332,
+      "n_layers": 10
+    },
+    {
+      "variant": "full",
+      "d_model": 128,
+      "total_flops": 18560848,
+      "total_params": 1166641,
+      "flops_per_param": 15.90964829797684,
+      "n_layers": 20
+    },
+    {
+      "variant": "attention_only",
+      "d_model": 128,
+      "total_flops": 18189456,
+      "total_params": 1142170,
+      "flops_per_param": 15.925349116156088,
+      "n_layers": 17
+    },
+    {
+      "variant": "oscillator_only",
+      "d_model": 128,
+      "total_flops": 16439056,
+      "total_params": 1032993,
+      "flops_per_param": 15.914005225592042,
+      "n_layers": 10
+    }
+  ]
+}

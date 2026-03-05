@@ -1,0 +1,79 @@
+{
+  "benchmark": "noise_type_comparison",
+  "sigmas": [
+    0.3,
+    0.7,
+    1.0
+  ],
+  "noise_types": [
+    "gaussian",
+    "uniform",
+    "salt_pepper",
+    "structured"
+  ],
+  "results": [
+    {
+      "sigma": 0.3,
+      "noise_types": {
+        "gaussian": {
+          "pt_mean": 0.9771929824561404,
+          "sa_mean": 1.0
+        },
+        "uniform": {
+          "pt_mean": 0.9916666666666666,
+          "sa_mean": 1.0
+        },
+        "salt_pepper": {
+          "pt_mean": 0.6285087719298246,
+          "sa_mean": 1.0
+        },
+        "structured": {
+          "pt_mean": 0.9714912280701754,
+          "sa_mean": 1.0
+        }
+      }
+    },
+    {
+      "sigma": 0.7,
+      "noise_types": {
+        "gaussian": {
+          "pt_mean": 0.8576754385964912,
+          "sa_mean": 1.0
+        },
+        "uniform": {
+          "pt_mean": 0.9572368421052632,
+          "sa_mean": 1.0
+        },
+        "salt_pepper": {
+          "pt_mean": 0.4868421052631579,
+          "sa_mean": 1.0
+        },
+        "structured": {
+          "pt_mean": 0.8576754385964912,
+          "sa_mean": 1.0
+        }
+      }
+    },
+    {
+      "sigma": 1.0,
+      "noise_types": {
+        "gaussian": {
+          "pt_mean": 0.7245614035087721,
+          "sa_mean": 1.0
+        },
+        "uniform": {
+          "pt_mean": 0.9164473684210526,
+          "sa_mean": 1.0
+        },
+        "salt_pepper": {
+          "pt_mean": 0.42960526315789477,
+          "sa_mean": 1.0
+        },
+        "structured": {
+          "pt_mean": 0.7392543859649123,
+          "sa_mean": 1.0
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "session": "Y4_Q1.9",
+  "seeds_7": [
+    42,
+    123,
+    456,
+    789,
+    1024,
+    2048,
+    3072
+  ],
+  "seeds_3": [
+    42,
+    123,
+    456
+  ],
+  "train_seqs": 30,
+  "val_seqs": 10,
+  "test_seqs": 20,
+  "n_objects": 4,
+  "n_frames": 20,
+  "det_dim": 4,
+  "max_epochs": 10,
+  "patience": 4,
+  "warmup": 1,
+  "lr": 0.0003,
+  "pt_kwargs": {
+    "n_delta": 4,
+    "n_theta": 8,
+    "n_gamma": 16,
+    "n_discrete_steps": 5,
+    "match_threshold": 0.1
+  },
+  "sa_kwargs": {
+    "num_slots": 6,
+    "slot_dim": 64,
+    "num_iterations": 3,
+    "match_threshold": 0.1
+  },
+  "gaps_addressed": [
+    "G1_seed_expansion",
+    "G2_pt_large_diagnostic",
+    "G3_sa_breaking_point",
+    "G4_chimera_tracking_bridge",
+    "G5_fine_occlusion",
+    "G6_static_stress",
+    "G7_trained_coherence",
+    "G8_pac_significance"
+  ],
+  "pac_surrogates": 1000,
+  "alpha": 0.05,
+  "sha256": "8378bdea567233a7b928d05666becf6e77aeb5d113e304d62ad48bb35b4281f1"
+}

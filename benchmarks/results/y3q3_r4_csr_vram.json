@@ -1,0 +1,58 @@
+{
+  "benchmark": "R.4_csr_vs_dense_vram",
+  "device": "cuda",
+  "results": [
+    {
+      "N": 1000,
+      "sparsity": 0.95,
+      "dense_bytes": 4000000,
+      "csr_bytes": 605080,
+      "vram_savings_pct": 84.87,
+      "compression_ratio": 6.6,
+      "dense_coupling_ms": 0.121,
+      "csr_coupling_ms": 0.208
+    },
+    {
+      "N": 1000,
+      "sparsity": 0.99,
+      "dense_bytes": 4000000,
+      "csr_bytes": 127504,
+      "vram_savings_pct": 96.81,
+      "compression_ratio": 31.4,
+      "dense_coupling_ms": 0.119,
+      "csr_coupling_ms": 0.206
+    },
+    {
+      "N": 5000,
+      "sparsity": 0.95,
+      "dense_bytes": 100000000,
+      "csr_bytes": 15051336,
+      "vram_savings_pct": 84.95,
+      "compression_ratio": 6.6,
+      "dense_coupling_ms": 10.959,
+      "csr_coupling_ms": 1.825
+    },
+    {
+      "N": 5000,
+      "sparsity": 0.99,
+      "dense_bytes": 100000000,
+      "csr_bytes": 3037296,
+      "vram_savings_pct": 96.96,
+      "compression_ratio": 32.9,
+      "dense_coupling_ms": 10.954,
+      "csr_coupling_ms": 0.23
+    },
+    {
+      "N": 10000,
+      "sparsity": 0.99,
+      "dense_bytes": 400000000,
+      "csr_bytes": 12082384,
+      "vram_savings_pct": 96.98,
+      "compression_ratio": 33.1,
+      "dense_coupling_ms": 16.585,
+      "csr_coupling_ms": 0.219
+    }
+  ],
+  "target": "5-10x VRAM reduction at N>=1K",
+  "status": "PASS"
+}

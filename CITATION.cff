@@ -1,0 +1,53 @@
+cff-version: 1.2.0
+message: "If you use PRINet in your research, please cite it using the metadata from this file."
+title: "PRINet: Phase-Resonance Binding for Temporal Object Tracking"
+abstract: >-
+  PRINet is a neural architecture that augments standard attention with
+  oscillatory dynamics inspired by cortical gamma-band synchronisation.
+  Trained PhaseTracker (4,991 parameters) achieves 99.87% of Slot Attention's
+  (83,904 parameters) identity preservation with 17x fewer parameters.
+  The framework includes OscilloSim v2.0, a GPU-accelerated Kuramoto simulator
+  scaling to 1M+ oscillators with 8 coupling modes, and confirms chimera states
+  (bimodality coefficient BC = 0.580) in nonlocally-coupled oscillators within
+  a differentiable neural framework.
+type: software
+authors:
+  - given-names: Michael
+    family-names: Maillet
+    email: therealmichaelmaillet@gmail.com
+  - given-names: Damien
+    family-names: Davison
+  - given-names: Sacha
+    family-names: Davison
+version: "3.0.0"
+date-released: "2026-02-27"
+license: MIT
+repository-code: "https://github.com/michaelmaillet/prinet"
+url: "https://prinet.readthedocs.io"
+keywords:
+  - "oscillatory binding"
+  - "phase-resonance"
+  - "neural networks"
+  - "Kuramoto oscillators"
+  - "temporal object tracking"
+  - "slot attention"
+  - "chimera states"
+  - "object individuation"
+  - "parameter efficiency"
+  - "Python"
+  - "PyTorch"
+preferred-citation:
+  type: article
+  title: "Phase-Resonance Binding: A Parameter-Efficient Alternative to Slot Attention for Temporal Object Tracking"
+  authors:
+    - given-names: Michael
+      family-names: Maillet
+      email: therealmichaelmaillet@gmail.com
+    - given-names: Damien
+      family-names: Davison
+    - given-names: Sacha
+      family-names: Davison
+  year: 2026
+  journal: "Advances in Neural Information Processing Systems"
+  note: "NeurIPS 2026"
+  url: "https://github.com/michaelmaillet/prinet"

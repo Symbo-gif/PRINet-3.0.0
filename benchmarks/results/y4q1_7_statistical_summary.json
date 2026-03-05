@@ -1,0 +1,37 @@
+{
+  "benchmark": "statistical_summary",
+  "phase_tracker": {
+    "ips": [
+      1.0,
+      1.0,
+      0.9960526315789474
+    ],
+    "mean": 0.9986842105263158,
+    "ci_95": [
+      0.9960526315789474,
+      1.0
+    ]
+  },
+  "slot_attention": {
+    "ips": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "mean": 1.0,
+    "ci_95": [
+      1.0,
+      1.0
+    ]
+  },
+  "welch_t_test": {
+    "t_stat": -0.9999999999999718,
+    "p_value": 0.4226497308103851,
+    "cohens_d": -0.816496580927703,
+    "mean_diff": -0.001315789473684159
+  },
+  "cohens_d": -0.816496580927703,
+  "alpha": 0.01,
+  "min_effect_size": 0.5,
+  "outcome": "B_no_temporal_advantage"
+}

@@ -1,0 +1,158 @@
+{
+  "benchmark": "N.4_adaptive_allocation",
+  "min_total": 12,
+  "max_total": 64,
+  "steps": 21,
+  "curve": [
+    {
+      "complexity": 0.0,
+      "n_delta": 1,
+      "n_theta": 2,
+      "n_gamma": 9,
+      "total": 12
+    },
+    {
+      "complexity": 0.05,
+      "n_delta": 2,
+      "n_theta": 3,
+      "n_gamma": 10,
+      "total": 15
+    },
+    {
+      "complexity": 0.1,
+      "n_delta": 2,
+      "n_theta": 3,
+      "n_gamma": 12,
+      "total": 17
+    },
+    {
+      "complexity": 0.15,
+      "n_delta": 2,
+      "n_theta": 4,
+      "n_gamma": 14,
+      "total": 20
+    },
+    {
+      "complexity": 0.2,
+      "n_delta": 2,
+      "n_theta": 4,
+      "n_gamma": 16,
+      "total": 22
+    },
+    {
+      "complexity": 0.25,
+      "n_delta": 2,
+      "n_theta": 5,
+      "n_gamma": 18,
+      "total": 25
+    },
+    {
+      "complexity": 0.3,
+      "n_delta": 3,
+      "n_theta": 6,
+      "n_gamma": 19,
+      "total": 28
+    },
+    {
+      "complexity": 0.35,
+      "n_delta": 3,
+      "n_theta": 6,
+      "n_gamma": 21,
+      "total": 30
+    },
+    {
+      "complexity": 0.4,
+      "n_delta": 3,
+      "n_theta": 7,
+      "n_gamma": 23,
+      "total": 33
+    },
+    {
+      "complexity": 0.45,
+      "n_delta": 4,
+      "n_theta": 7,
+      "n_gamma": 24,
+      "total": 35
+    },
+    {
+      "complexity": 0.5,
+      "n_delta": 4,
+      "n_theta": 8,
+      "n_gamma": 26,
+      "total": 38
+    },
+    {
+      "complexity": 0.55,
+      "n_delta": 4,
+      "n_theta": 8,
+      "n_gamma": 29,
+      "total": 41
+    },
+    {
+      "complexity": 0.6,
+      "n_delta": 4,
+      "n_theta": 9,
+      "n_gamma": 30,
+      "total": 43
+    },
+    {
+      "complexity": 0.65,
+      "n_delta": 5,
+      "n_theta": 9,
+      "n_gamma": 32,
+      "total": 46
+    },
+    {
+      "complexity": 0.7,
+      "n_delta": 5,
+      "n_theta": 10,
+      "n_gamma": 33,
+      "total": 48
+    },
+    {
+      "complexity": 0.75,
+      "n_delta": 5,
+      "n_theta": 10,
+      "n_gamma": 36,
+      "total": 51
+    },
+    {
+      "complexity": 0.8,
+      "n_delta": 5,
+      "n_theta": 11,
+      "n_gamma": 38,
+      "total": 54
+    },
+    {
+      "complexity": 0.85,
+      "n_delta": 6,
+      "n_theta": 11,
+      "n_gamma": 39,
+      "total": 56
+    },
+    {
+      "complexity": 0.9,
+      "n_delta": 6,
+      "n_theta": 12,
+      "n_gamma": 41,
+      "total": 59
+    },
+    {
+      "complexity": 0.95,
+      "n_delta": 6,
+      "n_theta": 12,
+      "n_gamma": 43,
+      "total": 61
+    },
+    {
+      "complexity": 1.0,
+      "n_delta": 6,
+      "n_theta": 13,
+      "n_gamma": 45,
+      "total": 64
+    }
+  ],
+  "monotonic": true,
+  "no_gamma_dip": true,
+  "status": "PASS"
+}

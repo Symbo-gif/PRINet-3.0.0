@@ -1,0 +1,413 @@
+{
+  "matrix": {
+    "mean_field_cuda": {
+      "regime": "mean_field",
+      "device": "cuda",
+      "N": 65536,
+      "n_seeds": 3,
+      "throughput_mean": 31822651.5,
+      "throughput_ci95": [
+        28948287.9,
+        33497611.5
+      ],
+      "order_param_mean": 0.006172,
+      "order_param_ci95": [
+        0.004936,
+        0.008185
+      ],
+      "freq_sync_error_mean": 55.538195,
+      "convergence_steps_mean": -1,
+      "peak_mem_mb_mean": 7.25,
+      "per_seed": [
+        {
+          "seed": 42,
+          "throughput": 28948287.9,
+          "ms_per_step": 2.2639,
+          "order_param_final": 0.004936,
+          "freq_sync_error": 55.366497,
+          "convergence_steps": -1,
+          "peak_mem_mb": 7.25,
+          "wall_time_s": 0.2264
+        },
+        {
+          "seed": 43,
+          "throughput": 33497611.5,
+          "ms_per_step": 1.9564,
+          "order_param_final": 0.005395,
+          "freq_sync_error": 56.125683,
+          "convergence_steps": -1,
+          "peak_mem_mb": 7.25,
+          "wall_time_s": 0.1956
+        },
+        {
+          "seed": 44,
+          "throughput": 33022055.2,
+          "ms_per_step": 1.9846,
+          "order_param_final": 0.008185,
+          "freq_sync_error": 55.122406,
+          "convergence_steps": -1,
+          "peak_mem_mb": 7.25,
+          "wall_time_s": 0.1985
+        }
+      ]
+    },
+    "sparse_knn_cuda": {
+      "regime": "sparse_knn",
+      "device": "cuda",
+      "N": 8192,
+      "n_seeds": 3,
+      "throughput_mean": 2046471.3,
+      "throughput_ci95": [
+        2018116.2,
+        2064156.2
+      ],
+      "order_param_mean": 0.01091,
+      "order_param_ci95": [
+        0.008006,
+        0.013365
+      ],
+      "freq_sync_error_mean": 59.344355,
+      "convergence_steps_mean": -1,
+      "peak_mem_mb_mean": 4.72,
+      "per_seed": [
+        {
+          "seed": 42,
+          "throughput": 2018116.2,
+          "ms_per_step": 4.0592,
+          "order_param_final": 0.008006,
+          "freq_sync_error": 57.399509,
+          "convergence_steps": -1,
+          "peak_mem_mb": 4.72,
+          "wall_time_s": 0.4059
+        },
+        {
+          "seed": 43,
+          "throughput": 2064156.2,
+          "ms_per_step": 3.9687,
+          "order_param_final": 0.013365,
+          "freq_sync_error": 60.508217,
+          "convergence_steps": -1,
+          "peak_mem_mb": 4.72,
+          "wall_time_s": 0.3969
+        },
+        {
+          "seed": 44,
+          "throughput": 2057141.4,
+          "ms_per_step": 3.9822,
+          "order_param_final": 0.011359,
+          "freq_sync_error": 60.12534,
+          "convergence_steps": -1,
+          "peak_mem_mb": 4.72,
+          "wall_time_s": 0.3982
+        }
+      ]
+    },
+    "full_cuda": {
+      "regime": "full",
+      "device": "cuda",
+      "N": 512,
+      "n_seeds": 3,
+      "throughput_mean": 354017.3,
+      "throughput_ci95": [
+        351120.0,
+        355760.1
+      ],
+      "order_param_mean": 0.034011,
+      "order_param_ci95": [
+        0.03277,
+        0.036339
+      ],
+      "freq_sync_error_mean": 39.954618,
+      "convergence_steps_mean": -1,
+      "peak_mem_mb_mean": 7.04,
+      "per_seed": [
+        {
+          "seed": 42,
+          "throughput": 355171.8,
+          "ms_per_step": 1.4416,
+          "order_param_final": 0.032924,
+          "freq_sync_error": 55.28558,
+          "convergence_steps": -1,
+          "peak_mem_mb": 7.04,
+          "wall_time_s": 0.1442
+        },
+        {
+          "seed": 43,
+          "throughput": 351120.0,
+          "ms_per_step": 1.4582,
+          "order_param_final": 0.03277,
+          "freq_sync_error": 2.805691,
+          "convergence_steps": -1,
+          "peak_mem_mb": 7.04,
+          "wall_time_s": 0.1458
+        },
+        {
+          "seed": 44,
+          "throughput": 355760.1,
+          "ms_per_step": 1.4392,
+          "order_param_final": 0.036339,
+          "freq_sync_error": 61.772583,
+          "convergence_steps": -1,
+          "peak_mem_mb": 7.04,
+          "wall_time_s": 0.1439
+        }
+      ]
+    },
+    "csr_cuda": {
+      "regime": "csr",
+      "device": "cuda",
+      "N": 4096,
+      "n_seeds": 3,
+      "throughput_mean": 12925369.4,
+      "throughput_ci95": [
+        12504235.7,
+        13357988.2
+      ],
+      "order_param_mean": 0.028839,
+      "order_param_ci95": [
+        0.018866,
+        0.036924
+      ],
+      "freq_sync_error_mean": 0.009384,
+      "convergence_steps_mean": -1,
+      "peak_mem_mb_mean": 2.06,
+      "per_seed": [
+        {
+          "seed": 42,
+          "throughput": 12504235.7,
+          "ms_per_step": 0.3276,
+          "order_param_final": 0.018866,
+          "freq_sync_error": 0.003289,
+          "convergence_steps": -1,
+          "peak_mem_mb": 2.06,
+          "wall_time_s": 0.0328
+        },
+        {
+          "seed": 43,
+          "throughput": 12913884.3,
+          "ms_per_step": 0.3172,
+          "order_param_final": 0.030728,
+          "freq_sync_error": 0.010798,
+          "convergence_steps": -1,
+          "peak_mem_mb": 2.06,
+          "wall_time_s": 0.0317
+        },
+        {
+          "seed": 44,
+          "throughput": 13357988.2,
+          "ms_per_step": 0.3066,
+          "order_param_final": 0.036924,
+          "freq_sync_error": 0.014065,
+          "convergence_steps": -1,
+          "peak_mem_mb": 2.06,
+          "wall_time_s": 0.0307
+        }
+      ]
+    },
+    "mean_field_cpu": {
+      "regime": "mean_field",
+      "device": "cpu",
+      "N": 16384,
+      "n_seeds": 3,
+      "throughput_mean": 11254461.2,
+      "throughput_ci95": [
+        9308107.2,
+        12353135.0
+      ],
+      "order_param_mean": 0.006799,
+      "order_param_ci95": [
+        0.003403,
+        0.010637
+      ],
+      "freq_sync_error_mean": 54.729724,
+      "convergence_steps_mean": -1,
+      "peak_mem_mb_mean": 0.42,
+      "per_seed": [
+        {
+          "seed": 42,
+          "throughput": 9308107.2,
+          "ms_per_step": 1.7602,
+          "order_param_final": 0.006358,
+          "freq_sync_error": 55.674728,
+          "convergence_steps": -1,
+          "peak_mem_mb": 1.27,
+          "wall_time_s": 0.176
+        },
+        {
+          "seed": 43,
+          "throughput": 12102141.4,
+          "ms_per_step": 1.3538,
+          "order_param_final": 0.010637,
+          "freq_sync_error": 55.888863,
+          "convergence_steps": -1,
+          "peak_mem_mb": 0.0,
+          "wall_time_s": 0.1354
+        },
+        {
+          "seed": 44,
+          "throughput": 12353135.0,
+          "ms_per_step": 1.3263,
+          "order_param_final": 0.003403,
+          "freq_sync_error": 52.62558,
+          "convergence_steps": -1,
+          "peak_mem_mb": 0.0,
+          "wall_time_s": 0.1326
+        }
+      ]
+    },
+    "sparse_knn_cpu": {
+      "regime": "sparse_knn",
+      "device": "cpu",
+      "N": 4096,
+      "n_seeds": 3,
+      "throughput_mean": 885822.8,
+      "throughput_ci95": [
+        863944.6,
+        920976.2
+      ],
+      "order_param_mean": 0.014882,
+      "order_param_ci95": [
+        0.009083,
+        0.023859
+      ],
+      "freq_sync_error_mean": 52.235521,
+      "convergence_steps_mean": -1,
+      "peak_mem_mb_mean": 0.2,
+      "per_seed": [
+        {
+          "seed": 42,
+          "throughput": 863944.6,
+          "ms_per_step": 4.741,
+          "order_param_final": 0.009083,
+          "freq_sync_error": 56.146778,
+          "convergence_steps": -1,
+          "peak_mem_mb": 0.59,
+          "wall_time_s": 0.4741
+        },
+        {
+          "seed": 43,
+          "throughput": 872547.7,
+          "ms_per_step": 4.6943,
+          "order_param_final": 0.023859,
+          "freq_sync_error": 51.679516,
+          "convergence_steps": -1,
+          "peak_mem_mb": 0.0,
+          "wall_time_s": 0.4694
+        },
+        {
+          "seed": 44,
+          "throughput": 920976.2,
+          "ms_per_step": 4.4475,
+          "order_param_final": 0.011703,
+          "freq_sync_error": 48.880268,
+          "convergence_steps": -1,
+          "peak_mem_mb": 0.0,
+          "wall_time_s": 0.4447
+        }
+      ]
+    },
+    "full_cpu": {
+      "regime": "full",
+      "device": "cpu",
+      "N": 512,
+      "n_seeds": 3,
+      "throughput_mean": 373530.9,
+      "throughput_ci95": [
+        306387.8,
+        408837.6
+      ],
+      "order_param_mean": 0.058389,
+      "order_param_ci95": [
+        0.045417,
+        0.066793
+      ],
+      "freq_sync_error_mean": 57.983171,
+      "convergence_steps_mean": -1,
+      "peak_mem_mb_mean": 2.58,
+      "per_seed": [
+        {
+          "seed": 42,
+          "throughput": 405367.3,
+          "ms_per_step": 1.2631,
+          "order_param_final": 0.045417,
+          "freq_sync_error": 73.030731,
+          "convergence_steps": -1,
+          "peak_mem_mb": 5.69,
+          "wall_time_s": 0.1263
+        },
+        {
+          "seed": 43,
+          "throughput": 306387.8,
+          "ms_per_step": 1.6711,
+          "order_param_final": 0.066793,
+          "freq_sync_error": 61.735538,
+          "convergence_steps": -1,
+          "peak_mem_mb": 2.06,
+          "wall_time_s": 0.1671
+        },
+        {
+          "seed": 44,
+          "throughput": 408837.6,
+          "ms_per_step": 1.2523,
+          "order_param_final": 0.062958,
+          "freq_sync_error": 39.183243,
+          "convergence_steps": -1,
+          "peak_mem_mb": 0.0,
+          "wall_time_s": 0.1252
+        }
+      ]
+    },
+    "csr_cpu": {
+      "regime": "csr",
+      "device": "cpu",
+      "N": 4096,
+      "n_seeds": 3,
+      "throughput_mean": 18406287.0,
+      "throughput_ci95": [
+        17692769.5,
+        19509499.9
+      ],
+      "order_param_mean": 0.028839,
+      "order_param_ci95": [
+        0.018866,
+        0.036924
+      ],
+      "freq_sync_error_mean": 0.009384,
+      "convergence_steps_mean": -1,
+      "peak_mem_mb_mean": -1.75,
+      "per_seed": [
+        {
+          "seed": 42,
+          "throughput": 19509499.9,
+          "ms_per_step": 0.2099,
+          "order_param_final": 0.018866,
+          "freq_sync_error": 0.003289,
+          "convergence_steps": -1,
+          "peak_mem_mb": -5.01,
+          "wall_time_s": 0.021
+        },
+        {
+          "seed": 43,
+          "throughput": 18016591.5,
+          "ms_per_step": 0.2273,
+          "order_param_final": 0.030728,
+          "freq_sync_error": 0.010798,
+          "convergence_steps": -1,
+          "peak_mem_mb": 0.32,
+          "wall_time_s": 0.0227
+        },
+        {
+          "seed": 44,
+          "throughput": 17692769.5,
+          "ms_per_step": 0.2315,
+          "order_param_final": 0.036924,
+          "freq_sync_error": 0.014065,
+          "convergence_steps": -1,
+          "peak_mem_mb": -0.55,
+          "wall_time_s": 0.0232
+        }
+      ]
+    }
+  },
+  "timestamp": "2026-02-19T16:05:35+00:00"
+}

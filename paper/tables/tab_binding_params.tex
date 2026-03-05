@@ -1,0 +1,26 @@
+\begin{table}[t]
+\centering
+\caption{Binding mechanism parameter breakdown. PhaseTracker's oscillatory binding uses $O(1)$ parameters (w.r.t.\ $N$ and $d$) vs Slot Attention's $O(d^2)$.}
+\label{tab:binding_params}
+\begin{tabular}{lcc}
+\toprule
+Component & PhaseTracker & Slot Attention \\
+\midrule
+Det To Phase & 2,140 & --- \\
+Det To Amp & 2,140 & --- \\
+Dynamics & 711 & --- \\
+\midrule
+Det Encoder & --- & 4,480 \\
+Slot Attention & --- & 54,336 \\
+Temporal Gru & --- & 24,960 \\
+Temporal Norm & --- & 128 \\
+\midrule
+\textbf{Binding Params$^\dagger$} & \textbf{379} & \textbf{12,288} \\
+\textbf{Total} & \textbf{4,991} & \textbf{83,904} \\
+Ratio (SA/PT) & \multicolumn{2}{c}{16.8$\times$} \\
+\bottomrule
+\end{tabular}
+\vspace{0.3em}
+
+{\footnotesize $^\dagger$Core mechanism only: coupling/frequency/PAC weights (PT), QKV projections (SA). The $143\times$ ratio in Proposition~\ref{prop:efficiency} compares PT's 379 binding params against SA's full Slot Attention module (54{,}336).}
+\end{table}

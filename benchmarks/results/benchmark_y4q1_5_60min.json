@@ -1,0 +1,132 @@
+{
+  "benchmark": "session_length_60min",
+  "description": "60-minute continuous tracking session. 3 seeds.",
+  "results": {
+    "duration_minutes": 60.0,
+    "n_seeds": 3,
+    "per_seed": [
+      {
+        "seed": 42,
+        "aggregate": {
+          "duration_minutes": 60.0,
+          "seed": 42,
+          "total_frames": 1389640,
+          "total_wall_seconds": 3600.01,
+          "n_intervals": 27792,
+          "n_objects": 4,
+          "mean_fps": 393.81,
+          "std_fps": 25.65,
+          "fps_degradation_pct": 21.16,
+          "gpu_mem_initial_mb": 0.0,
+          "gpu_mem_peak_mb": 0.0,
+          "gpu_mem_final_mb": 0.0,
+          "gpu_mem_growth_mb": 0.0,
+          "pt_mean_ip": 0.491043,
+          "pt_std_ip": 0.086056,
+          "sa_mean_ip": 0.999944,
+          "sa_std_ip": 0.000459,
+          "pt_mean_order_param": 0.97324,
+          "pt_std_order_param": 0.004356,
+          "pt_mean_slip_fraction": 1.9e-05,
+          "pt_max_slip_fraction": 0.010204,
+          "fps_trend_slope": -3.9e-05,
+          "pt_ip_trend_slope": 2e-08,
+          "sa_ip_trend_slope": 0.0,
+          "pt_r_trend_slope": 0.0
+        },
+        "n_intervals": 27792
+      },
+      {
+        "seed": 43,
+        "aggregate": {
+          "duration_minutes": 60.0,
+          "seed": 43,
+          "total_frames": 1352880,
+          "total_wall_seconds": 3600.03,
+          "n_intervals": 27057,
+          "n_objects": 4,
+          "mean_fps": 384.01,
+          "std_fps": 27.96,
+          "fps_degradation_pct": 12.53,
+          "gpu_mem_initial_mb": 0.0,
+          "gpu_mem_peak_mb": 0.0,
+          "gpu_mem_final_mb": 0.0,
+          "gpu_mem_growth_mb": 0.0,
+          "pt_mean_ip": 0.473599,
+          "pt_std_ip": 0.077148,
+          "sa_mean_ip": 0.999981,
+          "sa_std_ip": 0.000264,
+          "pt_mean_order_param": 0.966861,
+          "pt_std_order_param": 0.00361,
+          "pt_mean_slip_fraction": 0.0,
+          "pt_max_slip_fraction": 0.005102,
+          "fps_trend_slope": 5.8e-05,
+          "pt_ip_trend_slope": 3e-08,
+          "sa_ip_trend_slope": -0.0,
+          "pt_r_trend_slope": -0.0
+        },
+        "n_intervals": 27057
+      },
+      {
+        "seed": 44,
+        "aggregate": {
+          "duration_minutes": 60.0,
+          "seed": 44,
+          "total_frames": 1357950,
+          "total_wall_seconds": 3600.01,
+          "n_intervals": 27159,
+          "n_objects": 4,
+          "mean_fps": 385.37,
+          "std_fps": 27.43,
+          "fps_degradation_pct": -0.17,
+          "gpu_mem_initial_mb": 0.0,
+          "gpu_mem_peak_mb": 0.0,
+          "gpu_mem_final_mb": 0.0,
+          "gpu_mem_growth_mb": 0.0,
+          "pt_mean_ip": 0.432666,
+          "pt_std_ip": 0.074631,
+          "sa_mean_ip": 0.999919,
+          "sa_std_ip": 0.000553,
+          "pt_mean_order_param": 0.963526,
+          "pt_std_order_param": 0.005291,
+          "pt_mean_slip_fraction": 1e-06,
+          "pt_max_slip_fraction": 0.005102,
+          "fps_trend_slope": -4e-05,
+          "pt_ip_trend_slope": -4e-08,
+          "sa_ip_trend_slope": 0.0,
+          "pt_r_trend_slope": -0.0
+        },
+        "n_intervals": 27159
+      }
+    ],
+    "pt_ip_ci": {
+      "mean": 0.4657693333333333,
+      "ci_lower": 0.432666,
+      "ci_upper": 0.49104300000000006,
+      "ci_width": 0.05837700000000007,
+      "se": 0.01414051718376521
+    },
+    "sa_ip_ci": {
+      "mean": 0.9999480000000002,
+      "ci_lower": 0.9999189999999999,
+      "ci_upper": 0.999981,
+      "ci_width": 6.200000000011752e-05,
+      "se": 1.4655592652332565e-05
+    },
+    "fps_ci": {
+      "mean": 387.73,
+      "ci_lower": 384.01,
+      "ci_upper": 393.81,
+      "ci_width": 9.800000000000011,
+      "se": 2.533322244677134
+    },
+    "order_param_ci": {
+      "mean": 0.9678756666666666,
+      "ci_lower": 0.963526,
+      "ci_upper": 0.97324,
+      "ci_width": 0.009714,
+      "se": 0.002344926061086543
+    },
+    "mean_slip_fraction": 7e-06
+  }
+}

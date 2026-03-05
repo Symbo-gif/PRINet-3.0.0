@@ -1,0 +1,117 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "prinet"
+version = "3.0.0"
+description = "PRINet -- Phase-Resonance Interference Network for oscillatory binding in neural networks"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+readme = "README.md"
+authors = [
+    {name = "Michael Maillet", email = "therealmichaelmaillet@gmail.com"},
+    {name = "Damien Davison"},
+    {name = "Sacha Davison"},
+]
+keywords = [
+    "oscillatory-binding",
+    "neural-networks",
+    "kuramoto",
+    "phase-dynamics",
+    "object-individuation",
+    "slot-attention",
+    "chimera-states",
+    "temporal-binding",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Typing :: Typed",
+]
+dependencies = [
+    "torch>=2.0",
+    "numpy>=1.24",
+    "scipy>=1.10",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "hypothesis>=6.0",
+    "pytest-benchmark>=5.0",
+    "torchvision>=0.15",
+    "torchaudio>=2.0",
+    "matplotlib>=3.7",
+    "black>=24.0",
+    "mypy>=1.5",
+    "isort>=5.0",
+    "bandit>=1.7",
+    "pip-audit>=2.0",
+]
+mot = [
+    "motmetrics>=1.4.0",
+]
+onnx = [
+    "onnxruntime>=1.16",
+    "onnxruntime-directml>=1.16; sys_platform == 'win32'",
+]
+all = [
+    "prinet[dev,mot,onnx]",
+]
+
+[project.urls]
+Homepage = "https://github.com/michaelmaillet/prinet"
+Documentation = "https://prinet.readthedocs.io"
+Repository = "https://github.com/michaelmaillet/prinet"
+Issues = "https://github.com/michaelmaillet/prinet/issues"
+Changelog = "https://github.com/michaelmaillet/prinet/blob/main/CHANGELOG.md"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --tb=short"
+markers = [
+    "gpu: tests that require CUDA GPU",
+    "slow: tests that take >5s (training convergence, benchmarks)",
+]
+
+[tool.coverage.run]
+source = ["prinet"]
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__",
+    "raise NotImplementedError",
+]
+
+[tool.black]
+line-length = 88
+target-version = ["py311", "py312", "py313"]
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+strict = true
+python_version = "3.11"
+ignore_missing_imports = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools.package-data]
+prinet = ["py.typed"]

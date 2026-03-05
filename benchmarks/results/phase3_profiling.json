@@ -1,0 +1,262 @@
+{
+  "benchmark": "phase3_exp3_1_profiling",
+  "description": "Computational cost profiling (FLOPs, latency, memory, batch scaling)",
+  "per_pair_profiles": [
+    {
+      "model": "PhaseTracker",
+      "n_objects": 4,
+      "parameters": {
+        "total": {
+          "total": 4991,
+          "trainable": 4991,
+          "frozen": 0,
+          "complex_adjusted": 4991
+        },
+        "trainable": 4991
+      },
+      "flops": 86336,
+      "latency_ms": {
+        "mean": 5.987321001593955,
+        "std": 0.4308122286972551,
+        "min": 5.304599995724857,
+        "max": 7.26569996913895,
+        "median": 5.886749975616112,
+        "n_trials": 100
+      },
+      "peak_memory_mb": 9.613312
+    },
+    {
+      "model": "SlotAttention",
+      "n_objects": 4,
+      "parameters": {
+        "total": {
+          "total": 83904,
+          "trainable": 83904,
+          "frozen": 0,
+          "complex_adjusted": 83904
+        },
+        "trainable": 83904
+      },
+      "flops": 3857184,
+      "latency_ms": {
+        "mean": 4.997530999826267,
+        "std": 0.3819182880609213,
+        "min": 4.4160999823361635,
+        "max": 6.561399961356074,
+        "median": 4.902200016658753,
+        "n_trials": 100
+      },
+      "peak_memory_mb": 9.942016
+    },
+    {
+      "model": "PhaseTracker",
+      "n_objects": 8,
+      "parameters": {
+        "total": {
+          "total": 4991,
+          "trainable": 4991,
+          "frozen": 0,
+          "complex_adjusted": 4991
+        },
+        "trainable": 4991
+      },
+      "flops": 172672,
+      "latency_ms": {
+        "mean": 6.462901996565051,
+        "std": 0.32909924696225296,
+        "min": 5.937199981417507,
+        "max": 7.53400003304705,
+        "median": 6.384150008670986,
+        "n_trials": 100
+      },
+      "peak_memory_mb": 9.628672
+    },
+    {
+      "model": "SlotAttention",
+      "n_objects": 8,
+      "parameters": {
+        "total": {
+          "total": 83904,
+          "trainable": 83904,
+          "frozen": 0,
+          "complex_adjusted": 83904
+        },
+        "trainable": 83904
+      },
+      "flops": 4063296,
+      "latency_ms": {
+        "mean": 4.829324001329951,
+        "std": 0.29059515676844283,
+        "min": 4.4367999653331935,
+        "max": 6.069600000046194,
+        "median": 4.78785001905635,
+        "n_trials": 100
+      },
+      "peak_memory_mb": 9.946112
+    },
+    {
+      "model": "PhaseTracker",
+      "n_objects": 16,
+      "parameters": {
+        "total": {
+          "total": 4991,
+          "trainable": 4991,
+          "frozen": 0,
+          "complex_adjusted": 4991
+        },
+        "trainable": 4991
+      },
+      "flops": 345344,
+      "latency_ms": {
+        "mean": 6.836320997099392,
+        "std": 0.821208267476429,
+        "min": 6.095700024161488,
+        "max": 10.538400034420192,
+        "median": 6.568749988218769,
+        "n_trials": 100
+      },
+      "peak_memory_mb": 9.683456
+    },
+    {
+      "model": "SlotAttention",
+      "n_objects": 16,
+      "parameters": {
+        "total": {
+          "total": 83904,
+          "trainable": 83904,
+          "frozen": 0,
+          "complex_adjusted": 83904
+        },
+        "trainable": 83904
+      },
+      "flops": 4475520,
+      "latency_ms": {
+        "mean": 4.914773996570148,
+        "std": 0.28845037135973806,
+        "min": 4.329499963205308,
+        "max": 5.729300028178841,
+        "median": 4.905049980152398,
+        "n_trials": 100
+      },
+      "peak_memory_mb": 9.954304
+    }
+  ],
+  "batch_size_profiles": [
+    {
+      "model": "PhaseTracker",
+      "batch_size": 1,
+      "latency_ms": {
+        "mean": 5.856942000100389,
+        "std": 0.4992928901250887
+      },
+      "per_sample_latency_ms": 5.856942000100389,
+      "peak_memory_mb": 9.62048
+    },
+    {
+      "model": "SlotAttention",
+      "batch_size": 1,
+      "latency_ms": {
+        "mean": 4.940297995926812,
+        "std": 0.29617122751779185
+      },
+      "per_sample_latency_ms": 4.940297995926812,
+      "peak_memory_mb": 9.945088
+    },
+    {
+      "model": "PhaseTracker",
+      "batch_size": 4,
+      "latency_ms": {
+        "mean": 24.156190002104267,
+        "std": 2.4386387257748297
+      },
+      "per_sample_latency_ms": 6.039047500526067,
+      "peak_memory_mb": 9.62048
+    },
+    {
+      "model": "SlotAttention",
+      "batch_size": 4,
+      "latency_ms": {
+        "mean": 21.056242002523504,
+        "std": 2.1528424768308034
+      },
+      "per_sample_latency_ms": 5.264060500630876,
+      "peak_memory_mb": 9.945088
+    },
+    {
+      "model": "PhaseTracker",
+      "batch_size": 16,
+      "latency_ms": {
+        "mean": 95.73211200069636,
+        "std": 4.648743241399355
+      },
+      "per_sample_latency_ms": 5.983257000043523,
+      "peak_memory_mb": 9.622528
+    },
+    {
+      "model": "SlotAttention",
+      "batch_size": 16,
+      "latency_ms": {
+        "mean": 82.41289500147104,
+        "std": 3.7089345157289406
+      },
+      "per_sample_latency_ms": 5.15080593759194,
+      "peak_memory_mb": 9.947136
+    },
+    {
+      "model": "PhaseTracker",
+      "batch_size": 64,
+      "latency_ms": {
+        "mean": 382.7034820022527,
+        "std": 6.635056911042693
+      },
+      "per_sample_latency_ms": 5.979741906285199,
+      "peak_memory_mb": 9.629696
+    },
+    {
+      "model": "SlotAttention",
+      "batch_size": 64,
+      "latency_ms": {
+        "mean": 329.96925800223835,
+        "std": 7.117492248621958
+      },
+      "per_sample_latency_ms": 5.155769656284974,
+      "peak_memory_mb": 9.954304
+    }
+  ],
+  "batch_scaling_efficiency": {
+    "PhaseTracker": {
+      "bs1_latency_ms": 5.856942000100389,
+      "bs64_latency_ms": 382.7034820022527,
+      "scaling_factor": 65.34,
+      "ideal_scaling": 64.0
+    },
+    "SlotAttention": {
+      "bs1_latency_ms": 4.940297995926812,
+      "bs64_latency_ms": 329.96925800223835,
+      "scaling_factor": 66.79,
+      "ideal_scaling": 64.0
+    }
+  },
+  "sequence_profiles": [
+    {
+      "model": "PhaseTracker",
+      "sequence_latency_ms": {
+        "mean": 352.4845600128174,
+        "std": 5.592597525564143
+      }
+    },
+    {
+      "model": "SlotAttention",
+      "sequence_latency_ms": {
+        "mean": 167.61004000436515,
+        "std": 3.156346405271552
+      }
+    }
+  ],
+  "efficiency_summary": {
+    "parameter_ratio_sa_over_pt": 16.8,
+    "flops_ratio_sa_over_pt": 44.68,
+    "narrative": "PhaseTracker achieves competitive IP with 17x fewer parameters and 44.7x fewer FLOPs than SlotAttention."
+  },
+  "timestamp": "2026-03-05T09:07:27"
+}

@@ -1,0 +1,78 @@
+{
+  "benchmark": "head_to_head_phase_vs_slot",
+  "description": "PhaseTracker vs TemporalSlotAttentionMOT on identical smooth sequences, varying length.",
+  "results": [
+    {
+      "n_frames": 5,
+      "n_objects": 4,
+      "ip_phase": 0.25,
+      "ip_slot": 1.0,
+      "ip_advantage": -0.75,
+      "mean_sim_phase": 0.6171445399522781,
+      "mean_sim_slot": 0.9390162825584412,
+      "mean_rho_phase": 0.7477937489748001,
+      "pt_wall_ms": 10.94309997279197,
+      "sa_wall_ms": 5.915099987760186
+    },
+    {
+      "n_frames": 10,
+      "n_objects": 4,
+      "ip_phase": 0.25,
+      "ip_slot": 1.0,
+      "ip_advantage": -0.75,
+      "mean_sim_phase": 0.6171909769376119,
+      "mean_sim_slot": 0.9647512435913086,
+      "mean_rho_phase": 0.7483029762903849,
+      "pt_wall_ms": 16.67679997626692,
+      "sa_wall_ms": 10.03940007649362
+    },
+    {
+      "n_frames": 20,
+      "n_objects": 4,
+      "ip_phase": 0.3026315789473684,
+      "ip_slot": 1.0,
+      "ip_advantage": -0.6973684210526316,
+      "mean_sim_phase": 0.6150928516136972,
+      "mean_sim_slot": 0.9784475219877142,
+      "mean_rho_phase": 0.7393752430614672,
+      "pt_wall_ms": 25.44340002350509,
+      "sa_wall_ms": 18.82710005156696
+    },
+    {
+      "n_frames": 40,
+      "n_objects": 4,
+      "ip_phase": 0.3782051282051282,
+      "ip_slot": 1.0,
+      "ip_advantage": -0.6217948717948718,
+      "mean_sim_phase": 0.6111018183903817,
+      "mean_sim_slot": 0.9850275608209463,
+      "mean_rho_phase": 0.7300793849504911,
+      "pt_wall_ms": 61.93750002421439,
+      "sa_wall_ms": 37.299999967217445
+    },
+    {
+      "n_frames": 60,
+      "n_objects": 4,
+      "ip_phase": 0.4025423728813559,
+      "ip_slot": 1.0,
+      "ip_advantage": -0.597457627118644,
+      "mean_sim_phase": 0.6063531293707379,
+      "mean_sim_slot": 0.9872793272390203,
+      "mean_rho_phase": 0.7210550348637468,
+      "pt_wall_ms": 103.25000004377216,
+      "sa_wall_ms": 59.139000019058585
+    },
+    {
+      "n_frames": 100,
+      "n_objects": 4,
+      "ip_phase": 0.45202020202020204,
+      "ip_slot": 1.0,
+      "ip_advantage": -0.547979797979798,
+      "mean_sim_phase": 0.5956147894112751,
+      "mean_sim_slot": 0.9888183902008365,
+      "mean_rho_phase": 0.7063364506971956,
+      "pt_wall_ms": 154.05409992672503,
+      "sa_wall_ms": 98.75520004425198
+    }
+  ]
+}

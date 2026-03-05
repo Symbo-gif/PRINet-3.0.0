@@ -1,0 +1,91 @@
+{
+  "benchmark": "table_generation_validation",
+  "total_generators": 7,
+  "ok_count": 7,
+  "results": [
+    {
+      "name": "table_ablation_variants",
+      "status": "OK",
+      "error": null,
+      "file_name": "tab_ablation.tex",
+      "file_size_bytes": 477,
+      "has_begin_table": true,
+      "has_end_table": true,
+      "has_toprule": true,
+      "has_bottomrule": true,
+      "line_count": 14,
+      "elapsed_s": 0.0013492107391357422
+    },
+    {
+      "name": "table_parameter_efficiency",
+      "status": "OK",
+      "error": null,
+      "file_name": "tab_param_efficiency.tex",
+      "file_size_bytes": 438,
+      "has_begin_table": true,
+      "has_end_table": true,
+      "has_toprule": true,
+      "has_bottomrule": true,
+      "line_count": 13,
+      "elapsed_s": 0.0012156963348388672
+    },
+    {
+      "name": "table_chimera_gold_standard",
+      "status": "OK",
+      "error": null,
+      "file_name": "tab_chimera.tex",
+      "file_size_bytes": 498,
+      "has_begin_table": true,
+      "has_end_table": true,
+      "has_toprule": true,
+      "has_bottomrule": true,
+      "line_count": 15,
+      "elapsed_s": 0.0012047290802001953
+    },
+    {
+      "name": "table_statistical_summary",
+      "status": "OK",
+      "error": null,
+      "file_name": "tab_statistical.tex",
+      "file_size_bytes": 665,
+      "has_begin_table": true,
+      "has_end_table": true,
+      "has_toprule": true,
+      "has_bottomrule": true,
+      "line_count": 18,
+      "elapsed_s": 0.0012488365173339844
+    },
+    {
+      "name": "table_occlusion_sweep",
+      "status": "OK",
+      "error": null,
+      "file_name": "tab_occlusion.tex",
+      "file_size_bytes": 752,
+      "has_begin_table": true,
+      "has_end_table": true,
+      "has_toprule": true,
+      "has_bottomrule": true,
+      "line_count": 21,
+      "elapsed_s": 0.0018434524536132812
+    },
+    {
+      "name": "table_oscillosim_scaling",
+      "status": "OK",
+      "error": null,
+      "file_name": "tab_oscillosim.tex",
+      "file_size_bytes": 516,
+      "has_begin_table": true,
+      "has_end_table": true,
+      "has_toprule": true,
+      "has_bottomrule": true,
+      "line_count": 18,
+      "elapsed_s": 0.0012357234954833984
+    },
+    {
+      "name": "generate_all_tables",
+      "status": "OK",
+      "tables_generated": 6,
+      "elapsed_s": 0.004738807678222656
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "benchmark": "phase_lag_sweep",
+  "N": 256,
+  "k": 16,
+  "sweeps": [
+    {
+      "alpha": 0.0,
+      "bimodality_coefficient": 0.41991356015205383,
+      "order_parameter": 0.14428849518299103,
+      "r_local_std": 0.1770218461751938
+    },
+    {
+      "alpha": 0.2,
+      "bimodality_coefficient": 0.492272287607193,
+      "order_parameter": 0.06729956716299057,
+      "r_local_std": 0.18665923178195953
+    },
+    {
+      "alpha": 0.4,
+      "bimodality_coefficient": 0.4083763062953949,
+      "order_parameter": 0.1140601709485054,
+      "r_local_std": 0.1743035465478897
+    },
+    {
+      "alpha": 0.6,
+      "bimodality_coefficient": 0.5116285681724548,
+      "order_parameter": 0.08247698098421097,
+      "r_local_std": 0.16596418619155884
+    },
+    {
+      "alpha": 0.8,
+      "bimodality_coefficient": 0.5488550662994385,
+      "order_parameter": 0.07000782340765,
+      "r_local_std": 0.1665620505809784
+    },
+    {
+      "alpha": 1.0,
+      "bimodality_coefficient": 0.4638693034648895,
+      "order_parameter": 0.08261484652757645,
+      "r_local_std": 0.13657887279987335
+    },
+    {
+      "alpha": 1.1,
+      "bimodality_coefficient": 0.420199453830719,
+      "order_parameter": 0.14292486011981964,
+      "r_local_std": 0.13713906705379486
+    },
+    {
+      "alpha": 1.2,
+      "bimodality_coefficient": 0.49996066093444824,
+      "order_parameter": 0.12642742693424225,
+      "r_local_std": 0.13242606818675995
+    },
+    {
+      "alpha": 1.3,
+      "bimodality_coefficient": 0.47390761971473694,
+      "order_parameter": 0.11197783052921295,
+      "r_local_std": 0.13449537754058838
+    },
+    {
+      "alpha": 1.4,
+      "bimodality_coefficient": 0.42040055990219116,
+      "order_parameter": 0.10677555203437805,
+      "r_local_std": 0.1300813853740692
+    },
+    {
+      "alpha": 1.457,
+      "bimodality_coefficient": 0.4277202785015106,
+      "order_parameter": 0.1009272038936615,
+      "r_local_std": 0.13179147243499756
+    },
+    {
+      "alpha": 1.5,
+      "bimodality_coefficient": 0.44911420345306396,
+      "order_parameter": 0.09904292970895767,
+      "r_local_std": 0.13257448375225067
+    },
+    {
+      "alpha": 1.57,
+      "bimodality_coefficient": 0.4842570126056671,
+      "order_parameter": 0.07893586903810501,
+      "r_local_std": 0.1294153481721878
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  # -----------------------------------------------------------------------
+  # Lint with black + isort
+  # -----------------------------------------------------------------------
+  format:
+    name: Format Check (black + isort)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install formatters
+        run: pip install black isort
+
+      - name: Check black formatting
+        run: black --check src/ tests/
+
+      - name: Check isort ordering
+        run: isort --check-only src/ tests/
+
+  # -----------------------------------------------------------------------
+  # Security audit
+  # -----------------------------------------------------------------------
+  security:
+    name: Security Audit (bandit + pip-audit)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install audit tools
+        run: pip install bandit pip-audit
+
+      - name: Run bandit (SAST)
+        run: bandit -r src/prinet -ll -ii
+
+      - name: Run pip-audit (dependency CVE check)
+        run: pip-audit
+        continue-on-error: true  # Don't block on transitive dep warnings

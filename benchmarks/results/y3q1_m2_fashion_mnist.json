@@ -1,0 +1,10 @@
+{
+  "benchmark": "M.2_fashion_mnist_arch_check",
+  "device": "cuda",
+  "forward_ms": 7.86,
+  "output_shape": [
+    8,
+    10
+  ],
+  "status": "PASS"
+}

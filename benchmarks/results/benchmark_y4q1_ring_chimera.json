@@ -1,0 +1,137 @@
+{
+  "benchmark": "ring_chimera",
+  "configs": [
+    {
+      "N": 128,
+      "phase_lag": 0.0,
+      "k_neighbors": 20,
+      "final_order_param": 0.12870708107948303,
+      "bimodality_coefficient": 0.5115095376968384,
+      "chimera_detected": false,
+      "r_local_mean": 0.374072790145874,
+      "r_local_std": 0.2018411010503769,
+      "wall_time_s": 0.1975780000211671
+    },
+    {
+      "N": 128,
+      "phase_lag": 0.5,
+      "k_neighbors": 20,
+      "final_order_param": 0.23266738653182983,
+      "bimodality_coefficient": 0.5075774788856506,
+      "chimera_detected": false,
+      "r_local_mean": 0.41061609983444214,
+      "r_local_std": 0.145605206489563,
+      "wall_time_s": 0.1339512999402359
+    },
+    {
+      "N": 128,
+      "phase_lag": 1.0,
+      "k_neighbors": 20,
+      "final_order_param": 0.11111840605735779,
+      "bimodality_coefficient": 0.35273995995521545,
+      "chimera_detected": false,
+      "r_local_mean": 0.2817583978176117,
+      "r_local_std": 0.10300697386264801,
+      "wall_time_s": 0.1342421000590548
+    },
+    {
+      "N": 128,
+      "phase_lag": 1.457,
+      "k_neighbors": 20,
+      "final_order_param": 0.01797378435730934,
+      "bimodality_coefficient": 0.470403254032135,
+      "chimera_detected": false,
+      "r_local_mean": 0.24568793177604675,
+      "r_local_std": 0.11507750302553177,
+      "wall_time_s": 0.14366890001110733
+    },
+    {
+      "N": 256,
+      "phase_lag": 0.0,
+      "k_neighbors": 20,
+      "final_order_param": 0.09906808286905289,
+      "bimodality_coefficient": 0.4224355220794678,
+      "chimera_detected": false,
+      "r_local_mean": 0.34002071619033813,
+      "r_local_std": 0.18126718699932098,
+      "wall_time_s": 0.13287680002395064
+    },
+    {
+      "N": 256,
+      "phase_lag": 0.5,
+      "k_neighbors": 20,
+      "final_order_param": 0.07175055146217346,
+      "bimodality_coefficient": 0.5136429667472839,
+      "chimera_detected": false,
+      "r_local_mean": 0.3704688549041748,
+      "r_local_std": 0.1526331603527069,
+      "wall_time_s": 0.12970749998930842
+    },
+    {
+      "N": 256,
+      "phase_lag": 1.0,
+      "k_neighbors": 20,
+      "final_order_param": 0.09468074887990952,
+      "bimodality_coefficient": 0.4263142943382263,
+      "chimera_detected": false,
+      "r_local_mean": 0.2712969183921814,
+      "r_local_std": 0.13459499180316925,
+      "wall_time_s": 0.1354371999623254
+    },
+    {
+      "N": 256,
+      "phase_lag": 1.457,
+      "k_neighbors": 20,
+      "final_order_param": 0.011469568125903606,
+      "bimodality_coefficient": 0.4352998435497284,
+      "chimera_detected": false,
+      "r_local_mean": 0.22385087609291077,
+      "r_local_std": 0.10964667052030563,
+      "wall_time_s": 0.13681569998152554
+    },
+    {
+      "N": 512,
+      "phase_lag": 0.0,
+      "k_neighbors": 20,
+      "final_order_param": 0.11610555648803711,
+      "bimodality_coefficient": 0.39025548100471497,
+      "chimera_detected": false,
+      "r_local_mean": 0.38037818670272827,
+      "r_local_std": 0.17562192678451538,
+      "wall_time_s": 0.15742359997238964
+    },
+    {
+      "N": 512,
+      "phase_lag": 0.5,
+      "k_neighbors": 20,
+      "final_order_param": 0.02816593647003174,
+      "bimodality_coefficient": 0.44984036684036255,
+      "chimera_detected": false,
+      "r_local_mean": 0.3464887738227844,
+      "r_local_std": 0.15163129568099976,
+      "wall_time_s": 0.13906539999879897
+    },
+    {
+      "N": 512,
+      "phase_lag": 1.0,
+      "k_neighbors": 20,
+      "final_order_param": 0.04682837426662445,
+      "bimodality_coefficient": 0.4000656306743622,
+      "chimera_detected": false,
+      "r_local_mean": 0.2936345040798187,
+      "r_local_std": 0.12999843060970306,
+      "wall_time_s": 0.13845079997554421
+    },
+    {
+      "N": 512,
+      "phase_lag": 1.457,
+      "k_neighbors": 20,
+      "final_order_param": 0.016320113092660904,
+      "bimodality_coefficient": 0.43440720438957214,
+      "chimera_detected": false,
+      "r_local_mean": 0.20888866484165192,
+      "r_local_std": 0.10349277406930923,
+      "wall_time_s": 0.14254880009684712
+    }
+  ]
+}

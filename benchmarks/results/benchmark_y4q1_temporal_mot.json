@@ -1,0 +1,47 @@
+{
+  "benchmark": "temporal_mot",
+  "configs": [
+    {
+      "n_frames": 5,
+      "n_slots": 4,
+      "identity_preservation": 1.0,
+      "n_identity_matches": 4,
+      "per_frame_similarity_mean": 0.9034896492958069
+    },
+    {
+      "n_frames": 5,
+      "n_slots": 8,
+      "identity_preservation": 1.0,
+      "n_identity_matches": 4,
+      "per_frame_similarity_mean": 0.9429172277450562
+    },
+    {
+      "n_frames": 10,
+      "n_slots": 4,
+      "identity_preservation": 0.9722222222222222,
+      "n_identity_matches": 9,
+      "per_frame_similarity_mean": 0.9540522694587708
+    },
+    {
+      "n_frames": 10,
+      "n_slots": 8,
+      "identity_preservation": 1.0,
+      "n_identity_matches": 9,
+      "per_frame_similarity_mean": 0.9665203094482422
+    },
+    {
+      "n_frames": 20,
+      "n_slots": 4,
+      "identity_preservation": 1.0,
+      "n_identity_matches": 19,
+      "per_frame_similarity_mean": 0.9754486083984375
+    },
+    {
+      "n_frames": 20,
+      "n_slots": 8,
+      "identity_preservation": 1.0,
+      "n_identity_matches": 19,
+      "per_frame_similarity_mean": 0.9708175659179688
+    }
+  ]
+}

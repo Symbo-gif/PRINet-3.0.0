@@ -1,0 +1,47 @@
+{
+  "benchmark": "g2_1_embedding_analysis",
+  "pt_small": {
+    "intra_cosine_sim_mean": 0.7731208583712578,
+    "intra_cosine_sim_std": 0.08157572401239396,
+    "inter_cosine_sim_mean": 0.7625383907556533,
+    "inter_cosine_sim_std": 0.07009321516800261,
+    "discriminability": 0.01058246761560444,
+    "effective_ranks": {
+      "det_to_phase.0.weight": 3.9826043081858358,
+      "det_to_phase.2.weight": 24.779689772227016,
+      "det_to_amp.0.weight": 3.9471007019246254,
+      "det_to_amp.2.weight": 26.43239899167163,
+      "dynamics.W_delta": 3.230423564412386,
+      "dynamics.W_theta": 6.492966746274936,
+      "dynamics.W_gamma": 12.309360663778635,
+      "dynamics.W_pac_dt.weight": 6.3853118541237786,
+      "dynamics.W_pac_tg.weight": 12.953766369914298
+    },
+    "mean_effective_rank": 11.168180330279236,
+    "n_params": 4991
+  },
+  "pt_large": {
+    "intra_cosine_sim_mean": 0.7561096531152726,
+    "intra_cosine_sim_std": 0.052167507083400295,
+    "inter_cosine_sim_mean": 0.735119794011116,
+    "inter_cosine_sim_std": 0.039300465331687774,
+    "discriminability": 0.020989859104156516,
+    "effective_ranks": {
+      "det_to_phase.0.weight": 3.982297148092072,
+      "det_to_phase.2.weight": 149.81930455528556,
+      "det_to_phase.4.weight": 95.82109258489926,
+      "det_to_amp.0.weight": 3.991012686523436,
+      "det_to_amp.2.weight": 101.76287766298286,
+      "dynamics.W_delta": 12.578603100699477,
+      "dynamics.W_theta": 25.438268958625628,
+      "dynamics.W_gamma": 51.6769876581741,
+      "dynamics.W_pac_dt.weight": 25.35602191002207,
+      "dynamics.W_pac_tg.weight": 50.92858981526421,
+      "phase_refine.0.weight": 101.72653943576164,
+      "phase_refine.2.weight": 98.92913084527717
+    },
+    "mean_effective_rank": 60.16756053013396,
+    "n_params": 136227
+  },
+  "diagnosis": "comparable_discriminability"
+}

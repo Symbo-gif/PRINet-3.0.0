@@ -1,0 +1,16 @@
+{
+  "benchmark": "cuda_jit_vs_pytorch_fallback",
+  "cuda_ms_per_step": 0.0313,
+  "pytorch_ms_per_step": 1.0768,
+  "cuda_speedup": 34.42,
+  "batch_size": 32,
+  "n_oscillators": 44,
+  "bands": {
+    "delta": 4,
+    "theta": 8,
+    "gamma": 32
+  },
+  "device": "RTX_4060",
+  "msvc_version": "14.50.35717",
+  "fix": "minimal_aten_includes_bypass_compiled_autograd_h"
+}

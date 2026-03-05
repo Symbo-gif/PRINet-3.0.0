@@ -1,0 +1,43 @@
+{
+  "benchmark": "O.6_pruning_efficiency",
+  "device": "cuda",
+  "results": [
+    {
+      "N": 28,
+      "threshold": 0.1,
+      "n_active": 2,
+      "n_inactive": 26,
+      "reduction_pct": 92.86
+    },
+    {
+      "N": 56,
+      "threshold": 0.1,
+      "n_active": 4,
+      "n_inactive": 52,
+      "reduction_pct": 92.86
+    },
+    {
+      "N": 112,
+      "threshold": 0.1,
+      "n_active": 9,
+      "n_inactive": 103,
+      "reduction_pct": 91.96
+    },
+    {
+      "N": 112,
+      "threshold": 0.2,
+      "n_active": 9,
+      "n_inactive": 103,
+      "reduction_pct": 91.96
+    },
+    {
+      "N": 112,
+      "threshold": 0.3,
+      "n_active": 9,
+      "n_inactive": 103,
+      "reduction_pct": 91.96
+    }
+  ],
+  "target": "30% parameter reduction",
+  "status": "PASS"
+}

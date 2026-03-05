@@ -1,0 +1,40 @@
+{
+  "benchmark": "curriculum_vs_fixed",
+  "seeds": [
+    42,
+    123,
+    456
+  ],
+  "comparisons": {
+    "PT": {
+      "curriculum_ips": [
+        0.9957627118644068,
+        0.9997175141242938,
+        0.9994350282485875
+      ],
+      "fixed_ips": [
+        0.9973684210526315,
+        1.0,
+        1.0
+      ],
+      "curriculum_mean": 0.9983050847457626,
+      "fixed_mean": 0.9991228070175439,
+      "curriculum_better": false
+    },
+    "SA": {
+      "curriculum_ips": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "fixed_ips": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "curriculum_mean": 1.0,
+      "fixed_mean": 1.0,
+      "curriculum_better": false
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "benchmark": "coherence_decay_comparison",
+  "description": "Exponential coherence decay fit (\u03bb) for PhaseTracker (phase correlation \u03c1) vs SlotAttention (cosine similarity).",
+  "results": {
+    "n_frames": 60,
+    "phase_tracker": {
+      "metric": "per_frame_phase_correlation",
+      "decay_rate": 0.0013153017576762634,
+      "half_life": 526.9871924937778,
+      "initial_coherence": 0.7486161638893455,
+      "r_squared": 0.3931985523493643,
+      "series_mean": 0.7210550348637468
+    },
+    "slot_attention": {
+      "metric": "per_frame_similarity",
+      "decay_rate": -0.0004218524774676531,
+      "half_life": Infinity,
+      "initial_coherence": 0.9750969009117416,
+      "r_squared": 0.13582348519384824,
+      "series_mean": 0.9872793272390203
+    },
+    "advantage": "slot_attention"
+  }
+}

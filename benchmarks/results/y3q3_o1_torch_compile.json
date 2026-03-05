@@ -1,0 +1,28 @@
+{
+  "benchmark": "O.1_torch_compile_speedup",
+  "device": "cuda",
+  "batch_size": 8,
+  "n_input": 64,
+  "n_classes": 10,
+  "eager": {
+    "mean_ms": 26.345,
+    "median_ms": 25.514,
+    "stdev_ms": 2.207,
+    "min_ms": 24.716,
+    "max_ms": 32.743,
+    "iters": 20
+  },
+  "compiled_eager": {
+    "mean_ms": 26.358,
+    "median_ms": 25.597,
+    "stdev_ms": 2.225,
+    "min_ms": 25.034,
+    "max_ms": 33.175,
+    "iters": 20
+  },
+  "compiled_inductor": null,
+  "speedup_eager_backend": 1.0,
+  "wall_time_reduction_pct": -0.05,
+  "target": ">=10% wall-time reduction",
+  "status": "PASS"
+}

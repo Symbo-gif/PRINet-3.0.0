@@ -1,0 +1,20 @@
+{
+  "benchmark": "N.3_temporal_reasoning",
+  "device": "cuda",
+  "n_objects": 8,
+  "n_frames": 20,
+  "phase_tracker": {
+    "mota": 0.4189,
+    "idf1": 0.1689,
+    "id_switches": 86,
+    "elapsed_ms": 54.0
+  },
+  "attention_tracker": {
+    "mota": 0.9797,
+    "idf1": 0.8446,
+    "id_switches": 3,
+    "elapsed_ms": 20.4
+  },
+  "oscillatory_advantage_mota": -0.5608,
+  "status": "PASS"
+}

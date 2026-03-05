@@ -1,0 +1,29 @@
+{
+  "benchmark": "N.2_crowded_mot",
+  "device": "cuda",
+  "results": [
+    {
+      "n_objects": 50,
+      "n_frames": 30,
+      "occlusion_rate": 0.15,
+      "mota": 0.1396,
+      "motp": 0.1061,
+      "idf1": 0.1117,
+      "id_switches": 863,
+      "identity_preservation": 0.1396,
+      "elapsed_ms": 303.8
+    },
+    {
+      "n_objects": 75,
+      "n_frames": 30,
+      "occlusion_rate": 0.2,
+      "mota": 0.1719,
+      "motp": 0.128,
+      "idf1": 0.1286,
+      "id_switches": 1108,
+      "identity_preservation": 0.1719,
+      "elapsed_ms": 459.3
+    }
+  ],
+  "status": "PASS"
+}

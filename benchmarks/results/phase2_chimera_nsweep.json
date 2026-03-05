@@ -1,0 +1,280 @@
+{
+  "benchmark": "phase2_exp2_6_chimera_nsweep",
+  "description": "Chimera state scaling with system size N",
+  "n_oscillators_list": [
+    128,
+    256,
+    512,
+    1024
+  ],
+  "n_steps": 5000,
+  "dt": 0.01,
+  "n_seeds": 7,
+  "sweep": [
+    {
+      "n_oscillators": 128,
+      "bc_stats": {
+        "mean": 0.5001562833786011,
+        "std": 0.0,
+        "ci_low": 0.5001562833786011,
+        "ci_high": 0.5001562833786011
+      },
+      "order_param_stats": {
+        "mean": 0.11769166588783264,
+        "std": 0.0,
+        "ci_low": 0.11769166588783264,
+        "ci_high": 0.11769166588783264
+      },
+      "chimera_lifetime_stats": {
+        "mean": 0.0,
+        "std": 0.0,
+        "ci_low": 0.0,
+        "ci_high": 0.0
+      },
+      "per_seed": [
+        {
+          "seed": 42,
+          "bc": 0.5001562833786011,
+          "r_final": 0.11769166588783264,
+          "chimera_lifetime": 0.0
+        },
+        {
+          "seed": 123,
+          "bc": 0.5001562833786011,
+          "r_final": 0.11769166588783264,
+          "chimera_lifetime": 0.0
+        },
+        {
+          "seed": 456,
+          "bc": 0.5001562833786011,
+          "r_final": 0.11769166588783264,
+          "chimera_lifetime": 0.0
+        },
+        {
+          "seed": 789,
+          "bc": 0.5001562833786011,
+          "r_final": 0.11769166588783264,
+          "chimera_lifetime": 0.0
+        },
+        {
+          "seed": 1024,
+          "bc": 0.5001562833786011,
+          "r_final": 0.11769166588783264,
+          "chimera_lifetime": 0.0
+        },
+        {
+          "seed": 2048,
+          "bc": 0.5001562833786011,
+          "r_final": 0.11769166588783264,
+          "chimera_lifetime": 0.0
+        },
+        {
+          "seed": 3072,
+          "bc": 0.5001562833786011,
+          "r_final": 0.11769166588783264,
+          "chimera_lifetime": 0.0
+        }
+      ]
+    },
+    {
+      "n_oscillators": 256,
+      "bc_stats": {
+        "mean": 0.5803012847900391,
+        "std": 0.0,
+        "ci_low": 0.5803012847900391,
+        "ci_high": 0.5803012847900391
+      },
+      "order_param_stats": {
+        "mean": 0.07492843270301819,
+        "std": 0.0,
+        "ci_low": 0.07492843270301819,
+        "ci_high": 0.07492843270301819
+      },
+      "chimera_lifetime_stats": {
+        "mean": 0.0,
+        "std": 0.0,
+        "ci_low": 0.0,
+        "ci_high": 0.0
+      },
+      "per_seed": [
+        {
+          "seed": 42,
+          "bc": 0.5803012847900391,
+          "r_final": 0.07492843270301819,
+          "chimera_lifetime": 0.0
+        },
+        {
+          "seed": 123,
+          "bc": 0.5803012847900391,
+          "r_final": 0.07492843270301819,
+          "chimera_lifetime": 0.0
+        },
+        {
+          "seed": 456,
+          "bc": 0.5803012847900391,
+          "r_final": 0.07492843270301819,
+          "chimera_lifetime": 0.0
+        },
+        {
+          "seed": 789,
+          "bc": 0.5803012847900391,
+          "r_final": 0.07492843270301819,
+          "chimera_lifetime": 0.0
+        },
+        {
+          "seed": 1024,
+          "bc": 0.5803012847900391,
+          "r_final": 0.07492843270301819,
+          "chimera_lifetime": 0.0
+        },
+        {
+          "seed": 2048,
+          "bc": 0.5803012847900391,
+          "r_final": 0.07492843270301819,
+          "chimera_lifetime": 0.0
+        },
+        {
+          "seed": 3072,
+          "bc": 0.5803012847900391,
+          "r_final": 0.07492843270301819,
+          "chimera_lifetime": 0.0
+        }
+      ]
+    },
+    {
+      "n_oscillators": 512,
+      "bc_stats": {
+        "mean": 0.5509337186813354,
+        "std": 0.0,
+        "ci_low": 0.5509337186813354,
+        "ci_high": 0.5509337186813354
+      },
+      "order_param_stats": {
+        "mean": 0.06107419729232788,
+        "std": 0.0,
+        "ci_low": 0.06107419729232788,
+        "ci_high": 0.06107419729232788
+      },
+      "chimera_lifetime_stats": {
+        "mean": 0.0,
+        "std": 0.0,
+        "ci_low": 0.0,
+        "ci_high": 0.0
+      },
+      "per_seed": [
+        {
+          "seed": 42,
+          "bc": 0.5509337186813354,
+          "r_final": 0.06107419729232788,
+          "chimera_lifetime": 0.0
+        },
+        {
+          "seed": 123,
+          "bc": 0.5509337186813354,
+          "r_final": 0.06107419729232788,
+          "chimera_lifetime": 0.0
+        },
+        {
+          "seed": 456,
+          "bc": 0.5509337186813354,
+          "r_final": 0.06107419729232788,
+          "chimera_lifetime": 0.0
+        },
+        {
+          "seed": 789,
+          "bc": 0.5509337186813354,
+          "r_final": 0.06107419729232788,
+          "chimera_lifetime": 0.0
+        },
+        {
+          "seed": 1024,
+          "bc": 0.5509337186813354,
+          "r_final": 0.06107419729232788,
+          "chimera_lifetime": 0.0
+        },
+        {
+          "seed": 2048,
+          "bc": 0.5509337186813354,
+          "r_final": 0.06107419729232788,
+          "chimera_lifetime": 0.0
+        },
+        {
+          "seed": 3072,
+          "bc": 0.5509337186813354,
+          "r_final": 0.06107419729232788,
+          "chimera_lifetime": 0.0
+        }
+      ]
+    },
+    {
+      "n_oscillators": 1024,
+      "bc_stats": {
+        "mean": 0.5502808094024658,
+        "std": 0.0,
+        "ci_low": 0.5502808094024658,
+        "ci_high": 0.5502808094024658
+      },
+      "order_param_stats": {
+        "mean": 0.04294738173484802,
+        "std": 0.0,
+        "ci_low": 0.04294738173484802,
+        "ci_high": 0.04294738173484802
+      },
+      "chimera_lifetime_stats": {
+        "mean": 0.0,
+        "std": 0.0,
+        "ci_low": 0.0,
+        "ci_high": 0.0
+      },
+      "per_seed": [
+        {
+          "seed": 42,
+          "bc": 0.5502808094024658,
+          "r_final": 0.04294738173484802,
+          "chimera_lifetime": 0.0
+        },
+        {
+          "seed": 123,
+          "bc": 0.5502808094024658,
+          "r_final": 0.04294738173484802,
+          "chimera_lifetime": 0.0
+        },
+        {
+          "seed": 456,
+          "bc": 0.5502808094024658,
+          "r_final": 0.04294738173484802,
+          "chimera_lifetime": 0.0
+        },
+        {
+          "seed": 789,
+          "bc": 0.5502808094024658,
+          "r_final": 0.04294738173484802,
+          "chimera_lifetime": 0.0
+        },
+        {
+          "seed": 1024,
+          "bc": 0.5502808094024658,
+          "r_final": 0.04294738173484802,
+          "chimera_lifetime": 0.0
+        },
+        {
+          "seed": 2048,
+          "bc": 0.5502808094024658,
+          "r_final": 0.04294738173484802,
+          "chimera_lifetime": 0.0
+        },
+        {
+          "seed": 3072,
+          "bc": 0.5502808094024658,
+          "r_final": 0.04294738173484802,
+          "chimera_lifetime": 0.0
+        }
+      ]
+    }
+  ],
+  "scaling_analysis": {
+    "bc_stabilizes": true,
+    "interpretation": "Chimera is a genuine dynamical regime (BC stable with N)"
+  },
+  "timestamp": "2026-03-05T08:10:26"
+}

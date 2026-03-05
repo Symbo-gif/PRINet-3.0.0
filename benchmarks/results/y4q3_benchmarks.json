@@ -1,0 +1,86 @@
+{
+  "suite": "y4q3_release_readiness",
+  "timestamp": "2026-02-26T17:43:46",
+  "results": [
+    {
+      "benchmark": "B.1_cuda_jit",
+      "cuda_available": true,
+      "pytorch_ms_per_step": 1.5229,
+      "cuda_ms_per_step": 0.0413,
+      "speedup": 36.9,
+      "batch_size": 32,
+      "n_oscillators": 44,
+      "n_iterations": 500,
+      "device": "cuda",
+      "gate_passed": true
+    },
+    {
+      "benchmark": "B.2_test_skips",
+      "passed": 1582,
+      "skipped": 14,
+      "failed": 0,
+      "target_skips": 10,
+      "skip_reasons": [
+        "SKIPPED [5] tests\\test_triton_kernels.py:98: Triton not available",
+        "SKIPPED [1] tests\\test_triton_kernels.py:182: Triton not available",
+        "SKIPPED [4] tests\\test_triton_kernels.py:205: Triton not available",
+        "SKIPPED [1] tests\\test_triton_kernels.py:262: Triton not available",
+        "SKIPPED [1] tests\\test_triton_kernels.py:363: Triton not available",
+        "SKIPPED [1] tests\\test_triton_kernels.py:404: Triton not available",
+        "SKIPPED [1] tests\\test_y2q3.py:335: Triton not available"
+      ],
+      "gate_passed": true
+    },
+    {
+      "benchmark": "B.3_sphinx_build",
+      "build_time_s": 4.95,
+      "html_pages": 255,
+      "return_code": 0,
+      "gate_passed": true
+    },
+    {
+      "benchmark": "B.4_notebooks",
+      "notebooks": {
+        "01_oscillosim_quickstart.ipynb": {
+          "cells": 13,
+          "code_cells": 6,
+          "markdown_cells": 7,
+          "valid": true
+        },
+        "02_clevr_n_binding.ipynb": {
+          "cells": 12,
+          "code_cells": 6,
+          "markdown_cells": 6,
+          "valid": true
+        },
+        "03_custom_coupling.ipynb": {
+          "cells": 15,
+          "code_cells": 7,
+          "markdown_cells": 8,
+          "valid": true
+        }
+      },
+      "total": 3,
+      "all_valid": true,
+      "gate_passed": true
+    },
+    {
+      "benchmark": "B.5_version_api",
+      "version": "3.0.0",
+      "is_semver": true,
+      "major_version": 3,
+      "public_symbols": 172,
+      "target_symbols": 120,
+      "gate_passed": true
+    },
+    {
+      "benchmark": "B.6_reproduce",
+      "exists": true,
+      "return_code": 0,
+      "run_time_s": 5.69,
+      "gate_passed": true
+    }
+  ],
+  "gates_passed": 6,
+  "gates_total": 6
+}

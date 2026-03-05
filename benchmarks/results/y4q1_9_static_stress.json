@@ -1,0 +1,201 @@
+{
+  "benchmark": "g6_1_static_stress",
+  "configs": [
+    "standard",
+    "8_objects",
+    "16_objects",
+    "long_100",
+    "noise_2.0",
+    "combined_hard"
+  ],
+  "results": [
+    {
+      "config": {
+        "label": "standard",
+        "n_objects": 4,
+        "n_frames": 20,
+        "noise_sigma": 0.0,
+        "occlusion_rate": 0.0
+      },
+      "full_stats": {
+        "mean": 1.0,
+        "std": 0.0,
+        "ci_low": 1.0,
+        "ci_high": 1.0
+      },
+      "static_stats": {
+        "mean": 1.0,
+        "std": 0.0,
+        "ci_low": 1.0,
+        "ci_high": 1.0
+      },
+      "welch_t": {
+        "t_stat": 0.0,
+        "p_value": 1.0,
+        "cohens_d": 0.0,
+        "mean_a": 1.0,
+        "mean_b": 1.0,
+        "n_a": 3,
+        "n_b": 3
+      },
+      "dynamics_help": false
+    },
+    {
+      "config": {
+        "label": "8_objects",
+        "n_objects": 8,
+        "n_frames": 20,
+        "noise_sigma": 0.0,
+        "occlusion_rate": 0.0
+      },
+      "full_stats": {
+        "mean": 0.9958333333333332,
+        "std": 0.0037983570341423188,
+        "ci_low": 0.9914473684210524,
+        "ci_high": 0.9980263157894737
+      },
+      "static_stats": {
+        "mean": 0.9962719298245614,
+        "std": 0.003623401675846106,
+        "ci_low": 0.9921052631578947,
+        "ci_high": 0.9986842105263157
+      },
+      "welch_t": {
+        "t_stat": -0.1447149210585025,
+        "p_value": 0.8919495440141905,
+        "cohens_d": -0.11815923825349306,
+        "mean_a": 0.9958333333333332,
+        "mean_b": 0.9962719298245614,
+        "n_a": 3,
+        "n_b": 3
+      },
+      "dynamics_help": false
+    },
+    {
+      "config": {
+        "label": "16_objects",
+        "n_objects": 16,
+        "n_frames": 20,
+        "noise_sigma": 0.0,
+        "occlusion_rate": 0.0
+      },
+      "full_stats": {
+        "mean": 0.9970394736842105,
+        "std": 0.0025691610776008367,
+        "ci_low": 0.9940789473684211,
+        "ci_high": 0.9986842105263157
+      },
+      "static_stats": {
+        "mean": 0.9961622807017544,
+        "std": 0.0030564385668347465,
+        "ci_low": 0.9927631578947368,
+        "ci_high": 0.9986842105263157
+      },
+      "welch_t": {
+        "t_stat": 0.3805211953235972,
+        "p_value": 0.7234451322336567,
+        "cohens_d": 0.3106942549522485,
+        "mean_a": 0.9970394736842105,
+        "mean_b": 0.9961622807017544,
+        "n_a": 3,
+        "n_b": 3
+      },
+      "dynamics_help": false
+    },
+    {
+      "config": {
+        "label": "long_100",
+        "n_objects": 4,
+        "n_frames": 100,
+        "noise_sigma": 0.0,
+        "occlusion_rate": 0.0
+      },
+      "full_stats": {
+        "mean": 0.9989057239057239,
+        "std": 0.0009560451760606999,
+        "ci_low": 0.998232323232323,
+        "ci_high": 1.0
+      },
+      "static_stats": {
+        "mean": 0.998989898989899,
+        "std": 0.0008747731351358343,
+        "ci_low": 0.9984848484848484,
+        "ci_high": 1.0
+      },
+      "welch_t": {
+        "t_stat": -0.11250879009265967,
+        "p_value": 0.9158806614859025,
+        "cohens_d": -0.09186304243497184,
+        "mean_a": 0.9989057239057239,
+        "mean_b": 0.998989898989899,
+        "n_a": 3,
+        "n_b": 3
+      },
+      "dynamics_help": false
+    },
+    {
+      "config": {
+        "label": "noise_2.0",
+        "n_objects": 4,
+        "n_frames": 20,
+        "noise_sigma": 2.0,
+        "occlusion_rate": 0.0
+      },
+      "full_stats": {
+        "mean": 0.7171052631578947,
+        "std": 0.008628208584607897,
+        "ci_low": 0.7092105263157894,
+        "ci_high": 0.7263157894736842
+      },
+      "static_stats": {
+        "mean": 0.7179824561403509,
+        "std": 0.009241801537590093,
+        "ci_low": 0.7092105263157894,
+        "ci_high": 0.7276315789473684
+      },
+      "welch_t": {
+        "t_stat": -0.12016835362523773,
+        "p_value": 0.9101697746336275,
+        "cohens_d": -0.09811704987072051,
+        "mean_a": 0.7171052631578947,
+        "mean_b": 0.7179824561403509,
+        "n_a": 3,
+        "n_b": 3
+      },
+      "dynamics_help": false
+    },
+    {
+      "config": {
+        "label": "combined_hard",
+        "n_objects": 8,
+        "n_frames": 50,
+        "noise_sigma": 0.5,
+        "occlusion_rate": 0.2
+      },
+      "full_stats": {
+        "mean": 0.7093537414965988,
+        "std": 0.003786640149355833,
+        "ci_low": 0.7061224489795919,
+        "ci_high": 0.7135204081632653
+      },
+      "static_stats": {
+        "mean": 0.7095238095238096,
+        "std": 0.004493949068613498,
+        "ci_low": 0.7058673469387755,
+        "ci_high": 0.7145408163265307
+      },
+      "welch_t": {
+        "t_stat": -0.05012547071167128,
+        "p_value": 0.9624912194377644,
+        "cohens_d": -0.040927275453472474,
+        "mean_a": 0.7093537414965988,
+        "mean_b": 0.7095238095238096,
+        "n_a": 3,
+        "n_b": 3
+      },
+      "dynamics_help": false
+    }
+  ],
+  "dynamics_matter_for": [],
+  "conclusion": "Dynamics do not significantly help under any tested condition. Reframe as interpretability/robustness benefit."
+}

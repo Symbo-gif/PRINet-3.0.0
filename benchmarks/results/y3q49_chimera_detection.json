@@ -1,0 +1,170 @@
+{
+  "chimera": {
+    "mean_field": {
+      "N": 512,
+      "device": "cuda",
+      "k_local": 20,
+      "experiments": [
+        {
+          "K": 1.0,
+          "global_r": 0.061076,
+          "local_r_mean": 0.997536,
+          "local_r_std": 0.001307,
+          "bimodality_index": 0.00131,
+          "n_sync": 512,
+          "n_incoherent": 0,
+          "n_mixed": 0,
+          "is_chimera": false,
+          "chimera_fraction": 0.0
+        },
+        {
+          "K": 2.0,
+          "global_r": 0.075815,
+          "local_r_mean": 0.997552,
+          "local_r_std": 0.001262,
+          "bimodality_index": 0.001265,
+          "n_sync": 512,
+          "n_incoherent": 0,
+          "n_mixed": 0,
+          "is_chimera": false,
+          "chimera_fraction": 0.0
+        },
+        {
+          "K": 3.0,
+          "global_r": 0.981903,
+          "local_r_mean": 0.999932,
+          "local_r_std": 0.000561,
+          "bimodality_index": 0.000561,
+          "n_sync": 512,
+          "n_incoherent": 0,
+          "n_mixed": 0,
+          "is_chimera": false,
+          "chimera_fraction": 0.0
+        },
+        {
+          "K": 5.0,
+          "global_r": 0.106601,
+          "local_r_mean": 0.99777,
+          "local_r_std": 0.001785,
+          "bimodality_index": 0.001789,
+          "n_sync": 512,
+          "n_incoherent": 0,
+          "n_mixed": 0,
+          "is_chimera": false,
+          "chimera_fraction": 0.0
+        }
+      ]
+    },
+    "sparse_knn": {
+      "N": 512,
+      "device": "cuda",
+      "k_local": 20,
+      "experiments": [
+        {
+          "K": 1.0,
+          "global_r": 0.059141,
+          "local_r_mean": 0.997629,
+          "local_r_std": 0.002294,
+          "bimodality_index": 0.0023,
+          "n_sync": 512,
+          "n_incoherent": 0,
+          "n_mixed": 0,
+          "is_chimera": false,
+          "chimera_fraction": 0.0
+        },
+        {
+          "K": 2.0,
+          "global_r": 0.171038,
+          "local_r_mean": 0.997448,
+          "local_r_std": 0.001718,
+          "bimodality_index": 0.001722,
+          "n_sync": 512,
+          "n_incoherent": 0,
+          "n_mixed": 0,
+          "is_chimera": false,
+          "chimera_fraction": 0.0
+        },
+        {
+          "K": 3.0,
+          "global_r": 0.012394,
+          "local_r_mean": 0.997616,
+          "local_r_std": 0.001072,
+          "bimodality_index": 0.001075,
+          "n_sync": 512,
+          "n_incoherent": 0,
+          "n_mixed": 0,
+          "is_chimera": false,
+          "chimera_fraction": 0.0
+        },
+        {
+          "K": 5.0,
+          "global_r": 0.032009,
+          "local_r_mean": 0.997561,
+          "local_r_std": 0.001261,
+          "bimodality_index": 0.001264,
+          "n_sync": 512,
+          "n_incoherent": 0,
+          "n_mixed": 0,
+          "is_chimera": false,
+          "chimera_fraction": 0.0
+        }
+      ]
+    },
+    "full": {
+      "N": 512,
+      "device": "cuda",
+      "k_local": 20,
+      "experiments": [
+        {
+          "K": 1.0,
+          "global_r": 0.06097,
+          "local_r_mean": 0.997534,
+          "local_r_std": 0.001308,
+          "bimodality_index": 0.001311,
+          "n_sync": 512,
+          "n_incoherent": 0,
+          "n_mixed": 0,
+          "is_chimera": false,
+          "chimera_fraction": 0.0
+        },
+        {
+          "K": 2.0,
+          "global_r": 0.075287,
+          "local_r_mean": 0.997552,
+          "local_r_std": 0.001261,
+          "bimodality_index": 0.001264,
+          "n_sync": 512,
+          "n_incoherent": 0,
+          "n_mixed": 0,
+          "is_chimera": false,
+          "chimera_fraction": 0.0
+        },
+        {
+          "K": 3.0,
+          "global_r": 0.914247,
+          "local_r_mean": 0.997996,
+          "local_r_std": 0.010887,
+          "bimodality_index": 0.010909,
+          "n_sync": 512,
+          "n_incoherent": 0,
+          "n_mixed": 0,
+          "is_chimera": false,
+          "chimera_fraction": 0.0
+        },
+        {
+          "K": 5.0,
+          "global_r": 0.04024,
+          "local_r_mean": 0.997637,
+          "local_r_std": 0.001604,
+          "bimodality_index": 0.001608,
+          "n_sync": 512,
+          "n_incoherent": 0,
+          "n_mixed": 0,
+          "is_chimera": false,
+          "chimera_fraction": 0.0
+        }
+      ]
+    }
+  },
+  "timestamp": "2026-02-19T16:03:30+00:00"
+}

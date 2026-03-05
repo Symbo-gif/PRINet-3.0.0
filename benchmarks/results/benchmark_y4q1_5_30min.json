@@ -1,0 +1,132 @@
+{
+  "benchmark": "session_length_30min",
+  "description": "30-minute continuous tracking session. 3 seeds.",
+  "results": {
+    "duration_minutes": 30.0,
+    "n_seeds": 3,
+    "per_seed": [
+      {
+        "seed": 42,
+        "aggregate": {
+          "duration_minutes": 30.0,
+          "seed": 42,
+          "total_frames": 681290,
+          "total_wall_seconds": 1800.02,
+          "n_intervals": 13625,
+          "n_objects": 4,
+          "mean_fps": 387.02,
+          "std_fps": 30.37,
+          "fps_degradation_pct": -33.03,
+          "gpu_mem_initial_mb": 0.0,
+          "gpu_mem_peak_mb": 0.0,
+          "gpu_mem_final_mb": 0.0,
+          "gpu_mem_growth_mb": 0.0,
+          "pt_mean_ip": 0.490798,
+          "pt_std_ip": 0.085234,
+          "sa_mean_ip": 0.999939,
+          "sa_std_ip": 0.000478,
+          "pt_mean_order_param": 0.973222,
+          "pt_std_order_param": 0.00437,
+          "pt_mean_slip_fraction": 1.8e-05,
+          "pt_max_slip_fraction": 0.005102,
+          "fps_trend_slope": -0.000328,
+          "pt_ip_trend_slope": -1e-08,
+          "sa_ip_trend_slope": 0.0,
+          "pt_r_trend_slope": -1e-08
+        },
+        "n_intervals": 13625
+      },
+      {
+        "seed": 43,
+        "aggregate": {
+          "duration_minutes": 30.0,
+          "seed": 43,
+          "total_frames": 648400,
+          "total_wall_seconds": 1800.02,
+          "n_intervals": 12968,
+          "n_objects": 4,
+          "mean_fps": 370.96,
+          "std_fps": 35.87,
+          "fps_degradation_pct": -11.83,
+          "gpu_mem_initial_mb": 0.0,
+          "gpu_mem_peak_mb": 0.0,
+          "gpu_mem_final_mb": 0.0,
+          "gpu_mem_growth_mb": 0.0,
+          "pt_mean_ip": 0.472957,
+          "pt_std_ip": 0.076499,
+          "sa_mean_ip": 0.999984,
+          "sa_std_ip": 0.000245,
+          "pt_mean_order_param": 0.966856,
+          "pt_std_order_param": 0.003605,
+          "pt_mean_slip_fraction": 0.0,
+          "pt_max_slip_fraction": 0.005102,
+          "fps_trend_slope": -5.4e-05,
+          "pt_ip_trend_slope": 5e-08,
+          "sa_ip_trend_slope": -0.0,
+          "pt_r_trend_slope": -1e-08
+        },
+        "n_intervals": 12968
+      },
+      {
+        "seed": 44,
+        "aggregate": {
+          "duration_minutes": 30.0,
+          "seed": 44,
+          "total_frames": 694040,
+          "total_wall_seconds": 1800.01,
+          "n_intervals": 13880,
+          "n_objects": 4,
+          "mean_fps": 393.22,
+          "std_fps": 24.89,
+          "fps_degradation_pct": -2.06,
+          "gpu_mem_initial_mb": 0.0,
+          "gpu_mem_peak_mb": 0.0,
+          "gpu_mem_final_mb": 0.0,
+          "gpu_mem_growth_mb": 0.0,
+          "pt_mean_ip": 0.433283,
+          "pt_std_ip": 0.074687,
+          "sa_mean_ip": 0.999916,
+          "sa_std_ip": 0.000564,
+          "pt_mean_order_param": 0.963523,
+          "pt_std_order_param": 0.005272,
+          "pt_mean_slip_fraction": 1e-06,
+          "pt_max_slip_fraction": 0.005102,
+          "fps_trend_slope": 2.7e-05,
+          "pt_ip_trend_slope": 1.1e-07,
+          "sa_ip_trend_slope": 0.0,
+          "pt_r_trend_slope": -0.0
+        },
+        "n_intervals": 13880
+      }
+    ],
+    "pt_ip_ci": {
+      "mean": 0.46567933333333333,
+      "ci_lower": 0.43328300000000003,
+      "ci_upper": 0.490798,
+      "ci_width": 0.05751499999999998,
+      "se": 0.013895295321041919
+    },
+    "sa_ip_ci": {
+      "mean": 0.9999463333333333,
+      "ci_lower": 0.9999160000000001,
+      "ci_upper": 0.999984,
+      "ci_width": 6.799999999984596e-05,
+      "se": 1.626378152112843e-05
+    },
+    "fps_ci": {
+      "mean": 383.73333333333335,
+      "ci_lower": 370.96,
+      "ci_upper": 393.22,
+      "ci_width": 22.260000000000048,
+      "se": 5.406406612599581
+    },
+    "order_param_ci": {
+      "mean": 0.967867,
+      "ci_lower": 0.963523,
+      "ci_upper": 0.9732220000000001,
+      "ci_width": 0.009699000000000124,
+      "se": 0.002341138757912482
+    },
+    "mean_slip_fraction": 6e-06
+  }
+}

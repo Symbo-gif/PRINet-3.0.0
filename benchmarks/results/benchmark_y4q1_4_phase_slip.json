@@ -1,0 +1,36 @@
+{
+  "benchmark": "phase_slip_rate_analysis",
+  "description": "Phase-slip rate for PhaseTracker across sequence lengths. Adapted from clinical neurophysiology (epilepsy PSR).",
+  "results": [
+    {
+      "n_frames": 10,
+      "total_slips": 0,
+      "slips_per_step": 0.0,
+      "slip_fraction": 0.0
+    },
+    {
+      "n_frames": 20,
+      "total_slips": 0,
+      "slips_per_step": 0.0,
+      "slip_fraction": 0.0
+    },
+    {
+      "n_frames": 40,
+      "total_slips": 0,
+      "slips_per_step": 0.0,
+      "slip_fraction": 0.0
+    },
+    {
+      "n_frames": 60,
+      "total_slips": 0,
+      "slips_per_step": 0.0,
+      "slip_fraction": 0.0
+    },
+    {
+      "n_frames": 100,
+      "total_slips": 0,
+      "slips_per_step": 0.0,
+      "slip_fraction": 0.0
+    }
+  ]
+}

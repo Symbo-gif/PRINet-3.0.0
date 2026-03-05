@@ -1,0 +1,7 @@
+{
+  "benchmark": "preregistration_hash",
+  "sha256": "ad1ed5f16e9fbcdd223b75f049f18e1b9ae436bdb79d7f67478da0e4a6ff2c19",
+  "plan_exists": true,
+  "expected": "ad1ed5f16e9fbcdd223b75f049f18e1b9ae436bdb79d7f67478da0e4a6ff2c19",
+  "hash_verified": true
+}

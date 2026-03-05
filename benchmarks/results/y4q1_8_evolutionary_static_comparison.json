@@ -1,0 +1,26 @@
+{
+  "benchmark": "evolutionary_static_comparison",
+  "N": 256,
+  "generations": 100,
+  "bc_static": {
+    "mean": 0.488421897093455,
+    "ci": {
+      "mean": 0.488421897093455,
+      "ci_lower": 0.3728199899196625,
+      "ci_upper": 0.6125271916389465,
+      "ci_width": 0.23970720171928406,
+      "se": 0.05634656316882014
+    }
+  },
+  "bc_evolutionary": {
+    "mean": 0.5093443095684052,
+    "ci": {
+      "mean": 0.5093443095684052,
+      "ci_lower": 0.37109535932540894,
+      "ci_upper": 0.721031129360199,
+      "ci_width": 0.34993577003479004,
+      "se": 0.08768653380298924
+    }
+  },
+  "evolution_strengthens": true
+}

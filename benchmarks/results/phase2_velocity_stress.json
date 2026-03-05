@@ -1,0 +1,116 @@
+{
+  "benchmark": "phase2_exp2_4_velocity_stress",
+  "description": "Velocity stress test: PT vs SA at increasing speeds",
+  "speed_multipliers": [
+    1.0,
+    2.0,
+    5.0,
+    10.0
+  ],
+  "n_objects": 5,
+  "n_frames": 50,
+  "n_seeds": 7,
+  "sweep": [
+    {
+      "speed_multiplier": 1.0,
+      "pt_stats": {
+        "mean": 0.9989795918367347,
+        "std": 0.00044086671417740216,
+        "ci_low": 0.9986880466472303,
+        "ci_high": 0.9993002915451894
+      },
+      "sa_stats": {
+        "mean": 1.0,
+        "std": 0.0,
+        "ci_low": 1.0,
+        "ci_high": 1.0
+      },
+      "welch_t": {
+        "t_stat": -6.123724356958065,
+        "p_value": 0.1528012896593506,
+        "cohens_d": -3.2732683535399496,
+        "mean_a": 0.9989795918367347,
+        "mean_b": 1.0,
+        "n_a": 7,
+        "n_b": 7
+      },
+      "cliffs_delta": -1.0
+    },
+    {
+      "speed_multiplier": 2.0,
+      "pt_stats": {
+        "mean": 0.9963265306122449,
+        "std": 0.0014334222792996673,
+        "ci_low": 0.9954227405247813,
+        "ci_high": 0.997405247813411
+      },
+      "sa_stats": {
+        "mean": 1.0,
+        "std": 0.0,
+        "ci_low": 1.0,
+        "ci_high": 1.0
+      },
+      "welch_t": {
+        "t_stat": -6.780337231508155,
+        "p_value": 0.0005031907132679502,
+        "cohens_d": -3.6242426981558378,
+        "mean_a": 0.9963265306122449,
+        "mean_b": 1.0,
+        "n_a": 7,
+        "n_b": 7
+      },
+      "cliffs_delta": -1.0
+    },
+    {
+      "speed_multiplier": 5.0,
+      "pt_stats": {
+        "mean": 0.9711370262390672,
+        "std": 0.002797871959762055,
+        "ci_low": 0.9691545189504376,
+        "ci_high": 0.9729737609329447
+      },
+      "sa_stats": {
+        "mean": 1.0,
+        "std": 0.0,
+        "ci_low": 1.0,
+        "ci_high": 1.0
+      },
+      "welch_t": {
+        "t_stat": -27.293690264405562,
+        "p_value": 1.5987627389007626e-07,
+        "cohens_d": -14.589091112876156,
+        "mean_a": 0.9711370262390672,
+        "mean_b": 1.0,
+        "n_a": 7,
+        "n_b": 7
+      },
+      "cliffs_delta": -1.0
+    },
+    {
+      "speed_multiplier": 10.0,
+      "pt_stats": {
+        "mean": 0.8990087463556851,
+        "std": 0.008532815986082538,
+        "ci_low": 0.8929154518950437,
+        "ci_high": 0.9044314868804664
+      },
+      "sa_stats": {
+        "mean": 1.0,
+        "std": 0.0,
+        "ci_low": 1.0,
+        "ci_high": 1.0
+      },
+      "welch_t": {
+        "t_stat": -31.31413383006456,
+        "p_value": 7.045412686418178e-08,
+        "cohens_d": -16.738108593669832,
+        "mean_a": 0.8990087463556851,
+        "mean_b": 1.0,
+        "n_a": 7,
+        "n_b": 7
+      },
+      "cliffs_delta": -1.0
+    }
+  ],
+  "timestamp": "2026-03-05T06:50:57"
+}

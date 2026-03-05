@@ -1,0 +1,20 @@
+\begin{table}[t]
+\centering
+\caption{Head-to-head statistical comparison with Phase~1 hardening. TOST confirms equivalence at $\delta=0.5\%$; Bayesian $\mathrm{P(equiv)}=0.996$.}
+\label{tab:statistical}
+\begin{tabular}{lcc}
+\toprule
+Metric & PhaseTracker & Slot Attention \\
+\midrule
+Mean IP & 0.9987 & 1.0000 \\
+95\% CI & [0.9961, 1.0000] & [1.0000, 1.0000] \\
+Parameters & 4,991 & 83,904 \\
+\midrule
+$\Delta$ IP & \multicolumn{2}{c}{-0.0013} \\
+Welch's $p$ & \multicolumn{2}{c}{0.423} \\
+Cohen's $d$ & \multicolumn{2}{c}{-0.82} \\
+Holm--Bonferroni sig. & \multicolumn{2}{c}{---} \\
+Outcome & \multicolumn{2}{c}{\texttt{B\_no\_temporal\_advantage}} \\
+\bottomrule
+\end{tabular}
+\end{table}

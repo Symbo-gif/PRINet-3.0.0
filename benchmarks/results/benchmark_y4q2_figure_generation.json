@@ -1,0 +1,159 @@
+{
+  "benchmark": "figure_generation_validation",
+  "total_generators": 10,
+  "ok_count": 10,
+  "missing_data_count": 0,
+  "results": [
+    {
+      "name": "fig_clevr_n_capacity",
+      "status": "OK",
+      "files": [
+        "fig2_clevr_n_capacity.pdf",
+        "fig2_clevr_n_capacity.png"
+      ],
+      "error": null,
+      "file_count": 2,
+      "file_sizes_bytes": [
+        16346,
+        66334
+      ],
+      "all_nonempty": true,
+      "elapsed_s": 0.23900628089904785
+    },
+    {
+      "name": "fig_chimera_heatmap",
+      "status": "OK",
+      "files": [
+        "fig4_chimera_k_alpha_heatmap.pdf",
+        "fig4_chimera_k_alpha_heatmap.png"
+      ],
+      "error": null,
+      "file_count": 2,
+      "file_sizes_bytes": [
+        20649,
+        86416
+      ],
+      "all_nonempty": true,
+      "elapsed_s": 0.21528363227844238
+    },
+    {
+      "name": "fig_mot_identity_preservation",
+      "status": "OK",
+      "files": [
+        "fig5_mot_occlusion_comparison.pdf",
+        "fig5_mot_occlusion_comparison.png"
+      ],
+      "error": null,
+      "file_count": 2,
+      "file_sizes_bytes": [
+        17127,
+        68580
+      ],
+      "all_nonempty": true,
+      "elapsed_s": 0.14158415794372559
+    },
+    {
+      "name": "fig_oscillosim_scaling",
+      "status": "OK",
+      "files": [
+        "fig6_oscillosim_scaling.pdf",
+        "fig6_oscillosim_scaling.png"
+      ],
+      "error": null,
+      "file_count": 2,
+      "file_sizes_bytes": [
+        20046,
+        72199
+      ],
+      "all_nonempty": true,
+      "elapsed_s": 0.48322582244873047
+    },
+    {
+      "name": "fig_ablation_results",
+      "status": "OK",
+      "files": [
+        "fig7_ablation_results.pdf",
+        "fig7_ablation_results.png"
+      ],
+      "error": null,
+      "file_count": 2,
+      "file_sizes_bytes": [
+        16940,
+        88657
+      ],
+      "all_nonempty": true,
+      "elapsed_s": 0.20456695556640625
+    },
+    {
+      "name": "fig_parameter_efficiency",
+      "status": "OK",
+      "files": [
+        "fig8_parameter_efficiency.pdf",
+        "fig8_parameter_efficiency.png"
+      ],
+      "error": null,
+      "file_count": 2,
+      "file_sizes_bytes": [
+        18275,
+        84507
+      ],
+      "all_nonempty": true,
+      "elapsed_s": 0.24791717529296875
+    },
+    {
+      "name": "fig_training_curves",
+      "status": "OK",
+      "files": [
+        "fig9_training_curves.pdf",
+        "fig9_training_curves.png"
+      ],
+      "error": null,
+      "file_count": 2,
+      "file_sizes_bytes": [
+        18350,
+        108804
+      ],
+      "all_nonempty": true,
+      "elapsed_s": 0.2163982391357422
+    },
+    {
+      "name": "fig_gold_standard_chimera",
+      "status": "OK",
+      "files": [
+        "fig3_chimera_metrics.pdf",
+        "fig3_chimera_metrics.png"
+      ],
+      "error": null,
+      "file_count": 2,
+      "file_sizes_bytes": [
+        15934,
+        54547
+      ],
+      "all_nonempty": true,
+      "elapsed_s": 0.12473464012145996
+    },
+    {
+      "name": "fig_statistical_summary",
+      "status": "OK",
+      "files": [
+        "fig10_statistical_summary.pdf",
+        "fig10_statistical_summary.png"
+      ],
+      "error": null,
+      "file_count": 2,
+      "file_sizes_bytes": [
+        22910,
+        49520
+      ],
+      "all_nonempty": true,
+      "elapsed_s": 0.1203145980834961
+    },
+    {
+      "name": "generate_all_figures",
+      "status": "OK",
+      "figures_attempted": 9,
+      "figures_generated": 9,
+      "elapsed_s": 1.8373193740844727
+    }
+  ]
+}

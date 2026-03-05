@@ -1,0 +1,43 @@
+{
+  "benchmark": "trained_comparison_long",
+  "n_frames": 80,
+  "n_seqs": 8,
+  "train_n_frames": 20,
+  "phase_tracker": {
+    "ip_mean": 0.9996044303797469,
+    "ip_std": 0.0011188398436496065,
+    "idsw_mean": 0.0,
+    "idsw_std": 0.0,
+    "tfr_mean": 1.03125,
+    "tfr_std": 0.08838834764831845,
+    "ioc_mean": 1.0,
+    "ioc_std": 0.0,
+    "mt_mean": 1.0,
+    "mt_std": 0.0,
+    "ml_mean": 0.0,
+    "ml_std": 0.0,
+    "mean_dur_mean": 77.0,
+    "mean_dur_std": 5.656854249492381,
+    "median_dur_mean": 79.0,
+    "median_dur_std": 0.0
+  },
+  "slot_attention": {
+    "ip_mean": 1.0,
+    "ip_std": 0.0,
+    "idsw_mean": 0.0,
+    "idsw_std": 0.0,
+    "tfr_mean": 1.0,
+    "tfr_std": 0.0,
+    "ioc_mean": 1.5,
+    "ioc_std": 0.0,
+    "mt_mean": 1.0,
+    "mt_std": 0.0,
+    "ml_mean": 0.0,
+    "ml_std": 0.0,
+    "mean_dur_mean": 79.0,
+    "mean_dur_std": 0.0,
+    "median_dur_mean": 79.0,
+    "median_dur_std": 0.0
+  },
+  "ip_advantage": -0.00039556962025311115
+}

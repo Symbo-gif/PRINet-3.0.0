@@ -1,0 +1,62 @@
+{
+  "benchmark": "multi_seed_head_to_head",
+  "description": "5-seed head-to-head PhaseTracker vs SlotAttention with bootstrap 95% CI and Welch's t-test.",
+  "results": {
+    "n_frames": 40,
+    "n_objects": 4,
+    "n_seeds": 5,
+    "per_seed": [
+      {
+        "seed": 42,
+        "ip_phase": 0.3782051282051282,
+        "ip_slot": 1.0,
+        "ip_advantage": -0.6217948717948718
+      },
+      {
+        "seed": 43,
+        "ip_phase": 0.33974358974358976,
+        "ip_slot": 1.0,
+        "ip_advantage": -0.6602564102564102
+      },
+      {
+        "seed": 44,
+        "ip_phase": 0.40384615384615385,
+        "ip_slot": 1.0,
+        "ip_advantage": -0.5961538461538461
+      },
+      {
+        "seed": 45,
+        "ip_phase": 0.5064102564102564,
+        "ip_slot": 0.9957264957264957,
+        "ip_advantage": -0.48931623931623935
+      },
+      {
+        "seed": 46,
+        "ip_phase": 0.34615384615384615,
+        "ip_slot": 1.0,
+        "ip_advantage": -0.6538461538461539
+      }
+    ],
+    "phase_tracker_ci": {
+      "mean": 0.3948717948717949,
+      "ci_lower": 0.35,
+      "ci_upper": 0.45384615384615384,
+      "ci_width": 0.10384615384615387,
+      "se": 0.026837069958938014
+    },
+    "slot_attention_ci": {
+      "mean": 0.9991452991452991,
+      "ci_lower": 0.9974358974358974,
+      "ci_upper": 1.0,
+      "ci_width": 0.002564102564102555,
+      "se": 0.0007637975212825835
+    },
+    "welch_t_test": {
+      "t_stat": -20.017006797277276,
+      "p_value": 3.630839688214436e-05,
+      "cohens_d": -12.659866683693705,
+      "mean_diff": -0.6042735042735042
+    },
+    "conclusion": "slot_attention_advantage_significant"
+  }
+}

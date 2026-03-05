@@ -1,0 +1,40 @@
+{
+  "benchmark": "P.4_order_param_convergence",
+  "device": "cuda",
+  "n_oscillators": 2000,
+  "n_steps": 500,
+  "results": [
+    {
+      "coupling_strength": 0.0,
+      "final_order_param": 0.0186,
+      "wall_time_s": 0.2036
+    },
+    {
+      "coupling_strength": 0.5,
+      "final_order_param": 0.02,
+      "wall_time_s": 0.1811
+    },
+    {
+      "coupling_strength": 1.0,
+      "final_order_param": 0.0216,
+      "wall_time_s": 0.181
+    },
+    {
+      "coupling_strength": 2.0,
+      "final_order_param": 0.0256,
+      "wall_time_s": 0.1847
+    },
+    {
+      "coupling_strength": 5.0,
+      "final_order_param": 0.0821,
+      "wall_time_s": 0.1777
+    },
+    {
+      "coupling_strength": 10.0,
+      "final_order_param": 0.9042,
+      "wall_time_s": 0.1931
+    }
+  ],
+  "roughly_monotonic": true,
+  "status": "PASS"
+}

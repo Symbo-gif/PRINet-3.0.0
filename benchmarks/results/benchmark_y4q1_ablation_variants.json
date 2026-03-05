@@ -1,0 +1,33 @@
+{
+  "benchmark": "ablation_variants",
+  "variants": [
+    {
+      "variant": "full",
+      "n_params": 131692,
+      "total_flops": 2065448,
+      "test_accuracy": 0.3125,
+      "test_loss": 1.7980129718780518
+    },
+    {
+      "variant": "attention_only",
+      "n_params": 118485,
+      "total_flops": 1874280,
+      "test_accuracy": 0.21875,
+      "test_loss": 1.699535846710205
+    },
+    {
+      "variant": "oscillator_only",
+      "n_params": 122844,
+      "total_flops": 1928168,
+      "test_accuracy": 0.15625,
+      "test_loss": 1.685530662536621
+    },
+    {
+      "variant": "shared_phase",
+      "n_params": 131692,
+      "total_flops": 2065448,
+      "test_accuracy": 0.25,
+      "test_loss": 1.7521531581878662
+    }
+  ]
+}

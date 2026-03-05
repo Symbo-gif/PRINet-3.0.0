@@ -1,0 +1,33 @@
+{
+  "benchmark": "recovery_speed",
+  "description": "Post-occlusion re-binding latency at 30% occlusion rate.",
+  "phase_tracker": {
+    "mean_recovery_frames": 1.6994047619047619,
+    "n_events": 8,
+    "sample": [
+      1.6666666666666667,
+      1.5,
+      1.6,
+      1.6428571428571428,
+      1.5,
+      1.7333333333333334,
+      2.2857142857142856,
+      1.6666666666666667
+    ]
+  },
+  "slot_attention": {
+    "mean_recovery_frames": 1.0,
+    "n_events": 8,
+    "sample": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "faster_recovery": "slot_attention"
+}

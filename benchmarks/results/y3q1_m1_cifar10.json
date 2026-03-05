@@ -1,0 +1,12 @@
+{
+  "benchmark": "M.1_cifar10_arch_check",
+  "device": "cuda",
+  "n_params": 2096721,
+  "forward_ms": 111.0,
+  "output_shape": [
+    8,
+    10
+  ],
+  "log_probs_mean": -2.3214,
+  "status": "PASS"
+}

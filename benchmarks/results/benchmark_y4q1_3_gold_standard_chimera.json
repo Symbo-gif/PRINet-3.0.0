@@ -1,0 +1,71 @@
+{
+  "benchmark": "gold_standard_chimera",
+  "params": {
+    "N": 256,
+    "k": 90,
+    "K": 100.0,
+    "alpha": 1.5207963267948965,
+    "A": 0.995,
+    "dt": 0.05,
+    "n_steps": 10000,
+    "transient_steps": 5000,
+    "integrator": "rk4",
+    "n_seeds": 3
+  },
+  "seeds": [
+    {
+      "seed": 0,
+      "bc": 0.5821818113327026,
+      "si": 0.7978047132492065,
+      "eta": 8,
+      "chi": 0.6015625,
+      "r_mean": 0.4133821129798889,
+      "r_std": 0.18157655000686646,
+      "order_param_final": 0.07081988453865051,
+      "wall_time_s": 7.4263508000876755,
+      "throughput": 344933.42650132923,
+      "chimera_bc": true
+    },
+    {
+      "seed": 1,
+      "bc": 0.5678869485855103,
+      "si": 0.7827875018119812,
+      "eta": 11,
+      "chi": 0.2109375,
+      "r_mean": 0.594796895980835,
+      "r_std": 0.1006423830986023,
+      "order_param_final": 0.5429324507713318,
+      "wall_time_s": 7.352598599973135,
+      "throughput": 348210.5520972358,
+      "chimera_bc": true
+    },
+    {
+      "seed": 2,
+      "bc": 0.591027021408081,
+      "si": 0.7731128931045532,
+      "eta": 10,
+      "chi": 0.640625,
+      "r_mean": 0.3921789824962616,
+      "r_std": 0.17995594441890717,
+      "order_param_final": 0.06403885036706924,
+      "wall_time_s": 7.393273000023328,
+      "throughput": 346294.45387605997,
+      "chimera_bc": true
+    }
+  ],
+  "aggregate": {
+    "bc_mean": 0.580365260442098,
+    "bc_ci_lower": 0.5678869485855103,
+    "bc_ci_upper": 0.591027021408081,
+    "bc_ci_width": 0.0231400728225708,
+    "si_mean": 0.7845683693885803,
+    "chi_mean": 0.484375,
+    "eta_values": [
+      8,
+      11,
+      10
+    ],
+    "chimera_detected_any": true,
+    "chimera_detected_all": true
+  }
+}

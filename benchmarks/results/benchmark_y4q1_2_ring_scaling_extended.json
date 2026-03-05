@@ -1,0 +1,59 @@
+{
+  "benchmark": "ring_scaling_extended",
+  "scales": [
+    {
+      "N": 64,
+      "k_neighbors": 16,
+      "n_seeds": 3,
+      "throughput_mean": 252997.02608189298,
+      "throughput_ci_lower": 237053.19167529946,
+      "throughput_ci_upper": 263241.02345560404,
+      "r_final_mean": 0.1868167221546173
+    },
+    {
+      "N": 256,
+      "k_neighbors": 20,
+      "n_seeds": 3,
+      "throughput_mean": 995212.3719666917,
+      "throughput_ci_lower": 944816.0973464004,
+      "throughput_ci_upper": 1030111.4447057731,
+      "r_final_mean": 0.011469568125903606
+    },
+    {
+      "N": 1024,
+      "k_neighbors": 20,
+      "n_seeds": 3,
+      "throughput_mean": 4046071.866777954,
+      "throughput_ci_lower": 3838362.9389230586,
+      "throughput_ci_upper": 4176254.2429900314,
+      "r_final_mean": 0.0020575902890414
+    },
+    {
+      "N": 2048,
+      "k_neighbors": 20,
+      "n_seeds": 3,
+      "throughput_mean": 8059283.239905703,
+      "throughput_ci_lower": 7461800.17329432,
+      "throughput_ci_upper": 8432446.1433605,
+      "r_final_mean": 0.01875736005604267
+    },
+    {
+      "N": 4096,
+      "k_neighbors": 20,
+      "n_seeds": 3,
+      "throughput_mean": 16324561.832296604,
+      "throughput_ci_lower": 15263113.565191915,
+      "throughput_ci_upper": 17017754.810984828,
+      "r_final_mean": 0.028454607352614403
+    },
+    {
+      "N": 8192,
+      "k_neighbors": 20,
+      "n_seeds": 3,
+      "throughput_mean": 32041558.443187486,
+      "throughput_ci_lower": 30603683.04596461,
+      "throughput_ci_upper": 33250423.73625951,
+      "r_final_mean": 0.021348459646105766
+    }
+  ]
+}

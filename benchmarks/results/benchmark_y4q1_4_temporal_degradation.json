@@ -1,0 +1,55 @@
+{
+  "benchmark": "temporal_degradation_curves",
+  "description": "Identity preservation and binding persistence vs sequence length for both trackers.",
+  "results": [
+    {
+      "n_frames": 5,
+      "ip_phase": 0.25,
+      "ip_slot": 1.0,
+      "bp_phase": 0.25,
+      "bp_slot": 1.0
+    },
+    {
+      "n_frames": 10,
+      "ip_phase": 0.25,
+      "ip_slot": 1.0,
+      "bp_phase": 0.25,
+      "bp_slot": 1.0
+    },
+    {
+      "n_frames": 20,
+      "ip_phase": 0.2631578947368421,
+      "ip_slot": 1.0,
+      "bp_phase": 0.2631578947368421,
+      "bp_slot": 1.0
+    },
+    {
+      "n_frames": 40,
+      "ip_phase": 0.28846153846153844,
+      "ip_slot": 1.0,
+      "bp_phase": 0.28846153846153844,
+      "bp_slot": 1.0
+    },
+    {
+      "n_frames": 60,
+      "ip_phase": 0.3305084745762712,
+      "ip_slot": 1.0,
+      "bp_phase": 0.3305084745762712,
+      "bp_slot": 1.0
+    },
+    {
+      "n_frames": 80,
+      "ip_phase": 0.3512658227848101,
+      "ip_slot": 1.0,
+      "bp_phase": 0.3512658227848101,
+      "bp_slot": 1.0
+    },
+    {
+      "n_frames": 100,
+      "ip_phase": 0.37373737373737376,
+      "ip_slot": 1.0,
+      "bp_phase": 0.37373737373737376,
+      "bp_slot": 1.0
+    }
+  ]
+}

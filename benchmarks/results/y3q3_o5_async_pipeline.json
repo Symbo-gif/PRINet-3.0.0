@@ -1,0 +1,10 @@
+{
+  "benchmark": "O.5_async_pipeline",
+  "device": "cuda",
+  "n_steps": 20,
+  "sequential_ms": 644.6,
+  "pipeline_ms": 546.1,
+  "overhead_pct": -15.28,
+  "target": "zero GPU idle time (overlap CPU daemon with GPU training)",
+  "status": "PASS"
+}

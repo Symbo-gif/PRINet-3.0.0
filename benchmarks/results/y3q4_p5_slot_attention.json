@@ -1,0 +1,25 @@
+{
+  "benchmark": "P.5_slot_attention_comparison",
+  "device": "cuda",
+  "scene_dim": 16,
+  "query_dim": 60,
+  "n_train": 200,
+  "n_test": 50,
+  "epochs": 30,
+  "comparisons": {
+    "SlotAttentionCLEVRN": {
+      "accuracy": 0.88,
+      "train_time_s": 0.437,
+      "n_params": 67714
+    },
+    "HybridPRINetV2CLEVRN": {
+      "error": "mat1 and mat2 shapes cannot be multiplied (1x200 and 16x44)"
+    },
+    "MLP_Baseline": {
+      "accuracy": 0.66,
+      "train_time_s": 0.036,
+      "n_params": 18242
+    }
+  },
+  "status": "PASS"
+}

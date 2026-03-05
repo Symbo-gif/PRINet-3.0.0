@@ -1,0 +1,470 @@
+{
+  "benchmark": "phase2_exp2_1_object_scaling",
+  "description": "Object count scaling: IP vs N_objects for PT and SA",
+  "n_objects_tested": [
+    5,
+    8,
+    10,
+    15,
+    20
+  ],
+  "n_seeds": 7,
+  "seeds": [
+    42,
+    123,
+    456,
+    789,
+    1024,
+    2048,
+    3072
+  ],
+  "sweep": [
+    {
+      "n_objects": 5,
+      "pt_stats": {
+        "mean": 0.9984210526315789,
+        "std": 0.0010956136839295667,
+        "ci_low": 0.9976691729323308,
+        "ci_high": 0.999172932330827
+      },
+      "sa_stats": {
+        "mean": 1.0,
+        "std": 0.0,
+        "ci_low": 1.0,
+        "ci_high": 1.0
+      },
+      "pt_coherence_stats": {
+        "mean": 0.6996121211159497,
+        "std": 0.0011552453940364136,
+        "ci_low": 0.6988169502494926,
+        "ci_high": 0.7003670677206569
+      },
+      "welch_t": {
+        "t_stat": -3.812933455813548,
+        "p_value": 0.00883326395939509,
+        "cohens_d": -2.038098661460322,
+        "mean_a": 0.9984210526315789,
+        "mean_b": 1.0,
+        "n_a": 7,
+        "n_b": 7
+      },
+      "cliffs_delta": -0.8571428571428571,
+      "per_seed": [
+        {
+          "seed": 42,
+          "pt_ip": 0.9984210526315789,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.6980505968395032,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 123,
+          "pt_ip": 0.9984210526315789,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.6999779807893853,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 456,
+          "pt_ip": 0.9968421052631579,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.6998466661101893,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 789,
+          "pt_ip": 0.9973684210526315,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.7003977769299558,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 1024,
+          "pt_ip": 0.9984210526315789,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.7010360623660841,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 2048,
+          "pt_ip": 0.9994736842105263,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.6999768508108039,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 3072,
+          "pt_ip": 1.0,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.6979989139657272,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        }
+      ]
+    },
+    {
+      "n_objects": 8,
+      "pt_stats": {
+        "mean": 0.9978853383458647,
+        "std": 0.001643169679441529,
+        "ci_low": 0.9967575187969925,
+        "ci_high": 0.9990131578947369
+      },
+      "sa_stats": {
+        "mean": 1.0,
+        "std": 0.0,
+        "ci_low": 1.0,
+        "ci_high": 1.0
+      },
+      "pt_coherence_stats": {
+        "mean": 0.7001156800671627,
+        "std": 0.002210627374152308,
+        "ci_low": 0.6986484062402767,
+        "ci_high": 0.7017146854472339
+      },
+      "welch_t": {
+        "t_stat": -3.404924588060856,
+        "p_value": 0.014408320450375805,
+        "cohens_d": -1.8200087480465887,
+        "mean_a": 0.9978853383458647,
+        "mean_b": 1.0,
+        "n_a": 7,
+        "n_b": 7
+      },
+      "cliffs_delta": -0.8571428571428571,
+      "per_seed": [
+        {
+          "seed": 42,
+          "pt_ip": 0.9970394736842104,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.6985616439267209,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 123,
+          "pt_ip": 1.0,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.6999148425303007,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 456,
+          "pt_ip": 0.9967105263157894,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.7016046392290216,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 789,
+          "pt_ip": 0.9993421052631579,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.7010240768131457,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 1024,
+          "pt_ip": 0.9957236842105264,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.7037055429659391,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 2048,
+          "pt_ip": 0.9993421052631579,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.6989945461875513,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 3072,
+          "pt_ip": 0.9970394736842106,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.6970044688174599,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        }
+      ]
+    },
+    {
+      "n_objects": 10,
+      "pt_stats": {
+        "mean": 0.9979699248120302,
+        "std": 0.0016830744915472349,
+        "ci_low": 0.9968045112781955,
+        "ci_high": 0.9990977443609023
+      },
+      "sa_stats": {
+        "mean": 1.0,
+        "std": 0.0,
+        "ci_low": 1.0,
+        "ci_high": 1.0
+      },
+      "pt_coherence_stats": {
+        "mean": 0.7000094731947533,
+        "std": 0.0018792080452953858,
+        "ci_low": 0.6986990268069103,
+        "ci_high": 0.7012694616066781
+      },
+      "welch_t": {
+        "t_stat": -3.191227790038743,
+        "p_value": 0.018807141632719553,
+        "cohens_d": -1.7057830047823919,
+        "mean_a": 0.9979699248120302,
+        "mean_b": 1.0,
+        "n_a": 7,
+        "n_b": 7
+      },
+      "cliffs_delta": -1.0,
+      "per_seed": [
+        {
+          "seed": 42,
+          "pt_ip": 0.9968421052631579,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.6984889413181105,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 123,
+          "pt_ip": 0.9981578947368421,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.6995912093865244,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 456,
+          "pt_ip": 0.9955263157894736,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.701671588420868,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 789,
+          "pt_ip": 0.999736842105263,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.7007318747671027,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 1024,
+          "pt_ip": 0.9965789473684211,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.7024206506578546,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 2048,
+          "pt_ip": 0.999736842105263,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.7002427057216043,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 3072,
+          "pt_ip": 0.9992105263157894,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.696919342091209,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        }
+      ]
+    },
+    {
+      "n_objects": 15,
+      "pt_stats": {
+        "mean": 0.9976691729323308,
+        "std": 0.0013078288847769366,
+        "ci_low": 0.9968170426065164,
+        "ci_high": 0.9985463659147872
+      },
+      "sa_stats": {
+        "mean": 1.0,
+        "std": 0.0,
+        "ci_low": 1.0,
+        "ci_high": 1.0
+      },
+      "pt_coherence_stats": {
+        "mean": 0.6997121395025038,
+        "std": 0.0016296454787950469,
+        "ci_low": 0.698622557005488,
+        "ci_high": 0.7008158123582825
+      },
+      "welch_t": {
+        "t_stat": -4.715287177039514,
+        "p_value": 0.003273925918298474,
+        "cohens_d": -2.52042701381862,
+        "mean_a": 0.9976691729323308,
+        "mean_b": 1.0,
+        "n_a": 7,
+        "n_b": 7
+      },
+      "cliffs_delta": -1.0,
+      "per_seed": [
+        {
+          "seed": 42,
+          "pt_ip": 0.9970175438596491,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.6983966532506442,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 123,
+          "pt_ip": 0.9992982456140351,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.6995512529423362,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 456,
+          "pt_ip": 0.9980701754385966,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.7009057747690302,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 789,
+          "pt_ip": 0.9966666666666667,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.7006154951296354,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 1024,
+          "pt_ip": 0.9970175438596491,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.7019837435923125,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 2048,
+          "pt_ip": 0.9994736842105263,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.6994050195342616,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 3072,
+          "pt_ip": 0.9961403508771929,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.6971270372993068,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        }
+      ]
+    },
+    {
+      "n_objects": 20,
+      "pt_stats": {
+        "mean": 0.9978195488721805,
+        "std": 0.0010712636728402545,
+        "ci_low": 0.9971240601503758,
+        "ci_high": 0.9985526315789474
+      },
+      "sa_stats": {
+        "mean": 1.0,
+        "std": 0.0,
+        "ci_low": 1.0,
+        "ci_high": 1.0
+      },
+      "pt_coherence_stats": {
+        "mean": 0.6993447237445,
+        "std": 0.0022203262066421373,
+        "ci_low": 0.6978175260070573,
+        "ci_high": 0.7008492752125389
+      },
+      "welch_t": {
+        "t_stat": -5.385164807134253,
+        "p_value": 0.0016873854364362207,
+        "cohens_d": -2.8784916685155637,
+        "mean_a": 0.9978195488721805,
+        "mean_b": 1.0,
+        "n_a": 7,
+        "n_b": 7
+      },
+      "cliffs_delta": -1.0,
+      "per_seed": [
+        {
+          "seed": 42,
+          "pt_ip": 0.9964473684210524,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.6976540521571511,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 123,
+          "pt_ip": 0.9993421052631577,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.6987697068013643,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 456,
+          "pt_ip": 0.9977631578947369,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.7015698250971342,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 789,
+          "pt_ip": 0.9972368421052632,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.70100443990607,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 1024,
+          "pt_ip": 0.9973684210526315,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.7019358823173925,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 2048,
+          "pt_ip": 0.9992105263157895,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.6984859704971313,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        },
+        {
+          "seed": 3072,
+          "pt_ip": 0.9973684210526315,
+          "sa_ip": 1.0,
+          "pt_coherence": 0.6959931894352562,
+          "pt_epochs": 10,
+          "sa_epochs": 10
+        }
+      ]
+    }
+  ],
+  "crossover_n_star": null,
+  "timestamp": "2026-03-04T19:49:47"
+}

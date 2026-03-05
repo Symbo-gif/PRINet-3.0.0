@@ -1,0 +1,56 @@
+{
+  "benchmark": "Q4.5_oscillosim_stress",
+  "device": "cuda",
+  "tests": {
+    "long_duration": {
+      "status": "PASS",
+      "n_steps": 1000,
+      "final_r": 0.0218,
+      "min_r": 0.0037,
+      "max_r": 0.085,
+      "has_nan": false,
+      "throughput": 1890372.0,
+      "wall_time_s": 0.529
+    },
+    "extreme_coupling": {
+      "status": "PASS",
+      "coupling_strength": 50.0,
+      "final_r": 0.9877,
+      "dt": 0.001
+    },
+    "zero_coupling": {
+      "status": "PASS",
+      "final_r": 0.0132,
+      "expected": "~1/sqrt(N)"
+    },
+    "all_modes_n2000": {
+      "mean_field": {
+        "status": "PASS",
+        "final_r": 0.0146,
+        "throughput": 4785948.0,
+        "wall_time_s": 0.042
+      },
+      "sparse_knn": {
+        "status": "PASS",
+        "final_r": 0.0038,
+        "throughput": 5344450.0,
+        "wall_time_s": 0.037
+      },
+      "csr": {
+        "status": "PASS",
+        "final_r": 0.0192,
+        "throughput": 6199321.0,
+        "wall_time_s": 0.032
+      }
+    },
+    "large_scale_gpu": {
+      "status": "PASS",
+      "n_oscillators": 100000,
+      "n_steps": 50,
+      "final_r": 0.0044,
+      "throughput": 259876611.0,
+      "vram_mb": 37.4
+    }
+  },
+  "status": "PASS"
+}

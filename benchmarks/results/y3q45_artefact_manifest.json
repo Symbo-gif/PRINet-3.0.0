@@ -1,0 +1,511 @@
+{
+  "benchmark": "Q4.5_artefact_manifest",
+  "total_artefacts": 99,
+  "by_quarter": {
+    "y3q1": 8,
+    "y3q2": 6,
+    "y3q3": 9,
+    "y3q45": 9,
+    "y3q4": 5,
+    "other": 58,
+    "y2": 4
+  },
+  "artefacts": [
+    {
+      "path": "benchmarks\\results\\y3q1_m1_cifar10.json",
+      "size_bytes": 208,
+      "sha256": "ec81e20c0c5f7bf2"
+    },
+    {
+      "path": "benchmarks\\results\\y3q1_m2_fashion_mnist.json",
+      "size_bytes": 159,
+      "sha256": "fe175b3d8c9b1fb9"
+    },
+    {
+      "path": "benchmarks\\results\\y3q1_m3_clevr_extended.json",
+      "size_bytes": 446,
+      "sha256": "58b025f322aee7f8"
+    },
+    {
+      "path": "benchmarks\\results\\y3q1_m4_adversarial_clevr.json",
+      "size_bytes": 569,
+      "sha256": "4c4c57485a9a0c17"
+    },
+    {
+      "path": "benchmarks\\results\\y3q1_m5_profiler.json",
+      "size_bytes": 1131,
+      "sha256": "0e00aae9072eba09"
+    },
+    {
+      "path": "benchmarks\\results\\y3q1_r1_propagation_import.json",
+      "size_bytes": 183,
+      "sha256": "18ca1b7e83f7ccc4"
+    },
+    {
+      "path": "benchmarks\\results\\y3q1_r3_phase_fix.json",
+      "size_bytes": 177,
+      "sha256": "d78e6dcc81264d9e"
+    },
+    {
+      "path": "benchmarks\\results\\y3q1_summary.json",
+      "size_bytes": 3323,
+      "sha256": "b50ff6981678b34d"
+    },
+    {
+      "path": "benchmarks\\results\\y3q2_n1_mot17_linear.json",
+      "size_bytes": 827,
+      "sha256": "c7b3b2e63cc0e25d"
+    },
+    {
+      "path": "benchmarks\\results\\y3q2_n2_crowded_mot.json",
+      "size_bytes": 612,
+      "sha256": "5417c0ea9f669450"
+    },
+    {
+      "path": "benchmarks\\results\\y3q2_n3_temporal_reasoning.json",
+      "size_bytes": 406,
+      "sha256": "12bdcf99975125c1"
+    },
+    {
+      "path": "benchmarks\\results\\y3q2_n4_adaptive_allocation.json",
+      "size_bytes": 2809,
+      "sha256": "6fd611ad6f000024"
+    },
+    {
+      "path": "benchmarks\\results\\y3q2_n5_subconscious_ab.json",
+      "size_bytes": 545,
+      "sha256": "ffa8980d3a925286"
+    },
+    {
+      "path": "benchmarks\\results\\y3q2_summary.json",
+      "size_bytes": 5889,
+      "sha256": "d6b02f0b8ca8c59e"
+    },
+    {
+      "path": "benchmarks\\results\\y3q3_o1_torch_compile.json",
+      "size_bytes": 613,
+      "sha256": "0d52ee6894c4b124"
+    },
+    {
+      "path": "benchmarks\\results\\y3q3_o2_fused_kernel.json",
+      "size_bytes": 704,
+      "sha256": "9edd54a5bec062fd"
+    },
+    {
+      "path": "benchmarks\\results\\y3q3_o3_mixed_precision.json",
+      "size_bytes": 368,
+      "sha256": "180b458d24d682c9"
+    },
+    {
+      "path": "benchmarks\\results\\y3q3_o4_sparse_knn_scaling.json",
+      "size_bytes": 1743,
+      "sha256": "84da47c4e8172d56"
+    },
+    {
+      "path": "benchmarks\\results\\y3q3_o5_async_pipeline.json",
+      "size_bytes": 254,
+      "sha256": "36721d2f7043c915"
+    },
+    {
+      "path": "benchmarks\\results\\y3q3_o6_pruning.json",
+      "size_bytes": 819,
+      "sha256": "dd9de5de9acdefb5"
+    },
+    {
+      "path": "benchmarks\\results\\y3q3_o7_recovered_tests.json",
+      "size_bytes": 1306,
+      "sha256": "a34726abaddcd077"
+    },
+    {
+      "path": "benchmarks\\results\\y3q3_r4_csr_vram.json",
+      "size_bytes": 1425,
+      "sha256": "19e5960177e7fa96"
+    },
+    {
+      "path": "benchmarks\\results\\y3q3_summary.json",
+      "size_bytes": 8005,
+      "sha256": "15344ad8a95a8da7"
+    },
+    {
+      "path": "benchmarks\\results\\y3q45_api_stability.json",
+      "size_bytes": 263,
+      "sha256": "b4b689bd33802d61"
+    },
+    {
+      "path": "benchmarks\\results\\y3q45_artefact_manifest.json",
+      "size_bytes": 15455,
+      "sha256": "3508241eaf1e89f8"
+    },
+    {
+      "path": "benchmarks\\results\\y3q45_clevr_pipeline.json",
+      "size_bytes": 679,
+      "sha256": "bfbf0e454f724825"
+    },
+    {
+      "path": "benchmarks\\results\\y3q45_cross_integration.json",
+      "size_bytes": 913,
+      "sha256": "421a372c861f8354"
+    },
+    {
+      "path": "benchmarks\\results\\y3q45_oscillosim_stress.json",
+      "size_bytes": 1277,
+      "sha256": "4a7c3264e0cddaa0"
+    },
+    {
+      "path": "benchmarks\\results\\y3q45_regression_gate.json",
+      "size_bytes": 1130,
+      "sha256": "3c15ee96fa958757"
+    },
+    {
+      "path": "benchmarks\\results\\y3q45_subconscious_pipeline.json",
+      "size_bytes": 524,
+      "sha256": "361efe24986fef9d"
+    },
+    {
+      "path": "benchmarks\\results\\y3q45_summary.json",
+      "size_bytes": 488,
+      "sha256": "56a34ad18990d740"
+    },
+    {
+      "path": "benchmarks\\results\\y3q45_test_health.json",
+      "size_bytes": 279,
+      "sha256": "bccf32ed6aaa66dc"
+    },
+    {
+      "path": "benchmarks\\results\\y3q4_p3_packaging.json",
+      "size_bytes": 378,
+      "sha256": "4439c8990dff2a56"
+    },
+    {
+      "path": "benchmarks\\results\\y3q4_p4_order_param.json",
+      "size_bytes": 864,
+      "sha256": "d27950a6018ddd15"
+    },
+    {
+      "path": "benchmarks\\results\\y3q4_p4_oscillosim_scaling.json",
+      "size_bytes": 2680,
+      "sha256": "e0425ff635f9f64c"
+    },
+    {
+      "path": "benchmarks\\results\\y3q4_p5_slot_attention.json",
+      "size_bytes": 558,
+      "sha256": "2dbb015dfe1afce4"
+    },
+    {
+      "path": "benchmarks\\results\\y3q4_summary.json",
+      "size_bytes": 5007,
+      "sha256": "623a77bf5c5659a2"
+    },
+    {
+      "path": "benchmarks\\benchmark_y2q4_j3_regression.json",
+      "size_bytes": 517,
+      "sha256": "6642d017a878e4b7"
+    },
+    {
+      "path": "benchmarks\\benchmark_y2q4_k1_capacity.json",
+      "size_bytes": 1144,
+      "sha256": "78158b898d53bb83"
+    },
+    {
+      "path": "benchmarks\\benchmark_y2q4_k2_phase_diagrams.json",
+      "size_bytes": 64492,
+      "sha256": "4944f74b5e228005"
+    },
+    {
+      "path": "benchmarks\\benchmark_y2q4_l1_archive.json",
+      "size_bytes": 13163,
+      "sha256": "56f2ab0fe47f388d"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\activation_profile.json",
+      "size_bytes": 3485,
+      "sha256": "b8d8db2175bcc771"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_clevr10_hybrid.json",
+      "size_bytes": 1571,
+      "sha256": "6155b30c1a6cef95"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_clevr_n_sweep.json",
+      "size_bytes": 2173,
+      "sha256": "7813fd31b647bf9d"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_coupling_complexity.json",
+      "size_bytes": 25039,
+      "sha256": "83d72a45c64e5e23"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_desync_catastrophe.json",
+      "size_bytes": 1769,
+      "sha256": "9b85e9376d8bb8db"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_gpu_results.json",
+      "size_bytes": 5773,
+      "sha256": "91f9ca74fa3148bd"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_mnist_subset.json",
+      "size_bytes": 2456,
+      "sha256": "637aa2d61ad1a9d0"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_oscillator_scaling.json",
+      "size_bytes": 1185,
+      "sha256": "c9c812c7f4e3e26e"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_oscillobench.json",
+      "size_bytes": 6550,
+      "sha256": "c898ee0e8719caba"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_pairwise_coupling_gpu.json",
+      "size_bytes": 6487,
+      "sha256": "03d4188637b2c45f"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_phase_to_rate_ae.json",
+      "size_bytes": 766,
+      "sha256": "2761c9f3c7194c7d"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_q2_results.json",
+      "size_bytes": 4308,
+      "sha256": "17448ed2f3783027"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_q4_ablation.json",
+      "size_bytes": 4736,
+      "sha256": "1570da1b2cc29a68"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_q4_adaptive_control.json",
+      "size_bytes": 1780,
+      "sha256": "005b31bf0c8d5a66"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_q4_comparison.json",
+      "size_bytes": 3387,
+      "sha256": "58480c661cb274e8"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_q4_convergence.json",
+      "size_bytes": 20762,
+      "sha256": "274ae9382a5cccb7"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_q4_scalr_metrics.json",
+      "size_bytes": 1070,
+      "sha256": "33c1c645928a7c8c"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_q4_summary.json",
+      "size_bytes": 29,
+      "sha256": "910cd4dde3e66754"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_q4_throughput.json",
+      "size_bytes": 345,
+      "sha256": "b56deccd1a058e73"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_scalr_vs_adam.json",
+      "size_bytes": 1280,
+      "sha256": "5354a11328ae152e"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_y2q1_clevr6.json",
+      "size_bytes": 9285,
+      "sha256": "43bd9fbfe320c8f5"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_y2q1_latency.json",
+      "size_bytes": 1317,
+      "sha256": "3332a6f9fe385494"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_y2q1_telemetry.json",
+      "size_bytes": 317,
+      "sha256": "a92c26120369f07c"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_y2q1_telemetry_log.json",
+      "size_bytes": 9104,
+      "sha256": "230f5db082e5160f"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_y2q1_vram.json",
+      "size_bytes": 519,
+      "sha256": "b5c80c357c6ef5d1"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_y2q3_g2_sweep.json",
+      "size_bytes": 1610,
+      "sha256": "569f7b71e4884ea1"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_y2q3_g3_kernel.json",
+      "size_bytes": 226,
+      "sha256": "8585ecfc3e3243c4"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_y2q3_h1_medium_scale.json",
+      "size_bytes": 435,
+      "sha256": "368ab974f24d2ede"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_y2q3_h2_mot.json",
+      "size_bytes": 351,
+      "sha256": "ab28bc5af5c8f90d"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_y2q3_h3_oscillobench_v2.json",
+      "size_bytes": 730,
+      "sha256": "d9a9fbe0219aff88"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\benchmark_y2q3_i_subconscious.json",
+      "size_bytes": 289,
+      "sha256": "1f2fd2d7a527ea86"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\clevr_n_capacity\\capacity_scaling_curves.json",
+      "size_bytes": 4003,
+      "sha256": "898511490cd31fe0"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\concurrent_2regime_benchmark.json",
+      "size_bytes": 21565,
+      "sha256": "5a5865288d0b5eff"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\concurrent_3regime_benchmark.json",
+      "size_bytes": 33500,
+      "sha256": "c343459c7f0e2a9c"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\goldilocks_sustained_benchmark.json",
+      "size_bytes": 22721,
+      "sha256": "d0b5f25447174ef5"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\goldilocks_sustained_cpu_benchmark.json",
+      "size_bytes": 23501,
+      "sha256": "1fe028510d1593db"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\heterogeneous_gpu_cpu_benchmark.json",
+      "size_bytes": 14504,
+      "sha256": "1f28b2c48be99683"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\holomorphic_energy_profile.json",
+      "size_bytes": 2690,
+      "sha256": "0233031877fef7ed"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\multirate_kernel_benchmark.json",
+      "size_bytes": 8633,
+      "sha256": "c31319e51179fa5c"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\on_stress_benchmark.json",
+      "size_bytes": 25042,
+      "sha256": "d13408be4a07ae59"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\on_vs_onlogn_benchmark.json",
+      "size_bytes": 41831,
+      "sha256": "11bbbf8b3dc26cb7"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\on_vs_onlogn_cpu_mean_field.json",
+      "size_bytes": 6258,
+      "sha256": "e286b509688d4234"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\on_vs_onlogn_cpu_sparse_knn.json",
+      "size_bytes": 6273,
+      "sha256": "7ccd2e4b5e6c19a1"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\on_vs_onlogn_gpu_mean_field.json",
+      "size_bytes": 11522,
+      "sha256": "9440c969851f3088"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\on_vs_onlogn_gpu_sparse_knn.json",
+      "size_bytes": 11554,
+      "sha256": "751ed640ae114757"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\phase_diagram_2osc.json",
+      "size_bytes": 78330,
+      "sha256": "becb6aa3bd222412"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\phase_diagram_3osc.json",
+      "size_bytes": 80094,
+      "sha256": "9cdcafdf9253396b"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\phase_diagram_summary.json",
+      "size_bytes": 372,
+      "sha256": "bf400c7d2e8924a0"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\scientific_benchmark_full.json",
+      "size_bytes": 10024,
+      "sha256": "383ff24a256821b1"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\scientific_benchmark_mean_field.json",
+      "size_bytes": 10749,
+      "sha256": "84ce9e4eb75bdfdd"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\scientific_benchmark_sparse_knn.json",
+      "size_bytes": 10750,
+      "sha256": "f3b15199032761a4"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\scientific_coupling_benchmark.json",
+      "size_bytes": 43480,
+      "sha256": "0d612d1214c8415b"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\subconscious_benchmark_results.json",
+      "size_bytes": 1226,
+      "sha256": "f5589dc1d8936198"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\triton_fused_kernel_benchmark.json",
+      "size_bytes": 3152,
+      "sha256": "059d288bf0375d4b"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\y2q2_d1_scaling_sweep.json",
+      "size_bytes": 4676,
+      "sha256": "1b55838e32a6f54b"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\y2q2_d2_crossover_analysis.json",
+      "size_bytes": 151,
+      "sha256": "62cd9477eb631136"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\y2q2_e3_temporal_benchmark.json",
+      "size_bytes": 691,
+      "sha256": "0cc85941074cd0fd"
+    },
+    {
+      "path": "Docs\\test_and_benchmark_results\\y2q2_f2_ab_test_results.json",
+      "size_bytes": 481,
+      "sha256": "2ccd9d5fed53f7ac"
+    }
+  ],
+  "status": "PASS"
+}

@@ -1,0 +1,28 @@
+{
+  "benchmark": "mutual_information",
+  "description": "Identity-preservation score as MI proxy over training. Derived from snapshot data (no additional training).",
+  "phase_tracker": [
+    {
+      "epoch": 0,
+      "mi_proxy": 0.9223684210526315
+    },
+    {
+      "epoch": 10,
+      "mi_proxy": 1.0
+    },
+    {
+      "epoch": 19,
+      "mi_proxy": 1.0
+    }
+  ],
+  "slot_attention": [
+    {
+      "epoch": 0,
+      "mi_proxy": 1.0
+    },
+    {
+      "epoch": 8,
+      "mi_proxy": 1.0
+    }
+  ]
+}

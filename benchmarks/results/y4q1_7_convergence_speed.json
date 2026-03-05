@@ -1,0 +1,50 @@
+{
+  "benchmark": "convergence_speed",
+  "phase_tracker": {
+    "per_seed": [
+      {
+        "seed": 42,
+        "epochs_to_90pct": 0,
+        "total_epochs": 20,
+        "final_ip": 1.0
+      },
+      {
+        "seed": 123,
+        "epochs_to_90pct": 0,
+        "total_epochs": 20,
+        "final_ip": 1.0
+      },
+      {
+        "seed": 456,
+        "epochs_to_90pct": 1,
+        "total_epochs": 20,
+        "final_ip": 0.9960526315789474
+      }
+    ],
+    "mean_epochs_to_90pct": 0.3333333333333333
+  },
+  "slot_attention": {
+    "per_seed": [
+      {
+        "seed": 42,
+        "epochs_to_90pct": 0,
+        "total_epochs": 9,
+        "final_ip": 1.0
+      },
+      {
+        "seed": 123,
+        "epochs_to_90pct": 0,
+        "total_epochs": 20,
+        "final_ip": 1.0
+      },
+      {
+        "seed": 456,
+        "epochs_to_90pct": 0,
+        "total_epochs": 9,
+        "final_ip": 1.0
+      }
+    ],
+    "mean_epochs_to_90pct": 0.0
+  },
+  "faster_model": "slot_attention"
+}

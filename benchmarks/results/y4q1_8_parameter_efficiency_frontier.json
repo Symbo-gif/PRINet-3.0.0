@@ -1,0 +1,29 @@
+{
+  "benchmark": "parameter_efficiency_frontier",
+  "models": [
+    {
+      "model": "PT-Small",
+      "total_params": 4991,
+      "trainable_params": 4991,
+      "mean_ip": 1.0,
+      "ip_per_param": 0.2003606491685033,
+      "wall_time_ms": 6.14772500066465
+    },
+    {
+      "model": "PT-Large",
+      "total_params": 136227,
+      "trainable_params": 136227,
+      "mean_ip": 0.9980263157894737,
+      "ip_per_param": 0.007326200502025836,
+      "wall_time_ms": 6.145905000266794
+    },
+    {
+      "model": "SA",
+      "total_params": 83904,
+      "trainable_params": 83904,
+      "mean_ip": 1.0,
+      "ip_per_param": 0.011918382913806255,
+      "wall_time_ms": 4.940589999750955
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "benchmark": "g7_1_trained_coherence",
+  "n_seeds": 7,
+  "n_frames_per_seq": 200,
+  "per_seed": [
+    {
+      "seed": 42,
+      "mean_slip_fraction": 0.0,
+      "total_slips": 0,
+      "coherence_half_life": 528926.8693932634,
+      "coherence_decay_rate": 1.3104782923111101e-06,
+      "coherence_r_squared": 0.03263393882194143,
+      "initial_coherence": 0.6993093728469423,
+      "mean_persistence": 1.0
+    },
+    {
+      "seed": 123,
+      "mean_slip_fraction": 0.0,
+      "total_slips": 0,
+      "coherence_half_life": 417371.54828700103,
+      "coherence_decay_rate": 1.6607437267940223e-06,
+      "coherence_r_squared": 0.027059078301091666,
+      "initial_coherence": 0.6994839069015384,
+      "mean_persistence": 0.9992462311557789
+    },
+    {
+      "seed": 456,
+      "mean_slip_fraction": 0.0,
+      "total_slips": 0,
+      "coherence_half_life": Infinity,
+      "coherence_decay_rate": -9.572831004543119e-07,
+      "coherence_r_squared": 0.007038946819039937,
+      "initial_coherence": 0.6982626203093463,
+      "mean_persistence": 0.9994974874371859
+    },
+    {
+      "seed": 789,
+      "mean_slip_fraction": 0.0,
+      "total_slips": 0,
+      "coherence_half_life": Infinity,
+      "coherence_decay_rate": -3.1579811173037923e-06,
+      "coherence_r_squared": 0.10028603055703555,
+      "initial_coherence": 0.697960894163605,
+      "mean_persistence": 1.0
+    },
+    {
+      "seed": 1024,
+      "mean_slip_fraction": 0.0,
+      "total_slips": 0,
+      "coherence_half_life": Infinity,
+      "coherence_decay_rate": -5.091424958528468e-07,
+      "coherence_r_squared": 0.005164419674149157,
+      "initial_coherence": 0.6993606260268241,
+      "mean_persistence": 0.9994974874371859
+    },
+    {
+      "seed": 2048,
+      "mean_slip_fraction": 0.0,
+      "total_slips": 0,
+      "coherence_half_life": 990949.6870616808,
+      "coherence_decay_rate": 6.994776723884276e-07,
+      "coherence_r_squared": 0.005821957778991416,
+      "initial_coherence": 0.6994955374177393,
+      "mean_persistence": 0.9987437185929648
+    },
+    {
+      "seed": 3072,
+      "mean_slip_fraction": 0.0,
+      "total_slips": 0,
+      "coherence_half_life": Infinity,
+      "coherence_decay_rate": -1.2626785957618502e-06,
+      "coherence_r_squared": 0.02559473399247103,
+      "initial_coherence": 0.6984859477245345,
+      "mean_persistence": 0.9982412060301508
+    }
+  ],
+  "aggregate": {
+    "mean_slip_fraction_mean": 0.0,
+    "mean_slip_fraction_std": 0.0,
+    "total_slips_mean": 0.0,
+    "total_slips_std": 0.0,
+    "coherence_half_life_mean": 645749.3682473152,
+    "coherence_half_life_std": 248305.7154650763,
+    "coherence_decay_rate_mean": -3.1662651683989157e-07,
+    "coherence_decay_rate_std": 1.5586507271928799e-06,
+    "initial_coherence_mean": 0.6989084150557899,
+    "initial_coherence_std": 0.0006017226207994978,
+    "mean_persistence_mean": 0.9993180186647522,
+    "mean_persistence_std": 0.0005963118350982036
+  },
+  "comparison_to_untrained": {
+    "untrained_half_life": 527.0,
+    "untrained_phase_slips": 0,
+    "note": "Re-measured on trained Q1.7 checkpoint"
+  }
+}

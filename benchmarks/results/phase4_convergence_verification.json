@@ -1,0 +1,3483 @@
+{
+  "benchmark": "phase4_exp4_1_convergence_verification",
+  "description": "Numerical verification of Kuramoto convergence bound. Extracts learned coupling W and natural frequencies omega from trained PhaseTracker, computes theoretical K_c, sweeps OscilloSim to find empirical K_c.",
+  "theory_reference": "Dorfler & Bullo (2014), Automatica: For all-to-all Kuramoto with coupling K > K_c = max|omega_i - omega_j|, the phase-locked state is exponentially stable.",
+  "per_seed_params": [
+    {
+      "seed": 42,
+      "bands": {
+        "delta": {
+          "n_oscillators": 4,
+          "frequencies_hz": [
+            1.934387445449829,
+            1.9326412677764893,
+            1.926039695739746,
+            1.9339262247085571
+          ],
+          "freq_mean": 1.931748628616333,
+          "freq_std": 0.0033576032146811485,
+          "freq_spread": 0.008347749710083008,
+          "W_spectral_radius": 1.2064578533172607,
+          "W_operator_norm": 1.727890968322754,
+          "W_mean_abs": 0.4443569779396057,
+          "W_frobenius": 2.002784252166748,
+          "K_c_theory": 0.008347749710083008,
+          "K_eff_over_Kc": 206.9888327192757,
+          "mu": 1.0
+        },
+        "theta": {
+          "n_oscillators": 8,
+          "frequencies_hz": [
+            5.968862533569336,
+            5.975159168243408,
+            5.97041654586792,
+            5.97636604309082,
+            5.966089725494385,
+            5.975632190704346,
+            5.972385883331299,
+            5.973595142364502
+          ],
+          "freq_mean": 5.972313404083252,
+          "freq_std": 0.003380559617653489,
+          "freq_spread": 0.010276317596435547,
+          "W_spectral_radius": 0.8074571490287781,
+          "W_operator_norm": 1.310889720916748,
+          "W_mean_abs": 0.19720205664634705,
+          "W_frobenius": 2.0791068077087402,
+          "K_c_theory": 0.010276317596435547,
+          "K_eff_over_Kc": 127.56415015544522,
+          "mu": 1.0
+        },
+        "gamma": {
+          "n_oscillators": 16,
+          "frequencies_hz": [
+            40.022705078125,
+            39.98493194580078,
+            39.99958801269531,
+            40.0153694152832,
+            39.998600006103516,
+            39.98102569580078,
+            39.96488952636719,
+            40.010032653808594,
+            39.98064041137695,
+            40.0192756652832,
+            39.9736442565918,
+            40.03092575073242,
+            39.99980163574219,
+            39.964168548583984,
+            39.9906005859375,
+            39.97124481201172
+          ],
+          "freq_mean": 39.99421691894531,
+          "freq_std": 0.02051743119955063,
+          "freq_spread": 0.0667572021484375,
+          "W_spectral_radius": 0.4677429497241974,
+          "W_operator_norm": 0.8379355072975159,
+          "W_mean_abs": 0.09368810057640076,
+          "W_frobenius": 1.885426640510559,
+          "K_c_theory": 0.0667572021484375,
+          "K_eff_over_Kc": 12.551986607142856,
+          "mu": 1.0
+        }
+      }
+    },
+    {
+      "seed": 123,
+      "bands": {
+        "delta": {
+          "n_oscillators": 4,
+          "frequencies_hz": [
+            1.9267698526382446,
+            1.9327611923217773,
+            1.9228425025939941,
+            1.9400211572647095
+          ],
+          "freq_mean": 1.9305986166000366,
+          "freq_std": 0.006486095953732729,
+          "freq_spread": 0.017178654670715332,
+          "W_spectral_radius": 1.1412110328674316,
+          "W_operator_norm": 1.70445716381073,
+          "W_mean_abs": 0.48082390427589417,
+          "W_frobenius": 2.19561767578125,
+          "K_c_theory": 0.017178654670715332,
+          "K_eff_over_Kc": 99.2194788522258,
+          "mu": 1.0
+        },
+        "theta": {
+          "n_oscillators": 8,
+          "frequencies_hz": [
+            5.965012073516846,
+            5.978590965270996,
+            5.974867820739746,
+            5.972220420837402,
+            5.976650238037109,
+            5.968046188354492,
+            5.958421230316162,
+            5.975131988525391
+          ],
+          "freq_mean": 5.971117973327637,
+          "freq_std": 0.006381278857588768,
+          "freq_spread": 0.020169734954833984,
+          "W_spectral_radius": 0.7242323160171509,
+          "W_operator_norm": 1.1901037693023682,
+          "W_mean_abs": 0.1849651336669922,
+          "W_frobenius": 1.9608888626098633,
+          "K_c_theory": 0.020169734954833984,
+          "K_eff_over_Kc": 59.00443272890612,
+          "mu": 1.0
+        },
+        "gamma": {
+          "n_oscillators": 16,
+          "frequencies_hz": [
+            39.96962356567383,
+            40.010982513427734,
+            40.02273941040039,
+            40.03099822998047,
+            40.00440979003906,
+            40.02582931518555,
+            40.00570297241211,
+            39.97166442871094,
+            39.97664260864258,
+            40.02200698852539,
+            39.979888916015625,
+            40.01405334472656,
+            39.99580001831055,
+            40.00812530517578,
+            40.02005386352539,
+            39.97144317626953
+          ],
+          "freq_mean": 40.00187301635742,
+          "freq_std": 0.020797180011868477,
+          "freq_spread": 0.061374664306640625,
+          "W_spectral_radius": 0.45413005352020264,
+          "W_operator_norm": 0.9404916167259216,
+          "W_mean_abs": 0.09831349551677704,
+          "W_frobenius": 1.968493938446045,
+          "K_c_theory": 0.061374664306640625,
+          "K_eff_over_Kc": 15.323776143638511,
+          "mu": 1.0
+        }
+      }
+    },
+    {
+      "seed": 456,
+      "bands": {
+        "delta": {
+          "n_oscillators": 4,
+          "frequencies_hz": [
+            1.9745702743530273,
+            1.9497517347335815,
+            1.9508136510849,
+            1.9555073976516724
+          ],
+          "freq_mean": 1.9576607942581177,
+          "freq_std": 0.010000052861869335,
+          "freq_spread": 0.0248185396194458,
+          "W_spectral_radius": 1.430670142173767,
+          "W_operator_norm": 1.629011631011963,
+          "W_mean_abs": 0.49284034967422485,
+          "W_frobenius": 2.4983558654785156,
+          "K_c_theory": 0.0248185396194458,
+          "K_eff_over_Kc": 65.63688500573987,
+          "mu": 1.0
+        },
+        "theta": {
+          "n_oscillators": 8,
+          "frequencies_hz": [
+            5.964211940765381,
+            5.969809055328369,
+            5.974003314971924,
+            5.9735107421875,
+            5.9535369873046875,
+            5.954794883728027,
+            5.958125114440918,
+            5.978051662445068
+          ],
+          "freq_mean": 5.965755462646484,
+          "freq_std": 0.008844699710607529,
+          "freq_spread": 0.02451467514038086,
+          "W_spectral_radius": 0.9524112343788147,
+          "W_operator_norm": 1.278597116470337,
+          "W_mean_abs": 0.19481244683265686,
+          "W_frobenius": 2.042401075363159,
+          "K_c_theory": 0.02451467514038086,
+          "K_eff_over_Kc": 52.15639649102332,
+          "mu": 1.0
+        },
+        "gamma": {
+          "n_oscillators": 16,
+          "frequencies_hz": [
+            40.008785247802734,
+            39.991661071777344,
+            39.97336959838867,
+            39.97050094604492,
+            40.02248764038086,
+            40.030277252197266,
+            40.027931213378906,
+            40.0230712890625,
+            40.00852966308594,
+            39.976375579833984,
+            40.03480529785156,
+            40.01808547973633,
+            40.022361755371094,
+            39.97217559814453,
+            40.02667999267578,
+            39.97184371948242
+          ],
+          "freq_mean": 40.00493621826172,
+          "freq_std": 0.02374296635389328,
+          "freq_spread": 0.06430435180664062,
+          "W_spectral_radius": 0.5597443580627441,
+          "W_operator_norm": 0.9435346126556396,
+          "W_mean_abs": 0.10255741328001022,
+          "W_frobenius": 2.050696611404419,
+          "K_c_theory": 0.06430435180664062,
+          "K_eff_over_Kc": 14.672951147891084,
+          "mu": 1.0
+        }
+      }
+    },
+    {
+      "seed": 789,
+      "bands": {
+        "delta": {
+          "n_oscillators": 4,
+          "frequencies_hz": [
+            1.9410547018051147,
+            1.935497522354126,
+            1.9351407289505005,
+            1.9426270723342896
+          ],
+          "freq_mean": 1.9385799169540405,
+          "freq_std": 0.0033103323075920343,
+          "freq_spread": 0.0074863433837890625,
+          "W_spectral_radius": 0.7614694237709045,
+          "W_operator_norm": 1.3715028762817383,
+          "W_mean_abs": 0.357060968875885,
+          "W_frobenius": 1.6947325468063354,
+          "K_c_theory": 0.0074863433837890625,
+          "K_eff_over_Kc": 183.20063694267515,
+          "mu": 1.0
+        },
+        "theta": {
+          "n_oscillators": 8,
+          "frequencies_hz": [
+            5.95547342300415,
+            5.973330020904541,
+            5.953015327453613,
+            5.952762126922607,
+            5.953381538391113,
+            5.973052024841309,
+            5.960962772369385,
+            5.960383892059326
+          ],
+          "freq_mean": 5.960294723510742,
+          "freq_std": 0.008014741353690624,
+          "freq_spread": 0.020567893981933594,
+          "W_spectral_radius": 0.6685836911201477,
+          "W_operator_norm": 1.113109827041626,
+          "W_mean_abs": 0.16073471307754517,
+          "W_frobenius": 1.6385104656219482,
+          "K_c_theory": 0.020567893981933594,
+          "K_eff_over_Kc": 54.118804191589,
+          "mu": 1.0
+        },
+        "gamma": {
+          "n_oscillators": 16,
+          "frequencies_hz": [
+            39.975746154785156,
+            39.97821044921875,
+            40.006553649902344,
+            39.99233627319336,
+            39.97494125366211,
+            40.026580810546875,
+            39.98187255859375,
+            39.9748420715332,
+            40.02590560913086,
+            40.006752014160156,
+            40.02433776855469,
+            40.026554107666016,
+            39.97274398803711,
+            39.984371185302734,
+            39.99259948730469,
+            40.00796890258789
+          ],
+          "freq_mean": 39.99701690673828,
+          "freq_std": 0.020059555768966675,
+          "freq_spread": 0.053836822509765625,
+          "W_spectral_radius": 0.5218515396118164,
+          "W_operator_norm": 0.8721086978912354,
+          "W_mean_abs": 0.09684981405735016,
+          "W_frobenius": 1.9148389101028442,
+          "K_c_theory": 0.053836822509765625,
+          "K_eff_over_Kc": 16.199111634663076,
+          "mu": 1.0
+        }
+      }
+    },
+    {
+      "seed": 1024,
+      "bands": {
+        "delta": {
+          "n_oscillators": 4,
+          "frequencies_hz": [
+            1.9494251012802124,
+            1.943770170211792,
+            1.9289164543151855,
+            1.9409104585647583
+          ],
+          "freq_mean": 1.9407554864883423,
+          "freq_std": 0.007490614429116249,
+          "freq_spread": 0.020508646965026855,
+          "W_spectral_radius": 1.5697497129440308,
+          "W_operator_norm": 1.9879376888275146,
+          "W_mean_abs": 0.5031095743179321,
+          "W_frobenius": 2.3972887992858887,
+          "K_c_theory": 0.020508646965026855,
+          "K_eff_over_Kc": 96.93168409488547,
+          "mu": 1.0
+        },
+        "theta": {
+          "n_oscillators": 8,
+          "frequencies_hz": [
+            5.9725542068481445,
+            5.97914981842041,
+            5.973427772521973,
+            5.974825382232666,
+            5.968969821929932,
+            5.962002754211426,
+            5.971481800079346,
+            5.9724812507629395
+          ],
+          "freq_mean": 5.971861839294434,
+          "freq_std": 0.004622258245944977,
+          "freq_spread": 0.017147064208984375,
+          "W_spectral_radius": 0.771220862865448,
+          "W_operator_norm": 0.9358667731285095,
+          "W_mean_abs": 0.1797436624765396,
+          "W_frobenius": 1.7832337617874146,
+          "K_c_theory": 0.017147064208984375,
+          "K_eff_over_Kc": 54.578834121245826,
+          "mu": 1.0
+        },
+        "gamma": {
+          "n_oscillators": 16,
+          "frequencies_hz": [
+            40.0139045715332,
+            40.026729583740234,
+            40.024505615234375,
+            40.00757598876953,
+            40.021121978759766,
+            39.96916198730469,
+            40.01992416381836,
+            40.026126861572266,
+            40.001888275146484,
+            40.00826644897461,
+            40.02553939819336,
+            39.97831344604492,
+            39.99714279174805,
+            39.999725341796875,
+            39.968421936035156,
+            40.02096939086914
+          ],
+          "freq_mean": 40.006832122802734,
+          "freq_std": 0.019259952008724213,
+          "freq_spread": 0.058307647705078125,
+          "W_spectral_radius": 0.5638638734817505,
+          "W_operator_norm": 0.9375523924827576,
+          "W_mean_abs": 0.10284534841775894,
+          "W_frobenius": 2.056370973587036,
+          "K_c_theory": 0.058307647705078125,
+          "K_eff_over_Kc": 16.07940689401374,
+          "mu": 1.0
+        }
+      }
+    },
+    {
+      "seed": 2048,
+      "bands": {
+        "delta": {
+          "n_oscillators": 4,
+          "frequencies_hz": [
+            1.9310609102249146,
+            1.925520896911621,
+            1.9231849908828735,
+            1.9273391962051392
+          ],
+          "freq_mean": 1.92677640914917,
+          "freq_std": 0.002878726925700903,
+          "freq_spread": 0.007875919342041016,
+          "W_spectral_radius": 1.4168264865875244,
+          "W_operator_norm": 1.7257870435714722,
+          "W_mean_abs": 0.448561429977417,
+          "W_frobenius": 2.1856160163879395,
+          "K_c_theory": 0.007875919342041016,
+          "K_eff_over_Kc": 219.12198038384693,
+          "mu": 1.0
+        },
+        "theta": {
+          "n_oscillators": 8,
+          "frequencies_hz": [
+            5.9678544998168945,
+            5.9752044677734375,
+            5.967736721038818,
+            5.9577741622924805,
+            5.976863384246826,
+            5.977349281311035,
+            5.972720146179199,
+            5.972378253936768
+          ],
+          "freq_mean": 5.970984935760498,
+          "freq_std": 0.00604868633672595,
+          "freq_spread": 0.019575119018554688,
+          "W_spectral_radius": 0.4167024493217468,
+          "W_operator_norm": 1.0808730125427246,
+          "W_mean_abs": 0.16780003905296326,
+          "W_frobenius": 1.666398048400879,
+          "K_c_theory": 0.019575119018554688,
+          "K_eff_over_Kc": 55.216676410406315,
+          "mu": 1.0
+        },
+        "gamma": {
+          "n_oscillators": 16,
+          "frequencies_hz": [
+            40.008522033691406,
+            40.00067901611328,
+            39.991031646728516,
+            39.9942741394043,
+            39.973262786865234,
+            40.000526428222656,
+            39.9786491394043,
+            40.008541107177734,
+            39.98318862915039,
+            39.97526168823242,
+            39.98686599731445,
+            40.002323150634766,
+            40.031166076660156,
+            40.01493453979492,
+            39.976905822753906,
+            40.011375427246094
+          ],
+          "freq_mean": 39.99609375,
+          "freq_std": 0.016038622707128525,
+          "freq_spread": 0.057903289794921875,
+          "W_spectral_radius": 0.513572633266449,
+          "W_operator_norm": 0.937443733215332,
+          "W_mean_abs": 0.09770207107067108,
+          "W_frobenius": 2.053255558013916,
+          "K_c_theory": 0.057903289794921875,
+          "K_eff_over_Kc": 16.18981816983991,
+          "mu": 1.0
+        }
+      }
+    },
+    {
+      "seed": 3072,
+      "bands": {
+        "delta": {
+          "n_oscillators": 4,
+          "frequencies_hz": [
+            1.9348602294921875,
+            1.9378739595413208,
+            1.9436324834823608,
+            1.9379633665084839
+          ],
+          "freq_mean": 1.9385825395584106,
+          "freq_std": 0.003171867923811078,
+          "freq_spread": 0.00877225399017334,
+          "W_spectral_radius": 0.6200417280197144,
+          "W_operator_norm": 1.3866370916366577,
+          "W_mean_abs": 0.3557101786136627,
+          "W_frobenius": 1.632918357849121,
+          "K_c_theory": 0.00877225399017334,
+          "K_eff_over_Kc": 158.0707869596532,
+          "mu": 1.0
+        },
+        "theta": {
+          "n_oscillators": 8,
+          "frequencies_hz": [
+            5.979799270629883,
+            5.972884654998779,
+            5.9715728759765625,
+            5.968708038330078,
+            5.977851867675781,
+            5.9739532470703125,
+            5.973766803741455,
+            5.96536922454834
+          ],
+          "freq_mean": 5.972988128662109,
+          "freq_std": 0.0043296352960169315,
+          "freq_spread": 0.014430046081542969,
+          "W_spectral_radius": 0.9376605749130249,
+          "W_operator_norm": 1.211269497871399,
+          "W_mean_abs": 0.19387567043304443,
+          "W_frobenius": 2.0015032291412354,
+          "K_c_theory": 0.014430046081542969,
+          "K_eff_over_Kc": 83.94079208247967,
+          "mu": 1.0
+        },
+        "gamma": {
+          "n_oscillators": 16,
+          "frequencies_hz": [
+            39.96034622192383,
+            39.966182708740234,
+            40.03574752807617,
+            40.0224723815918,
+            40.015113830566406,
+            39.98814010620117,
+            40.024085998535156,
+            39.99534606933594,
+            39.97987747192383,
+            40.01405715942383,
+            40.004642486572266,
+            39.9710693359375,
+            40.028995513916016,
+            39.97122573852539,
+            39.97895431518555,
+            39.97196578979492
+          ],
+          "freq_mean": 39.995513916015625,
+          "freq_std": 0.02437518909573555,
+          "freq_spread": 0.07540130615234375,
+          "W_spectral_radius": 0.44252920150756836,
+          "W_operator_norm": 0.9502606987953186,
+          "W_mean_abs": 0.0975760817527771,
+          "W_frobenius": 1.9432908296585083,
+          "K_c_theory": 0.07540130615234375,
+          "K_eff_over_Kc": 12.602708723312759,
+          "mu": 1.0
+        }
+      }
+    }
+  ],
+  "convergence_sweeps": {
+    "delta": [
+      {
+        "seed": 42,
+        "K_c_theory": 0.01,
+        "K_c_empirical": 2.0,
+        "K_c_ratio": 200.0,
+        "target_r": 0.95,
+        "n_oscillators": 400,
+        "freq_mean": 1.931748628616333,
+        "freq_std": 0.01,
+        "n_steps": 500,
+        "dt": 0.01,
+        "sweep": [
+          {
+            "K": 0.01,
+            "K_over_Kc_theory": 1.0,
+            "final_r": 0.029592983424663544,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.3502989999833517
+          },
+          {
+            "K": 0.19090909090909092,
+            "K_over_Kc_theory": 19.09090909090909,
+            "final_r": 0.04099872335791588,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.28176099999109283
+          },
+          {
+            "K": 0.3718181818181818,
+            "K_over_Kc_theory": 37.18181818181818,
+            "final_r": 0.0590517558157444,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2580657000071369
+          },
+          {
+            "K": 0.5527272727272727,
+            "K_over_Kc_theory": 55.27272727272727,
+            "final_r": 0.0876319408416748,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23924490000354126
+          },
+          {
+            "K": 0.7336363636363636,
+            "K_over_Kc_theory": 73.36363636363636,
+            "final_r": 0.13255596160888672,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2485410000081174
+          },
+          {
+            "K": 0.9145454545454546,
+            "K_over_Kc_theory": 91.45454545454545,
+            "final_r": 0.2020517885684967,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24423800001386553
+          },
+          {
+            "K": 1.0954545454545455,
+            "K_over_Kc_theory": 109.54545454545455,
+            "final_r": 0.3060436546802521,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2501405999646522
+          },
+          {
+            "K": 1.2763636363636364,
+            "K_over_Kc_theory": 127.63636363636364,
+            "final_r": 0.45089292526245117,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24665129999630153
+          },
+          {
+            "K": 1.4572727272727273,
+            "K_over_Kc_theory": 145.72727272727272,
+            "final_r": 0.6243259310722351,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24945790000492707
+          },
+          {
+            "K": 1.6381818181818182,
+            "K_over_Kc_theory": 163.8181818181818,
+            "final_r": 0.7822745442390442,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24082259996794164
+          },
+          {
+            "K": 1.819090909090909,
+            "K_over_Kc_theory": 181.9090909090909,
+            "final_r": 0.888407289981842,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2518539000302553
+          },
+          {
+            "K": 2.0,
+            "K_over_Kc_theory": 200.0,
+            "final_r": 0.9530863165855408,
+            "converged": true,
+            "convergence_step": 496,
+            "convergence_time": 4.96,
+            "wall_time_s": 0.2471193000092171
+          }
+        ]
+      },
+      {
+        "seed": 123,
+        "K_c_theory": 0.017178654670715332,
+        "K_c_empirical": 1.6381818181818182,
+        "K_c_ratio": 95.36147326917558,
+        "target_r": 0.95,
+        "n_oscillators": 400,
+        "freq_mean": 1.9305986166000366,
+        "freq_std": 0.01,
+        "n_steps": 500,
+        "dt": 0.01,
+        "sweep": [
+          {
+            "K": 0.01,
+            "K_over_Kc_theory": 0.5821177613545678,
+            "final_r": 0.06299436092376709,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23016680002911016
+          },
+          {
+            "K": 0.19090909090909092,
+            "K_over_Kc_theory": 11.113157262223568,
+            "final_r": 0.09962942451238632,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.26439560001017526
+          },
+          {
+            "K": 0.3718181818181818,
+            "K_over_Kc_theory": 21.64419676309257,
+            "final_r": 0.15692803263664246,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2731760999886319
+          },
+          {
+            "K": 0.5527272727272727,
+            "K_over_Kc_theory": 32.175236263961565,
+            "final_r": 0.2445208579301834,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2706057000323199
+          },
+          {
+            "K": 0.7336363636363636,
+            "K_over_Kc_theory": 42.70627576483057,
+            "final_r": 0.3712880313396454,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24445439997361973
+          },
+          {
+            "K": 0.9145454545454546,
+            "K_over_Kc_theory": 53.23731526569957,
+            "final_r": 0.5345592498779297,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2616023999871686
+          },
+          {
+            "K": 1.0954545454545455,
+            "K_over_Kc_theory": 63.76835476656857,
+            "final_r": 0.706856906414032,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2436963000218384
+          },
+          {
+            "K": 1.2763636363636364,
+            "K_over_Kc_theory": 74.29939426743756,
+            "final_r": 0.8474434614181519,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.25373659998876974
+          },
+          {
+            "K": 1.4572727272727273,
+            "K_over_Kc_theory": 84.83043376830656,
+            "final_r": 0.9348167181015015,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2440518000512384
+          },
+          {
+            "K": 1.6381818181818182,
+            "K_over_Kc_theory": 95.36147326917558,
+            "final_r": 0.9789970517158508,
+            "converged": true,
+            "convergence_step": 457,
+            "convergence_time": 4.57,
+            "wall_time_s": 0.2516289000050165
+          },
+          {
+            "K": 1.819090909090909,
+            "K_over_Kc_theory": 105.89251277004458,
+            "final_r": 0.9952481389045715,
+            "converged": true,
+            "convergence_step": 412,
+            "convergence_time": 4.12,
+            "wall_time_s": 0.2434081999817863
+          },
+          {
+            "K": 2.0,
+            "K_over_Kc_theory": 116.42355227091358,
+            "final_r": 0.9986891150474548,
+            "converged": true,
+            "convergence_step": 377,
+            "convergence_time": 3.77,
+            "wall_time_s": 0.2511866000131704
+          }
+        ]
+      },
+      {
+        "seed": 456,
+        "K_c_theory": 0.0248185396194458,
+        "K_c_empirical": 1.6381818181818182,
+        "K_c_ratio": 66.00637439997764,
+        "target_r": 0.95,
+        "n_oscillators": 400,
+        "freq_mean": 1.9576607942581177,
+        "freq_std": 0.010000052861869335,
+        "n_steps": 500,
+        "dt": 0.01,
+        "sweep": [
+          {
+            "K": 0.01,
+            "K_over_Kc_theory": 0.4029245940065228,
+            "final_r": 0.05897735804319382,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.22803230001591146
+          },
+          {
+            "K": 0.19090909090909092,
+            "K_over_Kc_theory": 7.6921967946699805,
+            "final_r": 0.0965956375002861,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2750412999885157
+          },
+          {
+            "K": 0.3718181818181818,
+            "K_over_Kc_theory": 14.981468995333438,
+            "final_r": 0.15626537799835205,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23081569996429607
+          },
+          {
+            "K": 0.5527272727272727,
+            "K_over_Kc_theory": 22.270741195996898,
+            "final_r": 0.24786433577537537,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2406497000483796
+          },
+          {
+            "K": 0.7336363636363636,
+            "K_over_Kc_theory": 29.560013396660356,
+            "final_r": 0.3790264427661896,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23188749997643754
+          },
+          {
+            "K": 0.9145454545454546,
+            "K_over_Kc_theory": 36.849285597323814,
+            "final_r": 0.5436392426490784,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24666600005002692
+          },
+          {
+            "K": 1.0954545454545455,
+            "K_over_Kc_theory": 44.13855779798727,
+            "final_r": 0.7117024064064026,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2361984999733977
+          },
+          {
+            "K": 1.2763636363636364,
+            "K_over_Kc_theory": 51.42782999865073,
+            "final_r": 0.8458702564239502,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2444079999695532
+          },
+          {
+            "K": 1.4572727272727273,
+            "K_over_Kc_theory": 58.71710219931418,
+            "final_r": 0.9342048764228821,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23489340004744008
+          },
+          {
+            "K": 1.6381818181818182,
+            "K_over_Kc_theory": 66.00637439997764,
+            "final_r": 0.9797964692115784,
+            "converged": true,
+            "convergence_step": 453,
+            "convergence_time": 4.53,
+            "wall_time_s": 0.23965609999140725
+          },
+          {
+            "K": 1.819090909090909,
+            "K_over_Kc_theory": 73.2956466006411,
+            "final_r": 0.9938514828681946,
+            "converged": true,
+            "convergence_step": 406,
+            "convergence_time": 4.0600000000000005,
+            "wall_time_s": 0.24321909999707714
+          },
+          {
+            "K": 2.0,
+            "K_over_Kc_theory": 80.58491880130455,
+            "final_r": 0.9980193972587585,
+            "converged": true,
+            "convergence_step": 368,
+            "convergence_time": 3.68,
+            "wall_time_s": 0.23641330003738403
+          }
+        ]
+      },
+      {
+        "seed": 789,
+        "K_c_theory": 0.01,
+        "K_c_empirical": null,
+        "K_c_ratio": null,
+        "target_r": 0.95,
+        "n_oscillators": 400,
+        "freq_mean": 1.9385799169540405,
+        "freq_std": 0.01,
+        "n_steps": 500,
+        "dt": 0.01,
+        "sweep": [
+          {
+            "K": 0.01,
+            "K_over_Kc_theory": 1.0,
+            "final_r": 0.01329103484749794,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24405779998051003
+          },
+          {
+            "K": 0.19090909090909092,
+            "K_over_Kc_theory": 19.09090909090909,
+            "final_r": 0.017416974529623985,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.257711999991443
+          },
+          {
+            "K": 0.3718181818181818,
+            "K_over_Kc_theory": 37.18181818181818,
+            "final_r": 0.02332046814262867,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.22832699998980388
+          },
+          {
+            "K": 0.5527272727272727,
+            "K_over_Kc_theory": 55.27272727272727,
+            "final_r": 0.03187475726008415,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2414678999921307
+          },
+          {
+            "K": 0.7336363636363636,
+            "K_over_Kc_theory": 73.36363636363636,
+            "final_r": 0.04441239684820175,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23249720002058893
+          },
+          {
+            "K": 0.9145454545454546,
+            "K_over_Kc_theory": 91.45454545454545,
+            "final_r": 0.06296887248754501,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24185979994945228
+          },
+          {
+            "K": 1.0954545454545455,
+            "K_over_Kc_theory": 109.54545454545455,
+            "final_r": 0.09064764529466629,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23361140000633895
+          },
+          {
+            "K": 1.2763636363636364,
+            "K_over_Kc_theory": 127.63636363636364,
+            "final_r": 0.13210348784923553,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24167110002599657
+          },
+          {
+            "K": 1.4572727272727273,
+            "K_over_Kc_theory": 145.72727272727272,
+            "final_r": 0.19399380683898926,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23464440001407638
+          },
+          {
+            "K": 1.6381818181818182,
+            "K_over_Kc_theory": 163.8181818181818,
+            "final_r": 0.2846333384513855,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24241770000662655
+          },
+          {
+            "K": 1.819090909090909,
+            "K_over_Kc_theory": 181.9090909090909,
+            "final_r": 0.4102107286453247,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2383489000494592
+          },
+          {
+            "K": 2.0,
+            "K_over_Kc_theory": 200.0,
+            "final_r": 0.5635892748832703,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24450530001195148
+          }
+        ]
+      },
+      {
+        "seed": 1024,
+        "K_c_theory": 0.020508646965026855,
+        "K_c_empirical": null,
+        "K_c_ratio": null,
+        "target_r": 0.95,
+        "n_oscillators": 400,
+        "freq_mean": 1.9407554864883423,
+        "freq_std": 0.01,
+        "n_steps": 500,
+        "dt": 0.01,
+        "sweep": [
+          {
+            "K": 0.01,
+            "K_over_Kc_theory": 0.48759920715651683,
+            "final_r": 0.014428853988647461,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.25421829998958856
+          },
+          {
+            "K": 0.19090909090909092,
+            "K_over_Kc_theory": 9.308712136624413,
+            "final_r": 0.01714576780796051,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.25503020000178367
+          },
+          {
+            "K": 0.3718181818181818,
+            "K_over_Kc_theory": 18.12982506609231,
+            "final_r": 0.020378027111291885,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.25251369999023154
+          },
+          {
+            "K": 0.5527272727272727,
+            "K_over_Kc_theory": 26.950937995560203,
+            "final_r": 0.0241180881857872,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2372293999651447
+          },
+          {
+            "K": 0.7336363636363636,
+            "K_over_Kc_theory": 35.7720509250281,
+            "final_r": 0.0282436590641737,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23138680000556633
+          },
+          {
+            "K": 0.9145454545454546,
+            "K_over_Kc_theory": 44.593163854496,
+            "final_r": 0.032408177852630615,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24495149997528642
+          },
+          {
+            "K": 1.0954545454545455,
+            "K_over_Kc_theory": 53.41427678396389,
+            "final_r": 0.03584852069616318,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23660610005026683
+          },
+          {
+            "K": 1.2763636363636364,
+            "K_over_Kc_theory": 62.235389713431786,
+            "final_r": 0.03704365715384483,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24313870002515614
+          },
+          {
+            "K": 1.4572727272727273,
+            "K_over_Kc_theory": 71.05650264289969,
+            "final_r": 0.03314216062426567,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23313869995763525
+          },
+          {
+            "K": 1.6381818181818182,
+            "K_over_Kc_theory": 79.87761557236757,
+            "final_r": 0.01897900365293026,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24952339997980744
+          },
+          {
+            "K": 1.819090909090909,
+            "K_over_Kc_theory": 88.69872850183548,
+            "final_r": 0.014773005619645119,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2384283000137657
+          },
+          {
+            "K": 2.0,
+            "K_over_Kc_theory": 97.51984143130336,
+            "final_r": 0.08357575535774231,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24471350002568215
+          }
+        ]
+      },
+      {
+        "seed": 2048,
+        "K_c_theory": 0.01,
+        "K_c_empirical": null,
+        "K_c_ratio": null,
+        "target_r": 0.95,
+        "n_oscillators": 400,
+        "freq_mean": 1.92677640914917,
+        "freq_std": 0.01,
+        "n_steps": 500,
+        "dt": 0.01,
+        "sweep": [
+          {
+            "K": 0.01,
+            "K_over_Kc_theory": 1.0,
+            "final_r": 0.006574531551450491,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.26439660001778975
+          },
+          {
+            "K": 0.19090909090909092,
+            "K_over_Kc_theory": 19.09090909090909,
+            "final_r": 0.012609971687197685,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2726016999804415
+          },
+          {
+            "K": 0.3718181818181818,
+            "K_over_Kc_theory": 37.18181818181818,
+            "final_r": 0.022905929014086723,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23286529997130856
+          },
+          {
+            "K": 0.5527272727272727,
+            "K_over_Kc_theory": 55.27272727272727,
+            "final_r": 0.040106385946273804,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23232470004586503
+          },
+          {
+            "K": 0.7336363636363636,
+            "K_over_Kc_theory": 73.36363636363636,
+            "final_r": 0.06847424805164337,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24074320000363514
+          },
+          {
+            "K": 0.9145454545454546,
+            "K_over_Kc_theory": 91.45454545454545,
+            "final_r": 0.11466259509325027,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23345050000352785
+          },
+          {
+            "K": 1.0954545454545455,
+            "K_over_Kc_theory": 109.54545454545455,
+            "final_r": 0.18831953406333923,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23980600002687424
+          },
+          {
+            "K": 1.2763636363636364,
+            "K_over_Kc_theory": 127.63636363636364,
+            "final_r": 0.30063188076019287,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23153579997597262
+          },
+          {
+            "K": 1.4572727272727273,
+            "K_over_Kc_theory": 145.72727272727272,
+            "final_r": 0.4552341103553772,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24159309995593503
+          },
+          {
+            "K": 1.6381818181818182,
+            "K_over_Kc_theory": 163.8181818181818,
+            "final_r": 0.628953754901886,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23501679999753833
+          },
+          {
+            "K": 1.819090909090909,
+            "K_over_Kc_theory": 181.9090909090909,
+            "final_r": 0.777717649936676,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24515199998859316
+          },
+          {
+            "K": 2.0,
+            "K_over_Kc_theory": 200.0,
+            "final_r": 0.8811326026916504,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23383260000264272
+          }
+        ]
+      },
+      {
+        "seed": 3072,
+        "K_c_theory": 0.01,
+        "K_c_empirical": null,
+        "K_c_ratio": null,
+        "target_r": 0.95,
+        "n_oscillators": 400,
+        "freq_mean": 1.9385825395584106,
+        "freq_std": 0.01,
+        "n_steps": 500,
+        "dt": 0.01,
+        "sweep": [
+          {
+            "K": 0.01,
+            "K_over_Kc_theory": 1.0,
+            "final_r": 0.0049991300329566,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.26614030002383515
+          },
+          {
+            "K": 0.19090909090909092,
+            "K_over_Kc_theory": 19.09090909090909,
+            "final_r": 0.012709451839327812,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2432113999966532
+          },
+          {
+            "K": 0.3718181818181818,
+            "K_over_Kc_theory": 37.18181818181818,
+            "final_r": 0.025817260146141052,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23710140003822744
+          },
+          {
+            "K": 0.5527272727272727,
+            "K_over_Kc_theory": 55.27272727272727,
+            "final_r": 0.047394104301929474,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23197930003516376
+          },
+          {
+            "K": 0.7336363636363636,
+            "K_over_Kc_theory": 73.36363636363636,
+            "final_r": 0.08222213387489319,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23172370000975206
+          },
+          {
+            "K": 0.9145454545454546,
+            "K_over_Kc_theory": 91.45454545454545,
+            "final_r": 0.13727550208568573,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23983209999278188
+          },
+          {
+            "K": 1.0954545454545455,
+            "K_over_Kc_theory": 109.54545454545455,
+            "final_r": 0.2215965837240219,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2348409999976866
+          },
+          {
+            "K": 1.2763636363636364,
+            "K_over_Kc_theory": 127.63636363636364,
+            "final_r": 0.3438085615634918,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24580999999307096
+          },
+          {
+            "K": 1.4572727272727273,
+            "K_over_Kc_theory": 145.72727272727272,
+            "final_r": 0.5047239661216736,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2333130000042729
+          },
+          {
+            "K": 1.6381818181818182,
+            "K_over_Kc_theory": 163.8181818181818,
+            "final_r": 0.6841425895690918,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24461120000341907
+          },
+          {
+            "K": 1.819090909090909,
+            "K_over_Kc_theory": 181.9090909090909,
+            "final_r": 0.8358121514320374,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23419950000243261
+          },
+          {
+            "K": 2.0,
+            "K_over_Kc_theory": 200.0,
+            "final_r": 0.9308475255966187,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24047680001240224
+          }
+        ]
+      }
+    ],
+    "theta": [
+      {
+        "seed": 42,
+        "K_c_theory": 0.010276317596435547,
+        "K_c_empirical": 1.819090909090909,
+        "K_c_ratio": 177.0177782089842,
+        "target_r": 0.95,
+        "n_oscillators": 800,
+        "freq_mean": 5.972313404083252,
+        "freq_std": 0.01,
+        "n_steps": 500,
+        "dt": 0.01,
+        "sweep": [
+          {
+            "K": 0.01,
+            "K_over_Kc_theory": 0.9731112245371445,
+            "final_r": 0.04518880695104599,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.25773700000718236
+          },
+          {
+            "K": 0.19090909090909092,
+            "K_over_Kc_theory": 18.57757792298185,
+            "final_r": 0.06886643916368484,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2696280000382103
+          },
+          {
+            "K": 0.3718181818181818,
+            "K_over_Kc_theory": 36.182044621426556,
+            "final_r": 0.10578303784132004,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.27091820002533495
+          },
+          {
+            "K": 0.5527272727272727,
+            "K_over_Kc_theory": 53.78651131987126,
+            "final_r": 0.16276225447654724,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.25983090000227094
+          },
+          {
+            "K": 0.7336363636363636,
+            "K_over_Kc_theory": 71.39097801831596,
+            "final_r": 0.24872645735740662,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.25875530001940206
+          },
+          {
+            "K": 0.9145454545454546,
+            "K_over_Kc_theory": 88.99544471676066,
+            "final_r": 0.3719753921031952,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.25324589997762814
+          },
+          {
+            "K": 1.0954545454545455,
+            "K_over_Kc_theory": 106.59991141520537,
+            "final_r": 0.5309232473373413,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2517656999989413
+          },
+          {
+            "K": 1.2763636363636364,
+            "K_over_Kc_theory": 124.20437811365008,
+            "final_r": 0.7002434134483337,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.27083749999292195
+          },
+          {
+            "K": 1.4572727272727273,
+            "K_over_Kc_theory": 141.80884481209478,
+            "final_r": 0.8367010951042175,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.26461040001595393
+          },
+          {
+            "K": 1.6381818181818182,
+            "K_over_Kc_theory": 159.41331151053947,
+            "final_r": 0.9229150414466858,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24709599994821474
+          },
+          {
+            "K": 1.819090909090909,
+            "K_over_Kc_theory": 177.0177782089842,
+            "final_r": 0.9711427688598633,
+            "converged": true,
+            "convergence_step": 472,
+            "convergence_time": 4.72,
+            "wall_time_s": 0.24002750002546236
+          },
+          {
+            "K": 2.0,
+            "K_over_Kc_theory": 194.6222449074289,
+            "final_r": 0.9917552471160889,
+            "converged": true,
+            "convergence_step": 429,
+            "convergence_time": 4.29,
+            "wall_time_s": 0.235256300016772
+          }
+        ]
+      },
+      {
+        "seed": 123,
+        "K_c_theory": 0.020169734954833984,
+        "K_c_empirical": 2.0,
+        "K_c_ratio": 99.15846710324121,
+        "target_r": 0.95,
+        "n_oscillators": 800,
+        "freq_mean": 5.971117973327637,
+        "freq_std": 0.01,
+        "n_steps": 500,
+        "dt": 0.01,
+        "sweep": [
+          {
+            "K": 0.01,
+            "K_over_Kc_theory": 0.49579233551620605,
+            "final_r": 0.011211861856281757,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2419586000032723
+          },
+          {
+            "K": 0.19090909090909092,
+            "K_over_Kc_theory": 9.46512640530939,
+            "final_r": 0.01992044597864151,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.26987060002284124
+          },
+          {
+            "K": 0.3718181818181818,
+            "K_over_Kc_theory": 18.434460475102572,
+            "final_r": 0.03449344262480736,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2431176000391133
+          },
+          {
+            "K": 0.5527272727272727,
+            "K_over_Kc_theory": 27.403794544895753,
+            "final_r": 0.058413371443748474,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24783659999957308
+          },
+          {
+            "K": 0.7336363636363636,
+            "K_over_Kc_theory": 36.37312861468894,
+            "final_r": 0.0972030758857727,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24179510003887117
+          },
+          {
+            "K": 0.9145454545454546,
+            "K_over_Kc_theory": 45.342462684482115,
+            "final_r": 0.15924353897571564,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.27540260000387207
+          },
+          {
+            "K": 1.0954545454545455,
+            "K_over_Kc_theory": 54.3117967542753,
+            "final_r": 0.2558627128601074,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2564340999815613
+          },
+          {
+            "K": 1.2763636363636364,
+            "K_over_Kc_theory": 63.281130824068484,
+            "final_r": 0.39741426706314087,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2749943999806419
+          },
+          {
+            "K": 1.4572727272727273,
+            "K_over_Kc_theory": 72.25046489386166,
+            "final_r": 0.5787336230278015,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2666925000376068
+          },
+          {
+            "K": 1.6381818181818182,
+            "K_over_Kc_theory": 81.21979896365485,
+            "final_r": 0.7602288126945496,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2589169999700971
+          },
+          {
+            "K": 1.819090909090909,
+            "K_over_Kc_theory": 90.18913303344803,
+            "final_r": 0.8896428942680359,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23999749997165054
+          },
+          {
+            "K": 2.0,
+            "K_over_Kc_theory": 99.15846710324121,
+            "final_r": 0.9535122513771057,
+            "converged": true,
+            "convergence_step": 495,
+            "convergence_time": 4.95,
+            "wall_time_s": 0.2514157999539748
+          }
+        ]
+      },
+      {
+        "seed": 456,
+        "K_c_theory": 0.02451467514038086,
+        "K_c_empirical": 1.819090909090909,
+        "K_c_ratio": 74.20416133087896,
+        "target_r": 0.95,
+        "n_oscillators": 800,
+        "freq_mean": 5.965755462646484,
+        "freq_std": 0.01,
+        "n_steps": 500,
+        "dt": 0.01,
+        "sweep": [
+          {
+            "K": 0.01,
+            "K_over_Kc_theory": 0.40791892785590633,
+            "final_r": 0.04125949740409851,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24724210001295432
+          },
+          {
+            "K": 0.19090909090909092,
+            "K_over_Kc_theory": 7.787543168158212,
+            "final_r": 0.06622672826051712,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2642218000255525
+          },
+          {
+            "K": 0.3718181818181818,
+            "K_over_Kc_theory": 15.167167408460518,
+            "final_r": 0.10582178831100464,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2439240000094287
+          },
+          {
+            "K": 0.5527272727272727,
+            "K_over_Kc_theory": 22.546791648762824,
+            "final_r": 0.16775867342948914,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23572820000117645
+          },
+          {
+            "K": 0.7336363636363636,
+            "K_over_Kc_theory": 29.92641588906513,
+            "final_r": 0.26178646087646484,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2404625000199303
+          },
+          {
+            "K": 0.9145454545454546,
+            "K_over_Kc_theory": 37.30604012936743,
+            "final_r": 0.39566770195961,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2339085999992676
+          },
+          {
+            "K": 1.0954545454545455,
+            "K_over_Kc_theory": 44.68566436966974,
+            "final_r": 0.5639028549194336,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24840889999177307
+          },
+          {
+            "K": 1.2763636363636364,
+            "K_over_Kc_theory": 52.06528860997204,
+            "final_r": 0.7353126406669617,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2433595000184141
+          },
+          {
+            "K": 1.4572727272727273,
+            "K_over_Kc_theory": 59.44491285027435,
+            "final_r": 0.8641801476478577,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24831599998287857
+          },
+          {
+            "K": 1.6381818181818182,
+            "K_over_Kc_theory": 66.82453709057665,
+            "final_r": 0.9344793558120728,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2329732999787666
+          },
+          {
+            "K": 1.819090909090909,
+            "K_over_Kc_theory": 74.20416133087896,
+            "final_r": 0.9709908962249756,
+            "converged": true,
+            "convergence_step": 466,
+            "convergence_time": 4.66,
+            "wall_time_s": 0.245788200001698
+          },
+          {
+            "K": 2.0,
+            "K_over_Kc_theory": 81.58378557118127,
+            "final_r": 0.9883636236190796,
+            "converged": true,
+            "convergence_step": 424,
+            "convergence_time": 4.24,
+            "wall_time_s": 0.2379056999925524
+          }
+        ]
+      },
+      {
+        "seed": 789,
+        "K_c_theory": 0.020567893981933594,
+        "K_c_empirical": 2.0,
+        "K_c_ratio": 97.23892984652478,
+        "target_r": 0.95,
+        "n_oscillators": 800,
+        "freq_mean": 5.960294723510742,
+        "freq_std": 0.01,
+        "n_steps": 500,
+        "dt": 0.01,
+        "sweep": [
+          {
+            "K": 0.01,
+            "K_over_Kc_theory": 0.4861946492326239,
+            "final_r": 0.03407961502671242,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24292380001861602
+          },
+          {
+            "K": 0.19090909090909092,
+            "K_over_Kc_theory": 9.281897848986457,
+            "final_r": 0.05272494629025459,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.27376579999690875
+          },
+          {
+            "K": 0.3718181818181818,
+            "K_over_Kc_theory": 18.077601048740288,
+            "final_r": 0.08179499208927155,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23781449999660254
+          },
+          {
+            "K": 0.5527272727272727,
+            "K_over_Kc_theory": 26.873304248494122,
+            "final_r": 0.126860573887825,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24216989998240024
+          },
+          {
+            "K": 0.7336363636363636,
+            "K_over_Kc_theory": 35.66900744824795,
+            "final_r": 0.19580602645874023,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23166350001702085
+          },
+          {
+            "K": 0.9145454545454546,
+            "K_over_Kc_theory": 44.464710648001784,
+            "final_r": 0.29812949895858765,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23174760001711547
+          },
+          {
+            "K": 1.0954545454545455,
+            "K_over_Kc_theory": 53.26041384775562,
+            "final_r": 0.43996649980545044,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2402936000144109
+          },
+          {
+            "K": 1.2763636363636364,
+            "K_over_Kc_theory": 62.05611704750945,
+            "final_r": 0.6106272339820862,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23252789996331558
+          },
+          {
+            "K": 1.4572727272727273,
+            "K_over_Kc_theory": 70.85182024726329,
+            "final_r": 0.7720920443534851,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24086890002945438
+          },
+          {
+            "K": 1.6381818181818182,
+            "K_over_Kc_theory": 79.64752344701712,
+            "final_r": 0.8860424160957336,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23338580003473908
+          },
+          {
+            "K": 1.819090909090909,
+            "K_over_Kc_theory": 88.44322664677095,
+            "final_r": 0.94682776927948,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24364040000364184
+          },
+          {
+            "K": 2.0,
+            "K_over_Kc_theory": 97.23892984652478,
+            "final_r": 0.9709059596061707,
+            "converged": true,
+            "convergence_step": 462,
+            "convergence_time": 4.62,
+            "wall_time_s": 0.24178420001408085
+          }
+        ]
+      },
+      {
+        "seed": 1024,
+        "K_c_theory": 0.017147064208984375,
+        "K_c_empirical": null,
+        "K_c_ratio": null,
+        "target_r": 0.95,
+        "n_oscillators": 800,
+        "freq_mean": 5.971861839294434,
+        "freq_std": 0.01,
+        "n_steps": 500,
+        "dt": 0.01,
+        "sweep": [
+          {
+            "K": 0.01,
+            "K_over_Kc_theory": 0.58319021134594,
+            "final_r": 0.02573598548769951,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23392880003666505
+          },
+          {
+            "K": 0.19090909090909092,
+            "K_over_Kc_theory": 11.133631307513399,
+            "final_r": 0.03600570186972618,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.27875669999048114
+          },
+          {
+            "K": 0.3718181818181818,
+            "K_over_Kc_theory": 21.684072403680858,
+            "final_r": 0.051406022161245346,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23183460003929213
+          },
+          {
+            "K": 0.5527272727272727,
+            "K_over_Kc_theory": 32.23451349984832,
+            "final_r": 0.07457300275564194,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24432729999534786
+          },
+          {
+            "K": 0.7336363636363636,
+            "K_over_Kc_theory": 42.78495459601577,
+            "final_r": 0.10941275209188461,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23076169996056706
+          },
+          {
+            "K": 0.9145454545454546,
+            "K_over_Kc_theory": 53.33539569218323,
+            "final_r": 0.1614898145198822,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24738969997270033
+          },
+          {
+            "K": 1.0954545454545455,
+            "K_over_Kc_theory": 63.885836788350694,
+            "final_r": 0.2379624843597412,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23694490001071244
+          },
+          {
+            "K": 1.2763636363636364,
+            "K_over_Kc_theory": 74.43627788451815,
+            "final_r": 0.34565970301628113,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23385679995408282
+          },
+          {
+            "K": 1.4572727272727273,
+            "K_over_Kc_theory": 84.98671898068561,
+            "final_r": 0.4847908020019531,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24546509998617694
+          },
+          {
+            "K": 1.6381818181818182,
+            "K_over_Kc_theory": 95.53716007685307,
+            "final_r": 0.6394661068916321,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2374398999963887
+          },
+          {
+            "K": 1.819090909090909,
+            "K_over_Kc_theory": 106.08760117302053,
+            "final_r": 0.7787922024726868,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24282149999635294
+          },
+          {
+            "K": 2.0,
+            "K_over_Kc_theory": 116.63804226918799,
+            "final_r": 0.8782578706741333,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2374542999896221
+          }
+        ]
+      },
+      {
+        "seed": 2048,
+        "K_c_theory": 0.019575119018554688,
+        "K_c_empirical": 2.0,
+        "K_c_ratio": 102.17051544382734,
+        "target_r": 0.95,
+        "n_oscillators": 800,
+        "freq_mean": 5.970984935760498,
+        "freq_std": 0.01,
+        "n_steps": 500,
+        "dt": 0.01,
+        "sweep": [
+          {
+            "K": 0.01,
+            "K_over_Kc_theory": 0.5108525772191367,
+            "final_r": 0.03598202019929886,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.25161959999240935
+          },
+          {
+            "K": 0.19090909090909092,
+            "K_over_Kc_theory": 9.752640110547155,
+            "final_r": 0.05352190136909485,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.26349659997504205
+          },
+          {
+            "K": 0.3718181818181818,
+            "K_over_Kc_theory": 18.994427643875174,
+            "final_r": 0.08045045286417007,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2448412999510765
+          },
+          {
+            "K": 0.5527272727272727,
+            "K_over_Kc_theory": 28.236215177203192,
+            "final_r": 0.12164057791233063,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23566420003771782
+          },
+          {
+            "K": 0.7336363636363636,
+            "K_over_Kc_theory": 37.478002710531214,
+            "final_r": 0.18397139012813568,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24329060001764446
+          },
+          {
+            "K": 0.9145454545454546,
+            "K_over_Kc_theory": 46.71979024385923,
+            "final_r": 0.27578848600387573,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23756089998641983
+          },
+          {
+            "K": 1.0954545454545455,
+            "K_over_Kc_theory": 55.96157777718725,
+            "final_r": 0.40301233530044556,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23777910001808777
+          },
+          {
+            "K": 1.2763636363636364,
+            "K_over_Kc_theory": 65.20336531051527,
+            "final_r": 0.5593312382698059,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24668859998928383
+          },
+          {
+            "K": 1.4572727272727273,
+            "K_over_Kc_theory": 74.44515284384329,
+            "final_r": 0.7186634540557861,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24075629998696968
+          },
+          {
+            "K": 1.6381818181818182,
+            "K_over_Kc_theory": 83.68694037717131,
+            "final_r": 0.8472538590431213,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24638440000126138
+          },
+          {
+            "K": 1.819090909090909,
+            "K_over_Kc_theory": 92.92872791049932,
+            "final_r": 0.9287165999412537,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23975809995317832
+          },
+          {
+            "K": 2.0,
+            "K_over_Kc_theory": 102.17051544382734,
+            "final_r": 0.9708008170127869,
+            "converged": true,
+            "convergence_step": 474,
+            "convergence_time": 4.74,
+            "wall_time_s": 0.24678580003092065
+          }
+        ]
+      },
+      {
+        "seed": 3072,
+        "K_c_theory": 0.014430046081542969,
+        "K_c_empirical": null,
+        "K_c_ratio": null,
+        "target_r": 0.95,
+        "n_oscillators": 800,
+        "freq_mean": 5.972988128662109,
+        "freq_std": 0.01,
+        "n_steps": 500,
+        "dt": 0.01,
+        "sweep": [
+          {
+            "K": 0.01,
+            "K_over_Kc_theory": 0.6929984799418413,
+            "final_r": 0.010771526023745537,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2312104000011459
+          },
+          {
+            "K": 0.19090909090909092,
+            "K_over_Kc_theory": 13.22997098070788,
+            "final_r": 0.01686186157166958,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2653101999894716
+          },
+          {
+            "K": 0.3718181818181818,
+            "K_over_Kc_theory": 25.766943481473916,
+            "final_r": 0.028127804398536682,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23275200003990903
+          },
+          {
+            "K": 0.5527272727272727,
+            "K_over_Kc_theory": 38.30391598223996,
+            "final_r": 0.04742109403014183,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24063010001555085
+          },
+          {
+            "K": 0.7336363636363636,
+            "K_over_Kc_theory": 50.84088848300599,
+            "final_r": 0.07925773411989212,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.236517500015907
+          },
+          {
+            "K": 0.9145454545454546,
+            "K_over_Kc_theory": 63.37786098377203,
+            "final_r": 0.13062353432178497,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24096730002202094
+          },
+          {
+            "K": 1.0954545454545455,
+            "K_over_Kc_theory": 75.91483348453806,
+            "final_r": 0.2115122526884079,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23512269998900592
+          },
+          {
+            "K": 1.2763636363636364,
+            "K_over_Kc_theory": 88.4518059853041,
+            "final_r": 0.33325400948524475,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23370669997530058
+          },
+          {
+            "K": 1.4572727272727273,
+            "K_over_Kc_theory": 100.98877848607015,
+            "final_r": 0.49876585602760315,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24302409996744245
+          },
+          {
+            "K": 1.6381818181818182,
+            "K_over_Kc_theory": 113.52575098683617,
+            "final_r": 0.6823528409004211,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23007260001031682
+          },
+          {
+            "K": 1.819090909090909,
+            "K_over_Kc_theory": 126.06272348760221,
+            "final_r": 0.8347014784812927,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2431872000452131
+          },
+          {
+            "K": 2.0,
+            "K_over_Kc_theory": 138.59969598836824,
+            "final_r": 0.9251703023910522,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23180970002431422
+          }
+        ]
+      }
+    ],
+    "gamma": [
+      {
+        "seed": 42,
+        "K_c_theory": 0.0667572021484375,
+        "K_c_empirical": 2.0,
+        "K_c_ratio": 29.959314285714285,
+        "target_r": 0.95,
+        "n_oscillators": 1600,
+        "freq_mean": 39.99421691894531,
+        "freq_std": 0.02051743119955063,
+        "n_steps": 500,
+        "dt": 0.01,
+        "sweep": [
+          {
+            "K": 0.01,
+            "K_over_Kc_theory": 0.14979657142857142,
+            "final_r": 0.01927427388727665,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24008479999611154
+          },
+          {
+            "K": 0.19090909090909092,
+            "K_over_Kc_theory": 2.8597527272727272,
+            "final_r": 0.03480585664510727,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2411705999984406
+          },
+          {
+            "K": 0.3718181818181818,
+            "K_over_Kc_theory": 5.569708883116883,
+            "final_r": 0.06068301200866699,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24584190000314265
+          },
+          {
+            "K": 0.5527272727272727,
+            "K_over_Kc_theory": 8.279665038961038,
+            "final_r": 0.10279356688261032,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2388432999723591
+          },
+          {
+            "K": 0.7336363636363636,
+            "K_over_Kc_theory": 10.989621194805196,
+            "final_r": 0.16976332664489746,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23115840001264587
+          },
+          {
+            "K": 0.9145454545454546,
+            "K_over_Kc_theory": 13.699577350649351,
+            "final_r": 0.2723686993122101,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2467923000222072
+          },
+          {
+            "K": 1.0954545454545455,
+            "K_over_Kc_theory": 16.409533506493506,
+            "final_r": 0.41788792610168457,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2451903999899514
+          },
+          {
+            "K": 1.2763636363636364,
+            "K_over_Kc_theory": 19.119489662337664,
+            "final_r": 0.5944945812225342,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24924770003417507
+          },
+          {
+            "K": 1.4572727272727273,
+            "K_over_Kc_theory": 21.829445818181817,
+            "final_r": 0.7613933682441711,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23775809997459874
+          },
+          {
+            "K": 1.6381818181818182,
+            "K_over_Kc_theory": 24.539401974025974,
+            "final_r": 0.8800642490386963,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.28226459998404607
+          },
+          {
+            "K": 1.819090909090909,
+            "K_over_Kc_theory": 27.24935812987013,
+            "final_r": 0.9467980265617371,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2420780000393279
+          },
+          {
+            "K": 2.0,
+            "K_over_Kc_theory": 29.959314285714285,
+            "final_r": 0.9784873723983765,
+            "converged": true,
+            "convergence_step": 455,
+            "convergence_time": 4.55,
+            "wall_time_s": 0.25285280001116917
+          }
+        ]
+      },
+      {
+        "seed": 123,
+        "K_c_theory": 0.061374664306640625,
+        "K_c_empirical": null,
+        "K_c_ratio": null,
+        "target_r": 0.95,
+        "n_oscillators": 1600,
+        "freq_mean": 40.00187301635742,
+        "freq_std": 0.020797180011868477,
+        "n_steps": 500,
+        "dt": 0.01,
+        "sweep": [
+          {
+            "K": 0.01,
+            "K_over_Kc_theory": 0.16293368139722791,
+            "final_r": 0.016635186970233917,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23583570000482723
+          },
+          {
+            "K": 0.19090909090909092,
+            "K_over_Kc_theory": 3.110552099401624,
+            "final_r": 0.020562008023262024,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2642830000258982
+          },
+          {
+            "K": 0.3718181818181818,
+            "K_over_Kc_theory": 6.05817051740602,
+            "final_r": 0.025974471122026443,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.25828559999354184
+          },
+          {
+            "K": 0.5527272727272727,
+            "K_over_Kc_theory": 9.005788935410417,
+            "final_r": 0.03361739590764046,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2495966000133194
+          },
+          {
+            "K": 0.7336363636363636,
+            "K_over_Kc_theory": 11.953407353414812,
+            "final_r": 0.044667549431324005,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24119480000808835
+          },
+          {
+            "K": 0.9145454545454546,
+            "K_over_Kc_theory": 14.901025771419208,
+            "final_r": 0.06098921597003937,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24137629999313504
+          },
+          {
+            "K": 1.0954545454545455,
+            "K_over_Kc_theory": 17.848644189423602,
+            "final_r": 0.08549822866916656,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.25164550001500174
+          },
+          {
+            "K": 1.2763636363636364,
+            "K_over_Kc_theory": 20.796262607428,
+            "final_r": 0.1226680725812912,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23594779998529702
+          },
+          {
+            "K": 1.4572727272727273,
+            "K_over_Kc_theory": 23.743881025432398,
+            "final_r": 0.1790565401315689,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2488961000344716
+          },
+          {
+            "K": 1.6381818181818182,
+            "K_over_Kc_theory": 26.691499443436793,
+            "final_r": 0.26329347491264343,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23821709997719154
+          },
+          {
+            "K": 1.819090909090909,
+            "K_over_Kc_theory": 29.63911786144119,
+            "final_r": 0.3835001289844513,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24453640001593158
+          },
+          {
+            "K": 2.0,
+            "K_over_Kc_theory": 32.58673627944558,
+            "final_r": 0.5378694534301758,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24158869998063892
+          }
+        ]
+      },
+      {
+        "seed": 456,
+        "K_c_theory": 0.06430435180664062,
+        "K_c_empirical": null,
+        "K_c_ratio": null,
+        "target_r": 0.95,
+        "n_oscillators": 1600,
+        "freq_mean": 40.00493621826172,
+        "freq_std": 0.02374296635389328,
+        "n_steps": 500,
+        "dt": 0.01,
+        "sweep": [
+          {
+            "K": 0.01,
+            "K_over_Kc_theory": 0.15551047042771549,
+            "final_r": 0.010058440268039703,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24011780001455918
+          },
+          {
+            "K": 0.19090909090909092,
+            "K_over_Kc_theory": 2.9688362536200232,
+            "final_r": 0.014473550952970982,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2572362999781035
+          },
+          {
+            "K": 0.3718181818181818,
+            "K_over_Kc_theory": 5.7821620368123305,
+            "final_r": 0.02148294635117054,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2329842000035569
+          },
+          {
+            "K": 0.5527272727272727,
+            "K_over_Kc_theory": 8.595487820004639,
+            "final_r": 0.03257148340344429,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24404469999717548
+          },
+          {
+            "K": 0.7336363636363636,
+            "K_over_Kc_theory": 11.408813603196945,
+            "final_r": 0.05001956224441528,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23341529996832833
+          },
+          {
+            "K": 0.9145454545454546,
+            "K_over_Kc_theory": 14.222139386389253,
+            "final_r": 0.07734385132789612,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24503320001531392
+          },
+          {
+            "K": 1.0954545454545455,
+            "K_over_Kc_theory": 17.03546516958156,
+            "final_r": 0.11985083669424057,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23328159999800846
+          },
+          {
+            "K": 1.2763636363636364,
+            "K_over_Kc_theory": 19.848790952773868,
+            "final_r": 0.18510954082012177,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.240033800015226
+          },
+          {
+            "K": 1.4572727272727273,
+            "K_over_Kc_theory": 22.662116735966176,
+            "final_r": 0.2824440598487854,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23145159997511655
+          },
+          {
+            "K": 1.6381818181818182,
+            "K_over_Kc_theory": 25.475442519158484,
+            "final_r": 0.41858071088790894,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24287489999551326
+          },
+          {
+            "K": 1.819090909090909,
+            "K_over_Kc_theory": 28.28876830235079,
+            "final_r": 0.585490882396698,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23482369998237118
+          },
+          {
+            "K": 2.0,
+            "K_over_Kc_theory": 31.102094085543097,
+            "final_r": 0.7490367293357849,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24712239997461438
+          }
+        ]
+      },
+      {
+        "seed": 789,
+        "K_c_theory": 0.053836822509765625,
+        "K_c_empirical": null,
+        "K_c_ratio": null,
+        "target_r": 0.95,
+        "n_oscillators": 1600,
+        "freq_mean": 39.99701690673828,
+        "freq_std": 0.020059555768966675,
+        "n_steps": 500,
+        "dt": 0.01,
+        "sweep": [
+          {
+            "K": 0.01,
+            "K_over_Kc_theory": 0.1857464748813151,
+            "final_r": 0.02000225894153118,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2563020000234246
+          },
+          {
+            "K": 0.19090909090909092,
+            "K_over_Kc_theory": 3.546069065916016,
+            "final_r": 0.027279548346996307,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24673139996593818
+          },
+          {
+            "K": 0.3718181818181818,
+            "K_over_Kc_theory": 6.906391656950716,
+            "final_r": 0.038736384361982346,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24523840000620112
+          },
+          {
+            "K": 0.5527272727272727,
+            "K_over_Kc_theory": 10.266714247985416,
+            "final_r": 0.05679955333471298,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23605300002964213
+          },
+          {
+            "K": 0.7336363636363636,
+            "K_over_Kc_theory": 13.627036839020118,
+            "final_r": 0.0851452499628067,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24324670003261417
+          },
+          {
+            "K": 0.9145454545454546,
+            "K_over_Kc_theory": 16.987359430054816,
+            "final_r": 0.12922576069831848,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23954669997328892
+          },
+          {
+            "K": 1.0954545454545455,
+            "K_over_Kc_theory": 20.34768202108952,
+            "final_r": 0.19663357734680176,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2430855999700725
+          },
+          {
+            "K": 1.2763636363636364,
+            "K_over_Kc_theory": 23.708004612124217,
+            "final_r": 0.2962784171104431,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23944610002217814
+          },
+          {
+            "K": 1.4572727272727273,
+            "K_over_Kc_theory": 27.06832720315892,
+            "final_r": 0.4337424635887146,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23452579998411238
+          },
+          {
+            "K": 1.6381818181818182,
+            "K_over_Kc_theory": 30.428649794193618,
+            "final_r": 0.6000993251800537,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2484861999982968
+          },
+          {
+            "K": 1.819090909090909,
+            "K_over_Kc_theory": 33.78897238522832,
+            "final_r": 0.7621205449104309,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23167200002353638
+          },
+          {
+            "K": 2.0,
+            "K_over_Kc_theory": 37.14929497626302,
+            "final_r": 0.8792906999588013,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24749079998582602
+          }
+        ]
+      },
+      {
+        "seed": 1024,
+        "K_c_theory": 0.058307647705078125,
+        "K_c_empirical": null,
+        "K_c_ratio": null,
+        "target_r": 0.95,
+        "n_oscillators": 1600,
+        "freq_mean": 40.006832122802734,
+        "freq_std": 0.019259952008724213,
+        "n_steps": 500,
+        "dt": 0.01,
+        "sweep": [
+          {
+            "K": 0.01,
+            "K_over_Kc_theory": 0.17150408897612038,
+            "final_r": 0.03167262673377991,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24739500001305714
+          },
+          {
+            "K": 0.19090909090909092,
+            "K_over_Kc_theory": 3.274168971362298,
+            "final_r": 0.04461964592337608,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2490442999987863
+          },
+          {
+            "K": 0.3718181818181818,
+            "K_over_Kc_theory": 6.376833853748476,
+            "final_r": 0.06408747285604477,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24707009998383
+          },
+          {
+            "K": 0.5527272727272727,
+            "K_over_Kc_theory": 9.479498736134653,
+            "final_r": 0.09337877482175827,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23545830004150048
+          },
+          {
+            "K": 0.7336363636363636,
+            "K_over_Kc_theory": 12.582163618520832,
+            "final_r": 0.13732263445854187,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.25258209998719394
+          },
+          {
+            "K": 0.9145454545454546,
+            "K_over_Kc_theory": 15.68482850090701,
+            "final_r": 0.20257428288459778,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23500919999787584
+          },
+          {
+            "K": 1.0954545454545455,
+            "K_over_Kc_theory": 18.78749338329319,
+            "final_r": 0.297044575214386,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2446637999964878
+          },
+          {
+            "K": 1.2763636363636364,
+            "K_over_Kc_theory": 21.890158265679364,
+            "final_r": 0.42652109265327454,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23713849997147918
+          },
+          {
+            "K": 1.4572727272727273,
+            "K_over_Kc_theory": 24.992823148065543,
+            "final_r": 0.5861169099807739,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2433358999551274
+          },
+          {
+            "K": 1.6381818181818182,
+            "K_over_Kc_theory": 28.09548803045172,
+            "final_r": 0.7502359747886658,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23780609999084845
+          },
+          {
+            "K": 1.819090909090909,
+            "K_over_Kc_theory": 31.198152912837898,
+            "final_r": 0.8761628270149231,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23344069998711348
+          },
+          {
+            "K": 2.0,
+            "K_over_Kc_theory": 34.30081779522408,
+            "final_r": 0.9437656998634338,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24646010005380958
+          }
+        ]
+      },
+      {
+        "seed": 2048,
+        "K_c_theory": 0.057903289794921875,
+        "K_c_empirical": 1.819090909090909,
+        "K_c_ratio": 31.416019979756722,
+        "target_r": 0.95,
+        "n_oscillators": 1600,
+        "freq_mean": 39.99609375,
+        "freq_std": 0.016038622707128525,
+        "n_steps": 500,
+        "dt": 0.01,
+        "sweep": [
+          {
+            "K": 0.01,
+            "K_over_Kc_theory": 0.17270175900915738,
+            "final_r": 0.04485944285988808,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24262010003440082
+          },
+          {
+            "K": 0.19090909090909092,
+            "K_over_Kc_theory": 3.2970335810839138,
+            "final_r": 0.06750350445508957,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2743959999643266
+          },
+          {
+            "K": 0.3718181818181818,
+            "K_over_Kc_theory": 6.421365403158671,
+            "final_r": 0.10249678045511246,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23598960001254454
+          },
+          {
+            "K": 0.5527272727272727,
+            "K_over_Kc_theory": 9.545697225233427,
+            "final_r": 0.1563006490468979,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24448220001067966
+          },
+          {
+            "K": 0.7336363636363636,
+            "K_over_Kc_theory": 12.670029047308184,
+            "final_r": 0.2377120852470398,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23294840002199635
+          },
+          {
+            "K": 0.9145454545454546,
+            "K_over_Kc_theory": 15.79436086938294,
+            "final_r": 0.355893611907959,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24651069997344166
+          },
+          {
+            "K": 1.0954545454545455,
+            "K_over_Kc_theory": 18.918692691457696,
+            "final_r": 0.5120391249656677,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23460299998987466
+          },
+          {
+            "K": 1.2763636363636364,
+            "K_over_Kc_theory": 22.04302451353245,
+            "final_r": 0.6839920282363892,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24223319999873638
+          },
+          {
+            "K": 1.4572727272727273,
+            "K_over_Kc_theory": 25.16735633560721,
+            "final_r": 0.8282696008682251,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2360068000270985
+          },
+          {
+            "K": 1.6381818181818182,
+            "K_over_Kc_theory": 28.291688157681964,
+            "final_r": 0.918056309223175,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23634930001571774
+          },
+          {
+            "K": 1.819090909090909,
+            "K_over_Kc_theory": 31.416019979756722,
+            "final_r": 0.962539792060852,
+            "converged": true,
+            "convergence_step": 480,
+            "convergence_time": 4.8,
+            "wall_time_s": 0.24529999995138496
+          },
+          {
+            "K": 2.0,
+            "K_over_Kc_theory": 34.54035180183148,
+            "final_r": 0.9827486872673035,
+            "converged": true,
+            "convergence_step": 435,
+            "convergence_time": 4.3500000000000005,
+            "wall_time_s": 0.23423060000641271
+          }
+        ]
+      },
+      {
+        "seed": 3072,
+        "K_c_theory": 0.07540130615234375,
+        "K_c_empirical": null,
+        "K_c_ratio": null,
+        "target_r": 0.95,
+        "n_oscillators": 1600,
+        "freq_mean": 39.995513916015625,
+        "freq_std": 0.02437518909573555,
+        "n_steps": 500,
+        "dt": 0.01,
+        "sweep": [
+          {
+            "K": 0.01,
+            "K_over_Kc_theory": 0.13262369725791764,
+            "final_r": 0.01649065501987934,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24543490004725754
+          },
+          {
+            "K": 0.19090909090909092,
+            "K_over_Kc_theory": 2.531906947651155,
+            "final_r": 0.022417554631829262,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.26588420005282387
+          },
+          {
+            "K": 0.3718181818181818,
+            "K_over_Kc_theory": 4.931190198044392,
+            "final_r": 0.03112981468439102,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.246922199963592
+          },
+          {
+            "K": 0.5527272727272727,
+            "K_over_Kc_theory": 7.33047344843763,
+            "final_r": 0.044072192162275314,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2378578000352718
+          },
+          {
+            "K": 0.7336363636363636,
+            "K_over_Kc_theory": 9.729756698830867,
+            "final_r": 0.06344854831695557,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24829590000445023
+          },
+          {
+            "K": 0.9145454545454546,
+            "K_over_Kc_theory": 12.129039949224104,
+            "final_r": 0.09259860217571259,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2401333000161685
+          },
+          {
+            "K": 1.0954545454545455,
+            "K_over_Kc_theory": 14.528323199617342,
+            "final_r": 0.1364634484052658,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24782590003451332
+          },
+          {
+            "K": 1.2763636363636364,
+            "K_over_Kc_theory": 16.92760645001058,
+            "final_r": 0.20194247364997864,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.2389874000218697
+          },
+          {
+            "K": 1.4572727272727273,
+            "K_over_Kc_theory": 19.326889700403814,
+            "final_r": 0.29729390144348145,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.24694360001012683
+          },
+          {
+            "K": 1.6381818181818182,
+            "K_over_Kc_theory": 21.726172950797054,
+            "final_r": 0.4282742440700531,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23357650003163144
+          },
+          {
+            "K": 1.819090909090909,
+            "K_over_Kc_theory": 24.12545620119029,
+            "final_r": 0.5877478122711182,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.23278469999786466
+          },
+          {
+            "K": 2.0,
+            "K_over_Kc_theory": 26.524739451583528,
+            "final_r": 0.7448313236236572,
+            "converged": false,
+            "convergence_step": null,
+            "convergence_time": null,
+            "wall_time_s": 0.25119270000141114
+          }
+        ]
+      }
+    ]
+  },
+  "convergence_rates": {
+    "delta": [
+      {
+        "seed": 42,
+        "K": 0.30000000000000004,
+        "convergence_rate_lambda": 0.010328455381697434,
+        "fit_r_squared": 0.9553066388673229,
+        "fit_intercept": -0.007835507798861491,
+        "final_r": 0.11805547773838043,
+        "recovery_time_05_to_095": 222.93605460835377,
+        "n_r_values": 1000
+      },
+      {
+        "seed": 123,
+        "K": 0.30000000000000004,
+        "convergence_rate_lambda": 0.020115386548563072,
+        "fit_r_squared": 0.9780590640565225,
+        "fit_intercept": -0.049821982761429226,
+        "final_r": 0.23789502680301666,
+        "recovery_time_05_to_095": 114.46884639452918,
+        "n_r_values": 1000
+      },
+      {
+        "seed": 456,
+        "K": 0.30000000000000004,
+        "convergence_rate_lambda": 0.0196965169608305,
+        "fit_r_squared": 0.9748342357882539,
+        "fit_intercept": -0.050323706453233856,
+        "final_r": 0.23637878894805908,
+        "recovery_time_05_to_095": 116.90316097882094,
+        "n_r_values": 1000
+      },
+      {
+        "seed": 789,
+        "K": 0.30000000000000004,
+        "convergence_rate_lambda": 0.007037447875924871,
+        "fit_r_squared": 0.9832518536646526,
+        "fit_intercept": 0.013131725879945636,
+        "final_r": 0.05999511852860451,
+        "recovery_time_05_to_095": 327.1903584353633,
+        "n_r_values": 1000
+      },
+      {
+        "seed": 1024,
+        "K": 0.30000000000000004,
+        "convergence_rate_lambda": 0.007143940747828433,
+        "fit_r_squared": 0.9939264912175648,
+        "fit_intercept": 0.016208965717444554,
+        "final_r": 0.056046612560749054,
+        "recovery_time_05_to_095": 322.31301662096917,
+        "n_r_values": 1000
+      },
+      {
+        "seed": 2048,
+        "K": 0.30000000000000004,
+        "convergence_rate_lambda": 0.001274044677082726,
+        "fit_r_squared": 0.9150958068033478,
+        "fit_intercept": -0.013185193733374519,
+        "final_r": 0.028501739725470543,
+        "recovery_time_05_to_095": 1807.303255853196,
+        "n_r_values": 1000
+      },
+      {
+        "seed": 3072,
+        "K": 0.30000000000000004,
+        "convergence_rate_lambda": -0.0008581292669004668,
+        "fit_r_squared": 0.9432258901673588,
+        "fit_intercept": -0.023598574940210542,
+        "final_r": 0.01364679355174303,
+        "recovery_time_05_to_095": null,
+        "n_r_values": 1000
+      }
+    ],
+    "theta": [
+      {
+        "seed": 42,
+        "K": 0.30000000000000004,
+        "convergence_rate_lambda": 0.01554025773370793,
+        "fit_r_squared": 0.9696804818398246,
+        "fit_intercept": -0.024624273352796752,
+        "final_r": 0.18087263405323029,
+        "recovery_time_05_to_095": 148.16904149533974,
+        "n_r_values": 1000
+      },
+      {
+        "seed": 123,
+        "K": 0.30000000000000004,
+        "convergence_rate_lambda": 0.0027596679044941804,
+        "fit_r_squared": 0.9398813157635347,
+        "fit_intercept": -0.016605509746853892,
+        "final_r": 0.04862510412931442,
+        "recovery_time_05_to_095": 834.3703563911562,
+        "n_r_values": 1000
+      },
+      {
+        "seed": 456,
+        "K": 0.30000000000000004,
+        "convergence_rate_lambda": 0.013885299745332725,
+        "fit_r_squared": 0.9712961689004789,
+        "fit_intercept": -0.030341074370040123,
+        "final_r": 0.17003683745861053,
+        "recovery_time_05_to_095": 165.8289799446364,
+        "n_r_values": 1000
+      },
+      {
+        "seed": 789,
+        "K": 0.30000000000000004,
+        "convergence_rate_lambda": 0.011330464951740428,
+        "fit_r_squared": 0.9623586665467284,
+        "fit_intercept": -0.02174965336335245,
+        "final_r": 0.14040808379650116,
+        "recovery_time_05_to_095": 203.22070654658825,
+        "n_r_values": 1000
+      },
+      {
+        "seed": 1024,
+        "K": 0.30000000000000004,
+        "convergence_rate_lambda": 0.008925666120108524,
+        "fit_r_squared": 0.975266109053084,
+        "fit_intercept": -0.0055487662441202805,
+        "final_r": 0.09926372021436691,
+        "recovery_time_05_to_095": 257.9734735771237,
+        "n_r_values": 1000
+      },
+      {
+        "seed": 2048,
+        "K": 0.30000000000000004,
+        "convergence_rate_lambda": 0.012369942185718658,
+        "fit_r_squared": 0.9669008928574306,
+        "fit_intercept": -0.01638125449270536,
+        "final_r": 0.14490941166877747,
+        "recovery_time_05_to_095": 186.14356141877727,
+        "n_r_values": 1000
+      },
+      {
+        "seed": 3072,
+        "K": 0.30000000000000004,
+        "convergence_rate_lambda": 0.0025142501302440508,
+        "fit_r_squared": 0.8850693733220387,
+        "fit_intercept": -0.013637495352661297,
+        "final_r": 0.04399394243955612,
+        "recovery_time_05_to_095": 915.81385053783,
+        "n_r_values": 1000
+      }
+    ],
+    "gamma": [
+      {
+        "seed": 42,
+        "K": 0.30000000000000004,
+        "convergence_rate_lambda": 0.0013942827489798098,
+        "fit_r_squared": 0.9499904951525544,
+        "fit_intercept": -0.04206090743591275,
+        "final_r": 0.05375344306230545,
+        "recovery_time_05_to_095": 1651.4477387594702,
+        "n_r_values": 1000
+      },
+      {
+        "seed": 123,
+        "K": 0.30000000000000004,
+        "convergence_rate_lambda": 0.005620309984624649,
+        "fit_r_squared": 0.994464818938088,
+        "fit_intercept": 0.004374925150213307,
+        "final_r": 0.04847908392548561,
+        "recovery_time_05_to_095": 409.69005255816376,
+        "n_r_values": 1000
+      },
+      {
+        "seed": 456,
+        "K": 0.30000000000000004,
+        "convergence_rate_lambda": 0.0007933506050748761,
+        "fit_r_squared": 0.5096730047512712,
+        "fit_intercept": -0.012460591906998743,
+        "final_r": 0.016931895166635513,
+        "recovery_time_05_to_095": 2902.3549969773176,
+        "n_r_values": 1000
+      },
+      {
+        "seed": 789,
+        "K": 0.30000000000000004,
+        "convergence_rate_lambda": 0.005369932688212476,
+        "fit_r_squared": 0.9848353579700254,
+        "fit_intercept": -0.009576036648252961,
+        "final_r": 0.06298457086086273,
+        "recovery_time_05_to_095": 428.7921705328715,
+        "n_r_values": 1000
+      },
+      {
+        "seed": 1024,
+        "K": 0.30000000000000004,
+        "convergence_rate_lambda": 0.0076678394528040235,
+        "fit_r_squared": 0.9958560742489823,
+        "fit_intercept": -0.01706828091913965,
+        "final_r": 0.08625597506761551,
+        "recovery_time_05_to_095": 300.29124985813587,
+        "n_r_values": 1000
+      },
+      {
+        "seed": 2048,
+        "K": 0.30000000000000004,
+        "convergence_rate_lambda": 0.013513394275466108,
+        "fit_r_squared": 0.9857957292683475,
+        "fit_intercept": -0.028640050688665028,
+        "final_r": 0.15966950356960297,
+        "recovery_time_05_to_095": 170.39280036211503,
+        "n_r_values": 1000
+      },
+      {
+        "seed": 3072,
+        "K": 0.30000000000000004,
+        "convergence_rate_lambda": 0.004013611637052538,
+        "fit_r_squared": 0.995418888908824,
+        "fit_intercept": -0.006897004882428043,
+        "final_r": 0.04777095839381218,
+        "recovery_time_05_to_095": 573.6940444703779,
+        "n_r_values": 1000
+      }
+    ]
+  },
+  "aggregated": {
+    "delta": {
+      "n_oscillators": 4,
+      "freq_mean": {
+        "mean": 1.9378146273749215,
+        "std": 0.009368669394650968
+      },
+      "freq_std": {
+        "mean": 0.00524218480235764,
+        "std": 0.0025744876368260054
+      },
+      "K_c_theory": {
+        "mean": 0.013569729668753487,
+        "std": 0.006627006979292025
+      },
+      "K_c_empirical": {
+        "mean": 1.7587878787878788,
+        "std": 0.17056272661348237,
+        "n_converged": 3
+      },
+      "K_c_ratio_empirical_over_theory": {
+        "mean": 120.45594922305106,
+        "std": 57.50868031818889
+      },
+      "W_operator_norm": {
+        "mean": 1.6476034947804041,
+        "std": 0.1986738610791923
+      },
+      "W_spectral_radius": {
+        "mean": 1.1637751970972334,
+        "std": 0.3294823094391091
+      },
+      "convergence_rate_lambda": {
+        "mean": 0.009248237560718079,
+        "std": 0.00759201082712733
+      },
+      "exponential_fit_r_squared": {
+        "mean": 0.9633857115092889,
+        "std": 0.025290832670779556
+      },
+      "recovery_time_05_to_095": {
+        "mean": 485.1857821485387,
+        "std": 597.4003070311496
+      }
+    },
+    "theta": {
+      "n_oscillators": 8,
+      "freq_mean": {
+        "mean": 5.969330923897879,
+        "std": 0.0042935501293213316
+      },
+      "freq_std": {
+        "mean": 0.005945979916889753,
+        "std": 0.00184501546290933
+      },
+      "K_c_theory": {
+        "mean": 0.018097264426095144,
+        "std": 0.0042975896752637695
+      },
+      "K_c_empirical": {
+        "mean": 1.9276363636363638,
+        "std": 0.08862699251160955,
+        "n_converged": 5
+      },
+      "K_c_ratio_empirical_over_theory": {
+        "mean": 109.9579703866913,
+        "std": 34.96970232953415
+      },
+      "W_operator_norm": {
+        "mean": 1.1601013881819588,
+        "std": 0.11896168779822791
+      },
+      "W_spectral_radius": {
+        "mean": 0.754038325377873,
+        "std": 0.1682702494073537
+      },
+      "convergence_rate_lambda": {
+        "mean": 0.009617935538763783,
+        "std": 0.00480725661744705
+      },
+      "exponential_fit_r_squared": {
+        "mean": 0.95292185832616,
+        "std": 0.02970381052775723
+      },
+      "recovery_time_05_to_095": {
+        "mean": 387.3599957016359,
+        "std": 310.875778157442
+      }
+    },
+    "gamma": {
+      "n_oscillators": 16,
+      "freq_mean": {
+        "mean": 39.99949754987444,
+        "std": 0.004636990411955779
+      },
+      "freq_std": {
+        "mean": 0.02068441387798105,
+        "std": 0.0025917473214660826
+      },
+      "K_c_theory": {
+        "mean": 0.06255504063197545,
+        "std": 0.006577282730704563
+      },
+      "K_c_empirical": {
+        "mean": 1.9095454545454547,
+        "std": 0.09045454545454545,
+        "n_converged": 2
+      },
+      "K_c_ratio_empirical_over_theory": {
+        "mean": 30.687667132735506,
+        "std": 0.7283528470212186
+      },
+      "W_operator_norm": {
+        "mean": 0.9170467512948173,
+        "std": 0.040477455075311274
+      },
+      "W_spectral_radius": {
+        "mean": 0.5033478013106755,
+        "std": 0.0457925389434586
+      },
+      "convergence_rate_lambda": {
+        "mean": 0.005481817341744925,
+        "std": 0.003967041115407833
+      },
+      "exponential_fit_r_squared": {
+        "mean": 0.9165763384625846,
+        "std": 0.16677850423255225
+      },
+      "recovery_time_05_to_095": {
+        "mean": 919.5232933597789,
+        "std": 928.3106480981816
+      }
+    }
+  },
+  "go_no_go": {
+    "criterion": "K_c predicted within 2x of empirical",
+    "pass": false
+  },
+  "elapsed_s": 687.6057460308075,
+  "device": "cuda",
+  "n_seeds": 7,
+  "timestamp": "2026-03-05T11:14:51"
+}
