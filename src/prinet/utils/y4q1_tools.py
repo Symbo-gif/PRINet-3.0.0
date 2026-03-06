@@ -1932,11 +1932,11 @@ def noise_tolerance_sweep(
                 model.eval()
                 model.to(device)
                 seq_ips: list[float] = []
-                m: Any = model
+                dyn_model: Any = model
                 with torch.no_grad():
                     for seq in ds:
                         frames = [f.to(device) for f in seq.frames]
-                        res = m.track_sequence(frames)
+                        res = dyn_model.track_sequence(frames)
                         seq_ips.append(res["identity_preservation"])
                 ips.append(sum(seq_ips) / max(len(seq_ips), 1))
         results[str(sigma)] = {
@@ -1980,11 +1980,11 @@ def noise_degradation_curve(
             model.eval()
             model.to(device)
             seq_ips: list[float] = []
-            m: Any = model
+            dyn_model: Any = model
             with torch.no_grad():
                 for seq in ds:
                     frames = [f.to(device) for f in seq.frames]
-                    res = m.track_sequence(frames)
+                    res = dyn_model.track_sequence(frames)
                     seq_ips.append(res["identity_preservation"])
             ips.append(sum(seq_ips) / max(len(seq_ips), 1))
         curve[str(sigma)] = {

@@ -601,14 +601,14 @@ class TemporalTrainer:
         n_transitions = 0
         sim_history: list[Tensor] = []
         prev_slots = None
-        model: Any = self.model
+        dyn_model: Any = self.model
 
         for t in range(seq.n_frames):
             dets = seq.frames[t].to(self.device)
-            slots = model.process_frame(dets, prev_slots)
+            slots = dyn_model.process_frame(dets, prev_slots)
 
             if prev_slots is not None:
-                sim = model.slot_similarity(prev_slots, slots)
+                sim = dyn_model.slot_similarity(prev_slots, slots)
                 n = min(sim.shape[0], sim.shape[1], seq.n_objects)
                 if n > 0:
                     loss = hungarian_similarity_loss(sim, seq.n_objects)
@@ -698,17 +698,17 @@ class TemporalTrainer:
         total_idsw = 0
         total_tfr = 0.0
         n_seqs = 0
-        model: Any = self.model
+        dyn_model: Any = self.model
 
         for seq in dataset:
             frames = [f.to(self.device) for f in seq.frames]
 
             if is_pt:
-                result = model.track_sequence(frames)
+                result = dyn_model.track_sequence(frames)
                 matches = result["identity_matches"]
                 ip = result["identity_preservation"]
             else:
-                result = model.track_sequence(frames)
+                result = dyn_model.track_sequence(frames)
                 matches = result["identity_matches"]
                 ip = result["identity_preservation"]
 
@@ -726,14 +726,14 @@ class TemporalTrainer:
                 if dets_prev.abs().sum() < 1e-8 or dets_curr.abs().sum() < 1e-8:
                     continue
                 if is_pt:
-                    _, sim = model(dets_prev, dets_curr)
+                    _, sim = dyn_model(dets_prev, dets_curr)
                 else:
                     # Re-run to get similarity
-                    prev_slots_eval = model.process_frame(dets_prev)
-                    curr_slots_eval = model.process_frame(
+                    prev_slots_eval = dyn_model.process_frame(dets_prev)
+                    curr_slots_eval = dyn_model.process_frame(
                         dets_curr, prev_slots_eval
                     )
-                    sim = model.slot_similarity(prev_slots_eval, curr_slots_eval)
+                    sim = dyn_model.slot_similarity(prev_slots_eval, curr_slots_eval)
                 loss += float(hungarian_similarity_loss(sim, seq.n_objects).item())
                 n_trans += 1
             total_loss += loss / max(n_trans, 1)
@@ -763,12 +763,12 @@ class TemporalTrainer:
         # Phase-specific: compute coherence
         if self._is_phase_tracker() and hasattr(self.model, "dynamics"):
             try:
-                model: Any = self.model
+                dyn_model: Any = self.model
                 test_phase = (
-                    torch.rand(1, model.n_osc, device=self.device) * 2 * math.pi
+                    torch.rand(1, dyn_model.n_osc, device=self.device) * 2 * math.pi
                 )
-                test_amp = torch.ones(1, model.n_osc, device=self.device)
-                evolved_phase, _ = model.evolve(test_phase, test_amp)
+                test_amp = torch.ones(1, dyn_model.n_osc, device=self.device)
+                evolved_phase, _ = dyn_model.evolve(test_phase, test_amp)
                 z = torch.exp(1j * evolved_phase.to(torch.complex64))
                 coherence = float(z.mean(dim=-1).abs().mean().item())
                 snap.phase_coherence = coherence
