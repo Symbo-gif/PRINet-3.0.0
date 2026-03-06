@@ -978,7 +978,7 @@ class HybridPRINetV2(nn.Module):
 
         # Optional CNN stem for image inputs
         if use_conv_stem:
-            self.conv_stem = nn.Sequential(
+            self.conv_stem: Optional[nn.Sequential] = nn.Sequential(
                 nn.Conv2d(3, stem_channels, 3, padding=1),
                 nn.BatchNorm2d(stem_channels),
                 nn.ReLU(),
@@ -1120,7 +1120,7 @@ class HybridPRINetV2(nn.Module):
         except ImportError:
             return False
 
-    def compile(
+    def compile(  # type: ignore[override]
         self,
         *,
         backend: str = "inductor",
@@ -1197,7 +1197,8 @@ class HybridPRINetV2(nn.Module):
             Log-probabilities ``(B, K)`` or ``(K,)``.
         """
         if self.is_compiled and hasattr(self, "_compiled_model"):
-            return self._compiled_model(x)
+            result: Tensor = self._compiled_model(x)
+            return result
         return self.forward(x)
 
     def oscillatory_parameters(self) -> list[nn.Parameter]:
@@ -1307,7 +1308,8 @@ class HybridPRINetV2CLEVRN(nn.Module):
         query_enc = self.query_proj(query)  # (B, d_model)
         combined = torch.cat([scene_enc, query_enc], dim=-1)  # (B, 2*d_model)
         merged = self.merge(combined)  # (B, n_osc)
-        return self.v2(merged)
+        result: Tensor = self.v2(merged)
+        return result
 
 
 class PhaseTracker(nn.Module):
@@ -1492,7 +1494,7 @@ class PhaseTracker(nn.Module):
         order = max_sims.argsort(descending=True)
 
         for idx in order:
-            best_j = max_idxs[idx].item()
+            best_j = int(max_idxs[idx].item())
             if not used[best_j] and max_sims[idx] > self.match_threshold:
                 matches[idx] = best_j
                 used[best_j] = True
@@ -1506,7 +1508,7 @@ class PhaseTracker(nn.Module):
     def track_sequence(
         self,
         frame_detections: list[Tensor],
-    ) -> dict:
+    ) -> dict[str, Any]:
         """Track objects across a sequence of frames.
 
         Processes each consecutive pair of frames through :meth:`forward`
@@ -1575,7 +1577,7 @@ class PhaseTracker(nn.Module):
                 order = max_sims.argsort(descending=True)
 
                 for idx in order:
-                    best_j = max_idxs[idx].item()
+                    best_j = int(max_idxs[idx].item())
                     if (
                         best_j < N_curr
                         and not used[best_j]

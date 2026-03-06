@@ -146,12 +146,14 @@ class AblationHybridPRINetV2(nn.Module):
 
             if config.variant == "shared_phase":
                 # Shared-phase: all oscillators at same frequency
-                self.dynamics: Optional[DiscreteDeltaThetaGamma] = DiscreteDeltaThetaGamma(
-                    n_delta=config.n_delta,
-                    n_theta=config.n_theta,
-                    n_gamma=config.n_gamma,
-                    coupling_strength=config.coupling_strength,
-                    pac_depth=config.pac_depth,
+                self.dynamics: Optional[DiscreteDeltaThetaGamma] = (
+                    DiscreteDeltaThetaGamma(
+                        n_delta=config.n_delta,
+                        n_theta=config.n_theta,
+                        n_gamma=config.n_gamma,
+                        coupling_strength=config.coupling_strength,
+                        pac_depth=config.pac_depth,
+                    )
                 )
                 # We'll override frequencies after construction
                 self._shared_phase = True
@@ -165,7 +167,9 @@ class AblationHybridPRINetV2(nn.Module):
                 )
                 self._shared_phase = False
 
-            self.phase_init: Optional[nn.Linear] = nn.Linear(config.n_input, n_osc * config.n_heads)
+            self.phase_init: Optional[nn.Linear] = nn.Linear(
+                config.n_input, n_osc * config.n_heads
+            )
         else:
             self.dynamics = None
             self._shared_phase = False

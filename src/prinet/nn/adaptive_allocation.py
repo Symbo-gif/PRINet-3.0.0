@@ -146,7 +146,7 @@ class AdaptiveOscillatorAllocator(nn.Module):
         self.strategy = strategy
 
         if strategy == "learned":
-            self._mlp = nn.Sequential(
+            self._mlp: Optional[nn.Sequential] = nn.Sequential(
                 nn.Linear(complexity_dim, 64),
                 nn.ReLU(),
                 nn.Linear(64, 32),
