@@ -15,7 +15,7 @@ Variants:
 from __future__ import annotations
 
 import math
-from typing import Optional
+from typing import Any, Optional
 
 import torch
 import torch.nn as nn
@@ -91,9 +91,10 @@ class PhaseTrackerFrozen(nn.Module):
     def forward(
         self, detections_t: Tensor, detections_t1: Tensor
     ) -> tuple[Tensor, Tensor]:
-        return self._inner(detections_t, detections_t1)
+        result: tuple[Tensor, Tensor] = self._inner(detections_t, detections_t1)
+        return result
 
-    def track_sequence(self, frame_detections: list[Tensor]) -> dict:
+    def track_sequence(self, frame_detections: list[Tensor]) -> dict[str, Any]:
         return self._inner.track_sequence(frame_detections)
 
 
@@ -162,8 +163,9 @@ class PhaseTrackerStatic(nn.Module):
     def evolve(self, phase: Tensor, amplitude: Tensor) -> tuple[Tensor, Tensor]:
         """Simple phase advance with no coupling."""
         dt = 0.01
+        freqs: Tensor = self.frequencies  # type: ignore[assignment]
         for _ in range(self._n_discrete_steps):
-            phase = phase + 2.0 * math.pi * self.frequencies * dt
+            phase = phase + 2.0 * math.pi * freqs * dt
             phase = phase % (2.0 * math.pi)
         return phase, amplitude
 
@@ -195,13 +197,13 @@ class PhaseTrackerStatic(nn.Module):
         max_sims, max_idxs = sim.max(dim=1)
         order = max_sims.argsort(descending=True)
         for idx in order:
-            best_j = max_idxs[idx].item()
+            best_j = int(max_idxs[idx].item())
             if not used[best_j] and max_sims[idx] > self.match_threshold:
                 matches[idx] = best_j
                 used[best_j] = True
         return matches, sim
 
-    def track_sequence(self, frame_detections: list[Tensor]) -> dict:
+    def track_sequence(self, frame_detections: list[Tensor]) -> dict[str, Any]:
         """Track via independent phase evolution (no coupling)."""
         T = len(frame_detections)
         phase_history: list[Tensor] = []
@@ -234,7 +236,7 @@ class PhaseTrackerStatic(nn.Module):
                 max_sims, max_idxs = sim.max(dim=1)
                 order = max_sims.argsort(descending=True)
                 for idx in order:
-                    best_j = max_idxs[idx].item()
+                    best_j = int(max_idxs[idx].item())
                     if (
                         best_j < N_curr
                         and not used[best_j]
@@ -318,7 +320,7 @@ class SlotAttentionNoGRU(nn.Module):
             detections = detections.unsqueeze(0)
         features = self.det_encoder(detections)
         # Ignore prev_slots — always fresh
-        new_slots = self.slot_attention(features)
+        new_slots: Tensor = self.slot_attention(features)
         return new_slots
 
     def slot_similarity(self, slots_a: Tensor, slots_b: Tensor) -> Tensor:
@@ -330,7 +332,7 @@ class SlotAttentionNoGRU(nn.Module):
         b_norm = F.normalize(slots_b, dim=-1)
         return a_norm @ b_norm.T
 
-    def track_sequence(self, frame_detections: list[Tensor]) -> dict:
+    def track_sequence(self, frame_detections: list[Tensor]) -> dict[str, Any]:
         T = len(frame_detections)
         slot_history: list[Tensor] = []
         identity_matches: list[Tensor] = []
@@ -353,11 +355,11 @@ class SlotAttentionNoGRU(nn.Module):
                     max_sims, max_idxs = sim.max(dim=1)
                     order = max_sims.argsort(descending=True)
                     for idx in order:
-                        j = max_idxs[idx].item()
+                        j = int(max_idxs[idx].item())
                         if not used[j] and max_sims[idx] > self.match_threshold:
                             matches[idx] = j
                             used[j] = True
-                    n_matched = (matches >= 0).sum().item()
+                    n_matched = int((matches >= 0).sum().item())
                     identity_matches.append(matches)
                     per_frame_sim.append(float(max_sims.mean().item()))
                     total_matches += n_matched
@@ -385,7 +387,7 @@ class SlotAttentionNoGRU(nn.Module):
         max_sims, max_idxs = sim.max(dim=1)
         order = max_sims.argsort(descending=True)
         for idx in order:
-            j = max_idxs[idx].item()
+            j = int(max_idxs[idx].item())
             if not used[j] and max_sims[idx] > self.match_threshold:
                 matches[idx] = j
                 used[j] = True
@@ -464,13 +466,13 @@ class SlotAttentionFrozen(nn.Module):
         max_sims, max_idxs = sim.max(dim=1)
         order = max_sims.argsort(descending=True)
         for idx in order:
-            j = max_idxs[idx].item()
+            j = int(max_idxs[idx].item())
             if not used[j] and max_sims[idx] > self.match_threshold:
                 matches[idx] = j
                 used[j] = True
         return matches, sim
 
-    def track_sequence(self, frame_detections: list[Tensor]) -> dict:
+    def track_sequence(self, frame_detections: list[Tensor]) -> dict[str, Any]:
         return self._inner.track_sequence(frame_detections)
 
 
