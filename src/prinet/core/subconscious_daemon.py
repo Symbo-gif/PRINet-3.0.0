@@ -369,7 +369,7 @@ def collect_system_state(
 
     # CPU utilization via psutil
     try:
-        import psutil  # type: ignore[import-untyped]
+        import psutil
 
         cpu_util = psutil.cpu_percent(interval=None) / 100.0
     except Exception:
@@ -377,7 +377,7 @@ def collect_system_state(
 
     # GPU temp + utilization via pynvml (if available)
     try:
-        import pynvml  # type: ignore[import-not-found]
+        import pynvml
 
         pynvml.nvmlInit()
         handle = pynvml.nvmlDeviceGetHandleByIndex(0)

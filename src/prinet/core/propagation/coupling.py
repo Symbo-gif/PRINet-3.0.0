@@ -40,7 +40,7 @@ class PhaseAmplitudeCoupling:
     def __init__(
         self,
         modulation_depth: float = 0.3,
-        amplitude_clamp: Tuple[float, float] = (1e-6, 10.0),
+        amplitude_clamp: tuple[float, float] = (1e-6, 10.0),
     ) -> None:
         if not 0.0 <= modulation_depth <= 1.0:
             raise ValueError(
