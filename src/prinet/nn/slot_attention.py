@@ -22,7 +22,7 @@ Public API:
 from __future__ import annotations
 
 import math
-from typing import Optional
+from typing import Any, Optional
 
 import torch
 import torch.nn as nn
@@ -321,7 +321,7 @@ class TemporalSlotAttentionMOT(nn.Module):
             ).reshape(1, K, self.slot_dim)
             new_slots = self.temporal_norm(updated)
 
-        return new_slots
+        return new_slots  # type: ignore[no-any-return]
 
     def slot_similarity(
         self,
@@ -378,7 +378,7 @@ class TemporalSlotAttentionMOT(nn.Module):
         order = max_sims.argsort(descending=True)
 
         for idx in order:
-            j = max_idxs[idx].item()
+            j = int(max_idxs[idx].item())
             if not used[j] and max_sims[idx] > self.match_threshold:
                 matches[idx] = j
                 used[j] = True
@@ -388,7 +388,7 @@ class TemporalSlotAttentionMOT(nn.Module):
     def track_sequence(
         self,
         frame_detections: list[Tensor],
-    ) -> dict:
+    ) -> dict[str, Any]:
         """Track objects across a sequence of frames.
 
         Args:
@@ -427,12 +427,12 @@ class TemporalSlotAttentionMOT(nn.Module):
                     order = max_sims.argsort(descending=True)
 
                     for idx in order:
-                        j = max_idxs[idx].item()
+                        j = int(max_idxs[idx].item())
                         if not used[j] and max_sims[idx] > self.match_threshold:
                             matches[idx] = j
                             used[j] = True
 
-                    n_matched = (matches >= 0).sum().item()
+                    n_matched = int((matches >= 0).sum().item())
                     identity_matches.append(matches)
                     per_frame_sim.append(float(max_sims.mean().item()))
                     total_matches += n_matched

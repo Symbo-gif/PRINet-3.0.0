@@ -14,12 +14,15 @@ from __future__ import annotations
 import math
 import time
 from dataclasses import dataclass, field
-from typing import Any, Literal, Optional
+from typing import TYPE_CHECKING, Any, Literal, Optional
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch import Tensor
+
+if TYPE_CHECKING:
+    from prinet.core.propagation import DiscreteDeltaThetaGamma
 
 # =========================================================================
 # T.5: Ablation Framework
@@ -107,8 +110,8 @@ class AblationHybridPRINetV2(nn.Module):
             # Attention layers
             from prinet.nn.layers import OscillatoryAttention
 
-            self.attn_layers = nn.ModuleList()
-            self.norm1_layers = nn.ModuleList()
+            self.attn_layers: Optional[nn.ModuleList] = nn.ModuleList()
+            self.norm1_layers: Optional[nn.ModuleList] = nn.ModuleList()
             for _ in range(config.n_layers):
                 self.attn_layers.append(
                     OscillatoryAttention(
@@ -143,7 +146,7 @@ class AblationHybridPRINetV2(nn.Module):
 
             if config.variant == "shared_phase":
                 # Shared-phase: all oscillators at same frequency
-                self.dynamics = DiscreteDeltaThetaGamma(
+                self.dynamics: Optional[DiscreteDeltaThetaGamma] = DiscreteDeltaThetaGamma(
                     n_delta=config.n_delta,
                     n_theta=config.n_theta,
                     n_gamma=config.n_gamma,
@@ -162,7 +165,7 @@ class AblationHybridPRINetV2(nn.Module):
                 )
                 self._shared_phase = False
 
-            self.phase_init = nn.Linear(config.n_input, n_osc * config.n_heads)
+            self.phase_init: Optional[nn.Linear] = nn.Linear(config.n_input, n_osc * config.n_heads)
         else:
             self.dynamics = None
             self._shared_phase = False
@@ -385,7 +388,7 @@ def train_clevr_n_single_seed(
             optimizer.zero_grad()
             log_probs = model(scenes, queries)
             loss = F.nll_loss(log_probs, labels)
-            loss.backward()
+            loss.backward()  # type: ignore[no-untyped-call]
             optimizer.step()
 
     wall_time = time.perf_counter() - t0
@@ -602,7 +605,7 @@ def measure_wall_time(
     # Warmup
     with torch.no_grad():
         for _ in range(n_warmup):
-            _call()
+            _call()  # type: ignore[no-untyped-call]
 
     # Timed runs
     times: list[float] = []
@@ -611,7 +614,7 @@ def measure_wall_time(
             if device.type == "cuda":
                 torch.cuda.synchronize(device)
             t0 = time.perf_counter()
-            _call()
+            _call()  # type: ignore[no-untyped-call]
             if device.type == "cuda":
                 torch.cuda.synchronize(device)
             elapsed = (time.perf_counter() - t0) * 1000.0
@@ -867,7 +870,7 @@ def spatial_correlation(
 
 
 def seed_stability_analysis(
-    per_seed_results: list[dict],
+    per_seed_results: list[dict[str, Any]],
     metric_key: str,
 ) -> dict[str, float]:
     """Analyse stability of a metric across random seeds.
@@ -900,7 +903,7 @@ def seed_stability_analysis(
 def phase_slip_rate(
     phase_trajectory: Tensor,
     threshold: float = math.pi * 0.8,
-) -> dict[str, float]:
+) -> dict[str, Any]:
     """Compute phase-slip rate from a phase trajectory.
 
     A *phase slip* occurs when the circular (geodesic) distance between
@@ -972,7 +975,7 @@ def phase_slip_rate(
 def binding_persistence(
     matches_history: list[Tensor],
     n_objects: int,
-) -> dict[str, float]:
+) -> dict[str, Any]:
     """Measure how persistently objects maintain identity across frames.
 
     Computes the fraction of frames in which each object is
@@ -1087,7 +1090,7 @@ def rebinding_speed(
     matches_before: list[Tensor],
     matches_after: list[Tensor],
     n_objects: int,
-) -> dict[str, float]:
+) -> dict[str, Any]:
     """Measure how quickly identity bindings recover after perturbation.
 
     Compares match quality before a perturbation (last *k* frames of
@@ -1134,7 +1137,7 @@ def rebinding_speed(
 def cross_frequency_coupling(
     phases_low: Tensor,
     phases_high: Tensor,
-) -> dict[str, float]:
+) -> dict[str, Any]:
     r"""Compute phase-amplitude coupling (PAC) between frequency bands.
 
     Measures hierarchical phase coupling between low-frequency (e.g.
@@ -1181,8 +1184,8 @@ def cross_frequency_coupling(
 
 
 def temporal_advantage_report(
-    phase_tracker_result: dict,
-    slot_attention_result: dict,
+    phase_tracker_result: dict[str, Any],
+    slot_attention_result: dict[str, Any],
     n_seeds: int = 1,
 ) -> dict[str, Any]:
     """Compile a head-to-head temporal advantage report.
@@ -1322,7 +1325,7 @@ def windowed_order_parameter_variance(
 def phase_locking_value(
     phase_a: Tensor,
     phase_b: Tensor,
-) -> dict[str, float]:
+) -> dict[str, Any]:
     """Compute phase locking value (PLV) between two phase signals.
 
     .. math::
@@ -1849,13 +1852,13 @@ class PhaseTrackerLarge(nn.Module):
         max_sims, max_idxs = sim.max(dim=1)
         order = max_sims.argsort(descending=True)
         for idx in order:
-            best_j = max_idxs[idx].item()
+            best_j = int(max_idxs[idx].item())
             if not used[best_j] and max_sims[idx].item() >= self.match_threshold:
                 matches[idx] = best_j
                 used[best_j] = True
         return matches, sim
 
-    def track_sequence(self, frame_detections: list[Tensor]) -> dict:
+    def track_sequence(self, frame_detections: list[Tensor]) -> dict[str, Any]:
         """Track objects across a sequence of frames."""
         if len(frame_detections) < 2:
             return {
@@ -1901,7 +1904,7 @@ class PhaseTrackerLarge(nn.Module):
 def noise_tolerance_sweep(
     pt_model: nn.Module,
     sa_model: nn.Module,
-    dataset_fn: object,
+    dataset_fn: Any,
     sigmas: list[float],
     n_seeds: int = 3,
     device: str = "cpu",
@@ -1919,20 +1922,21 @@ def noise_tolerance_sweep(
     Returns:
         Dict with per-sigma results for both models.
     """
-    results = {}
+    results: dict[str, Any] = {}
     for sigma in sigmas:
-        pt_ips = []
-        sa_ips = []
+        pt_ips: list[float] = []
+        sa_ips: list[float] = []
         for s in range(n_seeds):
             ds = dataset_fn(seed=42 + s, noise_sigma=sigma)
             for model, ips in [(pt_model, pt_ips), (sa_model, sa_ips)]:
                 model.eval()
                 model.to(device)
-                seq_ips = []
+                seq_ips: list[float] = []
+                dyn_model: Any = model
                 with torch.no_grad():
                     for seq in ds:
                         frames = [f.to(device) for f in seq.frames]
-                        res = model.track_sequence(frames)
+                        res = dyn_model.track_sequence(frames)
                         seq_ips.append(res["identity_preservation"])
                 ips.append(sum(seq_ips) / max(len(seq_ips), 1))
         results[str(sigma)] = {
@@ -1949,7 +1953,7 @@ def noise_tolerance_sweep(
 
 def noise_degradation_curve(
     model: nn.Module,
-    dataset_fn: object,
+    dataset_fn: Any,
     sigmas: list[float],
     n_seeds: int = 3,
     device: str = "cpu",
@@ -1968,18 +1972,19 @@ def noise_degradation_curve(
     """
     import numpy as np
 
-    curve = {}
+    curve: dict[str, Any] = {}
     for sigma in sigmas:
-        ips = []
+        ips: list[float] = []
         for s in range(n_seeds):
             ds = dataset_fn(seed=42 + s, noise_sigma=sigma)
             model.eval()
             model.to(device)
-            seq_ips = []
+            seq_ips: list[float] = []
+            dyn_model: Any = model
             with torch.no_grad():
                 for seq in ds:
                     frames = [f.to(device) for f in seq.frames]
-                    res = model.track_sequence(frames)
+                    res = dyn_model.track_sequence(frames)
                     seq_ips.append(res["identity_preservation"])
             ips.append(sum(seq_ips) / max(len(seq_ips), 1))
         curve[str(sigma)] = {
@@ -2023,7 +2028,7 @@ def noise_crossover_analysis(
             break
 
     # Fit exponential decay: IP = IP0 * exp(-lambda * sigma)
-    def _fit_exp(means):
+    def _fit_exp(means: list[float]) -> float:
         s_arr = np.array(sigmas)
         m_arr = np.clip(np.array(means), 1e-10, None)
         ln_m = np.log(m_arr)
@@ -2059,7 +2064,7 @@ def curriculum_dataset(
     n_seqs: int = 20,
     det_dim: int = 4,
     seed: int = 42,
-) -> list:
+) -> list[Any]:
     """Generate dataset for a curriculum stage.
 
     Stage 1: 2 objects, T=10

@@ -540,7 +540,7 @@ class TemporalTrainer:
     def _train_step_pt(
         self,
         seq: SequenceData,
-    ) -> float:
+    ) -> tuple[float, Tensor]:
         """Training step for PhaseTracker using forward() similarity.
 
         Uses the differentiable similarity matrix from ``forward()``
@@ -551,7 +551,7 @@ class TemporalTrainer:
             seq: Single training sequence.
 
         Returns:
-            Loss value (float).
+            Tuple of loss value (float) and loss tensor.
         """
         self.model.train()
         total_loss = torch.tensor(0.0, device=self.device)
@@ -584,7 +584,7 @@ class TemporalTrainer:
     def _train_step_sa(
         self,
         seq: SequenceData,
-    ) -> float:
+    ) -> tuple[float, Tensor]:
         """Training step for SlotAttention using process_frame().
 
         Uses the differentiable slot states from ``process_frame()``
@@ -594,20 +594,21 @@ class TemporalTrainer:
             seq: Single training sequence.
 
         Returns:
-            Loss value (float).
+            Tuple of loss value (float) and loss tensor.
         """
         self.model.train()
         total_loss = torch.tensor(0.0, device=self.device)
         n_transitions = 0
         sim_history: list[Tensor] = []
         prev_slots = None
+        dyn_model: Any = self.model
 
         for t in range(seq.n_frames):
             dets = seq.frames[t].to(self.device)
-            slots = self.model.process_frame(dets, prev_slots)
+            slots = dyn_model.process_frame(dets, prev_slots)
 
             if prev_slots is not None:
-                sim = self.model.slot_similarity(prev_slots, slots)
+                sim = dyn_model.slot_similarity(prev_slots, slots)
                 n = min(sim.shape[0], sim.shape[1], seq.n_objects)
                 if n > 0:
                     loss = hungarian_similarity_loss(sim, seq.n_objects)
@@ -669,7 +670,7 @@ class TemporalTrainer:
                 # Only backpropagate if there are trainable parameters
                 has_trainable = any(p.requires_grad for p in self.model.parameters())
                 if has_trainable and loss_tensor.requires_grad:
-                    loss_tensor.backward()
+                    loss_tensor.backward()  # type: ignore[no-untyped-call]
                     if self.grad_clip > 0:
                         nn.utils.clip_grad_norm_(
                             self.model.parameters(), self.grad_clip
@@ -697,16 +698,17 @@ class TemporalTrainer:
         total_idsw = 0
         total_tfr = 0.0
         n_seqs = 0
+        dyn_model: Any = self.model
 
         for seq in dataset:
             frames = [f.to(self.device) for f in seq.frames]
 
             if is_pt:
-                result = self.model.track_sequence(frames)
+                result = dyn_model.track_sequence(frames)
                 matches = result["identity_matches"]
                 ip = result["identity_preservation"]
             else:
-                result = self.model.track_sequence(frames)
+                result = dyn_model.track_sequence(frames)
                 matches = result["identity_matches"]
                 ip = result["identity_preservation"]
 
@@ -724,14 +726,14 @@ class TemporalTrainer:
                 if dets_prev.abs().sum() < 1e-8 or dets_curr.abs().sum() < 1e-8:
                     continue
                 if is_pt:
-                    _, sim = self.model(dets_prev, dets_curr)
+                    _, sim = dyn_model(dets_prev, dets_curr)
                 else:
                     # Re-run to get similarity
-                    prev_slots_eval = self.model.process_frame(dets_prev)
-                    curr_slots_eval = self.model.process_frame(
+                    prev_slots_eval = dyn_model.process_frame(dets_prev)
+                    curr_slots_eval = dyn_model.process_frame(
                         dets_curr, prev_slots_eval
                     )
-                    sim = self.model.slot_similarity(prev_slots_eval, curr_slots_eval)
+                    sim = dyn_model.slot_similarity(prev_slots_eval, curr_slots_eval)
                 loss += float(hungarian_similarity_loss(sim, seq.n_objects).item())
                 n_trans += 1
             total_loss += loss / max(n_trans, 1)
@@ -745,7 +747,7 @@ class TemporalTrainer:
         }
 
     def _capture_snapshot(
-        self, epoch: int, train_loss: float, val_metrics: dict
+        self, epoch: int, train_loss: float, val_metrics: dict[str, float]
     ) -> TrainingSnapshot:
         """Capture a training dynamics snapshot."""
         snap = TrainingSnapshot(
@@ -761,11 +763,12 @@ class TemporalTrainer:
         # Phase-specific: compute coherence
         if self._is_phase_tracker() and hasattr(self.model, "dynamics"):
             try:
+                dyn_model: Any = self.model
                 test_phase = (
-                    torch.rand(1, self.model.n_osc, device=self.device) * 2 * math.pi
+                    torch.rand(1, dyn_model.n_osc, device=self.device) * 2 * math.pi
                 )
-                test_amp = torch.ones(1, self.model.n_osc, device=self.device)
-                evolved_phase, _ = self.model.evolve(test_phase, test_amp)
+                test_amp = torch.ones(1, dyn_model.n_osc, device=self.device)
+                evolved_phase, _ = dyn_model.evolve(test_phase, test_amp)
                 z = torch.exp(1j * evolved_phase.to(torch.complex64))
                 coherence = float(z.mean(dim=-1).abs().mean().item())
                 snap.phase_coherence = coherence

@@ -6,12 +6,15 @@ coherence tracking.
 
 from __future__ import annotations
 
-from typing import Optional, Tuple
+from typing import TYPE_CHECKING, Optional, Tuple
 
 import torch
 from torch import Tensor
 
 from .oscillator_state import OscillatorState, _wrap_phase
+
+if TYPE_CHECKING:
+    from .networks import DiscreteDeltaThetaGamma
 
 
 class TemporalPhasePropagator:

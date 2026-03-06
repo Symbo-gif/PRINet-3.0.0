@@ -703,7 +703,7 @@ class AttentionTracker(nn.Module):
         order = max_sims.argsort(descending=True)
 
         for idx in order:
-            best_j = max_idxs[idx].item()
+            best_j = int(max_idxs[idx].item())
             if not used[best_j] and max_sims[idx] > self.match_threshold:
                 matches[idx] = best_j
                 used[best_j] = True
@@ -749,6 +749,7 @@ def run_subconscious_ab_test(
         for frame_dets in sequence:
             noisy_frame: list[Detection] = []
             for det in frame_dets:
+                noisy_feats: Optional[list[float]]
                 if det.features is not None:
                     noise = [
                         0.01 * torch.randn(1, generator=rng).item()

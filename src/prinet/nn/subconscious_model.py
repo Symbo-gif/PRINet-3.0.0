@@ -224,7 +224,7 @@ class SubconsciousController(nn.Module):
             ImportError: If ``onnxruntime.quantization`` is unavailable.
         """
         try:
-            from onnxruntime.quantization import (  # type: ignore[import-untyped]
+            from onnxruntime.quantization import (
                 QuantFormat,
                 QuantType,
                 quantize_dynamic,
