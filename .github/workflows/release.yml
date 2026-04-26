@@ -28,7 +28,9 @@ jobs:
       - name: Install build tools
         run: |
           python -m pip install --upgrade pip
-          pip install build twine
+          # packaging>=24.2 is required for twine to recognise Metadata 2.4
+          # `License-File` fields emitted by recent setuptools.
+          pip install build twine "packaging>=24.2"
 
       - name: Build sdist and wheel
         run: python -m build
@@ -110,12 +112,17 @@ jobs:
         id: changelog
         run: |
           python - << 'EOF'
-          import re, os
-          with open("CHANGELOG.md") as f:
-              text = f.read()
-          # Extract first changelog section
-          m = re.search(r"^## \[[\d.]+.*?\].*?\n(.*?)(?=^## \[|\Z)", text, re.M | re.S)
-          notes = m.group(1).strip() if m else "See CHANGELOG.md for release notes."
+          import os, re
+          from pathlib import Path
+
+          path = Path("CHANGELOG.md")
+          if path.is_file():
+              text = path.read_text(encoding="utf-8")
+              # Extract first changelog section
+              m = re.search(r"^## \[[\d.]+.*?\].*?\n(.*?)(?=^## \[|\Z)", text, re.M | re.S)
+              notes = m.group(1).strip() if m else "See CHANGELOG.md for release notes."
+          else:
+              notes = "See repository history for release notes."
           with open(os.environ["GITHUB_OUTPUT"], "a") as out:
               out.write(f"notes<<EOF\n{notes}\nEOF\n")
           EOF

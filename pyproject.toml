@@ -40,6 +40,10 @@ dependencies = [
     "torch>=2.0",
     "numpy>=1.24",
     "scipy>=1.10",
+    # Imported eagerly by prinet.utils.figure_generation, which is
+    # re-exported from the top-level `prinet` package, so it is a runtime
+    # dependency of `import prinet`.
+    "matplotlib>=3.7",
 ]
 
 [project.optional-dependencies]
@@ -69,11 +73,11 @@ all = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/michaelmaillet/prinet"
+Homepage = "https://github.com/Symbo-gif/PRINet-3.0.0"
 Documentation = "https://prinet.readthedocs.io"
-Repository = "https://github.com/michaelmaillet/prinet"
-Issues = "https://github.com/michaelmaillet/prinet/issues"
-Changelog = "https://github.com/michaelmaillet/prinet/blob/main/CHANGELOG.md"
+Repository = "https://github.com/Symbo-gif/PRINet-3.0.0"
+Issues = "https://github.com/Symbo-gif/PRINet-3.0.0/issues"
+Changelog = "https://github.com/Symbo-gif/PRINet-3.0.0/blob/main/CHANGELOG.md"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

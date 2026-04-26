@@ -105,13 +105,15 @@ jobs:
         run: mypy src/prinet --strict --ignore-missing-imports
 
   # -----------------------------------------------------------------------
-  # GPU Tests -- runs on self-hosted GPU runner
+  # GPU Tests -- runs on self-hosted GPU runner (opt-in via `[gpu]` marker)
   # -----------------------------------------------------------------------
   test-gpu:
     name: GPU Tests (CUDA)
     runs-on: [self-hosted, gpu]
+    # Only run when a GPU runner is explicitly requested. Auto-running on
+    # `main` queues this job indefinitely when no self-hosted GPU runner is
+    # registered, which cancels the entire workflow.
     if: |
-      github.ref == 'refs/heads/main' ||
       contains(github.event.head_commit.message, '[gpu]') ||
       contains(github.event.pull_request.title, '[gpu]')
     steps:
@@ -176,3 +178,47 @@ jobs:
         run: |
           ls /tmp/paper_output/figures/*.pdf | wc -l
           echo "Expected 9 figure PDFs"
+
+  # -----------------------------------------------------------------------
+  # Package build -- ensure sdist/wheel build cleanly and pass `twine check`
+  # so the PyPI release workflow stays green.
+  # -----------------------------------------------------------------------
+  package:
+    name: Build & Verify Distribution
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install build tools
+        run: |
+          python -m pip install --upgrade pip
+          # packaging>=24.2 is required for twine to recognise Metadata 2.4
+          # `License-File` fields emitted by recent setuptools.
+          pip install build twine "packaging>=24.2"
+
+      - name: Build sdist and wheel
+        run: python -m build
+
+      - name: Verify distribution metadata
+        run: twine check --strict dist/*
+
+      - name: Smoke-test wheel install
+        run: |
+          python -m venv /tmp/wheel-venv
+          /tmp/wheel-venv/bin/pip install --upgrade pip
+          /tmp/wheel-venv/bin/pip install torch --index-url https://download.pytorch.org/whl/cpu
+          /tmp/wheel-venv/bin/pip install dist/*.whl
+          /tmp/wheel-venv/bin/python -c "import prinet; print('prinet', prinet.__version__)"
+
+      - name: Upload built distribution
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
