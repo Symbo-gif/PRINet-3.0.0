@@ -80,19 +80,19 @@ model = KuramotoOscillator(
 
 ```python
 # Mean-field (O(N)) — fastest, loss of local structure
-model = KuramotoOscillator(1024, K=2.0, coupling_mode="mean_field")
+model = KuramotoOscillator(1024, coupling_strength=2.0, coupling_mode="mean_field")
 
 # Sparse k-NN (O(N log N)) — preserves local structure
-model = KuramotoOscillator(1024, K=2.0, coupling_mode="sparse_knn")
+model = KuramotoOscillator(1024, coupling_strength=2.0, coupling_mode="sparse_knn")
 
 # Sparse k-NN with custom k
-model = KuramotoOscillator(1024, K=2.0, coupling_mode="sparse_knn", sparse_k=20)
+model = KuramotoOscillator(1024, coupling_strength=2.0, coupling_mode="sparse_knn", sparse_k=20)
 
 # Full pairwise (O(N²)) — exact
-model = KuramotoOscillator(256, K=2.0, coupling_mode="full")
+model = KuramotoOscillator(256, coupling_strength=2.0, coupling_mode="full")
 
 # Auto selection (recommended for most use cases)
-model = KuramotoOscillator(1024, K=2.0, coupling_mode="auto")
+model = KuramotoOscillator(1024, coupling_strength=2.0, coupling_mode="auto")
 ```
 
 ### 2.3 Coupling Mode Semantics
