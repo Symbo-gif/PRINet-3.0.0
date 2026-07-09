@@ -65,6 +65,7 @@ mot = [
     "motmetrics>=1.4.0",
 ]
 onnx = [
+    "onnx>=1.15",
     "onnxruntime>=1.16",
     "onnxruntime-directml>=1.16; sys_platform == 'win32'",
 ]

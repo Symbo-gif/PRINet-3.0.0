@@ -68,7 +68,7 @@ Outputs
 * ``benchmarks/results/y3q49_phase_coherence.json``
 * ``benchmarks/results/y3q49_chimera_detection.json``
 * ``benchmarks/results/y3q49_summary.json``
-* ``Docs/test_and_benchmark_results/y3q49_scientific_regime_report.md``
+* ``docs/test_and_benchmark_results/y3q49_scientific_regime_report.md``
 
 References
 ----------
@@ -123,7 +123,7 @@ DEVICE_GPU: torch.device = torch.device("cuda") if HAS_CUDA else torch.device("c
 DEVICE_CPU: torch.device = torch.device("cpu")
 
 RESULTS_DIR: Path = _ROOT / "benchmarks" / "results"
-REPORT_DIR: Path = _ROOT / "Docs" / "test_and_benchmark_results"
+REPORT_DIR: Path = _ROOT / "docs" / "test_and_benchmark_results"
 RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 REPORT_DIR.mkdir(parents=True, exist_ok=True)
 

@@ -53,6 +53,10 @@ from prinet.utils.npu_backend import (
 @pytest.fixture()
 def tmp_onnx(tmp_path: Path) -> Path:
     """Export a fresh ONNX model to a temporary directory."""
+    pytest.importorskip("onnx", reason="onnx required for ONNX export tests")
+    pytest.importorskip(
+        "onnxruntime", reason="onnxruntime required for ONNX inference tests"
+    )
     model = SubconsciousController()
     return model.export_to_onnx(tmp_path / "test_controller.onnx")
 

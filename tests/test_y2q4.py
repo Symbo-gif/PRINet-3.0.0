@@ -150,7 +150,7 @@ class TestDocumentation:
 
     def test_architecture_guide_exists(self) -> None:
         """Architecture guide document exists."""
-        guide = Path(__file__).parents[1] / "Docs" / "Architecture_Guide.md"
+        guide = Path(__file__).parents[1] / "docs" / "Architecture_Guide.md"
         assert guide.exists(), f"Missing: {guide}"
         content = guide.read_text(encoding="utf-8")
         assert len(content) > 1000, "Architecture guide too short"
@@ -158,7 +158,7 @@ class TestDocumentation:
 
     def test_getting_started_tutorial_exists(self) -> None:
         """Getting started tutorial exists."""
-        tutorial = Path(__file__).parents[1] / "Docs" / "Getting_Started_Tutorial.md"
+        tutorial = Path(__file__).parents[1] / "docs" / "Getting_Started_Tutorial.md"
         assert tutorial.exists(), f"Missing: {tutorial}"
         content = tutorial.read_text(encoding="utf-8")
         assert len(content) > 1000, "Tutorial too short"
@@ -166,7 +166,7 @@ class TestDocumentation:
 
     def test_tutorial_code_blocks(self) -> None:
         """Tutorial contains runnable Python code blocks."""
-        tutorial = Path(__file__).parents[1] / "Docs" / "Getting_Started_Tutorial.md"
+        tutorial = Path(__file__).parents[1] / "docs" / "Getting_Started_Tutorial.md"
         content = tutorial.read_text(encoding="utf-8")
         # Should have multiple code blocks
         assert content.count("```python") >= 3, "Tutorial needs more code examples"
@@ -174,7 +174,7 @@ class TestDocumentation:
     def test_api_reference_exists(self) -> None:
         """API Reference document exists."""
         ref = (
-            Path(__file__).parents[1] / "Docs" / "API_Reference_Coupling_Topologies.md"
+            Path(__file__).parents[1] / "docs" / "API_Reference_Coupling_Topologies.md"
         )
         assert ref.exists()
 
