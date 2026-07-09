@@ -133,3 +133,7 @@ docs/_build_test/
 
 # CUDA compilation cache
 .triton/
+
+# Generated benchmark reports/artefacts (not tracked; canonical artefacts live in benchmarks/results/)
+docs/test_and_benchmark_results/
+Docs/

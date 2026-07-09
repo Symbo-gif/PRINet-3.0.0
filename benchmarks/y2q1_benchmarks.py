@@ -62,7 +62,7 @@ from benchmarks.q4_benchmarks import FastHybridCLEVRN
 
 # ---- Constants ----
 SEED = 42
-RESULTS_DIR = Path("Docs/test_and_benchmark_results")
+RESULTS_DIR = Path("docs/test_and_benchmark_results")
 RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
 # Deterministic settings for fair comparison

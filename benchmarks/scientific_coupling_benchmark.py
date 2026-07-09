@@ -102,7 +102,7 @@ CONV_MAX_STEPS: int = 500
 CONV_THRESHOLD: float = 0.5
 
 # Directories
-RESULTS_DIR: Path = Path(__file__).resolve().parents[1] / "Docs" / "test_and_benchmark_results"
+RESULTS_DIR: Path = Path(__file__).resolve().parents[1] / "docs" / "test_and_benchmark_results"
 
 # Mode metadata — execution order and display names
 REGIME_ORDER: list[dict[str, str]] = [

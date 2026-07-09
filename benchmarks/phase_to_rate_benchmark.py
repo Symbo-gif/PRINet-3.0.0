@@ -271,7 +271,7 @@ if __name__ == "__main__":
 
     output_dir = (
         Path(__file__).resolve().parents[1]
-        / "Docs"
+        / "docs"
         / "test_and_benchmark_results"
     )
     run_phase_to_rate_benchmark(

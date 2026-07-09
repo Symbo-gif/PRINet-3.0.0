@@ -28,10 +28,10 @@ from prinet.nn import PhaseTracker, PRINetModel
 from prinet.utils.oscillosim import OscilloSim
 
 # Phase-resonance object tracker (4,991 params vs SlotAttention's 83,904)
-tracker = PhaseTracker(n_slots=4, n_features=32, n_oscillators=16)
+tracker = PhaseTracker(detection_dim=32, n_delta=4, n_theta=8, n_gamma=16)
 
 # GPU-accelerated Kuramoto simulator
-sim = OscilloSim(n_oscillators=512, coupling_mode="ring", K=4.0)
+sim = OscilloSim(n_oscillators=512, coupling_mode="ring", coupling_strength=4.0)
 ```
 
 ## Version

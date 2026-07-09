@@ -46,7 +46,7 @@ from benchmarks.y2q1_benchmarks import (
     InterleavedCLEVRN,
 )
 
-_RESULTS_DIR = Path("Docs/test_and_benchmark_results")
+_RESULTS_DIR = Path("docs/test_and_benchmark_results")
 
 TWO_PI = 2.0 * math.pi
 

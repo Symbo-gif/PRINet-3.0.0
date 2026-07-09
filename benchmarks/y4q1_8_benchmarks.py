@@ -1548,7 +1548,7 @@ def bench_b8_4_payoff_chimera() -> dict:
 
 def bench_preregistration() -> str:
     _p("\n=== Pre-registration Hash ===")
-    plan = (Path(__file__).parent.parent / "Docs" / "Planning_Documentation"
+    plan = (Path(__file__).parent.parent / "docs" / "Planning_Documentation"
             / "PRINet Q1 8 Benchmark Plan.md")
     sha = hashlib.sha256(plan.read_bytes()).hexdigest() if plan.exists() else "NOT_FOUND"
     _save("preregistration_hash", {

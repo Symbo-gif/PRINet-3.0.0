@@ -305,7 +305,7 @@ def _load_or_train(name, factory, cache_path, train_data, val_data) -> tuple:
 
 def bench_preregistration() -> str:
     _p("\n=== Benchmark 20: Pre-registration Hash ===")
-    plan = (Path(__file__).parent.parent / "Docs" / "Planning_Documentation"
+    plan = (Path(__file__).parent.parent / "docs" / "Planning_Documentation"
             / "Y4_Q1_7_Temporal_Advantage_Benchmark_Plan.md")
     sha = hashlib.sha256(plan.read_bytes()).hexdigest() if plan.exists() else "NOT_FOUND"
     _save("preregistration_hash", {

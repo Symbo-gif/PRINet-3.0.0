@@ -920,7 +920,7 @@ def main() -> None:
     # Save results
     output_dir = (
         Path(__file__).resolve().parents[1]
-        / "Docs"
+        / "docs"
         / "test_and_benchmark_results"
     )
     output_dir.mkdir(parents=True, exist_ok=True)

@@ -1000,7 +1000,7 @@ def bench_artefact_manifest() -> dict:
         })
 
     # Scan Docs/test_and_benchmark_results/ for Y2 artefacts
-    docs_results = _ROOT / "Docs" / "test_and_benchmark_results"
+    docs_results = _ROOT / "docs" / "test_and_benchmark_results"
     if docs_results.exists():
         for f in sorted(docs_results.rglob("*.json")):
             content = f.read_bytes()

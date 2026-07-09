@@ -104,9 +104,10 @@ modes — multi-dimensional harmonic patterns that oscillators can interact with
 ```python
 from prinet import PolyadicTensor, CPDecomposition
 
-tensor = PolyadicTensor(data=torch.randn(4, 8, 16))
-cp = CPDecomposition(rank=10)
-factors = cp.decompose(tensor)
+tensor = PolyadicTensor(shape=(4, 8, 16), rank=10)
+cp = CPDecomposition(shape=(4, 8, 16), rank=10)
+cp.decompose(torch.randn(4, 8, 16))
+factors = cp.factors
 ```
 
 ### 3. Synchronization Measurement (`core.measurement`)

@@ -68,7 +68,7 @@ def main() -> None:
             print(f"  N={r.n_items}: test_acc={r.test_acc:.3f}")
 
     # Save
-    save_path = Path("Docs/test_and_benchmark_results/benchmark_clevr_n_sweep.json")
+    save_path = Path("docs/test_and_benchmark_results/benchmark_clevr_n_sweep.json")
     save_path.parent.mkdir(parents=True, exist_ok=True)
     serializable = {
         n: [r.to_dict() for r in rs] for n, rs in all_results.items()

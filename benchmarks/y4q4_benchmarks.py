@@ -37,7 +37,7 @@ def _save(name: str, data: dict) -> None:
 
 def benchmark_year4_report() -> dict:
     """B.1: Validate Year 4 comprehensive report."""
-    report_path = os.path.join(ROOT, "Docs", "Year_4_Comprehensive_Report.md")
+    report_path = os.path.join(ROOT, "docs", "Year_4_Comprehensive_Report.md")
     exists = os.path.isfile(report_path)
 
     sections_found = []
@@ -79,7 +79,7 @@ def benchmark_year4_report() -> dict:
 
 def benchmark_retrospective() -> dict:
     """B.2: Validate project retrospective."""
-    retro_path = os.path.join(ROOT, "Docs", "Project_Retrospective.md")
+    retro_path = os.path.join(ROOT, "docs", "Project_Retrospective.md")
     exists = os.path.isfile(retro_path)
 
     sections_found = []
@@ -272,13 +272,13 @@ def benchmark_doc_completeness() -> dict:
         "CODE_OF_CONDUCT.md": os.path.join(ROOT, "CODE_OF_CONDUCT.md"),
         "pyproject.toml": os.path.join(ROOT, "pyproject.toml"),
         "reproduce.py": os.path.join(ROOT, "reproduce.py"),
-        "Year-4-Plan.md": os.path.join(ROOT, "Docs", "Planning_Documentation",
+        "Year-4-Plan.md": os.path.join(ROOT, "docs", "Planning_Documentation",
                                         "Year-4-Plan.md"),
-        "Arxiv_Preprint_Outline.md": os.path.join(ROOT, "Docs",
+        "Arxiv_Preprint_Outline.md": os.path.join(ROOT, "docs",
                                                     "Arxiv_Preprint_Outline.md"),
-        "Year_4_Comprehensive_Report.md": os.path.join(ROOT, "Docs",
+        "Year_4_Comprehensive_Report.md": os.path.join(ROOT, "docs",
                                                          "Year_4_Comprehensive_Report.md"),
-        "Project_Retrospective.md": os.path.join(ROOT, "Docs",
+        "Project_Retrospective.md": os.path.join(ROOT, "docs",
                                                    "Project_Retrospective.md"),
     }
 

@@ -39,7 +39,7 @@ from prinet.utils.triton_kernels import (
 
 SEED = 42
 DEVICE = torch.device("cuda")
-RESULTS_DIR = Path(__file__).resolve().parents[1] / "Docs" / "test_and_benchmark_results"
+RESULTS_DIR = Path(__file__).resolve().parents[1] / "docs" / "test_and_benchmark_results"
 
 # ── Timing parameters ─────────────────────────────────────────────
 WARMUP_ITERS = 50

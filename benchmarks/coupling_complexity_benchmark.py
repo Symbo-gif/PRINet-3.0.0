@@ -82,7 +82,7 @@ GRAD_SIZES = [64, 128, 256, 512, 1_024, 2_048]
 KC_SIZES = [256, 1_024, 4_096]
 KC_SWEEP = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 7.0, 10.0]
 
-RESULTS_DIR = Path(__file__).resolve().parents[1] / "Docs" / "test_and_benchmark_results"
+RESULTS_DIR = Path(__file__).resolve().parents[1] / "docs" / "test_and_benchmark_results"
 
 # ──────────────────────── Helpers ─────────────────────────────────
 

@@ -152,7 +152,7 @@ def benchmark_test_skips() -> dict:
 
 def benchmark_sphinx_build() -> dict:
     """B.3: Build Sphinx docs, count pages."""
-    docs_dir = os.path.join(ROOT, "Docs")
+    docs_dir = os.path.join(ROOT, "docs")
     build_dir = os.path.join(docs_dir, "_build")
 
     t0 = time.perf_counter()
