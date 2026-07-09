@@ -129,7 +129,7 @@ STABILITY_SIZES_CPU: list[int] = [256, 1_024, 4_096]
 ENERGY_SIZES: list[int] = [1_024, 8_192, 65_536, 262_144]
 
 RESULTS_DIR: Path = (
-    Path(__file__).resolve().parents[1] / "Docs" / "test_and_benchmark_results"
+    Path(__file__).resolve().parents[1] / "docs" / "test_and_benchmark_results"
 )
 
 MODES: list[dict[str, str]] = [

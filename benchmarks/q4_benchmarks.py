@@ -66,7 +66,7 @@ from benchmarks.oscillobench import (
 
 # ---- Constants ----
 SEED = 42
-RESULTS_DIR = Path("Docs/test_and_benchmark_results")
+RESULTS_DIR = Path("docs/test_and_benchmark_results")
 
 # Ensure output directory exists
 RESULTS_DIR.mkdir(parents=True, exist_ok=True)

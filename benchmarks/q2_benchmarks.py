@@ -416,7 +416,7 @@ def main() -> None:
             all_results.append({"name": name, "status": "ERROR", "error": str(e)})
 
     # Save results
-    output_dir = Path(__file__).resolve().parents[1] / "Docs" / "test_and_benchmark_results"
+    output_dir = Path(__file__).resolve().parents[1] / "docs" / "test_and_benchmark_results"
     output_dir.mkdir(parents=True, exist_ok=True)
     output_path = output_dir / "benchmark_q2_results.json"
 

@@ -41,7 +41,7 @@ from prinet.nn.training_hooks import TelemetryLogger
 from prinet.nn.subconscious_model import SubconsciousController, retrain_controller
 from prinet.utils.triton_kernels import pytorch_fused_discrete_step
 
-_RESULTS_DIR = Path("Docs/test_and_benchmark_results")
+_RESULTS_DIR = Path("docs/test_and_benchmark_results")
 TWO_PI = 2.0 * math.pi
 SEED = 42
 

@@ -106,7 +106,7 @@ GPU_FP32_TFLOPS: float = 15.11
 GPU_MEMBW_GBS: float = 272.0
 
 RESULTS_DIR: Path = (
-    Path(__file__).resolve().parents[1] / "Docs" / "test_and_benchmark_results"
+    Path(__file__).resolve().parents[1] / "docs" / "test_and_benchmark_results"
 )
 
 

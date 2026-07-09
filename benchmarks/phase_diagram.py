@@ -42,7 +42,7 @@ from prinet.core.measurement import kuramoto_order_parameter
 from prinet.core.propagation import KuramotoOscillator, OscillatorState
 
 # ---- Constants ----
-RESULTS_DIR = Path("Docs/test_and_benchmark_results")
+RESULTS_DIR = Path("docs/test_and_benchmark_results")
 RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
 TWO_PI = 2.0 * math.pi

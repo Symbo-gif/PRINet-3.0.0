@@ -561,7 +561,7 @@ def run_l1_archive(results_dir: Path | None = None) -> dict[str, Any]:
     print("=== L.1: Benchmark Archive Manifest ===")
     scan_dirs = [
         Path(__file__).parent,  # benchmarks/
-        Path(__file__).parents[1] / "Docs" / "test_and_benchmark_results",
+        Path(__file__).parents[1] / "docs" / "test_and_benchmark_results",
     ]
 
     manifest: list[dict[str, str]] = []

@@ -117,6 +117,7 @@ All issues below were discovered during this audit and fixed in the accompanying
 | 4 | High (tests) | `tests/test_y2q4.py`, `tests/test_y4q4.py`, `tests/test_y3q49.py`, `benchmarks/y3q49_scientific_regime_benchmark.py` | Hard-coded `Docs/` (capital D) paths — the repository directory is `docs/`, so 8 tests failed on case-sensitive filesystems | Paths corrected to `docs/` |
 | 5 | Medium (tests) | `tests/test_y4q4.py` | 12 tests asserted the existence of internal development-archive documents (`Year_4_Comprehensive_Report.md`, `Project_Retrospective.md`, `Planning_Documentation/Year-4-Plan.md`, `Arxiv_Preprint_Outline.md`) that were never shipped in the public release | Tests now skip with an explicit reason when the archive is absent |
 | 6 | Medium (packaging/tests) | `pyproject.toml`, `tests/test_subconscious.py` | `torch.onnx` export requires the `onnx` package, which was missing from the `[onnx]` extra, causing 13 test errors when only base deps are installed | Added `onnx>=1.15` to the extra; ONNX tests now `importorskip` gracefully |
+| 7 | Medium (benchmarks) | 34 scripts in `benchmarks/` | Result/report output paths hard-coded the legacy `Docs/` directory (capital D), silently creating a stray `Docs/` tree next to `docs/` on case-sensitive systems (test artefacts had been accidentally committed from it twice in project history) | All output paths normalised to `docs/test_and_benchmark_results/`; directory added to `.gitignore` |
 
 ## 5. Remaining Observations (No Action Required)
 

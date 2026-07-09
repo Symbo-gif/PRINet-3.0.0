@@ -165,7 +165,7 @@ def main() -> None:
         )
 
     # Save JSON
-    out_dir = Path(__file__).resolve().parents[1] / "Docs" / "test_and_benchmark_results"
+    out_dir = Path(__file__).resolve().parents[1] / "docs" / "test_and_benchmark_results"
     out_dir.mkdir(parents=True, exist_ok=True)
     payload = {
         "benchmark": "desynchronization_catastrophe",
