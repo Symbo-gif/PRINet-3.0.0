@@ -20,6 +20,7 @@ Sphinx documentation source for PRINet, published at [prinet.readthedocs.io](htt
 | `Architecture_Guide.md` | PRINet architecture overview and design rationale |
 | `API_Reference_Coupling_Topologies.md` | Detailed reference for all 8 OscilloSim coupling modes |
 | `Capacity_Analysis.md` | Binding capacity analysis and theoretical limits |
+| `Codebase_Assessment_Report.md` | Full-repository audit report (code, tests, docs, reproducibility) |
 | `getting_started.rst` | RST version of getting started guide (Sphinx toctree) |
 | `architecture.rst` | RST version of architecture guide (Sphinx toctree) |
 | `changelog.rst` | RST changelog (links to CHANGELOG.md) |
